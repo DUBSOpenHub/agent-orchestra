@@ -11,9 +11,6 @@ This repo follows the Agent Conductor product language: commander groups,
 bounded sub-agent fan-out, Agent Pulse observability, append-only collaboration
 ledgers, and sealed Shadow Score evaluation.
 
-The preserved run artifacts are reference material for validating and comparing
-the fleet experience; they are not the public identity of the repo.
-
 Use user-facing terminology **sub-agents**. The compatibility ledger filename
 `child-agents.jsonl` may appear in preserved artifacts, but docs and responses
 should use **sub-agents**.
@@ -22,22 +19,23 @@ should use **sub-agents**.
 
 | Path | Purpose |
 |---|---|
-| `BASELINE.json` | Machine-readable fleet reference metadata |
-| `known-good-runs/run-20260430-180646/` | Preserved commander-group reference artifacts |
+| `ORCHESTRA.json` | Machine-readable fleet metadata |
+| `run-artifacts/run-20260430-180646/` | Local commander-group run artifact corpus |
 | `agent-pulse-current/` | Current Agent Pulse observability source copied into this repo |
 | `bin/agent-orchestra-pulse` | Local launcher for Agent Pulse against this repo |
-| `tests/prepublish-smoke.sh` | Pre-publish reference validation |
+| `tests/smoke.sh` | Local fleet smoke validation |
+| `tests/prepublish-smoke.sh` | Backward-compatible smoke wrapper target |
 | `install.sh` | Installs local Agent Orchestra helper launcher |
 | `quickstart.sh` | One-command clone/install/test/launch flow |
 | `scripts/activate-security.sh` | Enables GitHub security settings and explains workflow activation |
 | `archived-workflows/` | CI/CodeQL workflows held outside `.github/workflows` until token has `workflow` scope |
-| `UPSTREAM-TERMINAL-STAMPEDE-README.md` | Original Terminal Stampede README from the frozen source |
+| `UPSTREAM-TERMINAL-STAMPEDE-README.md` | Original Terminal Stampede runtime README |
 
 ## Rules
 
-- Do not mutate `known-good-runs/run-20260430-180646/` unless intentionally
-  replacing the reference artifacts.
-- Run `./tests/prepublish-smoke.sh` before publishing or comparing.
+- Do not mutate `run-artifacts/run-20260430-180646/` unless intentionally
+  replacing the run artifact corpus.
+- Run `bash tests/smoke.sh` before publishing or comparing.
 - Keep active workflow files out of `.github/workflows` unless the pushing token
   has `workflow` scope.
 - Use `scripts/activate-security.sh` for GitHub security settings.

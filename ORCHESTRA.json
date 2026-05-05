@@ -1,7 +1,7 @@
 {
-  "baseline_name": "Agent Orchestra",
+  "name": "Agent Orchestra",
   "description": "Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, and score the final synthesis with sealed Shadow Score gates.",
-  "comparison_focus": [
+  "fleet_focus": [
     "Terminal Stampede commander groups",
     "sub-agent telemetry",
     "live collaboration ledgers",
@@ -9,8 +9,8 @@
     "sealed Shadow Score evaluation"
   ],
   "terminal_stampede_commit": "dc14bdefa5d084002fcbcad2a3cc6aa6fa2328c5",
-  "known_good_run": "run-20260430-180646",
-  "known_good_run_path": "/Users/greggcochran/dev/agent-orchestra/known-good-runs/run-20260430-180646",
+  "run_id": "run-20260430-180646",
+  "run_path": "run-artifacts/run-20260430-180646",
   "agent_pulse_head": "dce97237b628da8983f71342be5380a7e4e02d70",
   "result_files": 9,
   "commander_bundles": 5,
@@ -19,31 +19,31 @@
       "commander_id": "commander-001",
       "status": "partial",
       "task_id": "commander-001",
-      "bundle": "known-good-runs/run-20260430-180646/commanders/commander-001/bundle.json"
+      "bundle": "run-artifacts/run-20260430-180646/commanders/commander-001/bundle.json"
     },
     {
       "commander_id": "commander-002",
       "status": "partial",
       "task_id": "commander-002",
-      "bundle": "known-good-runs/run-20260430-180646/commanders/commander-002/bundle.json"
+      "bundle": "run-artifacts/run-20260430-180646/commanders/commander-002/bundle.json"
     },
     {
       "commander_id": "commander-003",
       "status": "success",
       "task_id": "commander-003",
-      "bundle": "known-good-runs/run-20260430-180646/commanders/commander-003/bundle.json"
+      "bundle": "run-artifacts/run-20260430-180646/commanders/commander-003/bundle.json"
     },
     {
       "commander_id": "commander-004",
       "status": "partial",
       "task_id": "commander-004",
-      "bundle": "known-good-runs/run-20260430-180646/commanders/commander-004/bundle.json"
+      "bundle": "run-artifacts/run-20260430-180646/commanders/commander-004/bundle.json"
     },
     {
       "commander_id": "commander-005",
       "status": "success",
       "task_id": "commander-005",
-      "bundle": "known-good-runs/run-20260430-180646/commanders/commander-005/bundle.json"
+      "bundle": "run-artifacts/run-20260430-180646/commanders/commander-005/bundle.json"
     }
   ]
 }

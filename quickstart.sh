@@ -14,7 +14,7 @@ need() {
 need git
 need python3
 
-if [[ -f "BASELINE.json" && -d "known-good-runs" && -d "agent-pulse-current" ]]; then
+if [[ -f "ORCHESTRA.json" && -d "run-artifacts" && -d "agent-pulse-current" ]]; then
   ROOT="$(pwd)"
 elif [[ -d "${TARGET_DIR}/.git" ]]; then
   ROOT="${TARGET_DIR}"
@@ -30,7 +30,7 @@ else
 fi
 
 cd "${ROOT}"
-chmod +x install.sh tests/prepublish-smoke.sh
+chmod +x install.sh tests/prepublish-smoke.sh tests/smoke.sh
 ./install.sh
 
 echo

@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  prepublish-smoke:
+  smoke:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -21,7 +21,7 @@ jobs:
           python-version: "3.12"
 
       - name: Shell syntax check
-        run: bash -n install.sh quickstart.sh bin/agent-orchestra-pulse scripts/activate-security.sh tests/prepublish-smoke.sh
+        run: bash -n install.sh quickstart.sh bin/agent-orchestra-pulse scripts/activate-security.sh tests/prepublish-smoke.sh tests/smoke.sh
 
-      - name: Pre-publish smoke
-        run: ./tests/prepublish-smoke.sh
+      - name: Local smoke
+        run: bash tests/smoke.sh

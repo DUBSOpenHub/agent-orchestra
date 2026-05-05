@@ -15,13 +15,13 @@ need() {
 need python3
 need git
 
-if [[ ! -f "${ROOT}/BASELINE.json" ]]; then
-  echo "BASELINE.json not found. Run install.sh from the Agent Orchestra repo." >&2
+if [[ ! -f "${ROOT}/ORCHESTRA.json" ]]; then
+  echo "ORCHESTRA.json not found. Run install.sh from the Agent Orchestra repo." >&2
   exit 1
 fi
 
-if [[ ! -d "${ROOT}/known-good-runs/run-20260430-180646" ]]; then
-  echo "Known-good run artifacts are missing." >&2
+if [[ ! -d "${ROOT}/run-artifacts/run-20260430-180646" ]]; then
+  echo "Fleet run artifacts are missing." >&2
   exit 1
 fi
 
@@ -30,8 +30,8 @@ if [[ ! -f "${ROOT}/agent-pulse-current/agent_pulse.py" ]]; then
   exit 1
 fi
 
-if [[ -x "${ROOT}/tests/prepublish-smoke.sh" ]]; then
-  "${ROOT}/tests/prepublish-smoke.sh"
+if [[ -x "${ROOT}/tests/smoke.sh" ]]; then
+  "${ROOT}/tests/smoke.sh"
 fi
 
 mkdir -p "${BIN_DIR}"
@@ -50,5 +50,5 @@ echo
 echo "Agent Orchestra is installed."
 echo "Launcher: ${LAUNCHER}"
 echo
-echo "Run Agent Pulse for this baseline with:"
+echo "Run Agent Pulse for Agent Orchestra with:"
 echo "  agent-orchestra-pulse"

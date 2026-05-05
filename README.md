@@ -1,142 +1,245 @@
 # 🎼 Agent Orchestra
 
-**Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple
-visible Terminal Stampede commander groups, let them collaborate in real time,
-and score the final synthesis with sealed
-[Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md)
-gates.**
+**Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, and score the final synthesis with sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) gates.**
 
 [![GitHub Copilot CLI](https://img.shields.io/badge/platform-Copilot%20CLI-232F3E.svg)](https://docs.github.com/copilot/concepts/agents/about-copilot-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Security Policy](https://img.shields.io/badge/Security-Policy-brightgreen?logo=github)](SECURITY.md)
 
-Agent Orchestra packages the Agent Conductor-style fleet experience under this
-repo name: Terminal Stampede commander groups, Agent Pulse observability,
-append-only collaboration ledgers, bounded sub-agent telemetry, and sealed
-Shadow Score quality gates.
+> ### ⚡ One Command. That's It.
+>
+> **Never used the CLI before? No problem.** Follow these 3 steps:
+>
+> **1. Open your terminal**
+> - 🍎 **Mac:** Press `⌘ + Space`, type **Terminal**, hit Enter
+> - 🪟 **Windows:** Open **Git Bash** or **WSL** (the installer uses `bash`)
+> - 🐧 **Linux:** Press `Ctrl + Alt + T`
+>
+> **2. Paste this line and press Enter:**
+> ```bash
+> curl -fsSL https://raw.githubusercontent.com/DUBSOpenHub/agent-orchestra/main/quickstart.sh | bash
+> ```
+> *Already have the CLI? No worries — this detects what is present and installs the local Agent Orchestra helpers.*
+>
+> **3. Watch the fleet:** `agent-orchestra-pulse`
+>
+> That's it — raise the baton. 🎼
+>
+> *Requires an active [Copilot subscription](https://github.com/features/copilot/plans) for live Copilot CLI fleet runs.*
 
-## What is included
+---
 
-| Path | Purpose |
+## 🚀 30-Second Overview
+
+Agent Orchestra is for work that is too big, risky, or cross-cutting for one agent thread:
+
+- **Need multiple strategies at once?** It launches commander-led groups in visible terminal panes.
+- **Need live collaboration, not isolated answers?** Commanders propose, review, improve, converge, and broadcast learnings through append-only ledgers.
+- **Need real observability?** Agent Pulse and the Stampede monitor read concise run telemetry as the work happens.
+- **Need quality gates?** [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) criteria are sealed before launch and applied only after commander bundles finish.
+- **Need honest partials?** A partial launch stays partial; Agent Orchestra never silently upgrades incomplete work to success.
+
+No server. No message broker. No dashboard daemon. Just Copilot CLI skills, Terminal Stampede, tmux, and filesystem IPC.
+
+---
+
+## 📡 Watch Every Run Live with Agent Pulse
+
+Agent Orchestra is best experienced with [**Agent Pulse**](https://github.com/DUBSOpenHub/copilot-cli-agent-pulse), the real-time terminal dashboard for Copilot CLI sessions and swarm runs.
+
+<p align="center">
+  <a href="https://github.com/DUBSOpenHub/copilot-cli-agent-pulse">
+    <img src="https://raw.githubusercontent.com/DUBSOpenHub/copilot-cli-agent-pulse/main/assets/dashboard-screenshot.png" alt="Agent Pulse dashboard showing live Copilot CLI sessions, agents, and swarm telemetry" width="850">
+  </a>
+</p>
+
+Agent Pulse makes Agent Orchestra observable while it runs:
+
+| What you see live | Why it matters |
 |---|---|
-| `known-good-runs/run-20260430-180646/` | Preserved commander-group reference artifacts |
-| `agent-pulse-current/` | Current Agent Pulse observability source copied into this repo |
-| `BASELINE.json` | Machine-readable fleet reference metadata |
-| `AGENTS.md` | Repo-specific agent instructions and guardrails |
-| `install.sh` | Local setup and helper launcher installer |
-| `quickstart.sh` | One-command clone/install/test flow |
-| `bin/agent-orchestra-pulse` | Agent Pulse launcher for this repo |
-| `scripts/activate-security.sh` | GitHub security activation helper |
-| `tests/prepublish-smoke.sh` | Reference validation gate |
-| `REFERENCE-NOTES.md` | Short reference notes and Agent Pulse command |
-| `UPSTREAM-TERMINAL-STAMPEDE-README.md` | Original Terminal Stampede README from the frozen source |
+| Commander status | Know which commander groups are running, partial, failed, or complete |
+| Sub-agent counts | Track live, completed, failed, and seen sub-agents without ledger spelunking |
+| Terminal Stampede runs | See active `.stampede/run-*` work across repos |
+| Telemetry confidence | Distinguish authoritative live counts from recent/historical events |
+| Recent launches | Spot bursts, stuck runs, and platform-cap pressure |
 
-## Reference artifacts
-
-The frozen Terminal Stampede source is based on:
-
-```text
-dc14bdefa5d084002fcbcad2a3cc6aa6fa2328c5
-```
-
-The preserved run is:
-
-```text
-run-20260430-180646
-```
-
-Agent Orchestra's fleet run shape follows the Agent Conductor contract: exactly
-five commander groups. The preserved reference artifacts contain:
-
-```text
-5 commander bundles
-9 total result files
-```
-
-## Quickstart
-
-From a checked-out repo:
+Install it alongside Agent Orchestra:
 
 ```bash
-./quickstart.sh
+curl -fsSL https://raw.githubusercontent.com/DUBSOpenHub/copilot-cli-agent-pulse/main/quickstart.sh | bash
+agentpulse
 ```
 
-Or clone/install with the GitHub CLI:
+---
 
-```bash
-gh repo clone DUBSOpenHub/agent-orchestra ~/dev/agent-orchestra
-cd ~/dev/agent-orchestra
-./quickstart.sh
-```
+## 🐝 Dogfooded at Swarm Scale
 
-The quickstart runs the pre-publish smoke test and installs:
+Agent Orchestra follows the same swarm-scale operating model that shaped Agent Conductor: visible commander groups, bounded sub-agent fan-out, collaboration ledgers, live dashboard telemetry, Shadow Score sealing, install flow checks, and repo-readiness validation.
+
+Those signals come from local Stampede run artifacts and compatibility ledgers, so the system can be tested without adding a server, queue, or hosted control plane.
+
+---
+
+## 🤔 What Is This?
+
+Agent Orchestra coordinates multiple commander-led agent groups against the same mission. Each commander gets its own namespace, bounded sub-agent hierarchy, collaboration bus access, and final bundle contract. The orchestrator then synthesizes the best findings from commander bundles, collaboration ledgers, live telemetry, and sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) results.
 
 ```text
-~/bin/agent-orchestra-pulse
+You
+  ↓
+Agent Orchestra
+  ↓
+Terminal Stampede commander panes
+  ↓
+Bounded sub-agent groups
+  ↓
+Collaboration bus + live telemetry
+  ↓
+Shadow Score + final synthesis
 ```
 
-## View with Agent Pulse
+Use it for final release reviews, architecture audits, migration plans, repo-readiness passes, and high-stakes implementation design where one model answer is not enough.
+
+---
+
+## ⚡ Quick Start
+
+### Install from GitHub
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/DUBSOpenHub/agent-orchestra/main/quickstart.sh | bash
+```
+
+The quick installer:
+
+1. Checks for required local tools.
+2. Verifies `python3` and `git` are available.
+3. Installs the Agent Orchestra helper launcher to `~/bin/agent-orchestra-pulse`.
+4. Runs the local smoke gate.
+5. Leaves the repo ready for Agent Pulse observability and fleet validation.
+
+### Install from a local clone
+
+```bash
+git clone https://github.com/DUBSOpenHub/agent-orchestra.git
+cd agent-orchestra
+./install.sh
+```
+
+### Run
+
+```text
+agent conductor on ~/dev/my-repo : evaluate auth architecture and propose fixes
+agent conductor premium max on ~/dev/my-repo : final release readiness review
+agent conductor standard small on ~/dev/my-repo : review docs and onboarding gaps
 agent-orchestra-pulse
 ```
 
-## Pre-publish test
+Agent Orchestra uses the Agent Conductor command surface for fleet missions and Agent Pulse for live visibility.
 
-Before making the repo public or cutting a release, run:
+---
+
+## 🧭 Command Reference
+
+| Command | Purpose |
+|---|---|
+| `agent conductor` | Ask only for missing mission/repo; default to Premium Max + Agent Pulse + Stampede monitor |
+| `agent conductor on REPO : MISSION` | Launch with Premium Max + Agent Pulse + Stampede monitor |
+| `agent conductor premium max on REPO : MISSION` | Launch 5 premium commander groups with Agent Pulse + Stampede monitor |
+| `agent conductor standard small on REPO : MISSION` | Launch 5 standard-tier commander groups with Agent Pulse + Stampede monitor |
+| `agent conductor status [RUN_ID]` | Show concise stats, results, and collaboration counts |
+| `agent conductor teardown RUN_ID` | Stop the underlying Stampede tmux session |
+| `agent-orchestra-pulse` | Open Agent Pulse against this repo's fleet telemetry |
+
+> Note: scale words like `small`, `standard`, and `max` affect tier/policy, not commander count.
+> Agent Orchestra follows the same five-commander fleet contract.
+
+---
+
+## 📊 Live Stats
+
+The Stampede monitor and [Agent Pulse](https://github.com/DUBSOpenHub/copilot-cli-agent-pulse) read `.stampede/{run_id}/orchestrator-commentary.json` for concise, dashboard-safe stats:
+
+```text
+cmd 3/5 active · sub-agents 112 running / 480 done / 620 seen · q 0 · claimed 3 · results 2/5
+collab p5 r18 i11 c8 b7
+commander-004 launching_workers · squads 32/50 · sub-agents 160/250 · run 42 done 118 fail 0
+```
+
+In chat, Agent Orchestra uses swarm-style commentary: a short phase banner, commander progress table, totals, and a clear decision line (`wait`, `stop`, `synthesize partial`, or `relaunch`). Startup failures are called out as `failed_startup` instead of being described as merely still running.
+
+Agent Orchestra distinguishes:
+
+- **Running now** — live commander, squad lead, and worker telemetry.
+- **Seen** — historical sub-agent launches recorded in the compatibility ledger.
+- **Completed/failed** — terminal outcomes from commander telemetry.
+- **Partial** — incomplete launches or degraded runs that must not be called success.
+
+> 📡 **Best real-time view:** keep **Agent Pulse** open beside **Agent Orchestra** so commander status, sub-agent counts, recent launches, and telemetry confidence stay visible while the run is active.
+
+---
+
+## 👻 Shadow Score
+
+Agent Orchestra creates a sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) envelope before launch. Commanders and sub-agents see only the seal hash, never the hidden criteria. The orchestrator verifies the seal and evaluates final bundles only after the run completes.
+
+Shadow Score focuses on:
+
+| Dimension | Question |
+|---|---|
+| Requirement coverage | Did the final synthesis answer the mission? |
+| Collaboration quality | Did commanders review, improve, and adopt useful findings? |
+| Evidence quality | Are claims backed by files, logs, tests, or ledgers? |
+| Validation impact | Did the run improve measurable confidence? |
+| Synthesis usefulness | Did it combine the best work instead of picking vibes? |
+
+---
+
+## 🏗️ Project Structure
+
+```text
+agent-orchestra/
+├── agent-pulse-current/                  # Agent Pulse observability source
+├── run-artifacts/                        # Local fleet run artifact corpus
+├── skills/SKILL.md                       # Copilot CLI skill source
+├── agents/                               # Worker and merger agent definitions
+├── bin/                                  # Terminal Stampede and Agent Orchestra launchers
+├── tests/smoke.sh                        # Local smoke gate
+├── install.sh                            # Local installer
+├── quickstart.sh                         # One-command installer
+├── scripts/activate-security.sh          # Repository security activation helper
+├── AGENTS.md                             # Contributor/agent guide
+└── archived-workflows/root/workflows/    # CI and CodeQL workflow templates
+```
+
+---
+
+## 🧪 Validate Locally
 
 ```bash
-cd /Users/greggcochran/dev/agent-orchestra
-./tests/prepublish-smoke.sh
+bash tests/smoke.sh
 ```
 
-This checks that:
+The smoke test checks shell syntax, fleet metadata, commander bundle integrity, Agent Pulse import/poll behavior, and workflow activation safety.
 
-- `BASELINE.json` is valid and names Agent Orchestra.
-- The preserved reference run still has 5 commander bundles and 9 result files.
-- Every commander bundle has matching `commander_id` and `task_id`.
-- Current Agent Pulse imports and polls against this repo.
-- Workflow files remain archived outside `.github/workflows` until the token has
-  `workflow` scope.
+---
 
-## Security activation
+## 🤝 Contributing
 
-Security policy and Dependabot config are included. To enable repository-level
-security features:
+See [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
 
-```bash
-./scripts/activate-security.sh
-```
+1. Keep the orchestration flow self-contained.
+2. Preserve sealed Shadow Score isolation.
+3. Use **sub-agents** in user-facing language.
+4. Keep live commentary concise.
+5. Run `bash tests/smoke.sh` before opening a PR.
 
-CI and CodeQL workflow templates are staged under:
+## License
 
-```text
-archived-workflows/root/workflows/
-```
+MIT — see [LICENSE](LICENSE).
 
-They intentionally remain outside `.github/workflows` until the authenticated
-token has GitHub `workflow` scope.
+---
 
-## Compare against current stack
+🐙 Created with 💜 by [@DUBSOpenHub](https://github.com/DUBSOpenHub) with the [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli).
 
-Use this repo as the reference side of an Agent Conductor-style fleet
-comparison:
-
-```text
-Agent Orchestra                 current Agent Conductor
-fleet reference artifacts       multi-agent fleet conductor
-frozen commander artifacts      live Terminal Stampede commander groups
-Agent Pulse replay view         Agent Pulse + live collaboration ledgers
-baseline comparison             sealed Shadow Score evaluation
-```
-
-Start with `BASELINE.json`, then inspect the commander bundles under:
-
-```text
-known-good-runs/run-20260430-180646/commanders/
-```
-
-## Repository status
-
-This is now a standalone local repository, not a linked worktree of
-`terminal-stampede`.
+Let's orchestrate! 🎼✨
