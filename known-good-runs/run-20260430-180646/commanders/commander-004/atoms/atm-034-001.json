@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-034-001",
+  "theme": "partial-failure-bundles",
+  "focus": "success-thresholds",
+  "findings": [
+    "Success gating is explicitly documented: full success requires 50 squad leads and 250 workers; under-launch must be partial/failed.",
+    "False-success gap remains because success checks are keyed to launched counts, not completed workers, received atoms, or failed children.",
+    "State/telemetry field mismatch risks inconsistent proof if one path checks launch_proof counters while another checks telemetry counters."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:69-88",
+    "agents/stampede-commander.agent.md:112-126",
+    "agents/stampede-commander.agent.md:140-147",
+    "agents/stampede-commander.agent.md:274-281"
+  ],
+  "confidence": "high",
+  "status": "partial"
+}

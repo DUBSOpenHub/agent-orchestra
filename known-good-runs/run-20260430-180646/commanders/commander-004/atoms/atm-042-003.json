@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-042-003",
+  "theme": "recovery-stuck-detection",
+  "focus": "smoke-recovery-coverage",
+  "findings": [
+    "Smoke coverage verifies result completion and metaswarm structure, but not explicit stuck-detector signaling.",
+    "Stop and teardown behavior are only exercised through best-effort tmux cleanup, without assertions on cleanup outcomes.",
+    "Restart semantics and resume-after-interruption are not tested.",
+    "Because the script uses set -euo pipefail, it aborts on first failure instead of asserting expected partial or degraded behavior.",
+    "Metaswarm smoke coverage does not simulate a stalled or failed commander or child launch."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:5",
+    "tests/smoke-test.sh:14-21",
+    "tests/smoke-test.sh:108-149",
+    "tests/smoke-test.sh:151-162"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

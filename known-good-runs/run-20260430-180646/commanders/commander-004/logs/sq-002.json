@@ -1,0 +1,133 @@
+{
+  "squad_id": "sq-002",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "commander-launch-profile",
+  "status": "partial",
+  "worker_count": 5,
+  "workers_launched": [
+    "wkr-002-001",
+    "wkr-002-002",
+    "wkr-002-003",
+    "wkr-002-004",
+    "wkr-002-005"
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-002-001",
+      "focus": "launcher-flags",
+      "status": "success",
+      "confidence": 0.8,
+      "top_findings": [
+        "bin/stampede.sh defaults metaswarm commanders to claude-haiku-4.5 unless overridden.",
+        "Launcher does not enforce premium/banned model selection for commander launches.",
+        "Metaswarm collaboration bus creation and commander-failure recording are present."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:15",
+        "bin/stampede.sh:29-63",
+        "bin/stampede.sh:596-601",
+        "bin/stampede.sh:720-840",
+        "bin/stampede.sh:1231-1242"
+      ]
+    },
+    {
+      "worker_id": "wkr-002-002",
+      "focus": "commander-agent-contract",
+      "status": "partial",
+      "confidence": 0.91,
+      "top_findings": [
+        "Commander contract lacks explicit stop/teardown/recovery handling.",
+        "launch_requested event shape and banned-model detection mechanism are unspecified.",
+        "Depth Guard and premium/banned model lists are otherwise internally consistent."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:57",
+        "agents/stampede-commander.agent.md:128",
+        "agents/stampede-commander.agent.md:168",
+        "agents/stampede-commander.agent.md:229-236"
+      ]
+    },
+    {
+      "worker_id": "wkr-002-003",
+      "focus": "skill-launch-phrasing",
+      "status": "success",
+      "confidence": 0.84,
+      "top_findings": [
+        "skills/SKILL.md lacks explicit commander/metaswarm launch phrasing and premium-policy enforcement.",
+        "Structured live telemetry is not emitted from the skill.",
+        "Lifecycle phase token stampedeing is inconsistent."
+      ],
+      "source_refs": [
+        "skills/SKILL.md:33-44",
+        "skills/SKILL.md:393-394",
+        "skills/SKILL.md:640"
+      ]
+    },
+    {
+      "worker_id": "wkr-002-004",
+      "focus": "docs-claim-branch-alignment",
+      "status": "success",
+      "confidence": 0.95,
+      "top_findings": [
+        "README and AGENTS disagree on branch naming.",
+        "Reviewed docs do not describe commander launch profile, telemetry, or stop/recovery behavior.",
+        "README and AGENTS conflict on queue path defaults."
+      ],
+      "source_refs": [
+        "README.md:100",
+        "README.md:193",
+        "AGENTS.md:56-58"
+      ]
+    },
+    {
+      "worker_id": "wkr-002-005",
+      "focus": "negative-downgrade-cases",
+      "status": "success",
+      "confidence": 0.64,
+      "top_findings": [
+        "Preflight does not positively verify actual model selection, so silent downgrade may escape detection.",
+        "MODELS rotation lacks per-model validation.",
+        "tests/smoke-test.sh lacks downgrade/invalid-model coverage."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:258-266",
+        "bin/stampede.sh:396-472",
+        "tests/smoke-test.sh:12-25"
+      ]
+    }
+  ],
+  "blockers": [
+    "The task tool returned synchronous results without a distinct background agent id; launch_started events used worker ids as the agent_id placeholder.",
+    "swarm_progress.py uses a shared .tmp-swarm-state.json path, so concurrent updates collided during the run; completion events required retries."
+  ],
+  "consensus_notes": [
+    "Premium-only policy is documented but not strongly enforced at launcher/skill boundaries.",
+    "Silent downgrade detection and negative-test coverage are insufficient.",
+    "Stop/teardown/recovery expectations are under-specified in commander-facing docs and prompts.",
+    "Metaswarm collaboration bus creation and some failure recording hooks are present."
+  ],
+  "conflict_notes": [
+    "Documentation conflicts on branch naming and queue path defaults.",
+    "Commander contract wording around Depth Guard leaves ambiguity between squad-lead and worker constraints."
+  ],
+  "overall_confidence": 0.83,
+  "key_source_refs": [
+    "bin/stampede.sh:15",
+    "bin/stampede.sh:258-266",
+    "bin/stampede.sh:396-472",
+    "bin/stampede.sh:596-601",
+    "bin/stampede.sh:720-840",
+    "agents/stampede-commander.agent.md:57",
+    "agents/stampede-commander.agent.md:128",
+    "agents/stampede-commander.agent.md:168",
+    "agents/stampede-commander.agent.md:229-236",
+    "skills/SKILL.md:33-44",
+    "skills/SKILL.md:393-394",
+    "skills/SKILL.md:640",
+    "README.md:100",
+    "README.md:193",
+    "AGENTS.md:56-58",
+    "tests/smoke-test.sh:12-25"
+  ]
+}

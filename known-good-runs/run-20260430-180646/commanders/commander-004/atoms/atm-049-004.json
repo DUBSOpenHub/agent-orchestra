@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-049-004",
+  "theme": "docs-ci-readiness",
+  "focus": "install-doc-alignment",
+  "findings": [
+    "install.sh DOES properly install stampede-commander agent to documented Copilot path, aligned with metaswarm commander install claim",
+    "README install docs NOT fully aligned: claims \"Six files land\" but table lists seven artifacts, and install.sh actually installs eighth artifact (~/bin/stampede-demo) plus auto-launches it; README does not mention demo install or post-install execution"
+  ],
+  "source_refs": [
+    "install.sh:30-32",
+    "README.md:83",
+    "README.md:77-87",
+    "install.sh:53-55",
+    "install.sh:69-74",
+    "README.md:130-136"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

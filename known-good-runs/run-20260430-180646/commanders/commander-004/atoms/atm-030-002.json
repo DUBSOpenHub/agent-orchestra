@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-030-002",
+  "theme": "agent-pulse-monitoring",
+  "focus": "nested-progress-display",
+  "findings": [
+    "Monitor reads swarm-state.json telemetry and warning flags for no proof/incomplete proof.",
+    "child-agents.jsonl telemetry is never read, so per-child visibility is missing.",
+    "Commander row always labels full SS-250 even if partial or underscale.",
+    "If progress_dir missing, nested display silently skips without warning.",
+    "Commander roster uses pane index instead of commander_id.",
+    "Metaswarm detection uses collab/ presence but README does not document it.",
+    "Commander state file path uses progress_dir in roster but hardcodes BASE/commanders in orphan recovery."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:145-193",
+    "bin/stampede-monitor.sh:177-180",
+    "bin/stampede-monitor.sh:193",
+    "bin/stampede-monitor.sh:41-55",
+    "bin/stampede-monitor.sh:247-256",
+    "README.md:130"
+  ],
+  "confidence": 0.88,
+  "status": "success"
+}

@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-043-001",
+  "theme": "recovery-stuck-detection",
+  "focus": "stuck-heuristics",
+  "findings": [
+    "Stuck detection uses claim-file mtime > 120s threshold (hardcoded)",
+    "No worker heartbeat/output-based detection; only tmux pane process check",
+    "False positives: legitimate long tasks flagged after 120s",
+    "False negatives: hung worker still shows active if bash/python process present",
+    "TOCTOU race on orphan requeue: result may appear between check and mv",
+    "Alert suppression uses substring matching; can suppress for overlapping task IDs",
+    "Commander heartbeat (180s) only applies to commander processes, not regular workers"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:200-215",
+    "bin/stampede-monitor.sh:126-141",
+    "bin/stampede-monitor.sh:237-276",
+    "bin/stampede-monitor.sh:23,210-213"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

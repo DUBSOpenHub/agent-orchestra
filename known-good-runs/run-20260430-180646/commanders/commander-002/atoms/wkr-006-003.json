@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-006-003",
+  "model": "gpt-5.3-codex",
+  "assignment": "audit bundle schema gaps for adopted consensus/source_refs",
+  "summary": [
+    "Commander bundle schema in agents/stampede-commander.agent.md lacks explicit adopted-consensus item_id list and bundle-level source_refs, while runtime launcher prompt expects both.",
+    "Monitor/tests do not enforce bundle adoption/source_refs, increasing risk of inconsistent outputs and lost traceability to collab ledger records."
+  ],
+  "evidence": [
+    {"path": "agents/stampede-commander.agent.md", "lines": "254-283", "note": "bundle schema includes consensus summary but no adopted IDs or source_refs"},
+    {"path": "bin/stampede.sh", "lines": "~1013", "note": "commander prompt asks to include adopted consensus item_ids and source_refs in bundle.json"},
+    {"path": "bin/stampede-monitor.sh", "lines": "~60-66", "note": "monitor counts collab JSONL lines only"}
+  ],
+  "gaps": [
+    "No canonical field name for adopted consensus references in bundle.",
+    "No specified placement/shape for source_refs in bundle (top-level vs per item).",
+    "Ambiguity between consensus summary object and adopted consensus IDs from collab ledger."
+  ],
+  "recommendations": [
+    "Define explicit bundle fields (e.g., adopted_consensus_item_ids: string[], source_refs: string[] or object).
+    ",
+    "Align agent spec schema with launcher prompt/protocol; add validation hook at bundle write/monitor stage."
+  ],
+  "confidence": 0.77
+}

@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-002-005",
+  "theme": "commander-launch-profile",
+  "focus": "negative-downgrade-cases",
+  "findings": [
+    "Preflight checks only explicit error strings and do not positively verify the actual model used, so silent downgrade could go undetected.",
+    "Multi-model rotation forwards MODELS entries without per-model validation, allowing silent downgrade or late failure paths.",
+    "tests/smoke-test.sh covers only a happy-path haiku run and has no invalid-model or premium-policy downgrade coverage."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:258-266",
+    "bin/stampede.sh:396-472",
+    "tests/smoke-test.sh:12-25"
+  ],
+  "confidence": 0.64,
+  "status": "success"
+}

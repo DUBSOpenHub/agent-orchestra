@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-006-002",
+  "theme": "premium-model-policy",
+  "focus": "banned-model-guardrails",
+  "findings": [
+    "agents/stampede-commander.agent.md lists banned models, but enforcement is prompt-only; violation handling is post-hoc (mark bundle partial) rather than pre-launch blocking.",
+    "tests/depth-guard-lint.sh enforces presence of \"Premium Model Policy\" and a premium model string (gpt-5.5) but does not assert banned-model strings or banned_child_models appear.",
+    "Commander has the task tool available; nothing prevents spawning children with a banned model or omitting model override (leading to default fallback) except instruction-following."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:15-17,148-168,159-164",
+    "tests/depth-guard-lint.sh:35-53"
+  ],
+  "confidence": 0.93,
+  "status": "success",
+  "atom_id": "atm-006-002"
+}

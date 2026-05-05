@@ -1,0 +1,11 @@
+{
+  "worker_id": "wkr-018-001",
+  "model": "gpt-5.2",
+  "assignment": "audit source_refs propagation",
+  "status": "completed",
+  "highlights": [
+    "Protocol requires source_refs but no validation enforcement",
+    "Bundle schema omits adopted consensus/source_refs fields",
+    "No downstream consumer validates source_refs"
+  ]
+}

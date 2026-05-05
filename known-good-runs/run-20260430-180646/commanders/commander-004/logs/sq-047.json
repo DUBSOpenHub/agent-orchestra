@@ -1,0 +1,112 @@
+{
+  "squad_id": "sq-047",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "docs-ci-readiness",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": "high",
+  "ts": "2026-05-01T01:29:43Z",
+  "consensus_findings": [
+    {
+      "category": "CI coverage gaps",
+      "severity": "HIGH",
+      "detail": "CI never runs tests/smoke-test.sh or tests/depth-guard-lint.sh. ShellCheck/bash -n scoped to bin/*.sh+install.sh only. No metaswarm-specific validation in CI pipeline.",
+      "source_refs": [
+        ".github/workflows/ci.yml:15-56",
+        ".github/workflows/ci.yml:18-30"
+      ]
+    },
+    {
+      "category": "/tmp usage in CI and smoke test",
+      "severity": "HIGH",
+      "detail": "ci.yml:41-43 writes /tmp/install-ci.sh. smoke-test.sh:9 uses mktemp -d (resolves to /tmp). Both fail in /tmp-restricted environments.",
+      "source_refs": [
+        ".github/workflows/ci.yml:41-43",
+        "tests/smoke-test.sh:9"
+      ]
+    },
+    {
+      "category": "Depth Guard lint \u2014 banned-model, premium pool, partial/failure not checked",
+      "severity": "HIGH",
+      "detail": "depth-guard-lint.sh checks 0 of 4 banned models, 1 of 10 premium models, and 0 partial/failure status phrases. A commander with stripped enforcement would pass lint.",
+      "source_refs": [
+        "tests/depth-guard-lint.sh:35-61",
+        "agents/stampede-commander.agent.md:107-111"
+      ]
+    },
+    {
+      "category": "Smoke test missing: banned-model rejection, stop/recovery, branch creation, atomic writes",
+      "severity": "HIGH",
+      "detail": "smoke-test.sh validates existence of policy fields but does not test enforcement. No stop/recovery path, no branch creation assertion, no atomic write verification. Stub is unrealistic.",
+      "source_refs": [
+        "tests/smoke-test.sh:24-58",
+        "tests/smoke-test.sh:127-148",
+        "tests/smoke-test.sh:151-159"
+      ]
+    },
+    {
+      "category": "install.sh / README.md misalignment",
+      "severity": "MEDIUM",
+      "detail": "README says '6 files' but installer installs 8; stampede-demo not in install table; auto-exec of demo not documented and not skippable; PATH update is session-only with no documented profile config.",
+      "source_refs": [
+        "install.sh:53-56",
+        "install.sh:69-75",
+        "install.sh:58-61",
+        "README.md:77",
+        "README.md:79-87"
+      ]
+    },
+    {
+      "category": "AGENTS.md documentation gaps",
+      "severity": "MEDIUM",
+      "detail": "AGENTS.md omits: stop/teardown/recovery, banned-model policy, premium model pool, Agent Pulse feature, merger script in shell table. SwarmMesh not documented in either file.",
+      "source_refs": [
+        "AGENTS.md:57-62",
+        "AGENTS.md:77-80",
+        "README.md:202,235,301,310"
+      ]
+    }
+  ],
+  "conflict_notes": "No conflicts between workers. wkr-047-003 and wkr-047-001 both independently identified CI missing depth-guard-lint.sh execution \u2014 corroborated. wkr-047-002 and wkr-047-003 both flagged partial/failure coverage gap \u2014 corroborated.",
+  "blockers": [],
+  "worker_results": [
+    {
+      "worker_id": "wkr-047-001",
+      "focus": "ci-scope",
+      "atom": "atm-047-001",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-047-002",
+      "focus": "smoke-gap-analysis",
+      "atom": "atm-047-002",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-047-003",
+      "focus": "depth-lint-gap-analysis",
+      "atom": "atm-047-003",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-047-004",
+      "focus": "install-doc-alignment",
+      "atom": "atm-047-004",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-047-005",
+      "focus": "agents-doc-alignment",
+      "atom": "atm-047-005",
+      "status": "success",
+      "confidence": "high"
+    }
+  ]
+}

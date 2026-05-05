@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-036-002",
+  "theme": "stop-teardown-behavior",
+  "focus": "monitor-stop-flows",
+  "status": "success",
+  "confidence": "high",
+  "findings": [
+    "bin/stampede-monitor.sh is observer-only: no stop/terminate capability (no signals, no tmux termination, no pidfile usage).",
+    "PIDS_DIR is declared in monitor but unused, so monitor cannot reconcile/act on launcher PID tracking.",
+    "Agent status mapping is fragile: assumes fleet.json iteration order aligns with tmux pane indices; can misreport.",
+    "Header RUNNING/WAITING derives from claimed/queued file counts not tmux liveness; can mislead until orphan recovery triggers.",
+    "Orphan recovery only runs when live_agents==0; partial-death scenarios can strand claimed tasks.",
+    "No tmux session teardown on monitor exit; no signal traps; minor untracked background afplay job."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:20",
+    "bin/stampede-monitor.sh:104-111",
+    "bin/stampede-monitor.sh:122-128",
+    "bin/stampede-monitor.sh:218-237",
+    "bin/stampede-monitor.sh:397",
+    "bin/stampede-monitor.sh:329"
+  ]
+}

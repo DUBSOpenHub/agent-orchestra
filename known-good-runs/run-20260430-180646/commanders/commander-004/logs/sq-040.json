@@ -1,0 +1,72 @@
+{
+  "squad_id": "sq-040",
+  "theme": "stop-teardown-behavior",
+  "status": "success",
+  "overall_confidence": 0.84,
+  "blockers": [
+    "Task tool returned synchronous results with no background agent id; launch_started logged without agent-id."
+  ],
+  "consensus_notes": [
+    "Teardown/stop flows exist but lack robust validation (pid reuse risk, no signal trap, smoke tests not asserting stop)."
+  ],
+  "conflict_notes": [],
+  "workers": [
+    {
+      "worker_id": "wkr-040-001",
+      "focus": "pid-tracking",
+      "status": "success",
+      "confidence": 0.78,
+      "key_findings": [
+        "PID capture relies on process-tree heuristic and 5s delay.",
+        "Teardown terminates recorded PID without ownership validation or process-group cleanup."
+      ]
+    },
+    {
+      "worker_id": "wkr-040-002",
+      "focus": "monitor-stop-flows",
+      "status": "success",
+      "confidence": 0.97,
+      "key_findings": [
+        "Auto-merge defaults to yes on timeout.",
+        "No signal/EXIT trap; partial exit uses all-dead grace but exit code same as success."
+      ]
+    },
+    {
+      "worker_id": "wkr-040-003",
+      "focus": "smoke-stop-coverage",
+      "status": "success",
+      "confidence": 0.89,
+      "key_findings": [
+        "Smoke test lacks explicit stop verification; relies on trap termination.",
+        "Metaswarm session termination is best-effort with no validation."
+      ]
+    },
+    {
+      "worker_id": "wkr-040-004",
+      "focus": "detach-vs-session-lifetime",
+      "status": "success",
+      "confidence": 0.95,
+      "key_findings": [
+        "tmux sessions detached by default; --no-attach suppresses auto-attach.",
+        "Docs state detach keeps agents running until explicit teardown."
+      ]
+    },
+    {
+      "worker_id": "wkr-040-005",
+      "focus": "cleanup-gaps",
+      "status": "success",
+      "confidence": 0.62,
+      "key_findings": [
+        "Auto-attach leaves /tmp task/attach files; CI leaves /tmp/install-ci.sh."
+      ]
+    }
+  ],
+  "top_source_refs": [
+    "bin/stampede.sh:70-90",
+    "bin/stampede.sh:327-341",
+    "bin/stampede.sh:1362-1475",
+    "bin/stampede-monitor.sh:296-398",
+    "tests/smoke-test.sh:149-158",
+    ".github/workflows/ci.yml:39-43"
+  ]
+}

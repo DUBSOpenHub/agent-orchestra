@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-014-004",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "lint-coverage",
+  "findings": [
+    "PASS: the lint script checks core worker leaf invariants, premium metaswarm phrases, and propagation of the leaf-worker prompt block (tests/depth-guard-lint.sh:16-33,35-61).",
+    "GAP: lint does not check for the DO NOT delegate work phrase, even though the commander worker block requires it (tests/depth-guard-lint.sh:21-29,55-61).",
+    "GAP: lint has no recursive-commander/squad-lead depth checks, no arithmetic consistency check for 50x5=250, and no verification that launch-proof files are actually maintained (tests/depth-guard-lint.sh:35-63).",
+    "GAP: lint does not verify metaswarm-only commander usage or squad-lead specific constraints (tests/depth-guard-lint.sh:35-63)."
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:16-33",
+    "tests/depth-guard-lint.sh:35-63",
+    "agents/stampede-commander.agent.md:245-252"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-028-005",
+  "theme": "agent-pulse-monitoring",
+  "focus": "docs-claims",
+  "findings": [
+    "README claims the monitor script provides live progress, stuck detection, and runtime stats; confirm stampede-monitor.sh actually implements these behaviors.",
+    "README states the orchestrator detects dead agents via PID checks and re-queues tasks automatically; verify this detection and re-queue logic exist.",
+    "README says the monitor pane tracks progress in real time during runs; ensure monitor output reflects real-time task/agent status.",
+    "README asserts metaswarm commanders write swarm-state.json and child-agents.jsonl as runtime proof; verify files are generated during metaswarm runs."
+  ],
+  "source_refs": [
+    "README.md:85-87",
+    "README.md:229-236",
+    "README.md:118",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-019-002",
+  "theme": "telemetry-contract",
+  "focus": "monitor-consumption",
+  "findings": [
+    "The monitor does not consume child-agents.jsonl anywhere; nested commander progress is sourced only from swarm-state.json, so any launch proof or per-child telemetry written only to child-agents.jsonl is invisible here.",
+    "swarm-state.json is treated as a loose schema: root keys phase, telemetry, launch_proof, last_heartbeat_at|updated_at, launch_proof_required, and status are read, with silent defaults like phase=running, squad_leads_target=50, workers_target=250, and 0 for missing counters.",
+    "Live progress is computed from pre-aggregated swarm-state.json counters, not child records: squads/workers launched, workers_running, workers_completed (fallback atoms_received), workers_failed (fallback children_failed), atoms_received, plus heartbeat age parsed from ISO timestamps.",
+    "There is effectively no schema validation. JSON/timestamp problems are swallowed; malformed or missing state just suppresses nested output or marks commander_active=false, which can mask contract drift.",
+    "The file has an internal path/shape assumption mismatch: roster display reads swarm-state.json via fleet.json progress_dir, but orphan recovery hardcodes BASE/commanders/<task_id>/swarm-state.json. If commander output paths diverge from that layout, monitor behavior will be inconsistent."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:122-145",
+    "bin/stampede-monitor.sh:145-190",
+    "bin/stampede-monitor.sh:177-180",
+    "bin/stampede-monitor.sh:247-271"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

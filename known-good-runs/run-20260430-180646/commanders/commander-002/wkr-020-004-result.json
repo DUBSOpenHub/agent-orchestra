@@ -1,0 +1,13 @@
+{
+  "worker_id": "wkr-020-004",
+  "model": "claude-sonnet-4.5",
+  "assignment": "audit consensus/source_refs fields",
+  "status": "completed",
+  "severity": "medium",
+  "highlights": [
+    "Commander bundle schema omits source_refs though launcher/protocol require it (stampede-commander.agent.md:254-273 vs stampede.sh:816,1013)",
+    "Runtime bundles include source_refs but docs lack field; schema drift (run artifacts)",
+    "Inconsistent adopted consensus field naming: adopted_consensus_item_ids vs adopted_consensus (commander-001 vs commander-003)",
+    "Bundle example lacks field guidance for consensus.notes/source_refs/broadcasts; atom references source_refs without schema"
+  ]
+}

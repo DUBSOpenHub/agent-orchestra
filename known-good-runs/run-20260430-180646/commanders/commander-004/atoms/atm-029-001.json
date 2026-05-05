@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-029-001",
+  "theme": "agent-pulse-monitoring",
+  "focus": "pulse-count-sources",
+  "findings": [
+    "squad_leads_running is not sourced or calculated in stampede-monitor.sh; only squad_leads_launched vs squad_leads_target is shown (bin/stampede-monitor.sh:158-160,182-185)",
+    "workers_running sourced only from telemetry.workers_running with hard default 0; no fallback or reconciliation (bin/stampede-monitor.sh:162,185)",
+    "workers_completed falls back to atoms_received, workers_failed falls back to children_failed; not identical semantics (bin/stampede-monitor.sh:163-165,185-186)",
+    "atoms_received shown separately AND reused as fallback for completed; same signal as two counters (bin/stampede-monitor.sh:163,165-186)",
+    "Freshness from last_heartbeat_at/updated_at, but count accuracy not validated; warnings only check launch-proof presence (bin/stampede-monitor.sh:167-180)"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:158-165",
+    "bin/stampede-monitor.sh:167-180",
+    "bin/stampede-monitor.sh:182-186"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

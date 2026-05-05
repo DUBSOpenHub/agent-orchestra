@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-001-002",
+  "theme": "commander-launch-profile",
+  "focus": "commander-agent-contract",
+  "findings": [
+    "Commander agent contract does not require an explicit launcher-side metaswarm-mode verification before task claim and child spawning.",
+    "Success criteria gate only on launch counts, not downstream child completion/failure outcomes.",
+    "Premium/banned model policy requires explicit premium selection but does not require runtime verification that launches honored requested models.",
+    "Stop/teardown/recovery instructions are underspecified for already-launched children and interrupted commander state."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:22-25",
+    "agents/stampede-commander.agent.md:43-59",
+    "agents/stampede-commander.agent.md:112-125",
+    "agents/stampede-commander.agent.md:140-146",
+    "agents/stampede-commander.agent.md:150-168"
+  ],
+  "confidence": "high",
+  "status": "issues-found"
+}

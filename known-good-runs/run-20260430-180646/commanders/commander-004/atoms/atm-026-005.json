@@ -1,0 +1,21 @@
+{
+  "atom_id": "atm-026-005",
+  "worker_id": "wkr-026-005",
+  "theme": "agent-pulse-monitoring",
+  "focus": "docs-claims",
+  "status": "success",
+  "confidence": 0.8,
+  "findings": [
+    "README states the orchestrator detects agent death via PID check and re-queues tasks; current monitor logic uses tmux pane status (not PID files) and orphan recovery is gated by live_agents==0 and claimed age thresholds.",
+    "README describes a monitor pane with real-time progress; implementation does include stuck detection and runtime stats finalization, but key behaviors (tmux census and orphan recovery details) are not documented and can surprise users.",
+    "README does not mention \"Agent Pulse\" explicitly; metaswarm nested progress is described generally but not caveated that it depends on commander-updated swarm-state.json."
+  ],
+  "source_refs": [
+    "README.md:81-86",
+    "README.md:118",
+    "README.md:130-136",
+    "README.md:229-236",
+    "bin/stampede-monitor.sh:218-233",
+    "bin/stampede-monitor.sh:234-279"
+  ]
+}

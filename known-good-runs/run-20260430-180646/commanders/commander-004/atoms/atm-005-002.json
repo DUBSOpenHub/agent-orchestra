@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-005-002",
+  "theme": "commander-launch-profile",
+  "focus": "commander-agent-contract",
+  "findings": [
+    "PASS: Depth Guard - workers must be leaf nodes (lines 31-36, 229-236)",
+    "PASS: Launch-proof contract defined (swarm-state.json shape lines 69-129)",
+    "PASS: Premium model policy with banned list (lines 93-110, 148-168)",
+    "PASS: Worker depth lock exact block present (lines 229-236)",
+    "PASS: 50\u00d75=250 structure enforced (lines 48-56, 83-85, 142-145)",
+    "MINOR GAP: Bundle shape is example, not formal MUST schema"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:31-36",
+    "agents/stampede-commander.agent.md:48-57",
+    "agents/stampede-commander.agent.md:65-67",
+    "agents/stampede-commander.agent.md:69-129",
+    "agents/stampede-commander.agent.md:140-145",
+    "agents/stampede-commander.agent.md:148-168",
+    "agents/stampede-commander.agent.md:229-236"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

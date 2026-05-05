@@ -1,0 +1,26 @@
+{
+  "atom_id": "atm-047-002",
+  "worker_id": "wkr-047-002",
+  "theme": "docs-ci-readiness",
+  "focus": "smoke-gap-analysis",
+  "findings": [
+    "No test for banned-model rejection or premium model policy enforcement beyond existence checks (tests/smoke-test.sh:127-141)",
+    "Smoke-agent stub unrealistic: no branch creation, no atomic temp+rename writes, no partial/failure paths (tests/smoke-test.sh:24-58)",
+    "No stop/recovery validation in test (tests/smoke-test.sh:14-21,149)",
+    "mktemp -d at line 9 creates /tmp dir \u2014 fails in restricted environments",
+    "Structured contract assertion missing: depth_budget.squads_max, profile, swarm_scale, per_commander_full_swarm in swarm-state.json (tests/smoke-test.sh:135-148)",
+    "child-agents.jsonl commander_registered check present and correct (tests/smoke-test.sh:145-147)",
+    "90s poll loop is fragile and can false-fail on slow CI (tests/smoke-test.sh:151-159)",
+    "No assertion for stampede/task branch creation by worker (tests/smoke-test.sh)"
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:9",
+    "tests/smoke-test.sh:24-58",
+    "tests/smoke-test.sh:127-141",
+    "tests/smoke-test.sh:145-147",
+    "tests/smoke-test.sh:151-159"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "ts": "2026-05-01T01:29:05Z"
+}

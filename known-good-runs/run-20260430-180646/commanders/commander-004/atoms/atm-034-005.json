@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-034-005",
+  "theme": "partial-failure-bundles",
+  "focus": "count-accuracy",
+  "findings": [
+    "Monitor treats any results JSON as done and can show COMPLETE without checking whether those results represent success, partial, or failure.",
+    "Monitor total-task fallback is filesystem-derived, so lost/disappearing task files can shrink the denominator and hide missing work.",
+    "Metaswarm result-writing guidance in launcher scope does not prove unique result filenames, creating overwrite risk that can distort completion counts."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:69-76",
+    "bin/stampede-monitor.sh:87-111",
+    "bin/stampede-monitor.sh:284-337",
+    "bin/stampede-monitor.sh:342-355",
+    "bin/stampede.sh:1007-1014"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

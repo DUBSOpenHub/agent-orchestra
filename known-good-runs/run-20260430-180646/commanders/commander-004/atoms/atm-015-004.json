@@ -1,0 +1,44 @@
+{
+  "worker_id": "wkr-015-004",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "lint-coverage",
+  "findings": [
+    {
+      "check": "task/ask_user exclusion verified",
+      "status": "PASS",
+      "ref": "depth-guard-lint.sh:16-19"
+    },
+    {
+      "check": "LEAF NODE phrase verified",
+      "status": "PASS",
+      "ref": "depth-guard-lint.sh:21-29,55-61"
+    },
+    {
+      "check": "DO NOT spawn sub-agents verified",
+      "status": "PARTIAL",
+      "ref": "depth-guard-lint.sh:21-29",
+      "note": "Checked in worker but not in commander Depth Lock block"
+    },
+    {
+      "check": "Commander invariants covered",
+      "status": "PASS",
+      "ref": "depth-guard-lint.sh:35-53"
+    },
+    {
+      "check": "Worker Depth Lock fully verified",
+      "status": "PARTIAL",
+      "ref": "depth-guard-lint.sh:49-61",
+      "note": "Only partial; missing DO NOT delegate work"
+    },
+    {
+      "check": "Missing lint checks",
+      "status": "WARN",
+      "note": "swarm-state.json existence, partial status reporting, can_launch:false for workers not linted"
+    }
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:16-61"
+  ],
+  "confidence": 0.8,
+  "status": "success"
+}

@@ -1,0 +1,650 @@
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-001", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-002", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-003", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-004", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-005", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-006", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-007", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-008", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-009", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-010", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-011", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-012", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-013", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-014", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-015", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-016", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-017", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-018", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-019", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-020", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-021", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-022", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-023", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-024", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-025", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-026", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-027", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-028", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-029", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-030", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-031", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-032", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-033", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-034", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-035", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-036", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-037", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-038", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-039", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-040", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-041", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-042", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-043", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-044", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-045", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-046", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-047", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-048", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-049", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:03.171380+00:00", "event": "launch_requested", "commander_id": "commander-003", "child_id": "sq-050", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-001", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-002", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-003", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-004", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-005", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-006", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-007", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-008", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-009", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-010", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-011", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-012", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-013", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-014", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-015", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-016", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-017", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-018", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-019", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:36.922371+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-020", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-021", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-022", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-023", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-024", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-025", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-026", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-027", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-028", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-029", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-030", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-031", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-032", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-033", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-034", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-035", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-036", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-037", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-038", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-039", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-040", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-041", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-042", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-043", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-044", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-045", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-046", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-047", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-048", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-049", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "sq-050", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-001-001", "parent_id": "sq-001", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-001-002", "parent_id": "sq-001", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-001-003", "parent_id": "sq-001", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-001-004", "parent_id": "sq-001", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-001-005", "parent_id": "sq-001", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-002-001", "parent_id": "sq-002", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-002-002", "parent_id": "sq-002", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-002-003", "parent_id": "sq-002", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-002-004", "parent_id": "sq-002", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-002-005", "parent_id": "sq-002", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-003-001", "parent_id": "sq-003", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-003-002", "parent_id": "sq-003", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-003-003", "parent_id": "sq-003", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-003-004", "parent_id": "sq-003", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-003-005", "parent_id": "sq-003", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-004-001", "parent_id": "sq-004", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-004-002", "parent_id": "sq-004", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-004-003", "parent_id": "sq-004", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-004-004", "parent_id": "sq-004", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-004-005", "parent_id": "sq-004", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-005-001", "parent_id": "sq-005", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-005-002", "parent_id": "sq-005", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-005-003", "parent_id": "sq-005", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-005-004", "parent_id": "sq-005", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-005-005", "parent_id": "sq-005", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-006-001", "parent_id": "sq-006", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-006-002", "parent_id": "sq-006", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-006-003", "parent_id": "sq-006", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-006-004", "parent_id": "sq-006", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-006-005", "parent_id": "sq-006", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-007-001", "parent_id": "sq-007", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-007-002", "parent_id": "sq-007", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-007-003", "parent_id": "sq-007", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-007-004", "parent_id": "sq-007", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-007-005", "parent_id": "sq-007", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-008-001", "parent_id": "sq-008", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-008-002", "parent_id": "sq-008", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-008-003", "parent_id": "sq-008", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-008-004", "parent_id": "sq-008", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-008-005", "parent_id": "sq-008", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-009-001", "parent_id": "sq-009", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-009-002", "parent_id": "sq-009", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-009-003", "parent_id": "sq-009", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-009-004", "parent_id": "sq-009", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-009-005", "parent_id": "sq-009", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-010-001", "parent_id": "sq-010", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-010-002", "parent_id": "sq-010", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-010-003", "parent_id": "sq-010", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-010-004", "parent_id": "sq-010", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-010-005", "parent_id": "sq-010", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-011-001", "parent_id": "sq-011", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-011-002", "parent_id": "sq-011", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-011-003", "parent_id": "sq-011", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-011-004", "parent_id": "sq-011", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-011-005", "parent_id": "sq-011", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-012-001", "parent_id": "sq-012", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-012-002", "parent_id": "sq-012", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-012-003", "parent_id": "sq-012", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-012-004", "parent_id": "sq-012", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-012-005", "parent_id": "sq-012", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-013-001", "parent_id": "sq-013", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-013-002", "parent_id": "sq-013", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-013-003", "parent_id": "sq-013", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-013-004", "parent_id": "sq-013", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-013-005", "parent_id": "sq-013", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-014-001", "parent_id": "sq-014", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-014-002", "parent_id": "sq-014", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-014-003", "parent_id": "sq-014", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-014-004", "parent_id": "sq-014", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-014-005", "parent_id": "sq-014", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-015-001", "parent_id": "sq-015", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-015-002", "parent_id": "sq-015", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-015-003", "parent_id": "sq-015", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-015-004", "parent_id": "sq-015", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-015-005", "parent_id": "sq-015", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-016-001", "parent_id": "sq-016", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-016-002", "parent_id": "sq-016", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-016-003", "parent_id": "sq-016", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-016-004", "parent_id": "sq-016", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-016-005", "parent_id": "sq-016", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-017-001", "parent_id": "sq-017", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-017-002", "parent_id": "sq-017", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-017-003", "parent_id": "sq-017", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-017-004", "parent_id": "sq-017", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-017-005", "parent_id": "sq-017", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-018-001", "parent_id": "sq-018", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-018-002", "parent_id": "sq-018", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-018-003", "parent_id": "sq-018", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-018-004", "parent_id": "sq-018", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-018-005", "parent_id": "sq-018", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-019-001", "parent_id": "sq-019", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-019-002", "parent_id": "sq-019", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-019-003", "parent_id": "sq-019", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-019-004", "parent_id": "sq-019", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-019-005", "parent_id": "sq-019", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-020-001", "parent_id": "sq-020", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-020-002", "parent_id": "sq-020", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-020-003", "parent_id": "sq-020", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-020-004", "parent_id": "sq-020", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-020-005", "parent_id": "sq-020", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-021-001", "parent_id": "sq-021", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-021-002", "parent_id": "sq-021", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-021-003", "parent_id": "sq-021", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-021-004", "parent_id": "sq-021", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-021-005", "parent_id": "sq-021", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-022-001", "parent_id": "sq-022", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-022-002", "parent_id": "sq-022", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-022-003", "parent_id": "sq-022", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-022-004", "parent_id": "sq-022", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-022-005", "parent_id": "sq-022", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-023-001", "parent_id": "sq-023", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-023-002", "parent_id": "sq-023", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-023-003", "parent_id": "sq-023", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-023-004", "parent_id": "sq-023", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-023-005", "parent_id": "sq-023", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-024-001", "parent_id": "sq-024", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-024-002", "parent_id": "sq-024", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-024-003", "parent_id": "sq-024", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-024-004", "parent_id": "sq-024", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-024-005", "parent_id": "sq-024", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-025-001", "parent_id": "sq-025", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-025-002", "parent_id": "sq-025", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-025-003", "parent_id": "sq-025", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-025-004", "parent_id": "sq-025", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-025-005", "parent_id": "sq-025", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-026-001", "parent_id": "sq-026", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-026-002", "parent_id": "sq-026", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-026-003", "parent_id": "sq-026", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-026-004", "parent_id": "sq-026", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-026-005", "parent_id": "sq-026", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-027-001", "parent_id": "sq-027", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-027-002", "parent_id": "sq-027", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-027-003", "parent_id": "sq-027", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-027-004", "parent_id": "sq-027", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-027-005", "parent_id": "sq-027", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-028-001", "parent_id": "sq-028", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-028-002", "parent_id": "sq-028", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-028-003", "parent_id": "sq-028", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-028-004", "parent_id": "sq-028", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-028-005", "parent_id": "sq-028", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-029-001", "parent_id": "sq-029", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-029-002", "parent_id": "sq-029", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-029-003", "parent_id": "sq-029", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-029-004", "parent_id": "sq-029", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-029-005", "parent_id": "sq-029", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-030-001", "parent_id": "sq-030", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-030-002", "parent_id": "sq-030", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-030-003", "parent_id": "sq-030", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-030-004", "parent_id": "sq-030", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-030-005", "parent_id": "sq-030", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-031-001", "parent_id": "sq-031", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-031-002", "parent_id": "sq-031", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-031-003", "parent_id": "sq-031", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-031-004", "parent_id": "sq-031", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-031-005", "parent_id": "sq-031", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-032-001", "parent_id": "sq-032", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-032-002", "parent_id": "sq-032", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-032-003", "parent_id": "sq-032", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-032-004", "parent_id": "sq-032", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-032-005", "parent_id": "sq-032", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-033-001", "parent_id": "sq-033", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-033-002", "parent_id": "sq-033", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-033-003", "parent_id": "sq-033", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-033-004", "parent_id": "sq-033", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-033-005", "parent_id": "sq-033", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-034-001", "parent_id": "sq-034", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-034-002", "parent_id": "sq-034", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-034-003", "parent_id": "sq-034", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-034-004", "parent_id": "sq-034", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-034-005", "parent_id": "sq-034", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-035-001", "parent_id": "sq-035", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-035-002", "parent_id": "sq-035", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-035-003", "parent_id": "sq-035", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-035-004", "parent_id": "sq-035", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-035-005", "parent_id": "sq-035", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-036-001", "parent_id": "sq-036", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-036-002", "parent_id": "sq-036", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-036-003", "parent_id": "sq-036", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-036-004", "parent_id": "sq-036", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-036-005", "parent_id": "sq-036", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-037-001", "parent_id": "sq-037", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-037-002", "parent_id": "sq-037", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-037-003", "parent_id": "sq-037", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-037-004", "parent_id": "sq-037", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-037-005", "parent_id": "sq-037", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-038-001", "parent_id": "sq-038", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-038-002", "parent_id": "sq-038", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-038-003", "parent_id": "sq-038", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-038-004", "parent_id": "sq-038", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-038-005", "parent_id": "sq-038", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-039-001", "parent_id": "sq-039", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-039-002", "parent_id": "sq-039", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-039-003", "parent_id": "sq-039", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-039-004", "parent_id": "sq-039", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-039-005", "parent_id": "sq-039", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-040-001", "parent_id": "sq-040", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-040-002", "parent_id": "sq-040", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-040-003", "parent_id": "sq-040", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-040-004", "parent_id": "sq-040", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-040-005", "parent_id": "sq-040", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-041-001", "parent_id": "sq-041", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-041-002", "parent_id": "sq-041", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-041-003", "parent_id": "sq-041", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-041-004", "parent_id": "sq-041", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-041-005", "parent_id": "sq-041", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-042-001", "parent_id": "sq-042", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-042-002", "parent_id": "sq-042", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-042-003", "parent_id": "sq-042", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-042-004", "parent_id": "sq-042", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-042-005", "parent_id": "sq-042", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-043-001", "parent_id": "sq-043", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-043-002", "parent_id": "sq-043", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-043-003", "parent_id": "sq-043", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-043-004", "parent_id": "sq-043", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-043-005", "parent_id": "sq-043", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-044-001", "parent_id": "sq-044", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-044-002", "parent_id": "sq-044", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-044-003", "parent_id": "sq-044", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-044-004", "parent_id": "sq-044", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-044-005", "parent_id": "sq-044", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-045-001", "parent_id": "sq-045", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-045-002", "parent_id": "sq-045", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-045-003", "parent_id": "sq-045", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-045-004", "parent_id": "sq-045", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-045-005", "parent_id": "sq-045", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-046-001", "parent_id": "sq-046", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-046-002", "parent_id": "sq-046", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-046-003", "parent_id": "sq-046", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-046-004", "parent_id": "sq-046", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-046-005", "parent_id": "sq-046", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-047-001", "parent_id": "sq-047", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-047-002", "parent_id": "sq-047", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-047-003", "parent_id": "sq-047", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-047-004", "parent_id": "sq-047", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-047-005", "parent_id": "sq-047", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-048-001", "parent_id": "sq-048", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-048-002", "parent_id": "sq-048", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-048-003", "parent_id": "sq-048", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-048-004", "parent_id": "sq-048", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-048-005", "parent_id": "sq-048", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-049-001", "parent_id": "sq-049", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.7", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-049-002", "parent_id": "sq-049", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-049-003", "parent_id": "sq-049", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-049-004", "parent_id": "sq-049", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.4", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-049-005", "parent_id": "sq-049", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-opus-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-050-001", "parent_id": "sq-050", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-050-002", "parent_id": "sq-050", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.6", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-050-003", "parent_id": "sq-050", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.3-codex", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-050-004", "parent_id": "sq-050", "role": "worker", "depth": 3, "agent_type": "explore", "model": "claude-sonnet-4.5", "can_launch": false}
+{"ts": "2026-05-01T01:14:10.860944+00:00", "event": "launch_started", "commander_id": "commander-003", "child_id": "wkr-050-005", "parent_id": "sq-050", "role": "worker", "depth": 3, "agent_type": "explore", "model": "gpt-5.2-codex", "can_launch": false}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-001-001", "status": "success", "atom_id": "atm-001-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-001-002", "status": "success", "atom_id": "atm-001-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-001-003", "status": "success", "atom_id": "atm-001-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-001-004", "status": "success", "atom_id": "atm-001-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-001-005", "status": "success", "atom_id": "atm-001-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-002-001", "status": "success", "atom_id": "atm-002-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-002-002", "status": "success", "atom_id": "atm-002-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-002-003", "status": "success", "atom_id": "atm-002-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-002-004", "status": "success", "atom_id": "atm-002-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-002-005", "status": "success", "atom_id": "atm-002-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-003-001", "status": "success", "atom_id": "atm-003-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-003-002", "status": "success", "atom_id": "atm-003-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-003-003", "status": "success", "atom_id": "atm-003-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-003-004", "status": "success", "atom_id": "atm-003-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-003-005", "status": "success", "atom_id": "atm-003-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-004-001", "status": "success", "atom_id": "atm-004-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-004-002", "status": "success", "atom_id": "atm-004-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-004-003", "status": "success", "atom_id": "atm-004-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-004-004", "status": "success", "atom_id": "atm-004-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-004-005", "status": "success", "atom_id": "atm-004-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-005-001", "status": "success", "atom_id": "atm-005-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-005-002", "status": "success", "atom_id": "atm-005-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-005-003", "status": "success", "atom_id": "atm-005-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-005-004", "status": "success", "atom_id": "atm-005-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-005-005", "status": "success", "atom_id": "atm-005-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-006-001", "status": "success", "atom_id": "atm-006-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-006-002", "status": "success", "atom_id": "atm-006-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-006-003", "status": "success", "atom_id": "atm-006-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-006-004", "status": "success", "atom_id": "atm-006-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-006-005", "status": "success", "atom_id": "atm-006-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-007-001", "status": "success", "atom_id": "atm-007-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-007-002", "status": "success", "atom_id": "atm-007-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-007-003", "status": "success", "atom_id": "atm-007-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-007-004", "status": "success", "atom_id": "atm-007-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-007-005", "status": "success", "atom_id": "atm-007-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-008-001", "status": "success", "atom_id": "atm-008-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-008-002", "status": "success", "atom_id": "atm-008-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-008-003", "status": "success", "atom_id": "atm-008-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-008-004", "status": "success", "atom_id": "atm-008-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-008-005", "status": "success", "atom_id": "atm-008-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-009-001", "status": "success", "atom_id": "atm-009-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-009-002", "status": "success", "atom_id": "atm-009-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-009-003", "status": "success", "atom_id": "atm-009-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-009-004", "status": "success", "atom_id": "atm-009-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-009-005", "status": "success", "atom_id": "atm-009-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-010-001", "status": "success", "atom_id": "atm-010-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-010-002", "status": "success", "atom_id": "atm-010-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-010-003", "status": "success", "atom_id": "atm-010-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-010-004", "status": "success", "atom_id": "atm-010-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-010-005", "status": "success", "atom_id": "atm-010-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-011-001", "status": "success", "atom_id": "atm-011-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-011-002", "status": "success", "atom_id": "atm-011-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-011-003", "status": "success", "atom_id": "atm-011-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-011-004", "status": "success", "atom_id": "atm-011-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-011-005", "status": "success", "atom_id": "atm-011-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-012-001", "status": "success", "atom_id": "atm-012-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-012-002", "status": "success", "atom_id": "atm-012-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-012-003", "status": "success", "atom_id": "atm-012-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-012-004", "status": "success", "atom_id": "atm-012-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-012-005", "status": "success", "atom_id": "atm-012-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-013-001", "status": "success", "atom_id": "atm-013-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-013-002", "status": "success", "atom_id": "atm-013-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-013-003", "status": "success", "atom_id": "atm-013-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-013-004", "status": "success", "atom_id": "atm-013-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-013-005", "status": "success", "atom_id": "atm-013-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-014-001", "status": "success", "atom_id": "atm-014-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-014-002", "status": "success", "atom_id": "atm-014-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-014-003", "status": "success", "atom_id": "atm-014-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-014-004", "status": "success", "atom_id": "atm-014-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-014-005", "status": "success", "atom_id": "atm-014-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-015-001", "status": "success", "atom_id": "atm-015-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-015-002", "status": "success", "atom_id": "atm-015-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-015-003", "status": "success", "atom_id": "atm-015-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-015-004", "status": "success", "atom_id": "atm-015-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-015-005", "status": "success", "atom_id": "atm-015-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-016-001", "status": "success", "atom_id": "atm-016-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-016-002", "status": "success", "atom_id": "atm-016-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-016-003", "status": "success", "atom_id": "atm-016-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-016-004", "status": "success", "atom_id": "atm-016-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-016-005", "status": "success", "atom_id": "atm-016-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-017-001", "status": "success", "atom_id": "atm-017-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-017-002", "status": "success", "atom_id": "atm-017-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-017-003", "status": "success", "atom_id": "atm-017-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-017-004", "status": "success", "atom_id": "atm-017-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-017-005", "status": "success", "atom_id": "atm-017-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-018-001", "status": "success", "atom_id": "atm-018-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-018-002", "status": "success", "atom_id": "atm-018-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-018-003", "status": "success", "atom_id": "atm-018-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-018-004", "status": "success", "atom_id": "atm-018-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-018-005", "status": "success", "atom_id": "atm-018-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-019-001", "status": "success", "atom_id": "atm-019-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-019-002", "status": "success", "atom_id": "atm-019-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-019-003", "status": "success", "atom_id": "atm-019-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-019-004", "status": "success", "atom_id": "atm-019-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-019-005", "status": "success", "atom_id": "atm-019-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-020-001", "status": "success", "atom_id": "atm-020-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-020-002", "status": "success", "atom_id": "atm-020-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-020-003", "status": "success", "atom_id": "atm-020-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-020-004", "status": "success", "atom_id": "atm-020-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-020-005", "status": "success", "atom_id": "atm-020-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-021-001", "status": "success", "atom_id": "atm-021-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-021-002", "status": "success", "atom_id": "atm-021-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-021-003", "status": "success", "atom_id": "atm-021-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-021-004", "status": "success", "atom_id": "atm-021-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-021-005", "status": "success", "atom_id": "atm-021-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-022-001", "status": "success", "atom_id": "atm-022-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-022-002", "status": "success", "atom_id": "atm-022-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-022-003", "status": "success", "atom_id": "atm-022-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-022-004", "status": "success", "atom_id": "atm-022-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-022-005", "status": "success", "atom_id": "atm-022-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-023-001", "status": "success", "atom_id": "atm-023-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-023-002", "status": "success", "atom_id": "atm-023-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-023-003", "status": "success", "atom_id": "atm-023-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-023-004", "status": "success", "atom_id": "atm-023-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-023-005", "status": "success", "atom_id": "atm-023-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-024-001", "status": "success", "atom_id": "atm-024-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-024-002", "status": "success", "atom_id": "atm-024-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-024-003", "status": "success", "atom_id": "atm-024-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-024-004", "status": "success", "atom_id": "atm-024-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-024-005", "status": "success", "atom_id": "atm-024-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-025-001", "status": "success", "atom_id": "atm-025-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-025-002", "status": "success", "atom_id": "atm-025-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-025-003", "status": "success", "atom_id": "atm-025-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-025-004", "status": "success", "atom_id": "atm-025-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-025-005", "status": "success", "atom_id": "atm-025-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-026-001", "status": "success", "atom_id": "atm-026-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-026-002", "status": "success", "atom_id": "atm-026-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-026-003", "status": "success", "atom_id": "atm-026-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-026-004", "status": "success", "atom_id": "atm-026-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-026-005", "status": "success", "atom_id": "atm-026-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-027-001", "status": "success", "atom_id": "atm-027-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-027-002", "status": "success", "atom_id": "atm-027-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-027-003", "status": "success", "atom_id": "atm-027-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-027-004", "status": "success", "atom_id": "atm-027-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-027-005", "status": "success", "atom_id": "atm-027-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-028-001", "status": "success", "atom_id": "atm-028-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-028-002", "status": "success", "atom_id": "atm-028-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-028-003", "status": "success", "atom_id": "atm-028-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-028-004", "status": "success", "atom_id": "atm-028-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-028-005", "status": "success", "atom_id": "atm-028-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-029-001", "status": "success", "atom_id": "atm-029-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-029-002", "status": "success", "atom_id": "atm-029-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-029-003", "status": "success", "atom_id": "atm-029-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-029-004", "status": "success", "atom_id": "atm-029-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-029-005", "status": "success", "atom_id": "atm-029-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-030-001", "status": "success", "atom_id": "atm-030-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-030-002", "status": "success", "atom_id": "atm-030-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-030-003", "status": "success", "atom_id": "atm-030-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-030-004", "status": "success", "atom_id": "atm-030-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-030-005", "status": "success", "atom_id": "atm-030-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-031-001", "status": "success", "atom_id": "atm-031-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-031-002", "status": "success", "atom_id": "atm-031-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-031-003", "status": "success", "atom_id": "atm-031-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-031-004", "status": "success", "atom_id": "atm-031-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-031-005", "status": "success", "atom_id": "atm-031-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-032-001", "status": "success", "atom_id": "atm-032-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-032-002", "status": "success", "atom_id": "atm-032-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-032-003", "status": "success", "atom_id": "atm-032-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-032-004", "status": "success", "atom_id": "atm-032-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-032-005", "status": "success", "atom_id": "atm-032-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-033-001", "status": "success", "atom_id": "atm-033-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-033-002", "status": "success", "atom_id": "atm-033-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-033-003", "status": "success", "atom_id": "atm-033-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-033-004", "status": "success", "atom_id": "atm-033-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-033-005", "status": "success", "atom_id": "atm-033-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-034-001", "status": "success", "atom_id": "atm-034-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-034-002", "status": "success", "atom_id": "atm-034-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-034-003", "status": "success", "atom_id": "atm-034-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-034-004", "status": "success", "atom_id": "atm-034-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-034-005", "status": "success", "atom_id": "atm-034-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-035-001", "status": "success", "atom_id": "atm-035-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-035-002", "status": "success", "atom_id": "atm-035-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-035-003", "status": "success", "atom_id": "atm-035-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-035-004", "status": "success", "atom_id": "atm-035-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-035-005", "status": "success", "atom_id": "atm-035-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-036-001", "status": "success", "atom_id": "atm-036-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-036-002", "status": "success", "atom_id": "atm-036-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-036-003", "status": "success", "atom_id": "atm-036-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-036-004", "status": "success", "atom_id": "atm-036-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-036-005", "status": "success", "atom_id": "atm-036-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-037-001", "status": "success", "atom_id": "atm-037-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-037-002", "status": "success", "atom_id": "atm-037-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-037-003", "status": "success", "atom_id": "atm-037-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-037-004", "status": "success", "atom_id": "atm-037-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-037-005", "status": "success", "atom_id": "atm-037-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-038-001", "status": "success", "atom_id": "atm-038-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-038-002", "status": "success", "atom_id": "atm-038-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-038-003", "status": "success", "atom_id": "atm-038-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-038-004", "status": "success", "atom_id": "atm-038-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-038-005", "status": "success", "atom_id": "atm-038-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-039-001", "status": "success", "atom_id": "atm-039-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-039-002", "status": "success", "atom_id": "atm-039-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-039-003", "status": "success", "atom_id": "atm-039-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-039-004", "status": "success", "atom_id": "atm-039-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-039-005", "status": "success", "atom_id": "atm-039-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-040-001", "status": "success", "atom_id": "atm-040-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-040-002", "status": "success", "atom_id": "atm-040-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-040-003", "status": "success", "atom_id": "atm-040-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-040-004", "status": "success", "atom_id": "atm-040-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-040-005", "status": "success", "atom_id": "atm-040-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-041-001", "status": "success", "atom_id": "atm-041-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-041-002", "status": "success", "atom_id": "atm-041-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-041-003", "status": "success", "atom_id": "atm-041-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-041-004", "status": "success", "atom_id": "atm-041-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-041-005", "status": "success", "atom_id": "atm-041-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-042-001", "status": "success", "atom_id": "atm-042-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-042-002", "status": "success", "atom_id": "atm-042-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-042-003", "status": "success", "atom_id": "atm-042-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-042-004", "status": "success", "atom_id": "atm-042-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-042-005", "status": "success", "atom_id": "atm-042-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-043-001", "status": "success", "atom_id": "atm-043-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-043-002", "status": "success", "atom_id": "atm-043-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-043-003", "status": "success", "atom_id": "atm-043-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-043-004", "status": "success", "atom_id": "atm-043-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-043-005", "status": "success", "atom_id": "atm-043-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-044-001", "status": "success", "atom_id": "atm-044-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-044-002", "status": "success", "atom_id": "atm-044-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-044-003", "status": "success", "atom_id": "atm-044-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-044-004", "status": "success", "atom_id": "atm-044-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-044-005", "status": "success", "atom_id": "atm-044-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-045-001", "status": "success", "atom_id": "atm-045-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-045-002", "status": "success", "atom_id": "atm-045-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-045-003", "status": "success", "atom_id": "atm-045-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-045-004", "status": "success", "atom_id": "atm-045-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-045-005", "status": "success", "atom_id": "atm-045-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-046-001", "status": "success", "atom_id": "atm-046-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-046-002", "status": "success", "atom_id": "atm-046-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-046-003", "status": "success", "atom_id": "atm-046-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-046-004", "status": "success", "atom_id": "atm-046-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-046-005", "status": "success", "atom_id": "atm-046-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-047-001", "status": "success", "atom_id": "atm-047-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-047-002", "status": "success", "atom_id": "atm-047-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-047-003", "status": "success", "atom_id": "atm-047-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-047-004", "status": "success", "atom_id": "atm-047-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-047-005", "status": "success", "atom_id": "atm-047-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-048-001", "status": "success", "atom_id": "atm-048-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-048-002", "status": "success", "atom_id": "atm-048-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-048-003", "status": "success", "atom_id": "atm-048-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-048-004", "status": "success", "atom_id": "atm-048-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-048-005", "status": "success", "atom_id": "atm-048-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-049-001", "status": "success", "atom_id": "atm-049-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-049-002", "status": "success", "atom_id": "atm-049-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-049-003", "status": "success", "atom_id": "atm-049-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-049-004", "status": "success", "atom_id": "atm-049-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-049-005", "status": "success", "atom_id": "atm-049-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-050-001", "status": "success", "atom_id": "atm-050-001"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-050-002", "status": "success", "atom_id": "atm-050-002"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-050-003", "status": "success", "atom_id": "atm-050-003"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-050-004", "status": "success", "atom_id": "atm-050-004"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "wkr-050-005", "status": "success", "atom_id": "atm-050-005"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-001", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-002", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-003", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-004", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-005", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-006", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-007", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-008", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-009", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-010", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-011", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-012", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-013", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-014", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-015", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-016", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-017", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-018", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-019", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-020", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-021", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-022", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-023", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-024", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-025", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-026", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-027", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-028", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-029", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-030", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-031", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-032", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-033", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-034", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-035", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-036", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-037", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-038", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-039", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-040", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-041", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-042", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-043", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-044", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-045", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-046", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-047", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-048", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-049", "status": "success"}
+{"ts": "2026-05-01T01:15:41.621607+00:00", "event": "completed", "child_id": "sq-050", "status": "success"}

@@ -1,0 +1,12 @@
+{
+  "worker_id": "wkr-008-005",
+  "model": "gpt-5.2-codex",
+  "assignment": "audit evidence/source_refs quality",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "multiple worker result files missing evidence/source_refs",
+    "atoms and bundle use inconsistent evidence shapes",
+    "traceability gaps where source_refs absent or non-canonical"
+  ]
+}

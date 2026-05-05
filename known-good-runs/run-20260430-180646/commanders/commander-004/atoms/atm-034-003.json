@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-034-003",
+  "theme": "partial-failure-bundles",
+  "focus": "no-launch-failure",
+  "findings": [
+    "Launcher preflight and commander launch failures are surfaced into state and child-agent telemetry rather than silently ignored.",
+    "Commander contract explicitly says constrained launch must not be reported as full success and zero squad-lead launch must be failed.",
+    "Gap: launcher-side validation visible in this scope is mostly contract-driven; no explicit post-run hard reject of an incorrectly successful bundle was identified here."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:141-196",
+    "bin/stampede.sh:294-301",
+    "bin/stampede.sh:603",
+    "bin/stampede.sh:1096-1144",
+    "agents/stampede-commander.agent.md:140-146"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

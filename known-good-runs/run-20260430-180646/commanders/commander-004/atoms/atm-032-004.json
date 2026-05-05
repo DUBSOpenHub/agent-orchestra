@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-032-004",
+  "theme": "partial-failure-bundles",
+  "focus": "bundle-shape",
+  "findings": [
+    "Bundle Shape example hardcodes status success and does not enumerate success|partial|failed.",
+    "Bundle example omits fields explaining why a bundle is partial/failed or what exact launch counts triggered it.",
+    "Docs require partial on banned-model fallback, but the bundle example has no explicit place to report that violation."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:81",
+    "agents/stampede-commander.agent.md:142-168",
+    "agents/stampede-commander.agent.md:238-267",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

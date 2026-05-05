@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-009-003",
+  "theme": "premium-model-policy",
+  "focus": "docs-vs-runtime",
+  "findings": [
+    "README.md:130 mentions 'premium child-model overrides by default' for metaswarm but never defines the premium pool or banned models. Users must read stampede-commander.agent.md:148-168 to learn what 'premium' means.",
+    "AGENTS.md:27 says commander model is 'Configurable per commander with --model or --models' but does NOT mention premium model policy, premium pool, or banned models — a significant omission given the runtime enforces this (stampede-commander.agent.md:93-111).",
+    "README.md:307 documents default model as claude-haiku-4.5 for workers, which is a banned model for metaswarm children (stampede-commander.agent.md:106-110). This contrast is never explained in user docs — users may assume --model applies uniformly to metaswarm children.",
+    "AGENTS.md:17 states worker model is 'Default model in your Copilot CLI session (configurable per-agent)' which conflicts with README.md:307 stating default is claude-haiku-4.5. Ambiguous whether CLI session default or hardcoded default wins.",
+    "Neither README.md nor AGENTS.md documents the 'partial' bundle consequence when a child falls back to a banned model (only in stampede-commander.agent.md:167-168). Users have no visibility into why their metaswarm might report partial status."
+  ],
+  "source_refs": [
+    "README.md:130",
+    "README.md:307",
+    "AGENTS.md:17",
+    "AGENTS.md:27",
+    "agents/stampede-commander.agent.md:93-111",
+    "agents/stampede-commander.agent.md:148-168"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

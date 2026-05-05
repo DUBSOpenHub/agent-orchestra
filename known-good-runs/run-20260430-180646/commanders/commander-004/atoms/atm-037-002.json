@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-037-002",
+  "theme": "stop-teardown-behavior",
+  "focus": "monitor-stop-flows",
+  "findings": [
+    "Dead detection uses tmux pane_dead and pane_current_command (L127, L232) \u2014 reliable vs PID files.",
+    "Orphan recovery threshold 180s (L25); fires only when live_agents==0 and claimed>0 (L237); requeues via mv (L275).",
+    "No trap for SIGTERM/SIGINT \u2014 monitor cannot be cleanly stopped by signal.",
+    "Hang-forever risk: TOTAL_TASKS forced to 1 (L77) but if done_count stays 0, partial completion never triggers (L300-301 requires done_count>0); loop spins indefinitely.",
+    "all_done_or_dead requires total_agents>0 (L282); if tmux returns no panes, flag never sets.",
+    "Commander heartbeat check exists only in orphan recovery (L247-274); no dedicated metaswarm shutdown path \u2014 completion logic purely generic queue/result counts."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:25",
+    "bin/stampede-monitor.sh:74-77",
+    "bin/stampede-monitor.sh:127",
+    "bin/stampede-monitor.sh:237",
+    "bin/stampede-monitor.sh:275",
+    "bin/stampede-monitor.sh:281-305"
+  ],
+  "confidence": 0.96,
+  "status": "success"
+}

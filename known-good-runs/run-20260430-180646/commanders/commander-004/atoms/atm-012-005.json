@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-012-005",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "bounded-spawn-failure-modes",
+  "findings": [
+    "Launcher seeds premium-model policy, banned-model list, telemetry files, and depth budget into commander state.",
+    "Teardown only updates top-level state.json and stops PIDs/tmux; it does not emit commander child stop/recovery telemetry into swarm-state.json or child-agents.jsonl.",
+    "An operator override can disable local gates, which weakens the documented partial-on-circuit-breaker failure policy."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:755-788",
+    "bin/stampede.sh:302-358",
+    "bin/stampede.sh:912-913",
+    "agents/stampede-commander.agent.md:140-145"
+  ],
+  "confidence": "medium-high",
+  "status": "success"
+}

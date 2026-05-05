@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-030-005",
+  "theme": "agent-pulse-monitoring",
+  "focus": "docs-claims",
+  "findings": [
+    "README claims live monitor and stuck detection but lacks definitions of data sources or thresholds.",
+    "Example progress line implies alive/dead counts, but detection method not documented.",
+    "Metaswarm section promises real-time nested progress summaries without specifying fields.",
+    "README does not mention Agent Pulse feature at all."
+  ],
+  "source_refs": [
+    "README.md:86",
+    "README.md:118",
+    "README.md:136",
+    "README.md:232",
+    "README.md:257"
+  ],
+  "confidence": 0.56,
+  "status": "success"
+}

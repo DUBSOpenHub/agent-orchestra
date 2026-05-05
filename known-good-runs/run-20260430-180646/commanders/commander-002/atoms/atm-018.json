@@ -1,0 +1,57 @@
+{
+  "atom_id": "atm-018",
+  "type": "qa_review",
+  "status": "completed",
+  "parent_id": "sq-018",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "scope": "collaboration-bus QA (review-only)",
+  "workers_launched": [
+    {
+      "worker_id": "wkr-018-001",
+      "model": "gpt-5.2",
+      "assignment": "audit source_refs propagation",
+      "result_file": "wkr-018-001-result.json"
+    },
+    {
+      "worker_id": "wkr-018-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "audit adopted consensus bundle fields",
+      "result_file": "wkr-018-002-result.json"
+    },
+    {
+      "worker_id": "wkr-018-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "audit ledger reader robustness",
+      "result_file": "wkr-018-003-result.json"
+    },
+    {
+      "worker_id": "wkr-018-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "audit monitor counts",
+      "result_file": "wkr-018-004-result.json"
+    },
+    {
+      "worker_id": "wkr-018-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "audit tests/docs gaps",
+      "result_file": "wkr-018-005-result.json"
+    }
+  ],
+  "findings_summary": [
+    "source_refs is required by protocol/prompt but not schema-validated end-to-end",
+    "Adopted consensus field names diverge across commander outputs",
+    "Ledger readers tolerate malformed inputs but silently lose observability",
+    "Monitor count fidelity issues (event-name drift, telemetry/filesystem mismatches)",
+    "Test and docs coverage gaps for collab schema, propagation, and monitor semantics"
+  ],
+  "recommended_next_actions": [
+    "Canonicalize adopted_consensus_item_ids and source_refs in commander bundle schema",
+    "Add JSONL/schema validation checks for collab ledgers and result bundles",
+    "Harden monitor/teardown parsing with explicit parse-failure counters",
+    "Add smoke/regression tests for malformed ledgers and count reconciliation",
+    "Document collab protocol fields and monitor-count source-of-truth rules"
+  ],
+  "timestamp": "2026-05-01T01:31:50.546076+00:00"
+}

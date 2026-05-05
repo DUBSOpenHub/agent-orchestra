@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-049-002",
+  "theme": "docs-ci-readiness",
+  "focus": "smoke-gap-analysis",
+  "findings": [
+    "Worker smoke path verifies launcher-to-result plumbing only, using stub agent that renames queued task; no real agent behavior, policy, branching, or claim logic tested",
+    "Metaswarm dry-run check is presentation-only, greps banner text but confirms no commander execution, SwarmMesh launch, bounded spawning, Depth Guard, or failure handling",
+    "Metaswarm structured contract validates static artifact shape with --agent-cmd true; checks prewritten metadata but not runtime enforcement of premium-only, banned-model rejection, spawn ceilings, or partial-on-downgrade",
+    "Critical SwarmMesh readiness gaps: no actual commander spawning/telemetry verification, no runtime Depth Guard check, no banned-model rejection test, no bounded-spawn assertion, no unhappy-path partial/failure coverage"
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:24-58",
+    "tests/smoke-test.sh:71",
+    "tests/smoke-test.sh:73-110",
+    "tests/smoke-test.sh:113-148",
+    "tests/smoke-test.sh:151-162"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

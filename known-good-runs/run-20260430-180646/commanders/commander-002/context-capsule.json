@@ -1,0 +1,48 @@
+{
+  "capsule_id": "cap-commander-002",
+  "task_brief": "Final pre-build QA review of metaswarm and SwarmMesh readiness using the synced launcher and fixed Agent Pulse. Verify commander launch, premium model policy, collaboration bus creation, sub-agent telemetry, Agent Pulse live counts, stop/recovery behavior, and implementation gaps. Review-only: do not modify source files.\nFocus: Audit protocol.json plus proposals, reviews, improvements, consensus, broadcasts, atomic append semantics, and adoption workflow.",
+  "domain": "collaboration-bus",
+  "constraints": {
+    "timeout_s": 90,
+    "max_workers": 250,
+    "profile": "metaswarm",
+    "swarm_scale": "ss-250",
+    "per_commander_full_swarm": true,
+    "squad_leads_per_commander": 50,
+    "workers_per_squad_lead": 5,
+    "workers_per_commander": 250,
+    "model_policy": "premium",
+    "premium_model_pool": [
+      "claude-opus-4.7",
+      "gpt-5.5",
+      "claude-opus-4.6",
+      "gpt-5.4",
+      "claude-opus-4.5",
+      "gpt-5.2",
+      "claude-sonnet-4.6",
+      "gpt-5.3-codex",
+      "claude-sonnet-4.5",
+      "gpt-5.2-codex"
+    ],
+    "banned_child_models": [
+      "claude-haiku-4.5",
+      "gpt-5.4-mini",
+      "gpt-5-mini",
+      "gpt-4.1"
+    ],
+    "token_ceiling": 64000,
+    "retry_budget": 1
+  },
+  "depth_config": {
+    "current_depth": 1,
+    "max_depth": 3,
+    "can_launch": true
+  },
+  "depth_budget": {
+    "squads_allocated": 50,
+    "squads_max": 50,
+    "complexity_tier": "high",
+    "rationale": "Metaswarm full 250-worker commander profile"
+  },
+  "parent_context": "Havoc/Stampede metaswarm commander"
+}

@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-006-003",
+  "theme": "premium-model-policy",
+  "focus": "docs-vs-runtime",
+  "findings": [
+    "README.md documents using claude-haiku-4.5 in examples, while AGENTS.md says worker/merger use the Copilot CLI session default; this can confuse what default model actually runs.",
+    "Docs describe metaswarm using premium child-model overrides, but do not clearly define the premium pool/banned list in README.md or AGENTS.md.",
+    "Rotation via --models is mentioned in AGENTS.md but is not clearly explained in README.md, leading to ambiguity for multi-model/premium rotation usage."
+  ],
+  "source_refs": [
+    "README.md:114-116,130-134",
+    "AGENTS.md:17-18,27-29,38"
+  ],
+  "confidence": 0.9,
+  "status": "success",
+  "atom_id": "atm-006-003"
+}

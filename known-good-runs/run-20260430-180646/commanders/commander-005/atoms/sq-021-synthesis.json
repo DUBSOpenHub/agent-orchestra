@@ -1,0 +1,97 @@
+{
+  "squad_id": "sq-021",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Premium Model Policy Verification - Part 1",
+  "sub_task": "Verify premium model policy enforcement in commander agent",
+  "timestamp": "2026-04-30T18:15:00Z",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "worker_results": [
+    {
+      "worker_id": "wkr-021-001",
+      "task": "Check premium_model_pool definition",
+      "status": "complete",
+      "findings": {
+        "location": "agents/stampede-commander.agent.md:93-105, 151-157, 190-202",
+        "premium_pool_found": true,
+        "expected_models": ["gpt-5.5", "claude-opus-4.6", "gpt-5.4", "claude-opus-4.5", "gpt-5.2"],
+        "actual_pool": ["gpt-5.5", "claude-opus-4.6", "gpt-5.4", "claude-opus-4.5", "gpt-5.2", "claude-opus-4.7", "claude-sonnet-4.6", "gpt-5.3-codex", "claude-sonnet-4.5", "gpt-5.2-codex"],
+        "match": "partial - pool is broader than expected (includes all expected + 5 more)"
+      }
+    },
+    {
+      "worker_id": "wkr-021-002",
+      "task": "Verify banned_child_models enforcement",
+      "status": "complete",
+      "findings": {
+        "location": "agents/stampede-commander.agent.md:106-110, 150-168, 203-207; bin/stampede.sh:752-757, 806-810, 885-889",
+        "banned_models": ["claude-haiku-4.5", "gpt-5.4-mini", "gpt-5-mini", "gpt-4.1"],
+        "enforcement_type": "prompt-based and self-reporting",
+        "gaps": [
+          "No runtime guard or pre-launch model whitelist check",
+          "Enforcement relies on commander obeying prompt and self-reporting violations",
+          "Violation triggers 'partial' bundle status but doesn't prevent launch"
+        ]
+      }
+    },
+    {
+      "worker_id": "wkr-021-003",
+      "task": "Check model override in task launches",
+      "status": "complete",
+      "findings": {
+        "location": "agents/stampede-commander.agent.md:48-57, 148-168, 170-225; bin/stampede.sh:603-629, 850-959",
+        "model_override_required": true,
+        "propagation_path": "launcher --model/--models → get_worker_model() rotation → --model param to CLI agent",
+        "child_launch_logging": "launch_started JSONL records must include selected model",
+        "fallback_policy": "fallback marks bundle as 'partial', no auto-fallback to cheap models"
+      }
+    },
+    {
+      "worker_id": "wkr-021-004",
+      "task": "Verify model rotation patterns",
+      "status": "complete",
+      "findings": {
+        "location": "agents/stampede-commander.agent.md:48-57, 69-129, 94-105, 148-168",
+        "rotation_algorithm_found": false,
+        "distribution_policy": "unspecified - pool is unordered list",
+        "fairness_guarantee": false,
+        "gap": "No round-robin, rotation, or fair-allocation mechanism documented"
+      }
+    },
+    {
+      "worker_id": "wkr-021-005",
+      "task": "Check model policy documentation",
+      "status": "complete",
+      "findings": {
+        "commander_docs": "Complete - premium pool, banned models, and policy documented",
+        "readme_docs": "Partial - mentions premium child-model overrides, no full policy matrix",
+        "skill_docs": "Minimal - default model only, no premium/banned policy",
+        "worker_merger_docs": "None - no premium model policy in stampede-agent or stampede-merger",
+        "gap": "Premium model policy concentrated in commander agent only"
+      }
+    }
+  ],
+  "synthesis": {
+    "policy_verification_status": "PARTIAL_PASS",
+    "key_findings": [
+      "Premium model pool is defined and broader than expected (10 models vs 5 expected)",
+      "Banned child models are documented but enforcement is prompt-based, not runtime",
+      "Model override is required and propagated through launcher to agents",
+      "No rotation/fairness algorithm exists for model distribution",
+      "Documentation is concentrated in commander agent, sparse elsewhere"
+    ],
+    "gaps_identified": [
+      "No runtime enforcement of banned models - relies on self-reporting",
+      "No model rotation algorithm - distribution fairness not guaranteed",
+      "Premium policy documentation missing from skill and worker/merger agents"
+    ],
+    "recommendations": [
+      "Add runtime model whitelist validation in launcher before child launch",
+      "Implement round-robin or weighted rotation for fair model distribution",
+      "Propagate premium model policy documentation to SKILL.md and README"
+    ]
+  },
+  "depth": 2,
+  "is_leaf": false
+}

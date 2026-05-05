@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-038-004",
+  "theme": "stop-teardown-behavior",
+  "focus": "detach-vs-session-lifetime",
+  "status": "success",
+  "confidence": 0.95,
+  "findings": [
+    "Workers are tied to tmux/session lifetime via pane-leaf PID tracking; no detach:true persistence path for worker processes.",
+    "Teardown kills session-scoped worker PIDs then kills tmux session, consistent with attached-lifecycle model.",
+    "README detach guidance refers to tmux detach (session continues), not process detachment beyond session-managed runtime.",
+    "Implementation and docs align on teardown intent, but no explicit orphan-verification/escalation after SIGTERM."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:73-90",
+    "bin/stampede.sh:304-364",
+    "bin/stampede.sh:333-345",
+    "bin/stampede.sh:716-720",
+    "README.md:202",
+    "README.md:301-324"
+  ]
+}

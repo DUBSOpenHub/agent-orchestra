@@ -1,0 +1,61 @@
+{
+  "squad_lead": "sq-003",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Result Synthesis Pipeline - Part 1",
+  "workers_launched": 5,
+  "worker_models": [
+    "gpt-5.4",
+    "claude-opus-4.5",
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex"
+  ],
+  "findings": {
+    "synthesis_logic": {
+      "collection": "Orchestrator reads all {run_dir}/results/*.json, filters by run_id match, accumulates into all_results list, builds file_owners map for conflict detection.",
+      "aggregation": "Results sorted deterministically by task_id. Per-task output: icon + tid + status + summary[:500]. Final line: Total/Succeeded/Failed/Conflicts counts.",
+      "conflict_detection": "file_owners dict tracks which tasks modified same files; conflicts = files with >1 task owner.",
+      "post_synthesis": "Optional auto-merger invoked after synthesis; applies Shadow Score weighted scoring across 3 layers."
+    },
+    "atomic_writes": {
+      "pattern": "Write to .tmp-{task_id}.json then os.rename(tmp, final) for POSIX atomic semantics.",
+      "failure_mode": "If crash mid-write, .tmp- file remains but final never appears. Monitor/counters exclude .tmp-* files.",
+      "error_results": "Even error results use same atomic pattern - always safe to read final files."
+    },
+    "file_naming": {
+      "scheme": "Task-ID based: {run_dir}/results/{task_id}.json (agent_id stored inside JSON, not in filename).",
+      "temp_prefix": ".tmp-{task_id}.json (hidden file, excluded from counts).",
+      "discovery": "Orchestrator: sorted(os.listdir(results_dir)) filtered by .endswith(.json). Monitor: find with -not -name .tmp-*.",
+      "structure": "Flat directory - no per-agent subdirectories under results/."
+    },
+    "word_count_enforcement": {
+      "cap": 500,
+      "enforcement_points": [
+        "Worker agent prompt (line 30): bold instruction",
+        "Task manifest JSON: max_result_words: 500 in constraints",
+        "Worker code: split+slice at 500 words, appends [truncated]",
+        "Orchestrator display: summary[:500] character slice as defense-in-depth"
+      ],
+      "scope": "Applies only to summary field; files_changed, branch, metadata fields are unbounded.",
+      "rationale": "Prevents orchestrator context window exhaustion when synthesizing N worker results."
+    },
+    "scoring": {
+      "worker_self_report": false,
+      "mechanism": "Shadow Score via merger agent post-synthesis (not during synthesis itself).",
+      "dimensions": "Completeness(30%) + Scope(25%) + Quality(20%) + Test(15%) + Conflict(10%) normalized to /50.",
+      "bonuses": "Speed bonus (+2), Stuck penalty (-1 per event, max -3).",
+      "quality_gates": "No score threshold rejects results. Only irreconcilable merge conflicts cause branch skip.",
+      "conflict_resolution": "Higher-scoring branch preferred during merge conflicts."
+    }
+  },
+  "key_insights": [
+    "Synthesis is deterministic (sorted by task_id) enabling reproducible output.",
+    "Two-layer defense on word count: worker truncation + orchestrator character slice.",
+    "Scoring is post-hoc (merger), not pre-filter - all completed results enter synthesis.",
+    "Atomic writes via POSIX rename guarantee readers never see partial results.",
+    "No per-agent subdirs - flat results/ dir simplifies discovery but relies on task_id uniqueness."
+  ],
+  "status": "complete",
+  "confidence": 0.95
+}

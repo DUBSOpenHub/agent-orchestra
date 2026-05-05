@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-042-004",
+  "theme": "recovery-stuck-detection",
+  "focus": "docs-vs-runtime-recovery",
+  "findings": [
+    "README documents live progress and stuck detection, but it does not document teardown behavior or the orphan-recovery timeout.",
+    "README claims that if an agent dies mid-task the orchestrator requeues the task and another agent picks it up, but it does not explain the dependency on runtime detection heuristics or the all-agents-dead partial path.",
+    "README does not mention the 15-second grace period before partial completion when all agents are dead."
+  ],
+  "source_refs": [
+    "README.md:86",
+    "README.md:235",
+    "bin/stampede-monitor.sh:25-26",
+    "bin/stampede-monitor.sh:234-305",
+    "bin/stampede.sh:306-363"
+  ],
+  "confidence": "medium",
+  "status": "success"
+}

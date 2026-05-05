@@ -1,0 +1,367 @@
+{
+  "squad_id": "sq-012",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "status": "ok",
+  "task_focus": "QA collaboration-bus, review-only",
+  "qa_verdict": "fail",
+  "launched_workers": [
+    {
+      "worker_id": "wkr-012-001",
+      "model": "gpt-5.2",
+      "assignment": "O_APPEND claims",
+      "status": "fail",
+      "depth": 3,
+      "can_launch": false
+    },
+    {
+      "worker_id": "wkr-012-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "live ledgers compliance",
+      "status": "partial",
+      "depth": 3,
+      "can_launch": false
+    },
+    {
+      "worker_id": "wkr-012-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "collab state counts",
+      "status": "fail",
+      "depth": 3,
+      "can_launch": false
+    },
+    {
+      "worker_id": "wkr-012-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "consensus promotion",
+      "status": "partial",
+      "depth": 3,
+      "can_launch": false
+    },
+    {
+      "worker_id": "wkr-012-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "broadcast adoption",
+      "status": "partial",
+      "depth": 3,
+      "can_launch": false
+    }
+  ],
+  "summary": {
+    "overall": "Collaboration-bus is structurally present and live ledgers are valid JSONL, but QA found append-only telemetry truncation risk, schema violations, monitor/counting trust gaps, undefined consensus promotion, and unenforced broadcast adoption.",
+    "ledger_counts": {
+      "proposals": {
+        "lines": 5,
+        "valid_json": 5,
+        "invalid_json": 0,
+        "schema_valid": 5,
+        "missing_required": []
+      },
+      "reviews": {
+        "lines": 11,
+        "valid_json": 11,
+        "invalid_json": 0,
+        "schema_valid": 0,
+        "missing_required": [
+          {
+            "line": 1,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "rev-c001-of-c002-collab"
+          },
+          {
+            "line": 2,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "rev-c001-of-c003-telemetry"
+          },
+          {
+            "line": 3,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "rev-c001-of-c005-synthesis"
+          },
+          {
+            "line": 4,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-005-for-001"
+          },
+          {
+            "line": 5,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-005-for-003"
+          },
+          {
+            "line": 6,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-005-for-002"
+          },
+          {
+            "line": 7,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-005-for-004"
+          },
+          {
+            "line": 8,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-003-of-c001"
+          },
+          {
+            "line": 9,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-003-of-c002"
+          },
+          {
+            "line": 10,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-003-of-c004"
+          },
+          {
+            "line": 11,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "review-003-of-c005"
+          }
+        ]
+      },
+      "improvements": {
+        "lines": 7,
+        "valid_json": 7,
+        "invalid_json": 0,
+        "schema_valid": 7,
+        "missing_required": []
+      },
+      "consensus": {
+        "lines": 5,
+        "valid_json": 5,
+        "invalid_json": 0,
+        "schema_valid": 4,
+        "missing_required": [
+          {
+            "line": 5,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "cons-005-synthesis-readiness"
+          }
+        ]
+      },
+      "broadcasts": {
+        "lines": 4,
+        "valid_json": 4,
+        "invalid_json": 0,
+        "schema_valid": 3,
+        "missing_required": [
+          {
+            "line": 3,
+            "missing": [
+              "evidence"
+            ],
+            "item_id": "bcast-003-findings"
+          }
+        ]
+      }
+    },
+    "commander_distribution": {
+      "commander-001": 14,
+      "commander-003": 8,
+      "commander-005": 8,
+      "commander-002": 1,
+      "commander-004": 1
+    },
+    "duplicate_item_ids": []
+  },
+  "findings": [
+    {
+      "area": "O_APPEND claims",
+      "status": "fail",
+      "finding": "Collab ledgers are touched with append mode, but child-agents.jsonl initialization uses write/truncate semantics in launcher seeding; commander-002/003 telemetry lacks commander_registered at line 1, proving launch-proof history can be lost.",
+      "evidence": [
+        "bin/stampede.sh child-agents init opens with w mode (worker-reported refs around 853-860)",
+        "collab/protocol.json atomic_append_guidance requires append-only-jsonl",
+        "commanders/commander-002/child-agents.jsonl:1 starts with launch_started, not commander_registered",
+        "commanders/commander-003/child-agents.jsonl:1 starts without commander_registered"
+      ],
+      "recommendation": "Make child-agents initialization append/idempotent and use an os.open(O_APPEND|O_CREAT|O_WRONLY)+os.write helper for JSONL telemetry."
+    },
+    {
+      "area": "Live ledgers compliance",
+      "status": "partial",
+      "finding": "All 31 live ledger lines parse as JSON, have correct event names, no blank lines, no duplicate item_ids, and trailing newlines; however all peer reviews and some consensus/broadcast items omit required evidence, and source_refs often contain file paths rather than upstream item_ids.",
+      "evidence": [
+        "collab/protocol.json required_fields includes evidence and source_refs",
+        "collab/reviews.jsonl lines 1-11 missing evidence",
+        "collab/consensus.jsonl line 5 missing evidence",
+        "collab/broadcasts.jsonl line 3 missing evidence"
+      ],
+      "recommendation": "Enforce required_fields at write time; separate upstream item_id refs from evidence file paths or clarify protocol semantics."
+    },
+    {
+      "area": "Collab state counts",
+      "status": "fail",
+      "finding": "Monitor uses raw line counts and commander swarm-state, not JSON/schema-valid counts nor child telemetry reconciliation, so live status can overstate health and miss malformed/schema-invalid lines or telemetry divergence.",
+      "evidence": [
+        "bin/stampede-monitor.sh wc -l based ledger counting (worker-reported refs around 32-66)",
+        "collab ledgers total 31 lines/31 valid JSON but only 18 schema-valid by required_fields",
+        "commander-002 contributed only one collab item in current ledgers"
+      ],
+      "recommendation": "Report lines, valid JSON, schema-valid counts, and warn when child-agents launch events diverge from swarm-state."
+    },
+    {
+      "area": "Consensus promotion",
+      "status": "partial",
+      "finding": "Consensus entries exist and mostly carry source_refs/confidence, but no automated or documented promotion rule validates when proposals/reviews/improvements become consensus; bundle consumption uses inconsistent adopted consensus field names.",
+      "evidence": [
+        "collab/protocol.json defines workflow sequence but no promotion criteria",
+        "collab/consensus.jsonl has 5 consensus entries",
+        "commander bundle schema drift reported: adopted_consensus_item_ids vs adopted_consensus"
+      ],
+      "recommendation": "Define promotion criteria, require based_on/source item_ids for every consensus, and validate bundle schema before finalization."
+    },
+    {
+      "area": "Broadcast adoption",
+      "status": "partial",
+      "finding": "Broadcast entries exist but adoption is prompt-only: monitor counts ledgers, merger/agent paths do not enforce that bundles adopt broadcasts/consensus with required item_ids and source_refs.",
+      "evidence": [
+        "collab/broadcasts.jsonl has 3 entries",
+        "bin/stampede-monitor.sh counts ledgers only",
+        "stampede.sh prompt asks bundles to include adopted consensus item_ids/source_refs but no validator enforces it"
+      ],
+      "recommendation": "Add adoption validation/consumption in commander bundle creation and merger synthesis; standardize adopted_consensus_item_ids."
+    }
+  ],
+  "required_field_violations": [
+    {
+      "ledger": "reviews",
+      "line": 1,
+      "item_id": "rev-c001-of-c002-collab",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 2,
+      "item_id": "rev-c001-of-c003-telemetry",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 3,
+      "item_id": "rev-c001-of-c005-synthesis",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 4,
+      "item_id": "review-005-for-001",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 5,
+      "item_id": "review-005-for-003",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 6,
+      "item_id": "review-005-for-002",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 7,
+      "item_id": "review-005-for-004",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 8,
+      "item_id": "review-003-of-c001",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 9,
+      "item_id": "review-003-of-c002",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 10,
+      "item_id": "review-003-of-c004",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "reviews",
+      "line": 11,
+      "item_id": "review-003-of-c005",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "consensus",
+      "line": 5,
+      "item_id": "cons-005-synthesis-readiness",
+      "missing": [
+        "evidence"
+      ]
+    },
+    {
+      "ledger": "broadcasts",
+      "line": 3,
+      "item_id": "bcast-003-findings",
+      "missing": [
+        "evidence"
+      ]
+    }
+  ],
+  "recommended_fixes": [
+    "Replace child-agents.jsonl write/truncate initialization with append-only idempotent registration.",
+    "Introduce a canonical atomic JSONL append helper with O_APPEND and one os.write per object line.",
+    "Add ledger schema validation for required fields, event-specific fields, timestamp format, and upstream item_id references.",
+    "Enhance monitor to parse JSONL and display schema-valid counts plus telemetry divergence warnings.",
+    "Define consensus promotion rules and enforce bundle adoption fields before merge/synthesis."
+  ],
+  "confidence": 0.91,
+  "ts": "2026-05-01T01:21:42.258994Z"
+}

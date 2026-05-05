@@ -1,0 +1,153 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead_id": "sq-002",
+  "focus": "Bundle Schema Validation - Part 2",
+  "status": "complete",
+  "workers_launched": [
+    {
+      "id": "wkr-002-001",
+      "focus": "Check swarm-state.json required fields",
+      "model": "claude-opus-4.6"
+    },
+    {
+      "id": "wkr-002-002",
+      "focus": "Verify launch_proof structure requirements",
+      "model": "gpt-5.4"
+    },
+    {
+      "id": "wkr-002-003",
+      "focus": "Check telemetry counters accuracy",
+      "model": "claude-opus-4.5"
+    },
+    {
+      "id": "wkr-002-004",
+      "focus": "Verify phase state machine transitions",
+      "model": "gpt-5.2"
+    },
+    {
+      "id": "wkr-002-005",
+      "focus": "Check status field allowed values",
+      "model": "claude-sonnet-4.6"
+    }
+  ],
+  "summary": {
+    "canonical_schema_source": "agents/stampede-commander.agent.md:69-130",
+    "required_top_level_fields": [
+      "run_id",
+      "commander_id",
+      "task_id",
+      "role",
+      "profile",
+      "swarm_scale",
+      "per_commander_full_swarm",
+      "phase",
+      "status",
+      "launch_proof_required",
+      "launch_proof",
+      "depth_budget",
+      "model_policy",
+      "premium_model_pool",
+      "banned_child_models",
+      "telemetry",
+      "updated_at",
+      "last_heartbeat_at"
+    ],
+    "required_launch_proof_fields": [
+      "squad_leads_started",
+      "workers_started",
+      "first_child_started_at",
+      "last_child_started_at"
+    ],
+    "required_telemetry_fields": [
+      "squad_leads_target",
+      "squad_leads_launched",
+      "squad_leads_running",
+      "squad_leads_completed",
+      "squad_leads_failed",
+      "workers_per_squad_lead",
+      "workers_target",
+      "workers_launched",
+      "workers_running",
+      "workers_completed",
+      "workers_failed",
+      "atoms_received",
+      "children_failed"
+    ]
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "category": "schema_drift",
+      "finding": "Launcher writes additional swarm-state.json fields and enum values that are absent from the commander agent schema.",
+      "evidence": [
+        "bin/stampede.sh initializes collab, phase=commander_pane_starting, status=starting.",
+        "bin/stampede.sh can set phase=commander_launch_failed and status=blocked/failed.",
+        "agents/stampede-commander.agent.md only documents phase claiming|decomposing|launching_squad_leads|launching_workers|collecting|complete and status running|success|partial|failed."
+      ],
+      "impact": "Strict validators based on the documented schema would reject launcher-created or blocked/failed commander states."
+    },
+    {
+      "severity": "high",
+      "category": "launch_proof",
+      "finding": "launch_proof has a clear required block, but automated validation is incomplete.",
+      "evidence": [
+        "agents/stampede-commander.agent.md requires squad_leads_started, workers_started, first_child_started_at, last_child_started_at.",
+        "tests/smoke-test.sh validates launch_proof_required and some telemetry/depth/model fields, but not the nested launch_proof fields.",
+        "bin/stampede-monitor.sh warns from telemetry/launch_proof but does not enforce schema completeness."
+      ],
+      "impact": "A commander may pass smoke coverage while omitting or corrupting launch proof metadata."
+    },
+    {
+      "severity": "high",
+      "category": "telemetry_completeness",
+      "finding": "Telemetry counters structurally exist, but success/partial correctness depends on counts that are not validated against child-agents.jsonl by tests.",
+      "evidence": [
+        "Commander contract requires full success only when squad_leads_launched == 50 and workers_launched == 250.",
+        "No automated test was found that recomputes launched/completed/failed counts from child-agents.jsonl and compares to swarm-state.json.",
+        "For run-20260430-180646 commander-005, worker reported counters at zero with only commander_registered evidence at time of review, indicating incomplete launch proof for that artifact state."
+      ],
+      "impact": "Counters can drift from ledger evidence or indicate stalls without failing validation."
+    },
+    {
+      "severity": "medium",
+      "category": "phase_state_machine",
+      "finding": "The documented phase enum implies claiming -> decomposing -> launching_squad_leads -> launching_workers -> collecting -> complete, but runtime uses extra initial/error/blocked phases.",
+      "evidence": [
+        "bin/stampede.sh writes commander_pane_starting before the commander agent takes over.",
+        "bin/stampede.sh writes commander_launch_failed or arbitrary blocked reason phases such as auth_blocked.",
+        "bin/stampede-monitor.sh only exempts commander_pane_starting and claiming from no-proof warnings."
+      ],
+      "impact": "Terminal failure/blocked states may produce misleading monitor warnings and schema failures."
+    },
+    {
+      "severity": "high",
+      "category": "status_values",
+      "finding": "Allowed status values differ across swarm-state.json, bundle/result JSON, state.json, monitor, and merge logic.",
+      "evidence": [
+        "swarm-state schema documents running|success|partial|failed, while launcher writes starting and blocked.",
+        "Commander bundle statuses are success|partial|failed, worker results use done/error, synthesizer also accepts completed, and observed artifacts include complete.",
+        "stampede-merge.sh only merges status == done, so commander-style success bundles are not part of that merge path."
+      ],
+      "impact": "Status ambiguity can cause skipped results, invalid validation outcomes, and inconsistent synthesis behavior."
+    },
+    {
+      "severity": "medium",
+      "category": "bundle_gap",
+      "finding": "Documented commander bundle schema includes telemetry but not the full nested launch_proof block, despite launch proof being central to metaswarm verification.",
+      "evidence": [
+        "agents/stampede-commander.agent.md bundle shape lists telemetry counts but no nested launch_proof object.",
+        "Commander docs require writing bundle.json atomically, but worker review found historical commander-005 artifact dirs lacking bundle.json."
+      ],
+      "impact": "Final bundles may be insufficient as standalone launch-proof artifacts."
+    }
+  ],
+  "recommendations": [
+    "Create one explicit JSON schema for swarm-state.json covering launcher initial, running, blocked, failed, partial, and success states.",
+    "Either add runtime phase/status values to the documented enum or map launcher-only states to documented values plus a separate reason field.",
+    "Add smoke/schema tests for all top-level required fields, all launch_proof nested fields, and telemetry counters derived from child-agents.jsonl.",
+    "Require bundle.json to include launch_proof or a verifiable reference to swarm-state.json plus child-agents.jsonl ledger evidence.",
+    "Normalize result and bundle status enums, and update merge/synthesis logic to handle commander success|partial|failed intentionally."
+  ],
+  "confidence": "high"
+}

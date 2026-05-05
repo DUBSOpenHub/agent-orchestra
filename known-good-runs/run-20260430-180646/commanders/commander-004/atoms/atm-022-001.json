@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-022-001",
+  "theme": "collaboration-bus",
+  "focus": "ledger-creation",
+  "findings": [
+    "Metaswarm launcher creates collab/ with protocol.json plus append-only proposals/reviews/improvements/consensus/broadcasts ledgers before commander start.",
+    "Protocol records required fields and explicit propose->peer_review->improve->consensus->broadcast->adopt workflow.",
+    "Gap: launcher seeds the collaboration bus but does not validate commanders actually emit required ledger entries or schema-complete records.",
+    "Gap: this file does not provide Agent Pulse live counts; monitor wiring is elsewhere."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:670-728",
+    "bin/stampede.sh:895-914",
+    "bin/stampede.sh:926-937",
+    "bin/stampede.sh:1049-1106"
+  ],
+  "confidence": "high",
+  "status": "partial"
+}

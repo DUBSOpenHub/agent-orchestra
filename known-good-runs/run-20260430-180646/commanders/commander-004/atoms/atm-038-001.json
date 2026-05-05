@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-038-001",
+  "theme": "stop-teardown-behavior",
+  "focus": "pid-tracking",
+  "status": "success",
+  "confidence": 0.86,
+  "findings": [
+    "Teardown sends single SIGTERM per pid with no wait/escalation/process-group kill, risking orphaned child processes.",
+    "--teardown executes before required --repo validation, so run dir discovery can fail and pid cleanup can be skipped.",
+    "PID capture relies on fixed sleep plus leaf-process name heuristics; custom/slow agent commands can produce stale or missing pid files.",
+    "Relaunch kills tmux session but does not pre-clear stale pid files, risking status/teardown actions on outdated PIDs."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:304-364",
+    "bin/stampede.sh:327-341",
+    "bin/stampede.sh:474-493",
+    "bin/stampede.sh:70-90",
+    "bin/stampede.sh:710-720",
+    "bin/stampede.sh:1275-1305"
+  ]
+}

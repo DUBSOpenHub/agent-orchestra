@@ -1,0 +1,140 @@
+{
+  "squad_id": "sq-037",
+  "theme": "stop-teardown-behavior",
+  "status": "success",
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": 0.954,
+  "consensus": [
+    {
+      "finding": "Teardown sends SIGTERM only (no SIGKILL fallback, no wait loop) to PIDs in pids/*.pid",
+      "source_refs": [
+        "bin/stampede.sh:327-345"
+      ],
+      "confidence": 0.96,
+      "workers": [
+        "wkr-037-001",
+        "wkr-037-004",
+        "wkr-037-005"
+      ]
+    },
+    {
+      "finding": "5s fixed sleep before PID capture is a race window; find_leaf_pid() first-child-only walk can record wrong PID on slow startup",
+      "source_refs": [
+        "bin/stampede.sh:73-90",
+        "bin/stampede.sh:1277-1299"
+      ],
+      "confidence": 0.96,
+      "workers": [
+        "wkr-037-001",
+        "wkr-037-004"
+      ]
+    },
+    {
+      "finding": "Sub-agents spawned by commanders inside metaswarm are NOT tracked in pids/; teardown cannot reach them \u2014 process leak risk",
+      "source_refs": [
+        "bin/stampede.sh:1049",
+        "bin/stampede.sh:327-345"
+      ],
+      "confidence": 0.95,
+      "workers": [
+        "wkr-037-001",
+        "wkr-037-004",
+        "wkr-037-005"
+      ]
+    },
+    {
+      "finding": "stampede-monitor.sh has no SIGTERM/SIGINT trap and can hang forever when TOTAL_TASKS=1 (forced) but done_count stays 0",
+      "source_refs": [
+        "bin/stampede-monitor.sh:74-77",
+        "bin/stampede-monitor.sh:300-301"
+      ],
+      "confidence": 0.96,
+      "workers": [
+        "wkr-037-002"
+      ]
+    },
+    {
+      "finding": "do_teardown() does NOT clean queue/, claimed/, results/, logs/, scripts/, collab/, or commanders/ directories",
+      "source_refs": [
+        "bin/stampede.sh:306-364"
+      ],
+      "confidence": 0.97,
+      "workers": [
+        "wkr-037-005"
+      ]
+    },
+    {
+      "finding": "stampede.sh main body has no SIGINT/SIGTERM trap; launcher killed mid-run leaves no cleanup",
+      "source_refs": [
+        "bin/stampede.sh:1380"
+      ],
+      "confidence": 1.0,
+      "workers": [
+        "wkr-037-005"
+      ]
+    },
+    {
+      "finding": "--teardown flag is completely untested in smoke-test.sh; stop/teardown coverage ~15%",
+      "source_refs": [
+        "tests/smoke-test.sh"
+      ],
+      "confidence": 1.0,
+      "workers": [
+        "wkr-037-003"
+      ]
+    },
+    {
+      "finding": "CI (ci.yml) does not run smoke-test.sh at all; no real stop/teardown validated in CI",
+      "source_refs": [
+        ".github/workflows/ci.yml:38-43"
+      ],
+      "confidence": 1.0,
+      "workers": [
+        "wkr-037-005"
+      ]
+    }
+  ],
+  "conflicts": [],
+  "blockers": [],
+  "worker_summaries": {
+    "wkr-037-001": {
+      "focus": "pid-tracking",
+      "status": "success",
+      "confidence": 0.96,
+      "atom": "atm-037-001"
+    },
+    "wkr-037-002": {
+      "focus": "monitor-stop-flows",
+      "status": "success",
+      "confidence": 0.96,
+      "atom": "atm-037-002"
+    },
+    "wkr-037-003": {
+      "focus": "smoke-stop-coverage",
+      "status": "success",
+      "confidence": 0.95,
+      "atom": "atm-037-003"
+    },
+    "wkr-037-004": {
+      "focus": "detach-vs-session-lifetime",
+      "status": "success",
+      "confidence": 0.93,
+      "atom": "atm-037-004"
+    },
+    "wkr-037-005": {
+      "focus": "cleanup-gaps",
+      "status": "success",
+      "confidence": 0.97,
+      "atom": "atm-037-005"
+    }
+  },
+  "top_gaps": [
+    "No SIGKILL fallback in teardown PID termination",
+    "Commander sub-agent processes escape teardown \u2014 process leak in metaswarm stop",
+    "Monitor can hang forever (done_count=0 edge case)",
+    "No trap in stampede.sh launcher body",
+    "Teardown leaves claimed tasks abandoned (not requeued) and all run directories on disk",
+    "--teardown untested in smoke suite; CI never runs smoke-test.sh"
+  ]
+}

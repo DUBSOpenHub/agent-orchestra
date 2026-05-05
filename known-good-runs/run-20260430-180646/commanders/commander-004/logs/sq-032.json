@@ -1,0 +1,125 @@
+{
+  "squad_id": "sq-032",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "partial-failure-bundles",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "blockers": [],
+  "consensus": [
+    "False-success risk is real: launch counts and result-file counts can mark success/complete even when partial or failed child outcomes exist.",
+    "Partial/failure semantics are inconsistently represented across commander spec, launcher state, monitor logic, and SQL/docs.",
+    "Bundle/report shapes do not fully encode why partial/failure happened or the counts needed to audit it."
+  ],
+  "conflicts": [
+    "Commander spec says zero-launch should be failed, but launcher preflight currently records blocked.",
+    "README leans partial for under-launch while SKILL allows partial or failed without a precise threshold."
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-032-001",
+      "theme": "partial-failure-bundles",
+      "focus": "success-thresholds",
+      "findings": [
+        "Commander success is gated only on launch counts (50 squad leads, 250 workers), so a bundle can still read success after child failures accumulate.",
+        "Launch-proof fields use started terminology while success validation uses launched counters, creating ambiguous proof semantics."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:83-88",
+        "agents/stampede-commander.agent.md:112-126",
+        "agents/stampede-commander.agent.md:140-147"
+      ],
+      "confidence": "high",
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-032-002",
+      "theme": "partial-failure-bundles",
+      "focus": "partial-trigger-paths",
+      "findings": [
+        "SKILL SQL state lacks a partial status for runs/tasks, so commander partial outcomes have no durable state representation.",
+        "Docs require partial or failed when the full child swarm cannot launch, but do not define the threshold or a commander-level recovery/escalation path.",
+        "README and SKILL disagree on when under-launch should be partial versus failed."
+      ],
+      "source_refs": [
+        "skills/SKILL.md:63",
+        "skills/SKILL.md:73",
+        "skills/SKILL.md:407",
+        "skills/SKILL.md:499-548",
+        "skills/SKILL.md:836",
+        "README.md:35",
+        "README.md:130"
+      ],
+      "confidence": "high",
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-032-003",
+      "theme": "partial-failure-bundles",
+      "focus": "no-launch-failure",
+      "findings": [
+        "Launcher preflight writes blocked for commander state on auth/preflight failure, which conflicts with the commander rule that zero launched squad leads must be failed.",
+        "Commander spec itself correctly distinguishes partial for constrained launches and failed for zero-launch cases."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:175",
+        "bin/stampede.sh:292-300",
+        "agents/stampede-commander.agent.md:80-82",
+        "agents/stampede-commander.agent.md:142-146"
+      ],
+      "confidence": "high",
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-032-004",
+      "theme": "partial-failure-bundles",
+      "focus": "bundle-shape",
+      "findings": [
+        "Bundle Shape example hardcodes status success and does not enumerate success|partial|failed.",
+        "Bundle example omits fields explaining why a bundle is partial/failed or what exact launch counts triggered it.",
+        "Docs require partial on banned-model fallback, but the bundle example has no explicit place to report that violation."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:81",
+        "agents/stampede-commander.agent.md:142-168",
+        "agents/stampede-commander.agent.md:238-267",
+        "README.md:35",
+        "README.md:130"
+      ],
+      "confidence": "high",
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-032-005",
+      "theme": "partial-failure-bundles",
+      "focus": "count-accuracy",
+      "findings": [
+        "Monitor completion is based on raw result-file count, not result status, so partial/failed bundles still drive the UI to COMPLETE.",
+        "Final monitor rendering only colors success/done as green, but completion gating happens earlier and ignores bundle health."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:909-911",
+        "bin/stampede-monitor.sh:87-111",
+        "bin/stampede-monitor.sh:295-301",
+        "bin/stampede-monitor.sh:349-354"
+      ],
+      "confidence": "medium",
+      "status": "success"
+    }
+  ],
+  "overall_confidence": "high",
+  "key_source_refs": [
+    "agents/stampede-commander.agent.md:140-168",
+    "agents/stampede-commander.agent.md:238-267",
+    "skills/SKILL.md:63-73",
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:499-548",
+    "bin/stampede.sh:175",
+    "bin/stampede.sh:292-300",
+    "bin/stampede-monitor.sh:87-111",
+    "bin/stampede-monitor.sh:295-354",
+    "README.md:35",
+    "README.md:130"
+  ]
+}

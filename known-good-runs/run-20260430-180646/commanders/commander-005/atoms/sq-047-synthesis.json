@@ -1,0 +1,179 @@
+{
+  "sq_id": "sq-047",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Status Values Verification",
+  "generated_at": "2026-05-01T01:17:05.473414Z",
+  "workers": [
+    {
+      "id": "wkr-047-001",
+      "model": "gpt-5.3-codex",
+      "task": "Check status values in bundle",
+      "status": "success"
+    },
+    {
+      "id": "wkr-047-002",
+      "model": "claude-sonnet-4.5",
+      "task": "Verify success requirements",
+      "status": "success"
+    },
+    {
+      "id": "wkr-047-003",
+      "model": "gpt-5.2-codex",
+      "task": "Check partial requirements",
+      "status": "success"
+    },
+    {
+      "id": "wkr-047-004",
+      "model": "claude-opus-4.7",
+      "task": "Verify failed requirements",
+      "status": "success"
+    },
+    {
+      "id": "wkr-047-005",
+      "model": "gpt-5.5",
+      "task": "Check running status handling",
+      "status": "success"
+    }
+  ],
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "status": "success",
+  "findings": {
+    "canonical_status_values": {
+      "bundle_and_commander": [
+        "success",
+        "partial",
+        "failed"
+      ],
+      "worker_result_json": [
+        "done",
+        "error"
+      ],
+      "run_sql": [
+        "running",
+        "completed",
+        "failed",
+        "paused"
+      ],
+      "task_sql": [
+        "queued",
+        "claimed",
+        "done",
+        "failed",
+        "requeued"
+      ],
+      "commander_swarm_state": [
+        "starting",
+        "running",
+        "success",
+        "partial",
+        "failed"
+      ],
+      "merger_branch": [
+        "clean",
+        "resolved",
+        "skipped",
+        "unknown"
+      ]
+    },
+    "status_semantics": {
+      "success": {
+        "used_by": [
+          "commander agents",
+          "commander swarm-state.json",
+          "bundle.json"
+        ],
+        "requirements": "Commander: squad_leads_launched == 50 AND workers_launched == 250. Workers never write success \u2014 they write done.",
+        "source": "agents/stampede-commander.agent.md:140-146"
+      },
+      "done": {
+        "used_by": [
+          "worker agents (stampede-agent)"
+        ],
+        "requirements": "Work completed, result JSON written atomically with summary <= 500 words.",
+        "source": "agents/stampede-agent.agent.md:229",
+        "note": "Monitor treats done and success as equivalent for display (bin/stampede-monitor.sh:349)"
+      },
+      "partial": {
+        "used_by": [
+          "commander bundle.json",
+          "orchestrator run summary"
+        ],
+        "triggers": [
+          "Commander: full 250-worker launch blocked by circuit breaker, timeout, or cost ceiling",
+          "Commander: child launch falls back to banned model",
+          "Orchestrator: all agents dead but only some tasks completed (done_count > 0 and < TOTAL_TASKS) after 15s grace"
+        ],
+        "not_a_percentage": "No percentage thresholds \u2014 commander requires exact counts; orchestrator uses any-done vs all-done.",
+        "source": "agents/stampede-commander.agent.md:142-145; bin/stampede-monitor.sh:295-303"
+      },
+      "failed": {
+        "used_by": [
+          "commander bundle.json",
+          "task result JSON (written by skill)",
+          "run SQL record"
+        ],
+        "triggers": {
+          "commander": "Zero Squad Leads launched OR Copilot CLI process failed to start (bin/stampede.sh:985-986)",
+          "task": "max_generation exceeded (cap=2) OR agent wrote status=error (skills/SKILL.md:509-511)",
+          "run": "Any failed_tasks > 0 in SQL aggregation (skills/SKILL.md:836)"
+        },
+        "recovery": "Tasks requeued with generation++ up to max_generation=2; after cap, marked failed permanently.",
+        "source": "agents/stampede-commander.agent.md:145; skills/SKILL.md:509-521, 836"
+      },
+      "error": {
+        "used_by": [
+          "worker result JSON"
+        ],
+        "note": "Written by stampede-agent on unhandled exception. Treated as failed by orchestrator synthesis (skills/SKILL.md:615).",
+        "source": "agents/stampede-agent.agent.md:273"
+      },
+      "running": {
+        "explicit_in_json": "Yes, in commander swarm-state.json only (not worker result files).",
+        "task_level_proxy": "claimed/ directory presence = in-progress. Monitor shows RUNNING when claimed > 0.",
+        "worker_level": "Determined by tmux pane liveness (pane_dead != 1) \u2014 not a JSON field.",
+        "source": "agents/stampede-commander.agent.md:81; bin/stampede-monitor.sh:104-110, 126-136"
+      },
+      "starting": {
+        "used_by": [
+          "commander swarm-state.json initial write by launcher"
+        ],
+        "source": "bin/stampede.sh:780-782"
+      }
+    },
+    "running_state_detection": {
+      "task_level": "Presence of file in claimed/ directory represents a task being worked on.",
+      "agent_level": "tmux pane liveness check (primary): pane_dead == 1 means dead. PID files (pids/*.pid) are secondary.",
+      "stuck_threshold_seconds": 120,
+      "orphan_recovery_threshold_seconds": 180,
+      "skill_orphan_sweep_seconds": 600,
+      "grace_period_for_partial_completion_seconds": 15,
+      "note": "Monitor prefers tmux pane state over stored PIDs (bin/stampede-monitor.sh:218-220). Skill still uses PID heartbeat via kill -0."
+    },
+    "crash_recovery": {
+      "dead_pane_detection": "bin/stampede-monitor.sh:131-132 \u2014 tmux pane_dead flag",
+      "requeue_logic": "Claimed tasks with no result and no live agents moved back to queue/ after ORPHAN_RECOVERY_AFTER (180s)",
+      "max_retries": 2,
+      "final_state_on_exhaustion": "failed result written to results/ by skill dead-worker recovery (skills/SKILL.md:515-521)"
+    },
+    "key_distinctions": [
+      "Workers use done/error; commanders use success/partial/failed \u2014 they are different status namespaces",
+      "running is explicit only in commander swarm-state.json; for worker tasks it is implicit via claimed/ directory",
+      "partial requires nonzero work done; failed means zero Squad Leads or task retry exhausted",
+      "Monitor accepts both done and success as completion (bin/stampede-monitor.sh:349)",
+      "Merger only processes branches where worker status == done (bin/stampede-merge.sh:92)",
+      "500-word cap is enforced in code; no minimum word requirement for success",
+      "Ad-hoc synthesis labels (CLEAN, COMPLETE, GAPS_FOUND, etc.) in atom JSON are not part of the formal status contract"
+    ],
+    "sources": {
+      "agents/stampede-agent.agent.md": "Worker status values (done, error), 500-word cap",
+      "agents/stampede-commander.agent.md": "Commander status contract (success/partial/failed), launch proof requirements",
+      "agents/stampede-merger.agent.md": "Merger branch statuses (clean, resolved, skipped)",
+      "bin/stampede.sh": "Commander init (starting), failed on launch error, bundle status constraint",
+      "bin/stampede-monitor.sh": "Stuck/orphan thresholds, tmux-based liveness, partial completion logic",
+      "bin/stampede-merge.sh": "Merger only consumes done workers",
+      "skills/SKILL.md": "Task SQL statuses, run SQL statuses, dead-worker recovery, generation cap"
+    }
+  }
+}

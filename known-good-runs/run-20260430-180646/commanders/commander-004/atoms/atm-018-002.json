@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-018-002",
+  "theme": "telemetry-contract",
+  "focus": "monitor-consumption",
+  "findings": [
+    "Monitor consumes commander telemetry from swarm-state.json with fallback mappings for launched/completed/failed, and displays warnings for missing/incomplete proof.",
+    "Monitor does not read child-agents.jsonl directly; if swarm-state telemetry is stale, live launch counts can be stale.",
+    "workers_running has no fallback key and fleet/progress parsing errors are mostly silent, degrading visibility rather than hard failing."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:145-191",
+    "bin/stampede-monitor.sh:160-164",
+    "bin/stampede-monitor.sh:177-179",
+    "bin/stampede-monitor.sh:197"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

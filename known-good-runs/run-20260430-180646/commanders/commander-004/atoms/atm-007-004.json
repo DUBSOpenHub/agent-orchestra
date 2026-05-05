@@ -1,0 +1,30 @@
+{
+  "worker_id": "wkr-007-004",
+  "theme": "premium-model-policy",
+  "focus": "child-override-propagation",
+  "findings": [
+    "--model/--models top-level override propagates correctly to the launched pane agent/commander via --model flag. bin/stampede.sh:35-36,605-606,850-853,941-953",
+    "In metaswarm, child Squad Lead/Worker model selection is NOT derived from the commander's --model override; prompt hardcodes premium pool rotation. bin/stampede.sh:729-740,771-794,883-888",
+    "GAP: User child-model override silently dropped in metaswarm \u2014 no env var or param carries --model/--models to downstream child launches. bin/stampede.sh:899-915",
+    "Commander doc describes assignment correctly: each child must use explicit premium-pool model; fallback to banned marks bundle partial. agents/stampede-commander.agent.md:150-168",
+    "per_commander_full_swarm=true propagates sizing separately from model assignment \u2014 commanders can launch with wrong models vs user's intent. agents/stampede-commander.agent.md:172-210",
+    "GAP: Preflight validates only MODEL_LIST[0] in metaswarm; later rotated commander model assignments not validated before launch. bin/stampede.sh:202,605-606"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:35",
+    "bin/stampede.sh:36",
+    "bin/stampede.sh:605",
+    "bin/stampede.sh:606",
+    "bin/stampede.sh:729",
+    "bin/stampede.sh:771",
+    "bin/stampede.sh:883",
+    "bin/stampede.sh:899",
+    "bin/stampede.sh:941",
+    "bin/stampede.sh:953",
+    "bin/stampede.sh:202",
+    "agents/stampede-commander.agent.md:150",
+    "agents/stampede-commander.agent.md:172"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

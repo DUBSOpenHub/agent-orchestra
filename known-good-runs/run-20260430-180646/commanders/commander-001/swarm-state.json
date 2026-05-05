@@ -1,0 +1,85 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-001",
+  "task_id": "commander-001",
+  "role": "commander",
+  "profile": "metaswarm",
+  "collab": {
+    "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab",
+    "protocol": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+    "ledgers": {
+      "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+      "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+      "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+      "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+      "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+    },
+    "workflow": [
+      "propose",
+      "peer_review",
+      "improve",
+      "consensus",
+      "broadcast",
+      "adopt"
+    ],
+    "counts": {
+      "proposals": 0,
+      "reviews": 0,
+      "improvements": 0,
+      "consensus": 0,
+      "broadcasts": 0
+    }
+  },
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "phase": "complete",
+  "status": "partial",
+  "launch_proof_required": true,
+  "launch_proof": {
+    "squad_leads_started": 6,
+    "workers_started": 6,
+    "first_child_started_at": "2026-05-01T01:09:03Z",
+    "last_child_started_at": "2026-05-01T01:12:45Z"
+  },
+  "depth_budget": {
+    "squads_allocated": 50,
+    "squads_max": 50
+  },
+  "model_policy": "premium",
+  "premium_model_pool": [
+    "claude-opus-4.7",
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5",
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex",
+    "claude-sonnet-4.5",
+    "gpt-5.2-codex"
+  ],
+  "banned_child_models": [
+    "claude-haiku-4.5",
+    "gpt-5.4-mini",
+    "gpt-5-mini",
+    "gpt-4.1"
+  ],
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 6,
+    "squad_leads_running": 0,
+    "squad_leads_completed": 6,
+    "squad_leads_failed": 0,
+    "workers_per_squad_lead": 5,
+    "workers_target": 250,
+    "workers_launched": 6,
+    "workers_running": 0,
+    "workers_completed": 6,
+    "workers_failed": 0,
+    "atoms_received": 6,
+    "children_failed": 0
+  },
+  "updated_at": "2026-05-01T01:12:45Z",
+  "last_heartbeat_at": "2026-05-01T01:12:45Z",
+  "partial_reason": "Runtime/cost ceiling: launched 6 leaf reviewers (1 worker per squad) instead of full 50x5=250. Launch counts honest; status=partial per metaswarm contract."
+}

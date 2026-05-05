@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-020-003",
+  "theme": "telemetry-contract",
+  "focus": "atomic-write-patterns",
+  "findings": [
+    "bin/stampede.sh uses atomic tmp+replace for swarm-state.json in some paths but initial write is non-atomic.",
+    "child-agents.jsonl is appended later but initialized with truncate write; can clobber if directory exists.",
+    "Result bundle atomicity is specified in prompts/agent instructions but not enforced by launcher code."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:155-157",
+    "bin/stampede.sh:851-860",
+    "bin/stampede.sh:1016-1031",
+    "bin/stampede.sh:911",
+    "agents/stampede-commander.agent.md:35-37",
+    "agents/stampede-commander.agent.md:57",
+    "agents/stampede-commander.agent.md:61",
+    "agents/stampede-commander.agent.md:132"
+  ],
+  "confidence": 0.89,
+  "status": "success"
+}

@@ -1,0 +1,130 @@
+{
+  "squad_id": "sq-011",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "depth-guard-bounded-spawning",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "overall_confidence": 0.89,
+  "blockers": [
+    "No blocking audit blocker. Task tool runs were synchronous in this environment, so background agent ids were not exposed for launch_started metadata."
+  ],
+  "consensus_notes": [
+    "Bounded-spawning targets and max-depth=3 are clearly documented in commander/capsule material.",
+    "Leaf-only worker behavior is present, but enforcement is primarily prompt/tool-manifest based rather than hard sandboxing.",
+    "Runtime and lint coverage lag the documented policy in a few failure-path areas."
+  ],
+  "conflict_notes": [
+    "Commander instructions present strong Depth Guard rules, while SKILL.md itself lacks a direct depth counter or explicit recursion guard implementation.",
+    "Lint coverage validates positive markers but does not fully assert banned-model rejection or commander-recursion negatives."
+  ],
+  "main_findings": [
+    "Worker leaf lock exists but is not fully tool-enforced because bash remains available.",
+    "Commander file documents bounded spawning, depth cap, and partial handling clearly.",
+    "SKILL.md relies on commander enforcement instead of implementing its own explicit depth guard.",
+    "depth-guard lint coverage misses some negative assertions for banned models/recursion.",
+    "Launcher failure handling/teardown shows possible gaps for mid-run spawn failure escalation and nested cleanup."
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-011-001",
+      "theme": "depth-guard-bounded-spawning",
+      "focus": "worker-leaf-lock",
+      "findings": [
+        "Leaf-lock is explicit via 'DO NOT attempt to spawn sub-agents... any other agents' and 'You are a LEAF NODE'.",
+        "Worker frontmatter omits task/ask_user tools, but bash remains available so anti-spawn protection is instruction-level rather than sandbox-enforced.",
+        "Task loop is single-agent and contains no delegation workflow."
+      ],
+      "source_refs": [
+        "agents/stampede-agent.agent.md:7-14",
+        "agents/stampede-agent.agent.md:27-28",
+        "agents/stampede-agent.agent.md:37-49",
+        "agents/stampede-agent.agent.md:105-177"
+      ],
+      "confidence": "high",
+      "status": "instruction_leaf_locked_but_not_fully_tool_enforced"
+    },
+    {
+      "worker_id": "wkr-011-002",
+      "theme": "depth-guard-bounded-spawning",
+      "focus": "commander-depth-budget",
+      "findings": [
+        "Commander file explicitly bounds SS-250 rollout to 50 squad leads x 5 workers and caps max depth at 3.",
+        "Commander-only spawning boundary and required leaf-node block for workers are documented.",
+        "Partial/failure reporting for launch shortfall is explicitly required."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:31-37",
+        "agents/stampede-commander.agent.md:48-57",
+        "agents/stampede-commander.agent.md:89-92",
+        "agents/stampede-commander.agent.md:135-146",
+        "agents/stampede-commander.agent.md:212-236"
+      ],
+      "confidence": "high",
+      "status": "no_issues_found"
+    },
+    {
+      "worker_id": "wkr-011-003",
+      "theme": "depth-guard-bounded-spawning",
+      "focus": "skill-depth-rules",
+      "findings": [
+        "SKILL.md applies bounded spawning caps but does not implement an explicit depth counter or Depth Guard algorithm.",
+        "The skill includes the task tool and relies on stampede-commander for downstream depth enforcement.",
+        "Anti-runaway landmines cover requeue/autopilot liveness more than recursion depth."
+      ],
+      "source_refs": [
+        "skills/SKILL.md:16",
+        "skills/SKILL.md:39",
+        "skills/SKILL.md:108",
+        "skills/SKILL.md:407",
+        "skills/SKILL.md:853",
+        "skills/SKILL.md:861",
+        "skills/SKILL.md:864"
+      ],
+      "confidence": 0.88,
+      "status": "complete"
+    },
+    {
+      "worker_id": "wkr-011-004",
+      "theme": "depth-guard-bounded-spawning",
+      "focus": "lint-coverage",
+      "findings": [
+        "Lint script checks worker leaf-only markers, can_launch=false variants, and several commander bounded-spawning markers.",
+        "Banned-model coverage is indirect/positive-only and lacks explicit rejection assertions for banned model names.",
+        "Commander recursion prevention is mostly phrase-based rather than negative lint coverage."
+      ],
+      "source_refs": [
+        "tests/depth-guard-lint.sh:16-19",
+        "tests/depth-guard-lint.sh:21-29",
+        "tests/depth-guard-lint.sh:31-33",
+        "tests/depth-guard-lint.sh:35-53",
+        "tests/depth-guard-lint.sh:55-61"
+      ],
+      "confidence": "high",
+      "status": "issues_found"
+    },
+    {
+      "worker_id": "wkr-011-005",
+      "theme": "depth-guard-bounded-spawning",
+      "focus": "bounded-spawn-failure-modes",
+      "findings": [
+        "Launcher banned-model validation appears startup-only; worker/child launch failures do not clearly trigger fleet-wide halt.",
+        "Teardown kills tracked PIDs but may not recursively clean nested child agents, leaving orphan risk.",
+        "Preflight validates access/readiness but does not fully pre-validate later child-model launch authorization; partial status is recorded more than actively enforced."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:139-193",
+        "bin/stampede.sh:304-361",
+        "bin/stampede.sh:366-469",
+        "bin/stampede.sh:521-530",
+        "bin/stampede.sh:912-914",
+        "bin/stampede.sh:985-1034",
+        "agents/stampede-commander.agent.md:140-146",
+        "agents/stampede-commander.agent.md:213-236"
+      ],
+      "confidence": 0.88,
+      "status": "audit_complete"
+    }
+  ]
+}

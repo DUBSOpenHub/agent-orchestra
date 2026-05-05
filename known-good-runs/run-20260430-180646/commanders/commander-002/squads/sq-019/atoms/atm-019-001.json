@@ -1,0 +1,137 @@
+{
+  "worker_id": "wkr-019-001",
+  "model": "claude-opus-4.7",
+  "focus": "end-to-end flow audit",
+  "scope": {
+    "files_reviewed": [
+      "bin/stampede.sh:614-741 (collab bus init)",
+      "bin/stampede.sh:899-936 (commander prompt + env exports)",
+      "bin/stampede.sh:1229 (status surface)",
+      "bin/stampede-monitor.sh:42,57-66,116,338 (collab summary)",
+      "agents/stampede-commander.agent.md:238-267 (bundle shape)",
+      "skills/SKILL.md (no collab references)",
+      ".stampede/run-20260430-180646/collab/protocol.json + 5 ledgers"
+    ],
+    "ledger_volume": {
+      "proposals.jsonl": 5,
+      "reviews.jsonl": 11,
+      "improvements.jsonl": 7,
+      "consensus.jsonl": 5,
+      "broadcasts.jsonl": 3
+    }
+  },
+  "findings": {
+    "flow_completeness": "The documented sequence propose -> peer_review -> improve -> consensus -> broadcast -> adopt is materialized end-to-end. Live ledgers in run-20260430-180646 demonstrate every stage firing: 5 proposals from commanders 001/002/003/004/005, 11 peer reviews cross-referencing target_item_id, 7 improvements with based_on backlinks to proposals, 5 consensus records with verdict tiers (blocker/major/minor/partial/pass) citing based_on improvements, and 3 broadcasts that adopt named consensus_item_id. The 'adopt' stage is the weakest link: it is only enforced via prose in the launcher prompt ('include adopted consensus item_ids and source_refs in bundle.json plus the final result'), not via schema or programmatic check. The bundle example in agents/stampede-commander.agent.md:238-267 omits the adopted_consensus_item_ids and source_refs fields the launcher requires, creating contract drift between launcher prompt and agent doc. The protocol.json's commander_workflow.sequence lists the six steps but exposes no per-stage required-fields contract beyond a single global required_fields list, leaving stage-specific keys (target_item_id for reviews, based_on for improvements/consensus, consensus_item_id for broadcasts) undocumented.",
+    "event_shapes": [
+      {
+        "event": "proposal",
+        "ledger": "proposals.jsonl",
+        "global_required": ["ts","run_id","commander_id","event","item_id","summary","evidence","confidence","source_refs"],
+        "observed_required_actual": "all global fields present; evidence is sometimes a string and sometimes an array (commander-003 vs commander-001) - type drift",
+        "stage_specific": "none documented",
+        "validation": "none - launcher only emits prose guidance, no JSON Schema, no append-time validator"
+      },
+      {
+        "event": "peer_review",
+        "ledger": "reviews.jsonl",
+        "extra_observed": ["target_item_id","target_commander","verdict"],
+        "verdict_vocab_observed": ["accept_with_additions","approve","approve_with_suggestions"],
+        "issues": "verdict vocabulary is undefined and inconsistent (approve vs accept_with_additions vs approve_with_suggestions); no required link from review to underlying evidence beyond source_refs"
+      },
+      {
+        "event": "improvement",
+        "ledger": "improvements.jsonl",
+        "extra_observed": ["based_on (array of proposal/review item_ids)"],
+        "issues": "based_on is required by usage but not declared in protocol.json; no field for which reviews informed each improvement"
+      },
+      {
+        "event": "consensus",
+        "ledger": "consensus.jsonl",
+        "extra_observed": ["verdict","based_on"],
+        "verdict_vocab_observed": ["blocker","major","minor","partial","pass"],
+        "issues": "verdict tiering is ad hoc - 'pass' (commander-003) and 'partial' (commander-005) are not in the same vocabulary as blocker/major/minor (commander-001); evidence field types drift between string and array; no required link to peer_reviews that approved consensus"
+      },
+      {
+        "event": "broadcast",
+        "ledger": "broadcasts.jsonl",
+        "extra_observed": ["consensus_item_id (c001) OR adopted_items array (c003)"],
+        "issues": "two competing field names for the adoption pointer (consensus_item_id vs adopted_items) confirm absence of a canonical broadcast schema; no field for adoption status, ack list, or reachability"
+      }
+    ],
+    "adoption_blockers": [
+      {
+        "id": "blk-1",
+        "severity": "high",
+        "issue": "No JSON Schema or append-time validator. Launcher writes protocol.json then trusts commander prose. Malformed lines are tolerated by readers but never flagged, so contract drift accumulates silently.",
+        "evidence": "bin/stampede.sh:684-720 emits required_fields list only; no python -c jsonschema, no validator hook"
+      },
+      {
+        "id": "blk-2",
+        "severity": "high",
+        "issue": "Stage-specific required fields (target_item_id, based_on, consensus_item_id) are not in protocol.json, only in launcher prose at bin/stampede.sh:910. Agents must infer them from English.",
+        "evidence": "protocol.required_fields is a flat global list of 9 fields"
+      },
+      {
+        "id": "blk-3",
+        "severity": "high",
+        "issue": "Bundle shape in agents/stampede-commander.agent.md:238-267 omits adopted_consensus_item_ids and source_refs, contradicting bin/stampede.sh:910 which mandates them. This is the cons-c001-pre-build-majors finding from this very run.",
+        "evidence": "agents/stampede-commander.agent.md:238-267 vs bin/stampede.sh:910"
+      },
+      {
+        "id": "blk-4",
+        "severity": "medium",
+        "issue": "Verdict vocabularies are not defined. Reviews use approve/approve_with_suggestions/accept_with_additions; consensus uses blocker/major/minor/partial/pass. No enum, no aggregator can compute majority/conflict tiers.",
+        "evidence": "live ledgers in collab/reviews.jsonl and collab/consensus.jsonl"
+      },
+      {
+        "id": "blk-5",
+        "severity": "medium",
+        "issue": "evidence field is polymorphic - string in some events, array in others. Downstream synthesis must handle both, increasing brittleness.",
+        "evidence": "commander-003 proposal uses string; commander-001 uses array"
+      },
+      {
+        "id": "blk-6",
+        "severity": "medium",
+        "issue": "skills/SKILL.md has zero collaboration-bus documentation. The orchestrator skill is unaware the bus exists, so non-metaswarm runs and skill-driven flows cannot benefit. This was independently flagged in cons-005-synthesis-readiness.",
+        "evidence": "grep -n collab skills/SKILL.md returns no hits"
+      },
+      {
+        "id": "blk-7",
+        "severity": "medium",
+        "issue": "No write contract for atomic append. Protocol says 'open in append mode' but launcher does not provide a helper or example. Concurrent writers risk partial-line interleaving on systems where O_APPEND atomicity is not guaranteed for >PIPE_BUF writes (most lines here are >4KB; e.g. cons-c001-pre-build-blockers is ~1KB but realistic events can exceed 4KB).",
+        "evidence": "protocol.atomic_append_guidance.rules text only"
+      },
+      {
+        "id": "blk-8",
+        "severity": "low",
+        "issue": "ts format is inconsistent (Z, +00:00, fractional seconds vs none). Sortable but not normalized; sortation across the bus requires tolerant parsing.",
+        "evidence": "2026-05-01T01:08:41Z vs 2026-05-01T01:08:41.749810+00:00 vs 2026-05-01T01:13:14Z"
+      },
+      {
+        "id": "blk-9",
+        "severity": "low",
+        "issue": "No error-handling contract. There is no event type for 'rejection', 'retraction', 'amendment', or 'failed_consensus'. Once a proposal is wrong, ledgers cannot encode a clean correction; commanders must improvise.",
+        "evidence": "ledger_events dict only includes the 5 happy-path stages"
+      },
+      {
+        "id": "blk-10",
+        "severity": "low",
+        "issue": "No declared retention/lifecycle. Append-only with no rotation means long runs accumulate unbounded ledgers; readers must scan O(n) every poll.",
+        "evidence": "monitor uses count_jsonl_lines on every refresh"
+      }
+    ],
+    "evidence_quality": "Tracking and observability are partial. Strengths: (1) ledgers are append-only JSONL, easy to tail/diff/replay; (2) launcher pre-creates files (via open(..,'a')) so readers never miss them; (3) monitor surfaces a one-line collab summary every refresh (proposals/reviews/improvements/consensus/broadcasts counts) at bin/stampede-monitor.sh:57-66; (4) every event carries source_refs and confidence, enabling provenance traceability; (5) item_id values are stable and item_id->target_item_id->based_on->consensus_item_id chains are present and resolvable in the live ledgers, so the full propose->adopt graph IS reconstructible via grep alone. Weaknesses: (a) no per-stage panel - the monitor only shows counts, not the latest events or unresolved chains; (b) no validation log - malformed lines are silently tolerated, so observability of bus health is zero; (c) no commander-level rollup - the bundle.json is supposed to carry adopted_consensus_item_ids but the doc example does not, so even at synthesis time the audit trail is non-authoritative; (d) no integration with .stampede/{run_id}/state.json beyond a one-time write of the collab dict - count progression is not echoed back into run-state, so external dashboards cannot poll a single source of truth; (e) event timestamps are not normalized so ordering across commanders requires tolerant parsing; (f) no mechanism to detect a missing stage - e.g., a consensus with no underlying improvement, or a broadcast without adopted_items, would pass silently.",
+    "summary": "The bus is functional end-to-end and the live run demonstrates every stage firing with cross-referenced item_ids. However, the schema is enforced by prose only, stage-specific fields are undocumented, vocabularies are undefined, evidence is polymorphic, the bundle example contradicts the launcher contract, and the orchestrator skill is unaware of the bus. These are real adoption blockers: commanders that follow the doc literally produce non-conforming bundles. Fixing requires (1) a per-event JSON Schema in protocol.json, (2) updating the bundle example in stampede-commander.agent.md to match launcher prompt, (3) adding collab docs to skills/SKILL.md, (4) defining verdict enums, (5) normalizing evidence to array-only and ts to RFC3339-Z, and (6) emitting a writer helper that guarantees atomic append."
+  },
+  "recommendations": [
+    "Embed a per-event JSON Schema map in protocol.json (proposal/review/improvement/consensus/broadcast) covering stage-specific fields like target_item_id, based_on, consensus_item_id.",
+    "Update agents/stampede-commander.agent.md bundle example to include adopted_consensus_item_ids and source_refs (closes blk-3 and cons-c001-pre-build-majors).",
+    "Define verdict enums: review.verdict in {approve, approve_with_changes, reject}; consensus.verdict in {pass, minor, major, blocker, partial}.",
+    "Normalize evidence to array-of-strings and ts to RFC3339 Zulu with no fractional seconds.",
+    "Ship a tiny python helper in bin/stampede.sh (e.g. emit_collab_event) that validates and atomically appends, exported via STAMPEDE_COLLAB_EMIT.",
+    "Add a Collaboration Bus section to skills/SKILL.md so the orchestrator skill exposes it to non-metaswarm flows too.",
+    "Have stampede-monitor.sh print the latest unresolved proposal/review chain, not just counts.",
+    "Add CI lint that grep-validates ledger required fields against protocol.json after any sample run."
+  ],
+  "confidence": 0.88
+}

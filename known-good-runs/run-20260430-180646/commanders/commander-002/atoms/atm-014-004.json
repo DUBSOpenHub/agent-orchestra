@@ -1,0 +1,78 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_id": "sq-014",
+  "worker_id": "wkr-014-004",
+  "model": "claude-sonnet-4.5",
+  "focus": "claimed cleanup and result linkage",
+  "status": "success",
+  "verdict": "pass_with_gaps",
+  "summary": "Claimed cleanup is sequentially linked to result creation in all documented workflows, with atomic write-before-remove ordering. Recovery logic exists but has gaps in commander-aware detection and timing window protection.",
+  "findings": [
+    {
+      "severity": "low",
+      "issue": "Result write and cleanup are sequential but not transactional",
+      "details": "stampede-agent.agent.md lines 238-252 show result written atomically (tmp then rename) followed by bash rm of claimed file. If process crashes between os.rename(tmp, final) at line 242 and rm at line 251, claimed file persists despite result existing. Same pattern in error path (lines 282-289).",
+      "evidence_refs": [
+        "agents/stampede-agent.agent.md:242",
+        "agents/stampede-agent.agent.md:251",
+        "agents/stampede-agent.agent.md:286-289"
+      ]
+    },
+    {
+      "severity": "medium",
+      "issue": "Orphan recovery does not check for existing results before re-queuing",
+      "details": "stampede-monitor.sh lines 237-279 checks claim_age >= 180s, live_agents == 0, and commander_active, then returns claimed task to queue. However, logic at line 274 only checks if result file exists (! -f $BASE/results/${tid}.json), missing validation that result write completed before cleanup crashed. If result exists, should not re-queue, but monitor may re-queue valid completed work if claimed file remained.",
+      "evidence_refs": [
+        "bin/stampede-monitor.sh:274",
+        "bin/stampede-monitor.sh:275-276"
+      ]
+    },
+    {
+      "severity": "low",
+      "issue": "Skill-level orphan recovery uses 10min threshold vs monitor 3min",
+      "details": "SKILL.md lines 529-548 implements orphan sweep with 600s (10min) threshold. Monitor uses ORPHAN_RECOVERY_AFTER=180s (3min) at line 25. Inconsistent thresholds create window where monitor recovers task (3min) but skill has not yet detected orphan (10min), potentially causing duplicate work.",
+      "evidence_refs": [
+        "skills/SKILL.md:536",
+        "bin/stampede-monitor.sh:25"
+      ]
+    },
+    {
+      "severity": "info",
+      "issue": "Commander-specific cleanup not explicitly documented",
+      "details": "stampede-commander.agent.md mentions 'remove claimed task file' at line 61 in workflow but does not show explicit cleanup code. Agent instructions say 'Write final JSON atomically and remove the claimed task file' but implementation details absent. Smoke test at tests/smoke-test.sh:57 shows claim_path.unlink() after result write, confirming pattern.",
+      "evidence_refs": [
+        "agents/stampede-commander.agent.md:61",
+        "tests/smoke-test.sh:56-57"
+      ]
+    },
+    {
+      "severity": "low",
+      "issue": "No gap detection between result presence and claimed absence",
+      "details": "Neither monitor nor skill validates the invariant: if result exists, claimed must not exist. Monitor checks '! -f result' before re-queuing claimed (line 274), but does not alert if both result AND claimed exist simultaneously, indicating incomplete cleanup. This state is transient but undetected.",
+      "evidence_refs": [
+        "bin/stampede-monitor.sh:274",
+        "agents/stampede-agent.agent.md:246-252"
+      ]
+    },
+    {
+      "severity": "info",
+      "issue": "Landmine #18 documents cleanup requirement but no enforcement",
+      "details": "agents/stampede-agent.agent.md line 35 warns 'Do NOT skip cleanup of claim file after result' (Landmine #18). This is a documented landmine but no runtime validation exists to detect if agent violates this rule. Agent crashes between result write and cleanup trigger the landmine silently.",
+      "evidence_refs": [
+        "agents/stampede-agent.agent.md:35",
+        "agents/stampede-agent.agent.md:324"
+      ]
+    }
+  ],
+  "source_refs": [
+    "agents/stampede-agent.agent.md:242-252",
+    "agents/stampede-agent.agent.md:286-289",
+    "bin/stampede-monitor.sh:234-279",
+    "skills/SKILL.md:500-548",
+    "tests/smoke-test.sh:56-57",
+    "agents/stampede-commander.agent.md:61"
+  ],
+  "confidence": 0.87,
+  "ts": "2026-05-01T01:08:12Z"
+}

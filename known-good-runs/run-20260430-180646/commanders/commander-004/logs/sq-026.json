@@ -1,0 +1,65 @@
+{
+  "squad_id": "sq-026",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "agent-pulse-monitoring",
+  "status": "partial",
+  "overall_confidence": 0.86,
+  "notes": [
+    "All 5 required workers launched and completed. The Copilot CLI task tool did not return a background agent id; telemetry launch_started events used agent-id=child_id placeholders.",
+    "Top risk is metaswarm orphan recovery using task_id to locate commander heartbeat, causing false commander inactivity and erroneous requeue."
+  ],
+  "top_findings": [
+    {
+      "severity": "critical",
+      "finding": "Metaswarm orphan recovery heartbeat path mismatch: checks $BASE/commanders/<task_id>/swarm-state.json (task_id from claimed task) instead of commander_id progress_dir; can wrongly re-queue active commander tasks.",
+      "refs": [
+        "bin/stampede-monitor.sh:234-277"
+      ]
+    },
+    {
+      "severity": "high",
+      "finding": "TOTAL_TASKS fallback may overcount if duplicates exist across queue/claimed/results because sort -u dedupes full paths not task ids; percent can be wrong.",
+      "refs": [
+        "bin/stampede-monitor.sh:69-77"
+      ]
+    },
+    {
+      "severity": "high",
+      "finding": "Smoke test does not exercise monitor or live telemetry updates (dry-run + agent-cmd true), leaving Agent Pulse/live count regressions untested.",
+      "refs": [
+        "tests/smoke-test.sh:108-148"
+      ]
+    },
+    {
+      "severity": "medium",
+      "finding": "README describes PID-based requeue, but monitor relies on tmux pane census and claimed file ages; documentation mismatch.",
+      "refs": [
+        "README.md:229-236",
+        "bin/stampede-monitor.sh:218-279"
+      ]
+    }
+  ],
+  "worker_atoms": [
+    {
+      "worker_id": "wkr-026-001",
+      "atom_id": "atm-026-001"
+    },
+    {
+      "worker_id": "wkr-026-002",
+      "atom_id": "atm-026-002"
+    },
+    {
+      "worker_id": "wkr-026-003",
+      "atom_id": "atm-026-003"
+    },
+    {
+      "worker_id": "wkr-026-004",
+      "atom_id": "atm-026-004"
+    },
+    {
+      "worker_id": "wkr-026-005",
+      "atom_id": "atm-026-005"
+    }
+  ]
+}

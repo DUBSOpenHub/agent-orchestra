@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-040-003",
+  "theme": "stop-teardown-behavior",
+  "focus": "smoke-stop-coverage",
+  "findings": [
+    "Smoke test does not assert stampede run session stops; relies on trap-based terminate at script exit.",
+    "Metaswarm tmux session termination is best-effort (|| true) with no validation of clean stop."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:14-21",
+    "tests/smoke-test.sh:149",
+    "tests/smoke-test.sh:151-158"
+  ],
+  "confidence": 0.89,
+  "status": "success"
+}

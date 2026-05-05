@@ -1,0 +1,93 @@
+{
+  "squad_id": "sq-041",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "recovery-stuck-detection",
+  "status": "success",
+  "review_only": true,
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "blockers": [
+    "task tool did not expose background agent ids in returned output, so launch_started events were recorded without agent_id fields"
+  ],
+  "consensus": [
+    "recovery and teardown behavior are materially weaker than the documented/expected metaswarm guardrails",
+    "stuck detection is prone to false positives and does not safely recover partial dead-worker cases while other agents remain alive",
+    "failure containment and banned-model guardrails exist, but operational recovery coverage and documentation are incomplete"
+  ],
+  "conflicts": [
+    "README claims dead-agent PID recovery and strong observability, but monitor/launcher logic and smoke coverage leave notable stuck/restart and child-visibility gaps"
+  ],
+  "overall_confidence": "high",
+  "key_findings": [
+    {
+      "worker_id": "wkr-041-001",
+      "focus": "stuck-heuristics",
+      "status": "success",
+      "confidence": "high",
+      "summary": "Monitor uses claimed-file mtime >120s as the primary stuck heuristic, ignores heartbeats/progress, only requeues when all agents are dead, and can loop indefinitely if all agents die before any result.",
+      "source_refs": [
+        "bin/stampede-monitor.sh:200-216",
+        "bin/stampede-monitor.sh:234-305"
+      ]
+    },
+    {
+      "worker_id": "wkr-041-002",
+      "focus": "recovery-paths",
+      "status": "success",
+      "confidence": "high",
+      "summary": "Launcher teardown is best-effort only, restart logic can strand claimed work, and ordinary worker failure lacks symmetric state/result recovery markers.",
+      "source_refs": [
+        "bin/stampede.sh:327-345",
+        "bin/stampede.sh:715-720",
+        "bin/stampede.sh:1007-1014",
+        "bin/stampede.sh:1096-1149"
+      ]
+    },
+    {
+      "worker_id": "wkr-041-003",
+      "focus": "smoke-recovery-coverage",
+      "status": "success",
+      "confidence": "high",
+      "summary": "Smoke tests are happy-path only and do not exercise stuck detection, worker death, claimed-task recovery, partial writes, or metaswarm recovery from partial child failure.",
+      "source_refs": [
+        "tests/smoke-test.sh:14-21",
+        "tests/smoke-test.sh:22",
+        "tests/smoke-test.sh:24-59",
+        "tests/smoke-test.sh:149",
+        "tests/smoke-test.sh:152-162"
+      ]
+    },
+    {
+      "worker_id": "wkr-041-004",
+      "focus": "docs-vs-runtime-recovery",
+      "status": "success",
+      "confidence": "high",
+      "summary": "Docs describe dead-agent recovery and metaswarm partial guardrails, but underdocument stuck-yet-alive recovery, metaswarm child visibility, and teardown semantics for in-flight work.",
+      "source_refs": [
+        "README.md:35",
+        "README.md:50",
+        "README.md:86",
+        "README.md:118",
+        "README.md:130-136",
+        "README.md:229-235",
+        "README.md:299-310"
+      ]
+    },
+    {
+      "worker_id": "wkr-041-005",
+      "focus": "failure-containment",
+      "status": "success",
+      "confidence": "high",
+      "summary": "Depth Guard, bounded spawning, partial/failed contracts, and banned-model enforcement exist, but shell-level stuck-launch timeouts are weak and a no-gates override can remove local circuit breakers.",
+      "source_refs": [
+        "agents/stampede-commander.agent.md:142-147",
+        "agents/stampede-commander.agent.md:243-252",
+        "bin/stampede.sh:520-530",
+        "bin/stampede.sh:597-614",
+        "bin/stampede.sh:1015-1017",
+        "bin/stampede.sh:1096-1149"
+      ]
+    }
+  ]
+}

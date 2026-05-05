@@ -1,0 +1,93 @@
+{
+  "squad_id": "sq-016",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "telemetry-contract",
+  "review_only": true,
+  "status": "success",
+  "notes": [
+    "Workers executed via tool calls; no background agent ids were available from this interface, so launch_started agent_id values were recorded as sync-no-bg-id-* placeholders."
+  ],
+  "top_findings": [
+    "Monitor telemetry consumption is brittle: field-name mismatches and semantic aliasing (workers_completed <-> atoms_received) can hide real state and misreport progress.",
+    "child-agents.jsonl is treated as required proof, but monitor currently does not parse/validate it (blind spot).",
+    "Telemetry contract discoverability is weak: README points to proof files but does not define the swarm-state schema or counter semantics.",
+    "Artifacts/paths: metaswarm writes additional files (bundle.json, atoms/, collab/) that are not documented in README; legacy teardown paths also undocumented.",
+    "Atomicity is mixed: launcher has atomic patterns but still performs some direct non-atomic writes."
+  ],
+  "worker_atoms": [
+    {
+      "worker_id": "wkr-016-001",
+      "atom_id": "atm-016-001",
+      "focus": "state-shape",
+      "status": "success",
+      "confidence": 0.78,
+      "key_source_refs": [
+        "README.md:130-136",
+        "agents/stampede-commander.agent.md:45-48",
+        "agents/stampede-commander.agent.md:63-130",
+        "agents/stampede-commander.agent.md:73-76",
+        "agents/stampede-commander.agent.md:83-88"
+      ]
+    },
+    {
+      "worker_id": "wkr-016-002",
+      "atom_id": "atm-016-002",
+      "focus": "monitor-consumption",
+      "status": "success",
+      "confidence": 0.93,
+      "key_source_refs": [
+        "bin/stampede-monitor.sh:155-165",
+        "bin/stampede-monitor.sh:158-161",
+        "bin/stampede-monitor.sh:167-173",
+        "bin/stampede-monitor.sh:177-180",
+        "bin/stampede-monitor.sh:87-89"
+      ]
+    },
+    {
+      "worker_id": "wkr-016-003",
+      "atom_id": "atm-016-003",
+      "focus": "atomic-write-patterns",
+      "status": "success",
+      "confidence": 0.92,
+      "key_source_refs": [
+        "bin/stampede.sh:153-157",
+        "bin/stampede.sh:664-668",
+        "bin/stampede.sh:1016-1018",
+        "bin/stampede.sh:355",
+        "bin/stampede.sh:851-852"
+      ]
+    },
+    {
+      "worker_id": "wkr-016-004",
+      "atom_id": "atm-016-004",
+      "focus": "launch-proof-counters",
+      "status": "success",
+      "confidence": 0.92,
+      "key_source_refs": [
+        "bin/stampede-monitor.sh:158-165",
+        "bin/stampede-monitor.sh:160-164",
+        "bin/stampede-monitor.sh:179-180",
+        "README.md:35",
+        "README.md:83"
+      ]
+    },
+    {
+      "worker_id": "wkr-016-005",
+      "atom_id": "atm-016-005",
+      "focus": "result-bundle-paths",
+      "status": "success",
+      "confidence": 0.77,
+      "key_source_refs": [
+        "bin/stampede.sh:533-615",
+        "bin/stampede.sh:892-894",
+        "README.md:98-105",
+        "README.md:352-353",
+        "bin/stampede.sh:742-749"
+      ]
+    }
+  ],
+  "overall_confidence": 0.86,
+  "conflicts": [],
+  "blockers": []
+}

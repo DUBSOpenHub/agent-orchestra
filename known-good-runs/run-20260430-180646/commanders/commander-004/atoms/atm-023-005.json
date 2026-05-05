@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-023-005",
+  "theme": "collaboration-bus",
+  "focus": "malformed-ledger-tolerance",
+  "findings": [
+    "child-agents.jsonl never parsed, only appended \u2014 malformed lines have zero blast radius",
+    "swarm-state.json reads wrapped in try/except with fallback \u2014 truncation degrades one commander display only",
+    "No pre-read content validation \u2014 existence checks only",
+    "No retry/recovery for corrupt ledgers \u2014 by design (append-only, never rewrite policy)",
+    "Blast radius isolated: one malformed file affects one agent or one stat, never the full run",
+    "Zero observability into corruption \u2014 silent degradation with no warnings surfaced to users"
+  ],
+  "source_refs": [
+    "stampede-monitor.sh:34-37",
+    "stampede.sh:163-171",
+    "stampede.sh:556-561",
+    "stampede.sh:798-799",
+    "stampede-monitor.sh:147-190"
+  ],
+  "confidence": 0.91,
+  "status": "success"
+}

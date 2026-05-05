@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-002-003",
+  "theme": "commander-launch-profile",
+  "focus": "skill-launch-phrasing",
+  "findings": [
+    "Launch phrasing is narrowly scoped to stampede patterns and lacks explicit commander/metaswarm/SwarmMesh entry phrasing.",
+    "Model selection is free-form with no visible premium-policy enforcement.",
+    "Live counts are shown in monitor text but not emitted as structured telemetry from the skill.",
+    "Stop is not exposed as a first-class command; teardown/resume/status exist instead.",
+    "The phase token stampedeing is inconsistent and may break downstream consumers."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:33-44",
+    "skills/SKILL.md:38",
+    "skills/SKILL.md:108",
+    "skills/SKILL.md:283",
+    "skills/SKILL.md:310",
+    "skills/SKILL.md:393-394",
+    "skills/SKILL.md:467",
+    "skills/SKILL.md:532-540",
+    "skills/SKILL.md:640"
+  ],
+  "confidence": 0.84,
+  "status": "success"
+}

@@ -1,0 +1,130 @@
+{
+  "atom_id": "atm-016",
+  "commander_id": "commander-002",
+  "depth": 2,
+  "generated_at": "2026-05-01T01:28:38.499714Z",
+  "inputs": {
+    "constraints": {
+      "artifact_writes_only": true,
+      "leaf_models_used": [
+        "gpt-5.2",
+        "claude-sonnet-4.6",
+        "gpt-5.3-codex",
+        "claude-sonnet-4.5",
+        "gpt-5.2-codex"
+      ],
+      "no_source_modifications": true
+    },
+    "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+    "worker_ids": [
+      "wkr-016-001",
+      "wkr-016-002",
+      "wkr-016-003",
+      "wkr-016-004",
+      "wkr-016-005"
+    ]
+  },
+  "key_findings": [
+    {
+      "id": "collab-bus-protocol-location",
+      "severity": "info",
+      "source_refs": [
+        "bin/stampede.sh:670-729",
+        "bin/stampede-monitor.sh:41-67"
+      ],
+      "summary": "Collaboration-bus is the filesystem collab directory with protocol.json + 5 JSONL ledgers; defined/created by bin/stampede.sh and summarized by stampede-monitor.sh."
+    },
+    {
+      "id": "collab-ledger-schema",
+      "severity": "info",
+      "source_refs": [
+        "bin/stampede.sh:674-720"
+      ],
+      "summary": "protocol.json defines required fields for collab ledgers: ts, run_id, commander_id, event, item_id, summary, evidence, confidence, source_refs and event mapping per ledger."
+    },
+    {
+      "id": "monitor-does-not-validate-ledgers",
+      "severity": "medium",
+      "source_refs": [
+        "bin/stampede-monitor.sh:34-38",
+        "bin/stampede-monitor.sh:57-66"
+      ],
+      "summary": "stampede-monitor.sh counts JSONL lines for collab/*.jsonl and child-agents.jsonl but does not parse/validate schema; schema drift or truncation can be invisible."
+    },
+    {
+      "id": "child-agents-init-truncation-risk",
+      "severity": "high",
+      "source_refs": [
+        "bin/stampede.sh:954-963 (reported by wkr-016-004)"
+      ],
+      "summary": "At least one code path initializes child-agents.jsonl with open(\"w\"), violating append-only guidance and risking truncation/data loss during runs."
+    },
+    {
+      "id": "adopt-step-missing-ledger",
+      "severity": "medium",
+      "source_refs": [
+        "bin/stampede.sh:772-805 (reported by wkr-016-003)"
+      ],
+      "summary": "Workflow sequence includes \"adopt\" but protocol only defines ledgers up through broadcast; there is no adopts.jsonl or adopt event schema, so adoption is not persistently recorded/visible."
+    },
+    {
+      "id": "source-refs-traceability-gap",
+      "severity": "medium",
+      "source_refs": [
+        "agents/stampede-agent.agent.md:225-236",
+        "agents/stampede-commander.agent.md:29-38",
+        "bin/stampede.sh:1013-1014"
+      ],
+      "summary": "Collab protocol requires source_refs, but results/*.json and bundle schema do not require or validate source_refs; merger/monitor do not enforce traceability."
+    }
+  ],
+  "notes": [
+    "This atom is review-only and contains no source changes; recommendations are for follow-up tasks.",
+    "Caution: this squad lead session may have reset commander-002/child-agents.jsonl at start; treat earlier telemetry (before 18:18) as potentially lost for commander-002."
+  ],
+  "recommended_invariants": [
+    {
+      "applies_to": [
+        "collab/*.jsonl",
+        "commanders/*/child-agents.jsonl"
+      ],
+      "id": "jsonl-append-only",
+      "rule": "All ledgers (*.jsonl) must be opened with mode \"a\" (never \"w\"); writers must append exactly one json.dumps object + \"\\n\" per record."
+    },
+    {
+      "applies_to": [
+        "commanders/*/swarm-state.json",
+        "collab/protocol.json",
+        "commanders/*/bundle.json",
+        "results/*.json",
+        "fleet.json"
+      ],
+      "id": "atomic-json-writes",
+      "rule": "All JSON state files must be written via tmp + os.replace (or os.replace directly) to avoid partial writes (swarm-state.json, protocol.json, bundle.json, results/*.json, fleet.json)."
+    },
+    {
+      "applies_to": [
+        "collab/proposals.jsonl",
+        "collab/reviews.jsonl",
+        "collab/improvements.jsonl",
+        "collab/consensus.jsonl",
+        "collab/broadcasts.jsonl"
+      ],
+      "id": "collab-schema-validation",
+      "rule": "Each line in collab ledgers must parse as JSON and contain all required_fields per protocol.json; event must match its ledger mapping."
+    },
+    {
+      "applies_to": [
+        "collab/protocol.json",
+        "collab/*.jsonl",
+        "commanders/*/bundle.json",
+        "results/*.json"
+      ],
+      "id": "adoption-auditable",
+      "rule": "If workflow includes adopt, create an explicit adoption record (ledger + event) and require bundles/results to reference adopted consensus item_ids."
+    }
+  ],
+  "run_id": "run-20260430-180646",
+  "scope": "review-only QA: collaboration-bus + ledgers + atomic semantics + adoption workflow + bundle/result source_refs",
+  "squad_lead_id": "sq-016"
+}

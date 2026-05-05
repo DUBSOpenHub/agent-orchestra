@@ -1,0 +1,99 @@
+{
+  "worker_id": "wkr-017-001",
+  "model": "claude-opus-4.7",
+  "squad_id": "sq-017",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 3,
+  "focus": "runtime_prompt_vs_agent_docs",
+  "review_only": true,
+  "status": "ok",
+  "ts": "2026-05-01T01:18:30Z",
+  "confidence": 0.92,
+  "scope_note": "Atoms atm-001/003/004/005 already covered: existence of collab-bus, protocol required_fields, missing collab references in commander doc, reviews.jsonl missing evidence, bundle shape gap. This atom focuses ONLY on net-new alignment deltas between bin/stampede.sh:885-915 runtime prompt and agents/stampede-commander.agent.md / agents/stampede-agent.agent.md.",
+  "findings": {
+    "runtime_prompt_only_no_doc_coverage": {
+      "collab_workflow_six_phases": "bin/stampede.sh:910 prompts 'Follow workflow propose -> peer_review -> improve -> consensus -> broadcast -> adopt' — string 'propose'/'peer_review'/'broadcast'/'adopt' appears 0 times in stampede-commander.agent.md. Commander relying on agent doc alone would never know the bus exists.",
+      "collab_required_fields_in_prompt": "Runtime prompt enumerates required fields ts, run_id, commander_id, event, item_id, summary, evidence, confidence, source_refs (bin/stampede.sh:910). Agent doc never lists these; protocol.json (runtime-generated) is the only schema source.",
+      "collab_env_vars_undocumented": "Launcher exports STAMPEDE_COLLAB_DIR, STAMPEDE_COLLAB_PROTOCOL, STAMPEDE_COLLAB_PROPOSALS, STAMPEDE_COLLAB_REVIEWS, STAMPEDE_COLLAB_IMPROVEMENTS, STAMPEDE_COLLAB_CONSENSUS, STAMPEDE_COLLAB_BROADCASTS (bin/stampede.sh:930-936). Agent doc 'Required Workflow' step 1 lists only RUN_DIR, RUN_ID, REPO_PATH, STAMPEDE_COMMANDER_ID, STAMPEDE_PROGRESS_DIR — STAMPEDE_COLLAB_* are entirely absent.",
+      "operator_override_undocumented": "STAMPEDE_METASWARM_NO_GATES=1 path (bin/stampede.sh:912-914) instructs commanders to disable local timeouts/circuit-breaker/cost ceiling and continue launching. Agent doc Launch-Proof Contract lines 142-146 still says circuit breaker/timeout/cost ceiling causes 'partial' — directly contradicts override semantics; commanders following the doc literally would emit 'partial' even when override forbids it.",
+      "model_rotation_directive": "Runtime prompt: 'rotate claude-opus-4.7, gpt-5.5, ...' (bin/stampede.sh:907). Agent doc only says 'every Squad Lead and Worker launch must set an explicit model override' — no rotation requirement; risks model collisions across launches.",
+      "bundle_must_include_adopted_consensus_and_source_refs": "Runtime prompt: 'include adopted consensus item_ids and source_refs in bundle.json plus the final result' (bin/stampede.sh:910). Agent doc Bundle Shape (lines 240-267) lists task_id, run_id, commander_id, status, role, profile, swarm_scale, per_commander_full_swarm, branch, files_changed, summary, confidence, consensus.tier, consensus.notes, telemetry — no adopted_consensus_item_ids, no source_refs, no proposal_id, no broadcast linkage."
+    },
+    "doc_only_or_doc_contradicting_runtime": {
+      "agent_doc_status_enum_includes_running": "Agent doc swarm-state.json status enum: 'running | success | partial | failed' (line 80). Runtime prompt restricts FINAL bundle to 'success, partial, or failed' (bin/stampede.sh:911). Reconcilable (running is intermediate) but undocumented distinction.",
+      "agent_doc_uses_explore_or_task_for_workers": "Agent doc Critical Rules line 32: 'workers are always explore or task agents'. Runtime prompt does not constrain agent_type at all — commander free to pick general-purpose. Drift in worker agent_type contract.",
+      "worker_depth_lock_only_in_agent_doc": "Mandatory Worker Depth Lock 4-line block (agent doc lines 230-236) is NOT echoed in the runtime prompt. If a commander loaded only the runtime prompt (no agent doc), every worker prompt could omit the LEAF NODE lock — depth-bypass risk. (My own task prompt DOES contain it, so the agent doc is being honored in practice.)",
+      "context_capsule_only_in_agent_doc": "Commander Context Capsule schema (agent doc lines 170-225) is doc-only; runtime prompt mentions 'Swarm Command Context Capsule' generically (bin/stampede.sh:906) but never lists the capsule fields/aliases. No runtime validation that capsule includes both swarm_scale and per_commander_full_swarm aliases."
+    },
+    "terminology_drift": {
+      "sub_agent_vs_child_agent": "Runtime prompt uses 'sub-agent' 3x (bin/stampede.sh:905,907,909): 'launch and track your own sub-agent swarm', 'metaswarm sub-agents', 'Append every sub-agent launch/update'. Agent doc uses 'child'/'child-agent' exclusively (Launch-Proof Contract, child-agents.jsonl, 'every child launch'). The JSONL file itself is named child-agents.jsonl — runtime prompt's 'sub-agent' wording is inconsistent with the canonical filename.",
+      "swarm_state_consistent": "Both runtime and doc agree on swarm-state.json filename and child-agents.jsonl filename. No drift here.",
+      "leaf_workers_vs_workers": "Runtime prompt: 'launch 5 premium leaf workers (250 workers total)' (bin/stampede.sh:908). Agent doc: 'workers per squad lead: 5' / 'total leaf workers for this commander: 250' (lines 55-56). Aligned.",
+      "task_id_drift": "Agent doc Bundle Shape example uses task_id='contestant-001' (line 242, 250) — Havoc-style ID. Live runs use task_id='commander-001' style (this run's commander-002 manifest). Doc example will mislead future maintainers.",
+      "profile_value": "Both agree profile='metaswarm'. Aligned."
+    },
+    "stampede_agent_banned_tools_check": {
+      "tools_list": ["bash", "grep", "glob", "view", "edit", "create", "sql"],
+      "task_tool_present": false,
+      "ask_user_present": false,
+      "read_agent_present": false,
+      "list_agents_present": false,
+      "leaf_only_assertion_present": true,
+      "evidence_lines": "agents/stampede-agent.agent.md:7-15 (tools list); :27-28 ('DO NOT attempt to spawn sub-agents...You are a LEAF NODE')",
+      "verdict": "compliant — worker agent has no spawning tools and explicit LEAF NODE rule. Matches .github/copilot-instructions.md guard: 'worker agent must never include ask_user or task in its tools'."
+    },
+    "stampede_commander_collab_coverage": {
+      "mentions_collaboration_bus": false,
+      "mentions_propose_peer_review_improve_consensus_broadcast_adopt": false,
+      "mentions_proposals_jsonl_or_reviews_jsonl_etc": false,
+      "mentions_required_fields": false,
+      "mentions_atomic_append_guidance": false,
+      "mentions_protocol_json": false,
+      "search_evidence": "grep on agents/stampede-commander.agent.md for 'collab|propos|peer_review|improv|consens|broadcast|adopt|protocol.json|atomic_append' returns zero matches. Entire collaboration-bus contract lives in runtime prompt + dynamically generated protocol.json only."
+    },
+    "monitor_alignment_note": "bin/stampede-monitor.sh consumes child-agents.jsonl and the 5 collab ledgers via wc -l (per atm-001/003). Agent doc tells commander to keep both current, but never hints that the monitor is the consumer — commanders may underestimate why heartbeats matter."
+  },
+  "gaps": [
+    "stampede-commander.agent.md must add a Collaboration Bus section: ledger paths, protocol.json location, the 6 workflow phases, required_fields per event kind, and the STAMPEDE_COLLAB_* env vars listed in step 1 of Required Workflow.",
+    "Bundle Shape (agent doc lines 240-267) must add adopted_consensus_item_ids: [string] and source_refs: [string] (and ideally proposal_id/broadcast_ids) to match the runtime prompt's bundle contract.",
+    "Resolve override contradiction: agent doc Launch-Proof Contract should reference STAMPEDE_METASWARM_NO_GATES and clarify that under override the commander must NOT downgrade to 'partial' for local-gate reasons, only for platform refusals.",
+    "Agent doc should state model rotation requirement (cycle through premium pool) to match runtime 'rotate ...' directive and prevent single-model collapse.",
+    "Normalize terminology: replace 'sub-agent' in bin/stampede.sh:905,907,909 with 'child agent' (or vice versa across the doc) so logs, prompts, and the child-agents.jsonl filename use one term.",
+    "Worker Depth Lock 4-line block should be echoed inline in the runtime commander prompt (bin/stampede.sh:885-915), not only in the agent doc — defense in depth if a commander is run with a stripped agent file.",
+    "Agent doc Bundle Shape example task_id='contestant-001' should be updated to a stampede-style id (e.g., 'commander-001') to match real manifests, OR clearly labeled 'Havoc/Stampede contestant style'.",
+    "Required Workflow step 1 must list STAMPEDE_COLLAB_DIR + the 5 ledger env vars + STAMPEDE_COLLAB_PROTOCOL alongside STAMPEDE_PROGRESS_DIR.",
+    "Agent doc should constrain worker agent_type ('explore' or 'task' per line 32) consistently with what the runtime prompt expects; runtime prompt is currently silent — codify it in one place."
+  ],
+  "evidence": [
+    "bin/stampede.sh:893 — non-metaswarm worker prompt template (stampede-agent)",
+    "bin/stampede.sh:895-915 — METASWARM branch: full commander prompt construction",
+    "bin/stampede.sh:905 — 'launch and track your own sub-agent swarm' (terminology: sub-agent)",
+    "bin/stampede.sh:907 — premium pool 'rotate' directive + banned models",
+    "bin/stampede.sh:909 — 'Append every sub-agent launch/update to ${progress_dir}/child-agents.jsonl including the model field'",
+    "bin/stampede.sh:910 — collab workflow string + required_fields enumeration + 'include adopted consensus item_ids and source_refs in bundle.json plus the final result'",
+    "bin/stampede.sh:911 — final bundle status enum 'success, partial, or failed'",
+    "bin/stampede.sh:912-914 — STAMPEDE_METASWARM_NO_GATES override clause",
+    "bin/stampede.sh:930-936 — STAMPEDE_COLLAB_* env exports",
+    "agents/stampede-commander.agent.md:7-17 — tools list includes task/read_agent/list_agents (commander allowed to spawn, per .github/copilot-instructions.md)",
+    "agents/stampede-commander.agent.md:32 — 'workers are always explore or task agents'",
+    "agents/stampede-commander.agent.md:43 — env discovery list omits STAMPEDE_COLLAB_*",
+    "agents/stampede-commander.agent.md:80 — status enum includes 'running'",
+    "agents/stampede-commander.agent.md:142-146 — partial/failed criteria contradicts NO_GATES override",
+    "agents/stampede-commander.agent.md:230-236 — Worker Depth Lock 4-line block (only here, not in runtime prompt)",
+    "agents/stampede-commander.agent.md:240-267 — Bundle Shape lacks adopted_consensus_item_ids / source_refs",
+    "agents/stampede-commander.agent.md — grep 'collab|propos|peer_review|consens|broadcast|adopt|protocol.json' returns 0 matches",
+    "agents/stampede-agent.agent.md:7-15 — tools list has no task / ask_user / read_agent / list_agents",
+    "agents/stampede-agent.agent.md:27-28 — 'DO NOT attempt to spawn sub-agents... LEAF NODE'",
+    ".github/copilot-instructions.md — 'worker agent must never include ask_user or task in its tools' (compliance confirmed)"
+  ],
+  "net_new_vs_prior_atoms": [
+    "atm-001/003 noted commander doc lacks collab references; this atom enumerates the SPECIFIC missing items: 6 phases, required_fields list, 7 env vars, atomic_append_guidance.",
+    "atm-004/005 flagged bundle shape gap; this atom additionally identifies STAMPEDE_METASWARM_NO_GATES override as DIRECTLY CONTRADICTING agent doc lines 142-146 — a logic conflict, not just a documentation gap.",
+    "Net-new: terminology drift 'sub-agent' (3 occurrences in launcher) vs canonical 'child-agents.jsonl' filename — naming inconsistency in the source of truth.",
+    "Net-new: Worker Depth Lock block exists ONLY in agent doc — runtime prompt does not echo it; defense-in-depth gap.",
+    "Net-new: Bundle Shape example uses task_id='contestant-001' (Havoc style), inconsistent with live commander manifests using 'commander-NNN'.",
+    "Net-new: model 'rotate' directive present in runtime prompt but absent from agent doc — model-collision risk.",
+    "Net-new: agent doc constrains worker agent_type to 'explore | task' but runtime prompt is silent — drift in worker shape contract."
+  ]
+}

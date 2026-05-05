@@ -1,0 +1,116 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead_id": "sq-012",
+  "focus": "SwarmMesh Scaffold Readiness - Part 2",
+  "sub_task": "Review collaboration bus as potential SwarmMesh foundation",
+  "worker_count": 5,
+  "workers": [
+    {
+      "worker_id": "wkr-012-001",
+      "focus": "Check collab bus protocol design",
+      "model": "claude-opus-4.6",
+      "readiness": "2/5",
+      "summary": "Protocol is clear and useful as a single-host metaswarm prototype: versioned protocol.json, five JSONL ledgers, required fields, explicit propose/review/improve/consensus/broadcast workflow, and monitor visibility. It lacks formal schema validation, routing/namespacing, delivery guarantees, schema evolution, security, multi-node transport, backpressure, and tests.",
+      "key_evidence": [
+        "bin/stampede.sh:649-706 defines collab/protocol.json and ledgers",
+        "bin/stampede.sh:688-698 documents required fields",
+        "bin/stampede.sh:909-915 exports STAMPEDE_COLLAB_* paths",
+        "bin/stampede-monitor.sh:57-66 counts ledger lines"
+      ]
+    },
+    {
+      "worker_id": "wkr-012-002",
+      "focus": "Verify ledger append-only semantics",
+      "model": "gpt-5.4",
+      "readiness": "3/10",
+      "summary": "Append-only intent is explicit, but collaboration ledgers are not system-enforced append-only logs. The repo creates and exports ledgers but lacks a hardened writer, validator, replayer, ordering mechanism, idempotency keys, dedupe, or robust recovery semantics. Mutable state snapshots coexist beside ledgers.",
+      "key_evidence": [
+        "bin/stampede.sh:674-681 documents append-only JSONL and no rewrite/truncate/compact during run",
+        "bin/stampede.sh:660-662 creates ledgers",
+        "bin/stampede.sh:889-915 prompt-injects and exports bus paths",
+        "bin/stampede-monitor.sh:57-66 counts lines rather than replaying/parsing",
+        "tests/smoke-test.sh:145-147 only smoke-checks minimal commander telemetry"
+      ]
+    },
+    {
+      "worker_id": "wkr-012-003",
+      "focus": "Check cross-commander coordination",
+      "model": "claude-opus-4.5",
+      "readiness": "55/100",
+      "summary": "The bus supports same-run, same-filesystem commander coordination with commander_id fields, run-scoped collab directories, shared ledgers, and visible monitor counts. It is not ready for SwarmMesh cross-commander coordination across runs or hierarchy because there is no namespace model, arbitration, conflict detection, quorum enforcement, progress aggregation API, or squad/worker-level bus access.",
+      "key_evidence": [
+        "bin/stampede.sh:593-707 initializes collab bus",
+        "collab/protocol.json documents append rules and workflow in run artifacts",
+        "bin/stampede.sh:889 instructs commanders to use the bus",
+        "bin/stampede-monitor.sh:57-66 aggregates ledger counts"
+      ]
+    },
+    {
+      "worker_id": "wkr-012-004",
+      "focus": "Verify atomic operation patterns",
+      "model": "gpt-5.2",
+      "readiness": "6/10",
+      "summary": "Terminal Stampede uses strong atomic rename patterns for queue claims and result/state file visibility, but the collab bus itself relies on convention: open append mode guidance without a shared writer, lock, fsync, corruption detection, or guaranteed non-interleaving under all filesystems. Some initial commander files and claimed-manifest rewrites are direct writes.",
+      "key_evidence": [
+        "bin/stampede.sh:643-647 write_json_atomic uses tmp + os.replace",
+        "bin/stampede.sh:649-683 creates collab ledgers and documents O_APPEND guidance",
+        "agents/stampede-agent.agent.md:126-143 documents atomic queue claim via os.rename",
+        "agents/stampede-agent.agent.md:238-242 documents result temp + rename",
+        "bin/stampede-monitor.sh:27-30 excludes .tmp-* files",
+        "bin/stampede.sh:830-839 has direct initial progress writes"
+      ]
+    },
+    {
+      "worker_id": "wkr-012-005",
+      "focus": "Check mesh-ready abstractions",
+      "model": "claude-sonnet-4.6",
+      "readiness": "2/10",
+      "summary": "Mesh-critical abstractions are mostly absent or partial. Commander identity is run-scoped and unauthenticated; channels are five hardcoded ledgers; there are no subscriptions, peer topology, dynamic discovery, transport abstraction, backpressure, auth/trust, vector clocks, or extension API. The filesystem ledger could become one backend behind a real bus abstraction, but it is not itself the abstraction.",
+      "key_evidence": [
+        "bin/stampede.sh:688-699 requires commander_id and envelope-like fields",
+        "bin/stampede.sh:909-915 injects static ledger paths via environment",
+        "bin/stampede.sh:842-843 includes fleet metadata",
+        "bin/stampede-monitor.sh:57-67 only provides ledger count visibility"
+      ]
+    }
+  ],
+  "synthesis": {
+    "overall_readiness": "prototype foundation only; not SwarmMesh-ready",
+    "overall_score": "3/10",
+    "strengths": [
+      "Zero-infrastructure filesystem coordination fits current single-host metaswarm runs.",
+      "Protocol and workflow are explicit: propose, peer_review, improve, consensus, broadcast, adopt.",
+      "Run-scoped collab directory avoids cross-run file collisions for current usage.",
+      "Append-only JSONL guidance and temp+rename patterns align with Terminal Stampede's filesystem IPC philosophy.",
+      "Monitor already exposes lightweight bus visibility through ledger counts.",
+      "item_id and source_refs provide a minimal basis for cross-record traceability."
+    ],
+    "critical_gaps": [
+      "No enforced bus API: writers are prompt-guided rather than constrained by code.",
+      "No formal JSON Schema validation, schema registry, or migration/version negotiation.",
+      "No routing, dynamic topics, subscriptions, read cursors, delivery acknowledgements, or replay API.",
+      "No global ordering, event_id, deduplication, idempotency, causal metadata, or conflict detection.",
+      "No quorum, arbitration, or consensus enforcement; consensus ledger is advisory.",
+      "No transport abstraction beyond local/shared filesystem.",
+      "No authentication, signing, ACLs, or trust model for mesh nodes.",
+      "No backpressure, retention, segmentation, compaction, or durability/fsync story for high-volume meshes.",
+      "No dynamic discovery or hierarchical namespace for commanders, squads, workers, or external peers."
+    ],
+    "swarmmesh_implications": [
+      "Suitable today as a low-cost collaboration scratchpad for a small number of commanders in one metaswarm run.",
+      "Unsafe as a primary SwarmMesh substrate because correctness depends on agent obedience and local filesystem behavior.",
+      "Best path is to preserve the current ledgers as a filesystem transport/backend while introducing a real SwarmMesh bus abstraction above it."
+    ],
+    "recommended_next_steps": [
+      "Create a small collab-bus writer/reader library or CLI that performs append validation, event_id generation, durable append, and tolerant replay.",
+      "Define JSON Schema for protocol.json and each event envelope; validate records before append and during replay.",
+      "Add event_id, parent_ids/source_refs semantics, monotonic per-writer sequence, and idempotency/deduplication rules.",
+      "Introduce namespaces and dynamic channels/topics for run, commander, squad, worker, and cross-run coordination.",
+      "Add subscription/read-cursor and replay APIs, even if implemented initially as filesystem polling.",
+      "Add quorum/conflict/arbitration primitives if consensus records are expected to drive automated decisions.",
+      "Abstract transport so local JSONL remains the default backend while future backends can support multi-host mesh operation.",
+      "Add tests for concurrent appends, malformed trailing lines, replay, dedupe, ordering assumptions, and monitor behavior."
+    ]
+  }
+}

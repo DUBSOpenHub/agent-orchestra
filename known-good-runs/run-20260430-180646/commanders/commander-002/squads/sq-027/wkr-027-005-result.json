@@ -1,0 +1,34 @@
+{
+  "worker_id": "wkr-027-005",
+  "model": "claude-opus-4.5",
+  "squad_lead": "sq-027",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "focus": "stop and recovery mechanics",
+  "status": "completed",
+  "verdict": "accept_with_major_additions",
+  "highlights": [
+    "mark_run_blocked() atomically updates state.json via .tmp rename; preserves ledger integrity",
+    "Collab ledgers preserved on block: 32 lines total (5 proposals, 11 reviews, 7 improvements, 5 consensus, 4 broadcasts) intact",
+    "mark_run_blocked() appends commander_blocked event to child-agents.jsonl for each commander",
+    "do_teardown() sets phase=torn_down (NOT status=stopped) \u2014 semantic inconsistency",
+    "protocol.json correctly instructs readers to tolerate malformed trailing lines"
+  ],
+  "gaps": [
+    "NO --resume support: grep returns zero matches; blocked runs cannot be reattached",
+    "do_teardown() does NOT drain in-flight writers before killing PIDs \u2014 partial writes possible",
+    "mark_run_blocked() does NOT append run_blocked event to collab ledgers (proposals/broadcasts)",
+    "count_jsonl_lines uses wc -l: partial final lines count as 0 bytes but still return a count \u2014 no graceful handling",
+    "Teardown kills workers synchronously before state update; no SIGTERM grace period for writers"
+  ],
+  "evidence": [
+    "stampede.sh:141-195 mark_run_blocked() \u2014 atomic state update, child-agents.jsonl append",
+    "stampede.sh:306-364 do_teardown() \u2014 kills PIDs, then sets phase=torn_down, no drain logic",
+    "stampede-monitor.sh count_jsonl_lines() \u2014 simple wc -l, no partial-line detection",
+    "collab/protocol.json:29-34 \u2014 atomic_append_guidance acknowledges malformed trailing lines",
+    "state.json shows status=blocked, ledger counts all 0 in state but files have 32 lines total",
+    "grep --resume returns no matches in stampede.sh"
+  ],
+  "confidence": 0.92,
+  "ts": "2026-05-01T01:21:33Z"
+}

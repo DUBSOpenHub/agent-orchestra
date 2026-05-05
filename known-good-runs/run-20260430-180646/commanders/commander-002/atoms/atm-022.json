@@ -1,0 +1,170 @@
+{
+  "atom_id": "atm-022",
+  "commander_id": "commander-002",
+  "created_at": "2026-05-01T01:23:31.916068Z",
+  "depth": 2,
+  "findings": {
+    "broadcasts": {
+      "evidence": [
+        "bin/stampede.sh:671-721",
+        "bin/stampede.sh:904-936",
+        "bin/stampede-monitor.sh:57-66",
+        "collab/broadcasts.jsonl"
+      ],
+      "gaps": [
+        "Broadcasts not actionable in merger",
+        "Some broadcast records use adopted_items rather than consensus_item_id",
+        "Bundle broadcast fields are inconsistent or missing"
+      ],
+      "key_points": [
+        "Protocol defines broadcasts ledger and launcher exports STAMPEDE_COLLAB_BROADCASTS; monitor displays broadcast count.",
+        "Commander prompt asks commanders to consume and append broadcasts.",
+        "Broadcast consumption is prompt-only; merger/synthesis code does not reference broadcasts/collab ledgers."
+      ],
+      "status": "partial"
+    },
+    "consensus_linkage": {
+      "evidence": [
+        "collab/consensus.jsonl",
+        "collab/improvements.jsonl",
+        "bin/stampede.sh:910",
+        "agents/stampede-commander.agent.md:240-267",
+        "agents/stampede-merger.agent.md:1-357"
+      ],
+      "gaps": [
+        "Bundle schema in commander agent omits fields launcher requires",
+        "Merger/synthesis ignores collab bus",
+        "Broadcast/adoption chain lacks strict schema"
+      ],
+      "key_points": [
+        "Consensus items generally include source_refs and often link back to improvements/proposals/reviews.",
+        "One consensus item links to squad atom files rather than improvement ledger items; one improvement references consensus, creating chain-order drift.",
+        "Bundles adopt consensus inconsistently: adopted_consensus_item_ids vs adopted_consensus, and merger does not consume collab ledgers."
+      ],
+      "status": "partial"
+    },
+    "ledger_required_fields": {
+      "evidence": [
+        "bin/stampede.sh:671-720",
+        "bin/stampede.sh:895-936",
+        "bin/stampede-monitor.sh:57-67",
+        ".stampede/run-20260430-180646/collab/protocol.json:48-58"
+      ],
+      "gaps": [
+        "No runtime schema validation",
+        "No dedicated adopt ledger",
+        "Bundle/result adoption field names drift"
+      ],
+      "key_points": [
+        "protocol.json defines required_fields: ts, run_id, commander_id, event, item_id, summary, evidence, confidence, source_refs.",
+        "Launcher creates ledgers and prompts commanders to write required fields, but monitor only counts lines and no validator enforces schemas.",
+        "Current run records show schema drift: some reviews/broadcasts miss evidence, evidence types vary, and adoption fields differ across bundles/results."
+      ],
+      "status": "partial"
+    },
+    "malformed_line_tolerance": {
+      "evidence": [
+        "bin/stampede.sh:681-703",
+        "bin/stampede-monitor.sh:32-38",
+        "bin/stampede-monitor.sh:61-65"
+      ],
+      "gaps": [
+        "No shared tolerant JSONL parser",
+        "No tail repair/recovery",
+        "Line-count observability can be wrong for partial lines/missing trailing newline"
+      ],
+      "key_points": [
+        "Protocol guidance explicitly says readers must tolerate absent files and malformed trailing lines.",
+        "Collab ledgers are pre-created; monitor uses existence checks and wc -l, so malformed JSON does not crash monitor counts.",
+        "Tolerance is implicit because most paths do not parse JSONL; partial/malformed lines can still distort counts."
+      ],
+      "status": "amber"
+    },
+    "state_counts": {
+      "evidence": [
+        ".stampede/run-20260430-180646/state.json:23-63",
+        ".stampede/run-20260430-180646/commanders/commander-002/swarm-state.json",
+        ".stampede/run-20260430-180646/commanders/commander-004/swarm-state.json",
+        ".stampede/run-20260430-180646/commanders/commander-005/child-agents.jsonl"
+      ],
+      "gaps": [
+        "No atomic updater for state.json counts",
+        "No schema/invariant validation for swarm-state telemetry",
+        "atoms_received semantics ambiguous per squad vs per worker"
+      ],
+      "key_points": [
+        "state.json task and collab counts are stale/frozen while filesystem and ledgers show real progress.",
+        "state.json collab.counts reports all zeros while observed ledgers contain proposals=5, reviews=11, improvements=7, consensus=5, broadcasts\u22484.",
+        "Commander telemetry varies: commander-002 had truncation/recovery indicators, commander-004 has impossible completed>launched counts, commander-005 overclaims worker tracking relative to child-agents evidence."
+      ],
+      "status": "critical"
+    }
+  },
+  "overall_gaps_ranked": [
+    {
+      "gap": "state.json and some swarm-state telemetry are stale or internally inconsistent, so monitor/proof counts can be misleading.",
+      "severity": "critical"
+    },
+    {
+      "gap": "Collaboration bus schemas are defined but not validated, leading to missing required fields and field-name/type drift.",
+      "severity": "major"
+    },
+    {
+      "gap": "Consensus/adoption/broadcast outputs are not consumed by merger/synthesis, so cross-commander consensus remains prompt-level only.",
+      "severity": "major"
+    },
+    {
+      "gap": "Malformed-line tolerance relies on not parsing ledgers, which avoids crashes but can hide corruption and inaccurate counts.",
+      "severity": "moderate"
+    }
+  ],
+  "recommendations_review_only": [
+    "Add a tolerant JSONL reader/validator that reports malformed lines and missing required fields without rewriting ledgers.",
+    "Make state/count derivation filesystem-ledger based or update state.json atomically from append events.",
+    "Align commander agent bundle schema with launcher prompt: adopted_consensus_item_ids, source_refs, broadcasts.",
+    "Teach merger/synthesis to consume collab ledgers and adopted consensus items."
+  ],
+  "run_id": "run-20260430-180646",
+  "source_edits": false,
+  "squad_id": "sq-022",
+  "status": "complete_with_findings",
+  "summary": "Collaboration-bus QA found protocol intent present but enforcement and telemetry are inconsistent: required fields are prompt-guided not validated, state counts are stale, malformed-line tolerance is mostly non-parsing/line-count tolerance, consensus linkage is partially valid with bundle schema drift, and broadcasts are visible but not consumed by merger/synthesis.",
+  "task_focus": "review-only collaboration-bus QA",
+  "workers": [
+    {
+      "confidence": 0.84,
+      "focus": "ledger required fields",
+      "model": "gpt-5.2",
+      "status": "partial",
+      "worker_id": "wkr-022-001"
+    },
+    {
+      "confidence": 0.96,
+      "focus": "state counts",
+      "model": "claude-sonnet-4.6",
+      "status": "critical_findings_complete",
+      "worker_id": "wkr-022-002"
+    },
+    {
+      "confidence": 0.88,
+      "focus": "malformed-line tolerance",
+      "model": "gpt-5.3-codex",
+      "status": "amber",
+      "worker_id": "wkr-022-003"
+    },
+    {
+      "confidence": 0.91,
+      "focus": "consensus linkage",
+      "model": "claude-sonnet-4.5",
+      "status": "partial_compliance",
+      "worker_id": "wkr-022-004"
+    },
+    {
+      "confidence": 0.72,
+      "focus": "broadcasts",
+      "model": "gpt-5.2-codex",
+      "status": "partial",
+      "worker_id": "wkr-022-005"
+    }
+  ]
+}

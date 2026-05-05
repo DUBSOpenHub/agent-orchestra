@@ -1,0 +1,62 @@
+{
+  "child_id": "sq-046",
+  "parent_id": "commander-004",
+  "theme": "docs-ci-readiness",
+  "status": "partial",
+  "overall_confidence": 0.86,
+  "notes": [
+    "All 5 leaf worker audits completed. Copilot task tool returned results synchronously; no background agent ids were available, so telemetry uses inline-* placeholders."
+  ],
+  "consensus": [
+    "CI and smoke coverage focus heavily on shell linting + launcher scaffolding; they do not validate real metaswarm commander/worker behavior or telemetry in practice.",
+    "Docs contain multiple internal inconsistencies that can mislead users about install artifacts, branch naming, and merge ordering."
+  ],
+  "conflicts": [
+    "AGENTS.md branch naming and merger ordering contradict README."
+  ],
+  "blockers": [
+    "Smoke test requires tmux; CI does not currently run smoke-test.sh and would fail without tmux server setup.",
+    "Smoke test uses banned child model (claude-haiku-4.5) in its single-agent path."
+  ],
+  "workers": [
+    {
+      "worker_id": "wkr-046-001",
+      "atom_id": "atm-046-001",
+      "confidence": 0.86,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-046-002",
+      "atom_id": "atm-046-002",
+      "confidence": 0.95,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-046-003",
+      "atom_id": "atm-046-003",
+      "confidence": 0.91,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-046-004",
+      "atom_id": "atm-046-004",
+      "confidence": 1.0,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-046-005",
+      "atom_id": "atm-046-005",
+      "confidence": 0.73,
+      "status": "success"
+    }
+  ],
+  "key_source_refs": [
+    ".github/workflows/ci.yml:31-44",
+    "tests/smoke-test.sh:70-148",
+    "tests/depth-guard-lint.sh:16-62",
+    "README.md:77-116",
+    "README.md:200-252",
+    "install.sh:22-74",
+    "AGENTS.md:33,69"
+  ]
+}

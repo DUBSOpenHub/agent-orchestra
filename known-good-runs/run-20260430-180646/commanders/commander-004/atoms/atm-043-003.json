@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-043-003",
+  "theme": "recovery-stuck-detection",
+  "focus": "smoke-recovery-coverage",
+  "findings": [
+    "Zero test coverage for stuck-agent scenarios; stub agent always succeeds immediately",
+    "No partial failure testing; only 1 task queued, metaswarm uses --dry-run",
+    "Dead worker re-claim (monitor orphan recovery) never exercised",
+    "stampede-monitor.sh never launched by smoke test",
+    "Signal handling cleanup not tested beyond basic trap",
+    "Missing: stuck threshold, orphan requeue, all-dead grace, multi-task mixed outcomes"
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:24-59",
+    "tests/smoke-test.sh:63",
+    "tests/smoke-test.sh:73-148",
+    "tests/smoke-test.sh:21"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

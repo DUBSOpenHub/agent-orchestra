@@ -1,0 +1,26 @@
+{
+  "worker_id": "wkr-016-005",
+  "theme": "telemetry-contract",
+  "focus": "result-bundle-paths",
+  "status": "success",
+  "confidence": 0.77,
+  "findings": [
+    "Launcher establishes repo-local artifact root at $REPO_PATH/.stampede/{run_id} and creates logs/scripts/pids + commanders/ and collab/ for metaswarm.",
+    "Worker prompts align with .stampede/{run_id}/{queue,claimed,results,logs} paths documented in README for baseline stampede.",
+    "Metaswarm progress_dir includes commanders/{commander_id}/{atoms,logs}; commander prompt requires bundle.json and copying bundle to BASE_DIR/results \u2014 README mentions swarm-state.json/child-agents.jsonl but omits bundle/atoms/logs/results-copy behavior.",
+    "Metaswarm collab/ bus is created and exported by launcher but not described in README.",
+    "Teardown checks legacy run dirs (~/.copilot/stampede and ~/.stampede) in addition to repo .stampede, but README only documents repo-local .stampede."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:533-615",
+    "bin/stampede.sh:892-894",
+    "README.md:98-105",
+    "README.md:352-353",
+    "bin/stampede.sh:742-749",
+    "bin/stampede.sh:909-911",
+    "README.md:130",
+    "bin/stampede.sh:612-725",
+    "bin/stampede.sh:928-936",
+    "bin/stampede.sh:311-320"
+  ]
+}

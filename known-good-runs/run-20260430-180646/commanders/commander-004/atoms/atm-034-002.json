@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-034-002",
+  "theme": "partial-failure-bundles",
+  "focus": "partial-trigger-paths",
+  "findings": [
+    "Docs require commander bundles to report partial/failed when a full 250-worker swarm cannot launch; silent downgrade is prohibited.",
+    "Run-level status schema lacks a partial state, so partial semantics appear bundle-only rather than enforced at orchestrator level.",
+    "These files do not document banned-model or unavailable-model trigger paths, and they do not show an enforcement mechanism for bundle completeness."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:63",
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:836",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

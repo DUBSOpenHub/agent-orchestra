@@ -1,0 +1,30 @@
+{
+  "worker_id": "wkr-027-004",
+  "model": "gpt-5.4",
+  "squad_lead": "sq-027",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "focus": "adoption and broadcast mechanics",
+  "status": "completed",
+  "verdict": "high_risk_gap",
+  "highlights": [
+    "protocol defines 6 phases but protocol.json exposes no adopt ledger/event; adoption is only hinted via stampede.sh prompt text and ad-hoc broadcast/bundle prose",
+    "broadcast records are inconsistent: broadcasts.jsonl line 3 omits required evidence and uses adopted_items instead of consensus_item_id",
+    "consensus->broadcast->adopt is not fully traceable from ledgers alone; no forward pointer from consensus to broadcasts and no dedicated adoption ledger"
+  ],
+  "gaps": [
+    "No adopt ledger file exists under collab/ despite protocol workflow including adopt",
+    "stampede-commander.agent.md has no consume_broadcasts step; collab workflow is injected by launcher prompt, not the agent contract",
+    "Bundle shape in stampede-commander.agent.md omits adopted_consensus_item_ids/source_refs required by bin/stampede.sh prompt",
+    "Post-run auditors cannot verify item-by-item adoption from ledgers alone"
+  ],
+  "evidence": [
+    "collab/protocol.json:5-25,37-57",
+    "collab/broadcasts.jsonl:1-4 (line 3 missing evidence; uses adopted_items)",
+    "collab/consensus.jsonl:1-5 (no broadcast pointer; line 5 missing evidence)",
+    "bin/stampede.sh:1013-1014",
+    "agents/stampede-commander.agent.md:41-61,254-282"
+  ],
+  "confidence": 0.94,
+  "ts": "2026-05-01T01:21:42Z"
+}

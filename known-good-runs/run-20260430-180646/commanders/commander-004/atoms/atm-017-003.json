@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-017-003",
+  "theme": "telemetry-contract",
+  "focus": "atomic-write-patterns",
+  "findings": [
+    "swarm-state.json initial write (stampede.sh:832) is NOT atomic \u2014 direct open+dump, no tmp+replace",
+    "fleet.json write (stampede.sh:844) is NOT atomic \u2014 direct open+dump",
+    "state.json teardown update (stampede.sh:355) is NOT atomic \u2014 in-place read+write",
+    "write_json_atomic uses .tmp suffix; swarm_progress.py uses .tmp- prefix \u2014 both consistent with each other but monitor's exclude glob (! -name '.tmp-*') only covers prefix pattern",
+    "commander agent specifies atomic bundle write; mechanism left to implementer",
+    "3 non-atomic writes on files continuously read by monitor"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:645-649",
+    "bin/stampede.sh:832-834",
+    "bin/stampede.sh:844-845",
+    "bin/stampede.sh:348-358",
+    "agents/stampede-commander.agent.md:37"
+  ],
+  "confidence": 0.92,
+  "status": "success"
+}

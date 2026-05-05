@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-040-001",
+  "theme": "stop-teardown-behavior",
+  "focus": "pid-tracking",
+  "findings": [
+    "PID capture uses find_leaf_pid process-tree walk with 5s delay to write pidfiles.",
+    "Agent detection limited to copilot/gh copilot/claude/aider strings; fallback may pick wrong child when agent cmd differs.",
+    "Teardown terminates recorded PID without verifying ownership; base_dir can be empty; no process-group cleanup, risking orphans."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:70-90",
+    "bin/stampede.sh:626-631",
+    "bin/stampede.sh:710-713",
+    "bin/stampede.sh:1275-1305",
+    "bin/stampede.sh:327-341",
+    "bin/stampede.sh:314-323",
+    "bin/stampede.sh:1200-1210"
+  ],
+  "confidence": 0.78,
+  "status": "success"
+}

@@ -1,0 +1,91 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander": "commander-005",
+  "squad_lead": "sq-050",
+  "scope": "Final Synthesis Readiness",
+  "timestamp": "2026-05-01T01:15:27.221218Z",
+  "readiness": "not_ready",
+  "summary": "Run is auth_blocked with 4/5 commanders still claimed and no final bundles/results for commanders 002\u2013005. Only commander-001 produced a partial bundle with HOLD recommendation. Collaboration bus artifacts exist and were used but counts are inconsistent and adoption is only confirmed for commander-001.",
+  "qa_gates": {
+    "defined": true,
+    "ci_workflow": ".github/workflows/ci.yml",
+    "notes": "CI defines shellcheck, bash -n, YAML frontmatter validation, install smoke test, changelog order, and depth-guard lint; smoke-test.sh exists but is not executed in CI.",
+    "run_state": {
+      "phase": "auth_blocked",
+      "status": "blocked",
+      "blocked_reason": "OAuth token validation failure"
+    }
+  },
+  "required_outputs": {
+    "root_artifacts": [
+      "fleet.json",
+      "state.json",
+      "queue/",
+      "claimed/",
+      "results/",
+      "commanders/",
+      "collab/",
+      "logs/",
+      "pids/",
+      "scripts/"
+    ],
+    "present": true,
+    "results_complete": false,
+    "missing_results": [
+      "commander-002",
+      "commander-003",
+      "commander-004",
+      "commander-005"
+    ],
+    "missing_bundles": [
+      "commander-002",
+      "commander-003",
+      "commander-004",
+      "commander-005"
+    ]
+  },
+  "bundle_completeness": {
+    "queue_empty": true,
+    "claimed_remaining": [
+      "commander-002",
+      "commander-003",
+      "commander-004",
+      "commander-005"
+    ],
+    "results_only": [
+      "commander-001"
+    ],
+    "commander_atoms_gaps": {
+      "commander-003": "0 atoms",
+      "commander-004": "0 atoms",
+      "commander-002": "2 atoms only"
+    }
+  },
+  "collaboration_bus": {
+    "artifacts_present": true,
+    "ledgers_present": [
+      "proposals",
+      "reviews",
+      "improvements",
+      "consensus",
+      "broadcasts"
+    ],
+    "adoption_confirmed_for": [
+      "commander-001"
+    ],
+    "integration_ready": false,
+    "notes": "fleet.json collab counters remain zero despite populated ledgers; overall run blocked; only partial bundle recommends HOLD."
+  },
+  "blockers": [
+    "Authentication failure blocked run; 4 commanders stalled.",
+    "Missing final bundles/results for commanders 002\u2013005.",
+    "state.json phase not completed (auth_blocked).",
+    "Metaswarm premium model enforcement missing in stampede.sh; default model uses banned list for metaswarm."
+  ],
+  "next_steps": [
+    "Resolve auth (/login or GH_TOKEN/GITHUB_TOKEN) and restart run.",
+    "Requeue claimed commander tasks and rerun metaswarm.",
+    "Ensure commanders emit bundle.json + results for all tasks.",
+    "Run CI smoke-test.sh in workflow and revalidate depth-guard and launch proofs."
+  ]
+}

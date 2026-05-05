@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-017-002",
+  "theme": "telemetry-contract",
+  "focus": "monitor-consumption",
+  "findings": [
+    "launch_proof_required defaults to False if missing \u2014 warning suppressed when field absent",
+    "warning only checks squads==0, not workers==0; 50 squads/0 workers silently passes",
+    "incomplete-proof warning only fires on status==success, not status==partial",
+    "monitor reads swarm-state.json only; child-agents.jsonl not directly read by monitor",
+    "workers_started and workers_launched can diverge silently \u2014 only telemetry fallback to proof",
+    "orphan recovery 180s threshold may be too aggressive for slow heartbeats",
+    "print_collab_summary is safe when collab/ dir absent \u2014 returns 0 counts"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:155-180",
+    "bin/stampede-monitor.sh:32-38",
+    "bin/stampede-monitor.sh:237-278"
+  ],
+  "confidence": 0.96,
+  "status": "success"
+}

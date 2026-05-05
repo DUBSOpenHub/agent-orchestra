@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-049-005",
+  "theme": "docs-ci-readiness",
+  "focus": "agents-doc-alignment",
+  "findings": [
+    "CONSISTENT: Metaswarm 50\u00d75=250 formula matches across AGENTS.md and README.md",
+    "CONSISTENT: Explicit opt-in and partial reporting requirement aligned in both files",
+    "CONSISTENT: Nested progress paths (.stampede/{run_id}/commanders/{commander_id}/) match",
+    "CONSISTENT: Commander usage invocation syntax aligned between both files",
+    "GAP: No SwarmMesh term found in either AGENTS.md or README.md; if SwarmMesh is documented capability, it is missing from both files"
+  ],
+  "source_refs": [
+    "AGENTS.md:5",
+    "AGENTS.md:20-29",
+    "AGENTS.md:72",
+    "README.md:35",
+    "README.md:83",
+    "README.md:130-136"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

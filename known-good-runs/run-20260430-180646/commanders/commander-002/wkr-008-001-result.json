@@ -1,0 +1,12 @@
+{
+  "worker_id": "wkr-008-001",
+  "model": "gpt-5.2",
+  "assignment": "audit current ledgers for missing required fields",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "child-agents.jsonl has missing ts/commander_id/child_id/status across mixed schemas",
+    "swarm-state launch_proof timestamps mixed formats",
+    "atm-001 missing atom_id/commander_id/run_id; atm-005 missing atom_id"
+  ]
+}

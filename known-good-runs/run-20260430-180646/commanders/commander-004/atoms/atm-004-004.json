@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-004-004",
+  "theme": "commander-launch-profile",
+  "focus": "docs-claim-branch-alignment",
+  "findings": [
+    "AGENTS.md documents full SS-250 commander behavior, nested progress, and child-agent telemetry in the expected commander directory.",
+    "AGENTS.md and README.md both explicitly say metaswarm must report partial rather than silently downgrading.",
+    "Docs align on isolated branch naming and atomic task-claim semantics.",
+    "Docs mention premium child-model overrides but do not spell out the premium pool or banned models.",
+    "Docs mention teardown, but detailed stop/recovery workflow is sparse."
+  ],
+  "source_refs": [
+    "AGENTS.md:22",
+    "AGENTS.md:29",
+    "AGENTS.md:69",
+    "AGENTS.md:72",
+    "README.md:35",
+    "README.md:83",
+    "README.md:130",
+    "README.md:202",
+    "README.md:224"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

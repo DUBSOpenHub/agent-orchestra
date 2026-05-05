@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-050-005",
+  "theme": "docs-ci-readiness",
+  "focus": "agents-doc-alignment",
+  "findings": [
+    "AGENTS.md documents Depth Guard and partial requirement for metaswarm, but README is the only place detailing premium model overrides and telemetry paths including swarm-state.json.",
+    "AGENTS.md lacks premium/banned model policy details and does not mention swarm-state.json; stop/recovery details (monitor stuck detection, PID tracking) are only in README."
+  ],
+  "source_refs": [
+    "AGENTS.md:22-29",
+    "README.md:130",
+    "README.md:85-86"
+  ],
+  "confidence": "medium-high",
+  "status": "success"
+}

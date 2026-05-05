@@ -1,0 +1,38 @@
+{
+  "squad_lead": "sq-043",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Word Limit Enforcement",
+  "workers_launched": 5,
+  "workers_succeeded": 4,
+  "workers_failed": 1,
+  "failed_workers": ["wkr-043-004 (rate-limited, resolved manually)"],
+  "models_used": ["gpt-5.4", "claude-opus-4.5", "gpt-5.2", "claude-sonnet-4.6", "gpt-5.3-codex"],
+  "findings": {
+    "word_limit_defined": true,
+    "limit_value": 500,
+    "locations": [
+      {"file": "agents/stampede-agent.agent.md", "line": 30, "type": "prompt_instruction", "text": "Keep result summaries under **500 words**."},
+      {"file": "agents/stampede-agent.agent.md", "line": 321, "type": "checklist", "text": "Summary ≤ 500 words"},
+      {"file": "agents/stampede-commander.agent.md", "line": 39, "type": "prompt_instruction", "text": "Keep the final summary under 500 words."},
+      {"file": "agents/stampede-commander.agent.md", "line": 252, "type": "bundle_schema", "text": "\"summary\": \"Under 500 words.\""},
+      {"file": "skills/SKILL.md", "line": 240, "type": "config_param", "text": "\"max_result_words\": 500"},
+      {"file": "skills/SKILL.md", "line": 862, "type": "landmine_table", "text": "Landmine #14: 500-word result blowup"}
+    ],
+    "enforcement_mechanism": {
+      "type": "prompt_instruction_plus_in_agent_truncation",
+      "details": "Enforcement is two-layered: (1) behavioral instruction in agent prompt, (2) Python truncation logic in the agent result-writing template at stampede-agent.agent.md:222-223 that splits on words, checks len > 500, and truncates with '[truncated]' suffix.",
+      "hard_shell_check": false,
+      "post_hoc_validation": false,
+      "display_truncation": "skills/SKILL.md:620 truncates displayed summaries to 500 chars (UI only); monitor truncates to 60 chars for display"
+    },
+    "gaps_identified": [
+      "stampede-merger.agent.md has no word limit on its synthesis/report output",
+      "bin/stampede-merge.sh imposes no word cap on merge summaries",
+      "No shell-level wc -w validation exists to reject oversized results"
+    ]
+  },
+  "verdict": "PASS — 500-word limit is consistently defined and enforced via prompt + in-agent truncation logic for workers and commanders. Minor gap: merger agent has no equivalent cap.",
+  "confidence": 0.92,
+  "timestamp": "2025-07-17T04:15:00Z"
+}

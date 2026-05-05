@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-006-005",
+  "model": "gpt-5.2-codex",
+  "assignment": "audit JSONL malformed-line tolerance",
+  "summary": [
+    "Monitor count-only for collab ledgers: malformed JSON lines won't crash but counts can be wrong (wc -l).",
+    "Telemetry child-agents.jsonl parsing in monitor uses per-line json.loads with try/except and skips malformed lines, so it is tolerant but silently under-reports if corruption occurs.",
+    "Smoke test checks raw text and may fail if expected substring line is malformed/truncated."
+  ],
+  "evidence": [
+    {"path": "bin/stampede-monitor.sh", "lines": "32-66", "note": "collab JSONL line counts"},
+    {"path": "bin/stampede-monitor.sh", "lines": "105-150", "note": "child_counts parses JSONL per line with try/except"},
+    {"path": "bin/stampede.sh", "lines": "~794-800", "note": "protocol instructs tolerate malformed trailing lines"},
+    {"path": "tests/smoke-test.sh", "lines": "145-147", "note": "ledger read_text substring check"}
+  ],
+  "recommendations": [
+    "Track and surface invalid/skipped JSONL line counts for telemetry; optionally warn in monitor.",
+    "Use robust record counting (parse-valid-lines) for collab ledgers if accuracy matters.",
+    "Keep tolerant parsing for any future collab ledger readers; treat missing files as empty." 
+  ],
+  "confidence": 0.78
+}

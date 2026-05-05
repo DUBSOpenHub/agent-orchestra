@@ -1,0 +1,11 @@
+{
+  "atom_id": "atm-006-001",
+  "area": "stop-recovery-blocked-state",
+  "blockers": 2,
+  "highlights": [
+    "MAJOR: --teardown sets phase=torn_down (not status=stopped); does not drain in-flight bundle writers",
+    "MAJOR: duplicate run_id silently tears down + overwrites existing .stampede/{run_id}",
+    "INFO: orphan claimed-task recovery exists in monitor (180s threshold + commander-active gate)",
+    "INFO: no TODO/FIXME shipping blockers found"
+  ]
+}

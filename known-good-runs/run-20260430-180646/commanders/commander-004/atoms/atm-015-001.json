@@ -1,0 +1,33 @@
+{
+  "worker_id": "wkr-015-001",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "worker-leaf-lock",
+  "findings": [
+    {
+      "check": "Tools exclude task/ask_user",
+      "status": "PASS",
+      "ref": "stampede-agent.agent.md:7-14"
+    },
+    {
+      "check": "DO NOT spawn sub-agents",
+      "status": "PASS",
+      "ref": "stampede-agent.agent.md:27"
+    },
+    {
+      "check": "LEAF NODE statement",
+      "status": "PASS",
+      "ref": "stampede-agent.agent.md:28"
+    },
+    {
+      "check": "Loopholes via bash",
+      "status": "WARN",
+      "ref": "stampede-agent.agent.md:8",
+      "note": "bash tool could spawn child processes"
+    }
+  ],
+  "source_refs": [
+    "agents/stampede-agent.agent.md:7-14,26-28"
+  ],
+  "confidence": 0.85,
+  "status": "success"
+}

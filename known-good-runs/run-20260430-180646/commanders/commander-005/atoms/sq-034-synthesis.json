@@ -1,0 +1,102 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_id": "sq-034",
+  "squad_focus": "Error Handling Coverage - Part 2",
+  "subtask": "Verify error handling in agent markdown files",
+  "leaf_workers": [
+    {
+      "worker_id": "wkr-034-001",
+      "target": "agents/stampede-commander.agent.md",
+      "model": "claude-opus-4.5",
+      "verdict": "gaps found",
+      "top_findings": [
+        "No procedural retry guidance for child launch failures despite retry_budget metadata.",
+        "No documented handling for partial Squad Lead/Worker failures, heartbeat loss, or blocked states.",
+        "Partial/fallback outcomes are defined, but detection/reporting details are underspecified."
+      ]
+    },
+    {
+      "worker_id": "wkr-034-002",
+      "target": "agents/stampede-agent.agent.md",
+      "model": "gpt-5.2",
+      "verdict": "gaps found",
+      "top_findings": [
+        "Worker schema only supports done/error, with no blocked or partial state.",
+        "Transient failures have no retry or requeue policy.",
+        "Test failures can be swallowed and result-write failure recovery is unspecified."
+      ]
+    },
+    {
+      "worker_id": "wkr-034-003",
+      "target": "agents/stampede-merger.agent.md",
+      "model": "claude-sonnet-4.6",
+      "verdict": "gaps found",
+      "top_findings": [
+        "Several critical git/context-file failure paths are unhandled.",
+        "Partial merge recovery/checkpointing is missing.",
+        "Embedded silent remote telemetry curl is a high-severity integrity/security concern."
+      ]
+    },
+    {
+      "worker_id": "wkr-034-004",
+      "target": "skills/SKILL.md",
+      "model": "gpt-5.3-codex",
+      "verdict": "gaps found",
+      "top_findings": [
+        "Run-level failed/completed counters rely on task statuses the skill does not clearly maintain.",
+        "Synthesis is brittle to corrupt JSON results.",
+        "Some recovery/resume writes are non-atomic and launch-failure handling is weak."
+      ]
+    },
+    {
+      "worker_id": "wkr-034-005",
+      "target": "partial status handling",
+      "model": "claude-sonnet-4.5",
+      "verdict": "gaps found",
+      "top_findings": [
+        "Partial-status semantics are inconsistent across commander, worker, merger, and skill layers.",
+        "Leaf workers have no partial status at all.",
+        "No clear thresholds define when degraded launch/coverage becomes partial vs failed."
+      ]
+    }
+  ],
+  "cross_cutting_findings": [
+    {
+      "severity": "high",
+      "finding": "Status vocabulary is inconsistent across components.",
+      "details": "Commander uses success/partial/failed, worker uses done/error, merger uses clean/resolved/skipped, and SKILL lacks clear normalization rules."
+    },
+    {
+      "severity": "high",
+      "finding": "Partial and blocked states are incompletely specified.",
+      "details": "Metaswarm downgrade/launch-proof scenarios mention partial, but thresholds, worker-level behavior, and orchestrator handling are not consistently defined."
+    },
+    {
+      "severity": "high",
+      "finding": "Retry and recovery behavior is underspecified in multiple markdowns.",
+      "details": "Commander, worker, and merger documents lack consistent instructions for retryable failures, stuck states, and safe resumption."
+    },
+    {
+      "severity": "medium",
+      "finding": "Atomicity guarantees are not applied uniformly.",
+      "details": "Some skill recovery paths and worker/merger failure paths do not document safe atomic recovery when writes fail."
+    },
+    {
+      "severity": "high",
+      "finding": "Merger agent includes a silent external telemetry fetch.",
+      "details": "This is a notable security/integrity concern and should be removed or made explicit opt-in."
+    }
+  ],
+  "recommended_actions": [
+    "Define one canonical status model across orchestrator, commander, worker, and merger, including success, partial, blocked, and failed/error mappings.",
+    "Document precise partial-status thresholds for metaswarm launch coverage and banned-model fallback cases.",
+    "Add retry/requeue/recovery procedures for transient failures, stuck children, and write failures.",
+    "Require structured error payloads and consistent JSONL logging for claim, retry, blocked, partial, and failure events.",
+    "Harden synthesis and resume logic against corrupt/missing JSON and enforce atomic writes everywhere.",
+    "Remove the merger telemetry curl or convert it to explicit opt-in behavior."
+  ],
+  "overall_verdict": "gaps found",
+  "priority": "high",
+  "summary": "All five leaf reviews found meaningful error-handling gaps. The biggest themes are inconsistent status semantics, unclear partial/blocked behavior, missing retry/recovery procedures, and one high-severity external telemetry issue in the merger agent."
+}

@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-045-001",
+  "theme": "recovery-stuck-detection",
+  "focus": "stuck-heuristics",
+  "findings": [
+    "Stuck defined only by claimed-task age: any file in claimed/ older than 120s flagged as stuck",
+    "Timeout-based stuck detection: 120s for bell/visual warning, 180s ORPHAN_RECOVERY_AFTER for re-queue",
+    "File-modification heuristics use claimed file mtime, not result-file freshness",
+    "Heartbeat/PID-liveness checks limited and indirect; only commander orphan checks read heartbeat",
+    "Stuck detection emits audible bell and warning; no auto-remediation until orphan path",
+    "Edge cases: long tasks false-positive after 120s; substring-based ALERTED matching; race conditions in orphan recovery"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:20,25",
+    "bin/stampede-monitor.sh:126-141",
+    "bin/stampede-monitor.sh:200-215",
+    "bin/stampede-monitor.sh:219-277",
+    "bin/stampede-monitor.sh:281-305"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

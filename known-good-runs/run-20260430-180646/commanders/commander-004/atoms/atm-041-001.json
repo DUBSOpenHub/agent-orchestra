@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-041-001",
+  "theme": "recovery-stuck-detection",
+  "focus": "stuck-heuristics",
+  "findings": [
+    "stuck alert is based only on claimed task mtime >120s and ignores heartbeats/result-write progress, so healthy long-running metaswarm work can false-positive as stuck",
+    "alert dedupe uses substring matching on task ids, so overlapping ids can suppress or misattribute alerts",
+    "orphan recovery only requeues when live_agents == 0, leaving a dead worker's claimed task stuck if any other agent remains alive",
+    "tmux pane census is treated as authoritative without robust failure handling, so tmux lookup failure can force live_agents to 0 and trigger wrong orphan recovery",
+    "all-agents-dead path does not terminate cleanly when no results exist, risking an infinite loop with a negative countdown"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede-monitor.sh:208-214",
+    "bin/stampede-monitor.sh:234-279",
+    "bin/stampede-monitor.sh:220-232",
+    "bin/stampede-monitor.sh:281-305"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

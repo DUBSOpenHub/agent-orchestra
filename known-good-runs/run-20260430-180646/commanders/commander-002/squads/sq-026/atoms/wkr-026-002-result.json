@@ -1,0 +1,165 @@
+{
+  "worker_id": "wkr-026-002",
+  "squad_lead": "sq-026",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "assignment": "Ledger paths: verify collab protocol paths, env vars, and monitor consumption match on-disk layout; identify drift.",
+  "ts": "2026-05-01T01:29:09Z",
+  "status": "complete",
+  "summary": "Collab ledger paths are structurally consistent across protocol.json, env vars (all 5 agent scripts), and on-disk layout. Four classes of drift identified: (1) squad-leads/ vs squads/ directory name split, (2) reviews.jsonl missing evidence field in 11/18 lines, (3) consensus.jsonl line 5 missing evidence, (4) broadcasts.jsonl line 3 missing evidence. Monitor uses relative path resolution which is CWD-dependent.",
+  "findings": {
+    "path_alignment": {
+      "verdict": "ALIGNED",
+      "details": "All 7 COLLAB env vars (STAMPEDE_COLLAB_DIR, STAMPEDE_COLLAB_PROTOCOL, STAMPEDE_COLLAB_PROPOSALS, STAMPEDE_COLLAB_REVIEWS, STAMPEDE_COLLAB_IMPROVEMENTS, STAMPEDE_COLLAB_CONSENSUS, STAMPEDE_COLLAB_BROADCASTS) match protocol.json ledger paths exactly and match on-disk files in all 5 commander agent scripts.",
+      "protocol_ledger_paths": {
+        "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+        "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+        "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+        "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+        "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+      },
+      "on_disk_files_exist": [
+        "protocol.json",
+        "proposals.jsonl",
+        "reviews.jsonl",
+        "improvements.jsonl",
+        "consensus.jsonl",
+        "broadcasts.jsonl"
+      ],
+      "file_sizes": {
+        "proposals.jsonl": "5 lines / 4083 bytes",
+        "reviews.jsonl": "18 lines / 12424 bytes",
+        "improvements.jsonl": "11 lines / 7958 bytes",
+        "consensus.jsonl": "8 lines / 9028 bytes",
+        "broadcasts.jsonl": "7 lines / 4757 bytes"
+      }
+    },
+    "monitor_path_consumption": {
+      "verdict": "CONDITIONAL_MATCH",
+      "details": "stampede-monitor.sh resolves BASE via fallback chain: explicit arg -> .stampede/ (CWD-relative) -> /Users/greggcochran/.stampede/ -> /Users/greggcochran/.copilot/stampede/. Monitor then uses /collab/ for all ledger file paths. When invoked from repo root, this resolves correctly to the same collab/ directory. However, if invoked from any other CWD, the monitor will use a different (non-existent) path and silently skip the collab summary (guarded by [[ -d /collab ]] && return 0 at line 42). No env var consumption of STAMPEDE_COLLAB_* vars in monitor; it constructs paths independently from BASE. This is a latent path drift risk.",
+      "guard_line": 42,
+      "monitor_path_construction": "local collab_dir=\"/collab\" (not using STAMPEDE_COLLAB_DIR env var)",
+      "risk": "Monitor ignores STAMPEDE_COLLAB_DIR env var entirely; constructs path independently. If BASE misresolves, collab summary is silently skipped."
+    },
+    "drift_findings": [
+      {
+        "id": "DRIFT-001",
+        "severity": "HIGH",
+        "category": "directory_naming",
+        "description": "squad-leads/ vs squads/ naming split for commander-002/sq-026",
+        "detail": "commanders/commander-002/squad-leads/sq-026/ contains worker-prompts.json (launcher artifact). commanders/commander-002/squads/sq-026/atoms/ is the worker result-write path (runtime artifact). Two separate directories represent the same squad lead. The launcher (stampede.sh) writes to squad-leads/ but worker result paths use squads/. No single canonical path for squad lead data.",
+        "squad_leads_dir_contents": [
+          "sq-026/ (worker-prompts.json)",
+          "sq-029/",
+          "sq-030/"
+        ],
+        "squads_dir_contents": [
+          "sq-015",
+          "sq-017",
+          "sq-019",
+          "sq-023",
+          "sq-024",
+          "sq-025",
+          "sq-026",
+          "sq-027",
+          "sq-028"
+        ],
+        "note": "squads/ has 9 entries; squad-leads/ has only 3. The two sets overlap at sq-026 but are not the same population."
+      },
+      {
+        "id": "DRIFT-002",
+        "severity": "MEDIUM",
+        "category": "schema_compliance",
+        "description": "reviews.jsonl: 11 of 18 lines missing required evidence field",
+        "detail": "protocol.json required_fields includes evidence. peer_review event entries in lines 1-11 omit evidence and instead include verdict and target_commander fields. Lines 12-18 do include evidence. This indicates two different writer implementations with inconsistent schemas for the peer_review event type.",
+        "lines_missing_evidence": "1-11 (11 of 18)",
+        "lines_with_evidence": "12-18 (7 of 18)",
+        "fields_present_in_non_compliant": [
+          "ts",
+          "run_id",
+          "commander_id",
+          "event",
+          "item_id",
+          "target_item_id",
+          "target_commander",
+          "summary",
+          "verdict",
+          "confidence",
+          "source_refs"
+        ]
+      },
+      {
+        "id": "DRIFT-003",
+        "severity": "LOW",
+        "category": "schema_compliance",
+        "description": "consensus.jsonl line 5 missing required evidence field",
+        "detail": "Line 5 has fields: ts, run_id, commander_id, event, item_id, summary, verdict, confidence, based_on, source_refs. Missing evidence. Lines 1-4 and 6-8 are compliant. Likely a different commander wrote line 5 using a consensus schema variant.",
+        "line": 5,
+        "fields_present": [
+          "ts",
+          "run_id",
+          "commander_id",
+          "event",
+          "item_id",
+          "summary",
+          "verdict",
+          "confidence",
+          "based_on",
+          "source_refs"
+        ]
+      },
+      {
+        "id": "DRIFT-004",
+        "severity": "LOW",
+        "category": "schema_compliance",
+        "description": "broadcasts.jsonl line 3 missing required evidence field",
+        "detail": "Line 3 has fields: ts, run_id, commander_id, event, item_id, summary, confidence, adopted_items, source_refs. Missing evidence and consensus_item_id. This appears to be an adoption-summary broadcast (different semantic than a standard broadcast) written by a commander using a non-standard schema variant.",
+        "line": 3,
+        "fields_present": [
+          "ts",
+          "run_id",
+          "commander_id",
+          "event",
+          "item_id",
+          "summary",
+          "confidence",
+          "adopted_items",
+          "source_refs"
+        ]
+      }
+    ],
+    "no_drift": [
+      "All 5 STAMPEDE_COLLAB_* env vars are identical across all 5 commander agent scripts.",
+      "protocol.json ledger paths match env vars exactly (absolute paths).",
+      "protocol.json run_id matches run-20260430-180646.",
+      "All 6 collab files declared in protocol.json exist on disk.",
+      "proposals.jsonl (5 lines) and improvements.jsonl (11 lines) are fully compliant with required_fields schema.",
+      "Monitor collab_dir derivation from BASE is internally consistent.",
+      "JSONL append-only format is maintained; no truncation or rewrite artifacts detected."
+    ]
+  },
+  "recommendations": [
+    "Consolidate squad-leads/ and squads/ into a single canonical directory (suggest: squad-leads/) to eliminate path ambiguity.",
+    "Add evidence field enforcement to peer_review event writers or update protocol.json required_fields to separate required_fields by event type.",
+    "Have stampede-monitor.sh consume STAMPEDE_COLLAB_DIR env var when available instead of constructing path independently from BASE.",
+    "Document that reviews.jsonl uses two schema variants for peer_review; update protocol.json or fix writer implementations."
+  ],
+  "confidence": 0.97,
+  "source_refs": [
+    ".stampede/run-20260430-180646/collab/protocol.json",
+    ".stampede/run-20260430-180646/scripts/agent-1.sh",
+    ".stampede/run-20260430-180646/scripts/agent-2.sh",
+    ".stampede/run-20260430-180646/scripts/agent-3.sh",
+    ".stampede/run-20260430-180646/scripts/agent-4.sh",
+    ".stampede/run-20260430-180646/scripts/agent-5.sh",
+    "bin/stampede-monitor.sh",
+    "bin/stampede.sh",
+    ".stampede/run-20260430-180646/collab/proposals.jsonl",
+    ".stampede/run-20260430-180646/collab/reviews.jsonl",
+    ".stampede/run-20260430-180646/collab/improvements.jsonl",
+    ".stampede/run-20260430-180646/collab/consensus.jsonl",
+    ".stampede/run-20260430-180646/collab/broadcasts.jsonl",
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-026/worker-prompts.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/"
+  ]
+}

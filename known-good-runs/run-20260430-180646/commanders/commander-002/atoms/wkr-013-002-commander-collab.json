@@ -1,0 +1,71 @@
+{
+  "worker_id": "wkr-013-002",
+  "task": "commander-collab-coverage",
+  "findings": [
+    {
+      "mechanism": "child-agents.jsonl launch/update ledger",
+      "status": "implemented",
+      "evidence": "agents/stampede-commander.agent.md lines 34-35 require appending every child launch/update; lines 57 and 132-138 require launch_requested/launch_started records and show completed event examples; line 166 requires model on launch_started.",
+      "details": "The commander contract explicitly treats child-agents.jsonl as source-of-truth telemetry and requires records before and after each child launch, including id, model, depth, role, and can_launch for workers. This is adequate launch-proof coverage for Squad Leads and leaf Workers."
+    },
+    {
+      "mechanism": "swarm-state.json live state",
+      "status": "implemented",
+      "evidence": "agents/stampede-commander.agent.md lines 34, 47, and 63-130 define live state, required shape, phase/status, launch_proof, depth_budget, telemetry, updated_at, and last_heartbeat_at.",
+      "details": "The required state shape matches the monitor's consumed fields: phase, status, launch_proof_required, launch_proof counts, telemetry targets/launched/running/completed/failed, atoms_received, and heartbeat timestamps."
+    },
+    {
+      "mechanism": "nested progress reporting",
+      "status": "implemented",
+      "evidence": "agents/stampede-commander.agent.md lines 34 and 63-67 say swarm-state.json and child-agents.jsonl are the parent monitor source of truth; bin/stampede-monitor.sh lines 143-193 reads progress_dir/swarm-state.json and displays squads, workers, running, done, failed, atoms, heartbeat, and phase.",
+      "details": "The commander instructions provide the exact telemetry the monitor renders for visible nested progress. The launcher also initializes progress directories and state files before commander startup."
+    },
+    {
+      "mechanism": "Depth Guard",
+      "status": "implemented",
+      "evidence": "agents/stampede-commander.agent.md lines 31-36 require full SS-250 without wrapped swarm-command, Depth Guard, own Squad Leads and leaf Workers; lines 212-216 define current_depth/max_depth/can_launch; lines 227-236 require an exact Worker Depth Lock block in every worker prompt.",
+      "details": "The file distinguishes commander depth, Squad Lead depth, and leaf Worker depth, and explicitly instructs leaf workers not to use task, spawn sub-agents, or delegate. It also forbids exposing sealed criteria to children."
+    },
+    {
+      "mechanism": "monitor coordination",
+      "status": "partial",
+      "evidence": "agents/stampede-commander.agent.md line 34 says write progress so tmux monitor can show nested status. bin/stampede-monitor.sh lines 143-193 uses fleet progress_dir for display, but lines 253-257 look for commanders/{task_id}/swarm-state.json during orphan recovery while the commander contract uses commanders/{commander_id}/swarm-state.json.",
+      "details": "Display coordination is well covered. Stale-claim/orphan-recovery coordination has a path mismatch unless task_id equals commander_id, so a live commander could be misclassified as inactive after pane death despite maintaining its commander_id progress directory."
+    },
+    {
+      "mechanism": "final bundle/result atomic completion",
+      "status": "implemented",
+      "evidence": "agents/stampede-commander.agent.md lines 37 and 61 require final JSON atomically to both commander bundle.json and results/{task_id}.json; lines 238-267 define the bundle shape with status, telemetry, summary, confidence, and consensus.",
+      "details": "The commander has clear instructions for terminal output artifacts and status semantics, including success/partial/failed handling based on launch proof."
+    },
+    {
+      "mechanism": "child completion/failure events",
+      "status": "partial",
+      "evidence": "agents/stampede-commander.agent.md lines 132-138 include an example completed event; lines 140-146 require validating launch counts and marking partial/failed, but no mandatory schema for child failed, timed_out, cancelled, retry, heartbeat, atom_received, or commander_complete JSONL events.",
+      "details": "Completion events are shown but not specified as a MUST for every child. The ledger could prove launches yet be weak for lifecycle accounting after launch unless the commander infers all statuses from swarm-state.json and atom files."
+    },
+    {
+      "mechanism": "cross-commander collaboration bus",
+      "status": "missing",
+      "evidence": "agents/stampede-commander.agent.md contains no references to STAMPEDE_COLLAB_DIR, collab/proposals.jsonl, reviews.jsonl, improvements.jsonl, consensus.jsonl, broadcasts.jsonl, or propose->review->improve->consensus workflow; bin/stampede.sh lines 909-910 inject these requirements only in the launcher prompt.",
+      "details": "The commander agent file covers child telemetry but not the metaswarm collaboration bus. Runs launched through stampede.sh get prompt-level bus instructions, but the reusable commander agent contract itself does not define the bus protocol or require adopted consensus/source_refs in bundle.json."
+    },
+    {
+      "mechanism": "leaf-worker constraint enforcement",
+      "status": "implemented",
+      "evidence": "agents/stampede-commander.agent.md lines 227-236 require every worker prompt to include the exact non-delegation leaf-node block; line 32 requires workers to be explore or task agents and told they are leaf nodes; lines 135-137 show depth and can_launch=false in child telemetry.",
+      "details": "The commander explicitly enforces leaf-worker constraints in prompts and telemetry. The remaining risk is procedural: it does not require post-launch validation that the prompt actually contained the exact block or that Squad Leads propagated it unchanged."
+    }
+  ],
+  "coverage_gaps": [
+    "Commander agent contract lacks explicit cross-commander collaboration-bus protocol despite launcher prompt injection: no required use of STAMPEDE_COLLAB_DIR or collab/proposals.jsonl, reviews.jsonl, improvements.jsonl, consensus.jsonl, broadcasts.jsonl.",
+    "Bundle shape in the commander agent does not require adopted consensus item_ids/source_refs, even though the launcher prompt requires them for collaboration-bus adoption.",
+    "child-agents.jsonl lifecycle schema is incomplete: launch_requested/launch_started are mandatory, but per-child completed/failed/timed_out/cancelled/retry/atom_received events and commander_complete events are not specified as mandatory.",
+    "Monitor orphan-recovery path appears inconsistent with commander progress path: monitor checks commanders/{task_id}/swarm-state.json while the commander writes commanders/{commander_id}/swarm-state.json.",
+    "No explicit atomic-write guidance for swarm-state.json updates; final bundle atomicity is required, but live state updates only say create/update and keep current.",
+    "No explicit heartbeat cadence or maximum tolerated stale interval is specified for last_heartbeat_at, even though monitor relies on heartbeat freshness for activity decisions.",
+    "No required verification/audit record that each worker prompt included the exact Worker Depth Lock block; enforcement depends on commander compliance rather than ledger-verifiable proof.",
+    "No explicit instruction to record child launch failures/refusals as first-class child-agents.jsonl events with blocker details, except launcher-side failure handling and partial status guidance."
+  ],
+  "summary": "The commander agent has strong coverage for launch proof, swarm-state telemetry, nested monitor display, Depth Guard, atomic final bundles, and leaf-worker prompt constraints. The biggest gap is that the agent file itself does not define the cross-commander collaboration bus; that workflow is injected by stampede.sh rather than being part of the reusable commander contract. Additional gaps are incomplete mandatory lifecycle event schemas, heartbeat cadence/atomic live-state guidance, monitor orphan-recovery path mismatch, and lack of ledger-verifiable proof that leaf prompts contained the exact lock block."
+}

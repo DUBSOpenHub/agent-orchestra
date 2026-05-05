@@ -1,0 +1,135 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead": "sq-046",
+  "focus": "Phase State Machine",
+  "summary": {
+    "phase_values_are_strings": true,
+    "centralized_enum_exists": false,
+    "main_run_phases_documented": [
+      "stampedeing",
+      "running",
+      "synthesizing",
+      "completed"
+    ],
+    "main_run_phases_observed_in_code": [
+      "torn_down",
+      "<blocked_reason string>"
+    ],
+    "commander_phases_documented": [
+      "claiming",
+      "decomposing",
+      "launching_squad_leads",
+      "launching_workers",
+      "collecting",
+      "complete"
+    ],
+    "commander_phases_observed_in_code": [
+      "commander_pane_starting",
+      "commander_launch_failed",
+      "<blocked_reason string>"
+    ],
+    "docs_code_mismatches": [
+      "torn_down used in bin/stampede.sh but not documented",
+      "commander_pane_starting used in bin/stampede.sh but not in commander docs",
+      "commander_launch_failed used in bin/stampede.sh but not in commander docs",
+      "commander uses phase 'complete' while orchestrator docs use 'completed'"
+    ]
+  },
+  "evidence": {
+    "phase_contract_docs": [
+      {
+        "path": "skills/SKILL.md",
+        "notes": "Documents state.json phase: stampedeing|running|synthesizing|completed; shows phase updates to running/synthesizing/completed."
+      },
+      {
+        "path": "agents/stampede-commander.agent.md",
+        "notes": "Documents swarm-state.json phase: claiming|decomposing|launching_squad_leads|launching_workers|collecting|complete."
+      }
+    ],
+    "phase_writes_in_code": [
+      {
+        "path": "bin/stampede.sh",
+        "approx_lines": "137-192",
+        "notes": "mark_run_blocked() sets state['phase']=reason and status=blocked for run and commanders."
+      },
+      {
+        "path": "bin/stampede.sh",
+        "approx_lines": "302-360",
+        "notes": "do_teardown() sets state.json phase='torn_down'."
+      },
+      {
+        "path": "bin/stampede.sh",
+        "approx_lines": "771-781",
+        "notes": "Initializes commander swarm-state.json phase='commander_pane_starting', status='starting'."
+      },
+      {
+        "path": "bin/stampede.sh",
+        "approx_lines": "982-989",
+        "notes": "On commander pane launch failure sets swarm-state.json phase='commander_launch_failed', status='failed'."
+      }
+    ],
+    "monitor_usage": [
+      {
+        "path": "bin/stampede-monitor.sh",
+        "approx_lines": "155-188",
+        "notes": "Reads phase from swarm-state.json, defaults to 'running'; suppresses launch-proof warning for phases commander_pane_starting and claiming."
+      }
+    ],
+    "tests": [
+      {
+        "path": "tests/smoke-test.sh",
+        "approx_lines": "66-67,105-106",
+        "notes": "Smoke tests set state.json phase='running'."
+      }
+    ]
+  },
+  "transition_model": {
+    "run_state_expected": {
+      "happy_path": [
+        "stampedeing",
+        "running",
+        "synthesizing",
+        "completed"
+      ],
+      "extra_paths": [
+        "torn_down"
+      ],
+      "failure_paths": [
+        "blocked (phase set to reason string)"
+      ]
+    },
+    "commander_state_expected": {
+      "bootstrap": [
+        "commander_pane_starting"
+      ],
+      "happy_path": [
+        "claiming",
+        "decomposing",
+        "launching_squad_leads",
+        "launching_workers",
+        "collecting",
+        "complete"
+      ],
+      "failure_paths": [
+        "blocked (phase set to reason string)",
+        "commander_launch_failed"
+      ]
+    }
+  },
+  "invalid_transition_handling": {
+    "explicit_transition_validation": false,
+    "observed_mechanisms": [
+      "Defensive default in monitor: phase defaults to 'running' if missing.",
+      "mark_run_blocked() can override phase with a blocker reason string and set status=blocked.",
+      "Monitor emits warnings for suspicious phase/status combos (e.g., no launch proof after early phases; 'success' with incomplete proof).",
+      "Orphan recovery/queue requeue handles stalled tasks rather than phase validation."
+    ],
+    "risk": "Because phases are free-form strings, typos or out-of-order updates won't be rejected; monitoring may still 'work' but could hide state bugs.",
+    "recommendations": [
+      "Document the extra runtime phases (torn_down, commander_pane_starting, commander_launch_failed) alongside the phase contracts.",
+      "Consider centralizing phase strings (single source of truth) to prevent drift.",
+      "Optionally add lightweight validation (e.g., allowed set + monotonic transition checks) when writing state.json/swarm-state.json."
+    ]
+  }
+}

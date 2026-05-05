@@ -1,0 +1,187 @@
+{
+  "squad_lead_id": "sq-009",
+  "commander_id": "commander-005",
+  "focus_area": "Test Coverage Gaps - Part 1",
+  "sub_task": "Review tests/smoke-test.sh for test coverage gaps",
+  "workers_launched": 5,
+  "synthesis_timestamp": "2025-04-30T18:12:00Z",
+  "findings": {
+    "overall_assessment": "tests/smoke-test.sh provides basic happy-path coverage for single-agent and metaswarm scaffolding but lacks comprehensive testing of core features, error handling, concurrency, and agent behaviors",
+    "coverage_summary": {
+      "currently_tested": [
+        "Single-agent launch with custom agent cmd",
+        "Queue/claimed/results basic flow",
+        "Metaswarm dry-run output and profile",
+        "Fleet.json and swarm-state.json structure validation",
+        "Commander directory scaffolding (atoms, logs)",
+        "Child-agents.jsonl telemetry file existence",
+        "Premium model policy configuration"
+      ],
+      "critical_gaps": [
+        "Atomic file operations and race conditions",
+        "Agent failure and error handling scenarios",
+        "Stuck agent detection",
+        "Commander agent actual execution workflow",
+        "Collaboration bus and IPC validation",
+        "Multi-agent concurrency testing",
+        "Invalid task file handling",
+        "Branch conflict resolution"
+      ]
+    },
+    "detailed_gaps_by_category": {
+      "smoke_test_coverage_gaps": {
+        "untested_core_features": [
+          "Preflight and auth/content-exclusion checks (bin/stampede.sh:353-458)",
+          "Teardown flow (bin/stampede.sh:291-350)",
+          "CLI validations (run-id format, count limits, git repo) (bin/stampede.sh:472-500)",
+          "Model rotation (--models) and per-worker selection (bin/stampede.sh:594-619)",
+          "Default Copilot/gh agent launch path (bin/stampede.sh:928-949)",
+          "Monitor integration (stuck detection, orphan recovery) (bin/stampede-monitor.sh:200-278)",
+          "PID capture and launch summary (bin/stampede.sh:1132-1209)",
+          "Auto-attach logic (bin/stampede.sh:1217-1333)",
+          "Collaboration protocol/ledgers initialization (bin/stampede.sh:640-699)",
+          "Merger agent integration and Shadow Score (bin/stampede-merger.agent.md:18-55)"
+        ],
+        "untested_edge_cases": [
+          "Multiple agents with multi-task queue race conditions",
+          "Empty queue / missing run directory handling",
+          "Invalid manifest (missing task_id/repo_path)",
+          "Agent crash/stuck task recovery",
+          "Partial/failed metaswarm launch proof",
+          "--metaswarm count > 5 limit error",
+          "Content-exclusion failures in preflight"
+        ],
+        "missing_validations": [
+          "Exit code assertions for invalid args",
+          "Claimed file cleanup validation",
+          "Result JSON required fields (task_id, status, summary, files_changed, branch)",
+          "Collaboration protocol files (collab/*.jsonl, protocol.json)"
+        ]
+      },
+      "metaswarm_scenario_gaps": {
+        "tested_features": [
+          "--metaswarm flag recognition",
+          "Dry-run profile output",
+          "fleet.json structure with hierarchy fields",
+          "swarm-state.json creation",
+          "child-agents.jsonl with commander_registered event",
+          "Nested commanders/{id}/atoms and logs directories",
+          "Squad Lead/Worker counts (50×5=250)",
+          "Premium model policy pool and banned models",
+          "depth_budget allocation"
+        ],
+        "missing_features": [
+          "Max 5 commanders validation (--metaswarm --count 6 should error)",
+          "--no-gates override behavior (STAMPEDE_METASWARM_NO_GATES=1)",
+          "Collaboration bus setup (protocol.json, proposals.jsonl, reviews.jsonl)",
+          "Commander launch failure (commander_launch_failed event)",
+          "Commander blocked state (commander_blocked event)",
+          "bundle.json final output validation"
+        ]
+      },
+      "commander_agent_gaps": {
+        "untested_behaviors": [
+          "Actual commander agent workflow execution (claim, branch, launch children, collect, write bundle)",
+          "Task claiming atomicity (mv to claimed/, update, cleanup)",
+          "Required manifest fields validation (especially run_id)",
+          "Full swarm-state.json schema validation (launch_proof counts, telemetry, heartbeats)",
+          "Launch-proof success criteria (50 squad leads, 250 workers launched vs targets)",
+          "child-agents.jsonl complete lifecycle (launch_requested, launch_started, completed with metadata)",
+          "Result bundle atomic writes (bundle.json and results/{task_id}.json)",
+          "Actual SS-250 deployment execution (not just config)",
+          "Depth Guard and leaf worker prompt enforcement",
+          "Premium model enforcement in child launches"
+        ],
+        "shallow_testing": [
+          "swarm-state.json only checks file existence and a few fields, not full required shape",
+          "child-agents.jsonl only checks file exists and commander_registered, not full event stream",
+          "Commanders directory structure checked but not final artifacts or result mirroring"
+        ]
+      },
+      "collaboration_bus_gaps": {
+        "tested_features": [
+          "Basic directory structure creation (.stampede/{run_id}/{queue,claimed,results,logs,scripts,pids})",
+          "Simple task claiming via rename (single-agent only)",
+          "Result writing (but not atomic pattern)",
+          "Queue/claimed/results directories usage"
+        ],
+        "critical_missing_tests": [
+          "Atomic result writing (.tmp- prefix + os.rename pattern)",
+          "Race condition on task claiming with multiple agents",
+          "Concurrent agent access (≥2 agents competing)",
+          "os.rename failure handling (ENOENT on race loss)",
+          ".tmp-* file exclusion in monitors/counts",
+          "Claimed file cleanup on failure",
+          "Logs directory content validation",
+          "Collaboration protocol.json with atomic_append_guidance",
+          "state.json lifecycle transitions (running → done/failed)"
+        ],
+        "critical_issue": "Smoke test stub agent writes results directly instead of using production .tmp- + rename atomic pattern"
+      },
+      "error_handling_gaps": {
+        "all_untested_scenarios": [
+          "Agent failure (non-zero exit, launch failure)",
+          "Monitor partial-completion handling",
+          "Stuck agent detection (claimed-task age >120s)",
+          "Invalid task files (JSON parsing fallbacks)",
+          "Monitor parsing errors for state/fleet/claimed/result files",
+          "Cleanup after failures (--teardown validation)",
+          "Branch conflicts",
+          "PID tracking failure (stale PID detection)",
+          "tmux session failures (missing tmux, duplicate session, split failures)",
+          "Monitor missing run dir error",
+          "No-tasks / missing run dir errors",
+          "Invalid repo validation",
+          "Model unavailable / content exclusion preflight failures"
+        ],
+        "note": "tests/smoke-test.sh is happy-path only with success stub and 'true' agent"
+      }
+    },
+    "recommendations": {
+      "high_priority": [
+        "Add concurrency tests with ≥2 agents competing for tasks to validate atomic operations",
+        "Test actual commander agent execution, not just scaffolding",
+        "Add error handling test suite covering agent failures, stuck detection, invalid input",
+        "Test atomic result writing pattern (.tmp- + rename)",
+        "Add collaboration bus integration tests (protocol.json, IPC lifecycle)",
+        "Test monitor behaviors (stuck detection, orphan recovery, stats)",
+        "Test preflight checks and auth failures"
+      ],
+      "medium_priority": [
+        "Test CLI validations and error paths (count limits, invalid args)",
+        "Test model rotation and per-worker model selection",
+        "Add teardown flow validation",
+        "Test merge integration and Shadow Score",
+        "Test launch-proof validation for metaswarm",
+        "Add branch conflict scenario tests"
+      ],
+      "low_priority": [
+        "Test auto-attach logic across platforms",
+        "Add PID tracking edge cases",
+        "Test .tmp-* file filtering in counts",
+        "Add more comprehensive JSON schema validation"
+      ]
+    },
+    "test_coverage_metrics": {
+      "estimated_feature_coverage": "30%",
+      "estimated_error_path_coverage": "5%",
+      "estimated_integration_coverage": "20%",
+      "note": "Current testing is primarily happy-path scaffolding validation"
+    }
+  },
+  "worker_outputs": {
+    "wkr-009-001": "Identified 5 major categories of untested features: preflight checks, teardown, CLI validations, monitor integration, and agent system behaviors. Found 7 critical edge cases and 4 missing validation checks.",
+    "wkr-009-002": "Metaswarm basic scaffolding is tested (9 scenarios covered) but 6 critical scenarios missing: max commanders limit, --no-gates override, collaboration bus, commander failures, blocked state, and bundle output.",
+    "wkr-009-003": "Commander agent actual execution is completely untested. Smoke test bypasses with stub agent. Launch-proof validation, child-agents.jsonl lifecycle, and result bundles are missing or shallow.",
+    "wkr-009-004": "Zero concurrency tests exist. Critical gaps in atomic operations testing, race condition validation, and .tmp- pattern. Smoke test stub doesn't follow production atomic write pattern.",
+    "wkr-009-005": "Almost all error and failure scenarios are untested. No agent failure tests, stuck detection tests, invalid input tests, cleanup validation, or tmux failure tests. Smoke test is happy-path only."
+  },
+  "next_steps": [
+    "Prioritize adding concurrency tests with race conditions",
+    "Create error handling test suite",
+    "Add real commander agent execution tests",
+    "Implement collaboration bus integration tests",
+    "Validate atomic operations and IPC patterns"
+  ],
+  "status": "complete"
+}

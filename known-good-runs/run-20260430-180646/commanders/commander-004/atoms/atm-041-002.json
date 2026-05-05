@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-041-002",
+  "theme": "recovery-stuck-detection",
+  "focus": "recovery-paths",
+  "findings": [
+    "--teardown is best-effort only: it sends one kill to the recorded PID, does not wait or escalate, does not kill descendants/process groups, then deletes pid files and kills tmux, so stuck child processes can survive cleanup",
+    "duplicate-session restart only kills the tmux session and relaunches; it does not invoke teardown or reclaim stale claimed work after crash/relaunch",
+    "failure handling is asymmetric: commander launch failure records run-state failure, but ordinary worker failure lacks comparable state/result marker or task recovery in this script",
+    "teardown updates phase to torn_down but does not set a terminal status, leaving room for stale monitor semantics after teardown"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:327-345",
+    "bin/stampede.sh:715-720",
+    "bin/stampede.sh:996-997",
+    "bin/stampede.sh:1007-1014",
+    "bin/stampede.sh:1096-1149",
+    "bin/stampede.sh:141-169",
+    "bin/stampede.sh:350-359",
+    "bin/stampede.sh:827-840"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

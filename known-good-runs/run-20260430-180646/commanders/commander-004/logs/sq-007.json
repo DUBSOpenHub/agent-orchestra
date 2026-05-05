@@ -1,0 +1,93 @@
+{
+  "squad_id": "sq-007",
+  "parent_id": "commander-004",
+  "theme": "premium-model-policy",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": 0.936,
+  "blockers": [],
+  "consensus": [
+    "CRITICAL: stampede.sh DEFAULT model is claude-haiku-4.5 (banned). No --model/--models guard at launch. bin/stampede.sh:15-16",
+    "Metaswarm child Squad Lead/Worker model assignment is instruction-level only \u2014 not launcher-enforced. bin/stampede.sh:739-756,883-888",
+    "Commander doc (stampede-commander.agent.md:106-168) correctly enforces premium-only child launches and marks violations partial",
+    "tests/depth-guard-lint.sh does NOT check banned model names or banned-model partial behavior \u2014 CI gap. tests/depth-guard-lint.sh:35-61",
+    "README.md and AGENTS.md are silent on premium pool and banned list \u2014 contradicts runtime enforcement. README.md:115,130; AGENTS.md:27",
+    "No-silent-downgrade policy is explicitly documented in SKILL.md:407 and README.md:130 \u2014 positive signal",
+    "User --model override propagates to top-level commander panes but is silently dropped for metaswarm child Squad Leads/Workers. bin/stampede.sh:899-915"
+  ],
+  "conflicts": [
+    "wkr-007-001 (model-rotation) and wkr-007-004 (child-override-propagation) agree: top-level round-robin works; child propagation does not",
+    "wkr-007-005 confidence lower (0.85) due to SKILL.md fallback language ambiguity at line 129 \u2014 minor discrepancy vs other workers"
+  ],
+  "key_findings_by_worker": {
+    "wkr-007-001": {
+      "focus": "model-rotation",
+      "critical": "Default model is banned (claude-haiku-4.5). No banned-model gate in launcher.",
+      "confidence": 0.96
+    },
+    "wkr-007-002": {
+      "focus": "banned-model-guardrails",
+      "critical": "Commander doc enforces bans correctly; depth-guard-lint.sh does NOT test banned model enforcement.",
+      "confidence": 0.97
+    },
+    "wkr-007-003": {
+      "focus": "docs-vs-runtime",
+      "critical": "README/AGENTS.md silent on premium pool and banned list; README shows haiku as default, contradicting metaswarm runtime ban.",
+      "confidence": 0.95
+    },
+    "wkr-007-004": {
+      "focus": "child-override-propagation",
+      "critical": "User --model override silently dropped for metaswarm children; only top-level panes honor the flag.",
+      "confidence": 0.95
+    },
+    "wkr-007-005": {
+      "focus": "fallback-violation-handling",
+      "critical": "No-downgrade policy well-documented; API-level model unavailability and retry behavior not specified.",
+      "confidence": 0.85
+    }
+  },
+  "top_risks": [
+    {
+      "severity": "HIGH",
+      "description": "Default model claude-haiku-4.5 is banned for metaswarm children; no validation gate prevents its use",
+      "refs": [
+        "bin/stampede.sh:15-16",
+        "agents/stampede-commander.agent.md:106"
+      ]
+    },
+    {
+      "severity": "HIGH",
+      "description": "User --model/--models override silently dropped for metaswarm child Squad Leads/Workers",
+      "refs": [
+        "bin/stampede.sh:899-915",
+        "bin/stampede.sh:729-740"
+      ]
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "CI test (depth-guard-lint.sh) does not verify banned model names or partial/failed on violation",
+      "refs": [
+        "tests/depth-guard-lint.sh:35-61"
+      ]
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "README.md and AGENTS.md document no premium pool or banned list \u2014 user-facing documentation gap",
+      "refs": [
+        "README.md:115",
+        "README.md:130",
+        "AGENTS.md:27"
+      ]
+    },
+    {
+      "severity": "LOW",
+      "description": "No documented behavior for API-level model unavailability (rate limits, outages)",
+      "refs": [
+        "skills/SKILL.md:407",
+        "README.md:130"
+      ]
+    }
+  ]
+}

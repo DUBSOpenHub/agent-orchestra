@@ -1,0 +1,78 @@
+{
+  "squad": "sq-020",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Implementation Gaps - Part 2",
+  "summary": "Identified multiple doc-claimed features not implemented or mismatched in scripts/agents. Most gaps are in SKILL.md orchestration features and AGENTS.md/README claims vs actual bin/* behavior.",
+  "findings": [
+    {
+      "gap": "SKILL.md SQL persistence (stampede_runs/tasks/workers tables) not implemented in scripts",
+      "docs": ["skills/SKILL.md:49-96", "skills/SKILL.md:257-265"],
+      "evidence": "No sqlite/sql usage in bin/*.sh; all state stored in JSON/filesystem."
+    },
+    {
+      "gap": "Resume/status subcommands documented but launcher lacks flags",
+      "docs": ["skills/SKILL.md:31-39", "skills/SKILL.md:772-815"],
+      "evidence": "bin/stampede.sh has no --resume/--status; only stampede-monitor.sh provides status UI."
+    },
+    {
+      "gap": "Sealed test generation (pre-run) documented but not implemented",
+      "docs": ["skills/SKILL.md:329-389"],
+      "evidence": "bin/stampede-merge.sh only runs pre-existing sealed-tests if present; no generator exists."
+    },
+    {
+      "gap": "PID-based dead-worker recovery documented but monitor only does time-based orphan recovery",
+      "docs": ["skills/SKILL.md:500-527"],
+      "evidence": "bin/stampede-monitor.sh requeues stale claims after ORPHAN_RECOVERY_AFTER; no PID heartbeat check."
+    },
+    {
+      "gap": "Telemetry ping documented but not implemented in scripts",
+      "docs": ["skills/SKILL.md:897-900"],
+      "evidence": "No curl/ping in bin/*.sh."
+    },
+    {
+      "gap": "Merger agent launch documented but stampede-merge.sh does not invoke Copilot CLI agent",
+      "docs": ["AGENTS.md:31-39", "AGENTS.md:57-61"],
+      "evidence": "bin/stampede-merge.sh is standalone bash/python; no copilot/agent invocation present."
+    },
+    {
+      "gap": "AI semantic conflict resolution documented but merge script only strips markers for simple cases",
+      "docs": ["AGENTS.md:31-33", "agents/stampede-merger.agent.md:97-108"],
+      "evidence": "bin/stampede-merge.sh:159-185 performs marker removal and skips complex conflicts."
+    },
+    {
+      "gap": "Runtime stats integration documented but monitor doesn\"t create runtime-stats.json",
+      "docs": ["AGENTS.md:59-61", "agents/stampede-merger.agent.md:206-227"],
+      "evidence": "bin/stampede-monitor.sh:307-325 only updates runtime-stats.json if it exists; otherwise exits."
+    },
+    {
+      "gap": "Branch naming convention mismatch",
+      "docs": ["AGENTS.md:69"],
+      "evidence": "agents/stampede-agent.agent.md:154-160 uses stampede/<task-id> not stampede/<agent-id>/<task-id>."
+    },
+    {
+      "gap": "Documented --task flag missing",
+      "docs": ["AGENTS.md:15"],
+      "evidence": "bin/stampede.sh arg parser has no --task option."
+    },
+    {
+      "gap": "COPILOT_SKILL_TELEMETRY env var documented but not read",
+      "docs": ["skills/SKILL.md:897", "agents/*.md"],
+      "evidence": "No script references COPILOT_SKILL_TELEMETRY."
+    },
+    {
+      "gap": "Merge ordering contradiction (smallest-first vs largest-first)",
+      "docs": ["README.md:251", "AGENTS.md:31-33"],
+      "evidence": "bin/stampede-merge.sh:113-124 sorts ascending (smallest first); docs conflict."
+    },
+    {
+      "gap": "Scored merge report lacks per-score justifications",
+      "docs": ["agents/stampede-merger.agent.md:269-275"],
+      "evidence": "bin/stampede-merge.sh:430-447 writes scores without justifications."
+    }
+  ],
+  "notes": [
+    "No documented CLI flags appear missing; README usage flags are implemented (bin/stampede.sh:32-42).",
+    "README also has minor inconsistencies (e.g., \"Six files land\" count, merge order phrasing)."
+  ]
+}

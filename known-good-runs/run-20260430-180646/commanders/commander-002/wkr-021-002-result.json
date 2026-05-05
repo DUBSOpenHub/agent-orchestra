@@ -1,0 +1,63 @@
+{
+  "worker_id": "wkr-021-002",
+  "model": "gpt-5.5",
+  "assignment": "ledgers",
+  "status": "completed",
+  "severity": "medium",
+  "highlights": [
+    "Collab ledgers created only in metaswarm; touched via open(path,'a').close() (bin/stampede.sh:671-683).",
+    "No adoptions.jsonl; adoption represented only in bundle.json/final result.",
+    "Monitor counts via wc -l (bin/stampede-monitor.sh:32-38), no JSON parsing.",
+    "Merger does not consume collab ledgers (agents/stampede-merger.agent.md:49-53).",
+    "child-agents.jsonl initialized with mode 'w' at bin/stampede.sh:853-860 (truncation hazard on relaunch)."
+  ],
+  "evidence": [
+    {
+      "file": "bin/stampede.sh",
+      "lines": "612-615",
+      "note": "metaswarm-only mkdir of commanders/ and collab/."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "671-683",
+      "note": "ledger touch creation, robust on repeated launches."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "705-707",
+      "note": "workflow includes 'adopt' but ledger_events excludes adoptions."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "line": 910,
+      "note": "adoption recorded inline in bundle.json + final result."
+    },
+    {
+      "file": "bin/stampede-monitor.sh",
+      "lines": "57-66",
+      "note": "counts 5 ledgers via wc -l; no adopt count."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "853-860",
+      "note": "child-agents.jsonl opened with 'w' on fleet seed."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "1023-1024",
+      "note": "subsequent child-agents.jsonl writes use 'a'."
+    }
+  ],
+  "gaps": [
+    "No JSON validation in monitor; malformed lines counted.",
+    "No flock/umask/chmod policy; concurrency relies on O_APPEND guidance.",
+    "child-agents.jsonl 'w' init is a truncation hazard on relaunch.",
+    "Merger ignores collab ledgers entirely."
+  ],
+  "recommendations": [
+    "Add optional JSONL validator/tail-error reporting in monitor.",
+    "Use append-only helper or flock for multi-writer appends.",
+    "Switch child-agents.jsonl init from 'w' to 'a' or rotate before re-init.",
+    "Have merger consume collab ledgers as part of synthesis."
+  ]
+}

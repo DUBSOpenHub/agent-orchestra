@@ -1,0 +1,67 @@
+{
+  "squad_id": "sq-031",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "partial-failure-bundles",
+  "theme_summary": "Audit partial/failure status rules, exact launch counts, bundle completeness, and no false-success cases.",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "status": "success",
+  "worker_results": [
+    {
+      "worker_id": "wkr-031-001",
+      "focus": "success-thresholds",
+      "model": "claude-opus-4.7",
+      "status": "success",
+      "confidence": 0.94
+    },
+    {
+      "worker_id": "wkr-031-002",
+      "focus": "partial-trigger-paths",
+      "model": "gpt-5.5",
+      "status": "success",
+      "confidence": 0.93
+    },
+    {
+      "worker_id": "wkr-031-003",
+      "focus": "no-launch-failure",
+      "model": "claude-opus-4.6",
+      "status": "success",
+      "confidence": 0.92
+    },
+    {
+      "worker_id": "wkr-031-004",
+      "focus": "bundle-shape",
+      "model": "gpt-5.4",
+      "status": "success",
+      "confidence": 0.93
+    },
+    {
+      "worker_id": "wkr-031-005",
+      "focus": "count-accuracy",
+      "model": "claude-opus-4.5",
+      "status": "success",
+      "confidence": 0.95
+    }
+  ],
+  "consensus": {
+    "tier": "CONSENSUS",
+    "notes": [
+      "All five workers confirmed the documented 50 squad lead x 5 worker launch threshold and the no-silent-downgrade rule for metaswarm partial or failed outcomes.",
+      "Multiple workers agreed the main false-success risk is schema or contract weakness after launch: success is keyed to launched counts, while final bundle evidence does not require completion counts, atoms, launch_proof, or zero child failures.",
+      "Workers agreed launcher and monitor count displays are largely accurate and monitor explicitly warns on incomplete proof, but structured failure persistence is weaker for non-commander launch failures than for commander failures."
+    ]
+  },
+  "conflicts": [],
+  "blockers": [],
+  "key_findings": [
+    "HIGH: commander success contract is launch-count based; it does not require workers_completed == 250, atoms_received == 250, or children_failed == 0, leaving a false-success path after nominal launch.",
+    "HIGH: final commander bundle schema is weaker than swarm-state.json and does not require launch_proof or explicit reason fields for partial or failed outcomes.",
+    "MEDIUM: non-commander launch failure lacks the structured failed-state write used by commander launch failure, while the fleet launched banner appears before the launched count is validated.",
+    "MEDIUM: docs correctly require partial when the full SS-250 cannot launch, but they do not explicitly state that degraded proof or incomplete bundle evidence alone must force partial.",
+    "LOW: monitor and telemetry count handling are otherwise sound; incomplete-proof warnings, orphan recovery guards, and teardown behavior reduce miscount risk."
+  ],
+  "overall_confidence": 0.93,
+  "completed_at": "2026-05-01T01:24:32Z"
+}

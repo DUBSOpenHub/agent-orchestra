@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-019-003",
+  "theme": "telemetry-contract",
+  "focus": "atomic-write-patterns",
+  "findings": [
+    "swarm-state.json uses atomic tmp+replace (POSIX rename) in 3 locations (bin/stampede.sh:155,665,1016). Exception: initial creation at line 851 uses plain open(w) \u2014 acceptable since no readers exist yet but inconsistent.",
+    "child-agents.jsonl appends use open(a) with O_APPEND semantics. Single JSONL lines are <PIPE_BUF so concurrent appenders are safe. Protocol (agents/stampede-commander.agent.md:695-703) explicitly documents append-only rules and reader tolerance of malformed trailing lines.",
+    "Task claiming uses atomic mv (POSIX rename) \u2014 race-safe by design.",
+    "Potential risks: (a) Orphaned .tmp files if process dies mid-write \u2014 no cleanup documented. (b) Commander agent atomic write obligation is enforced only by prompt text, not code guards."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:155",
+    "bin/stampede.sh:665",
+    "bin/stampede.sh:851",
+    "bin/stampede.sh:1016",
+    "agents/stampede-commander.agent.md:695-703"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

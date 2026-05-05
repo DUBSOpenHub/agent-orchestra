@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-044-001",
+  "theme": "recovery-stuck-detection",
+  "focus": "stuck-heuristics",
+  "findings": [
+    "Stuck detection relies on claimed-file mtime >120s, creating high false positives for legitimate long-running tasks.",
+    "The alert path only rings/prints once; it does not requeue, kill, or restart stuck work.",
+    "Orphan recovery only requeues when all live panes are gone and claim age exceeds 180s, so partial failures can stall indefinitely."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:25-26",
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede-monitor.sh:218-279",
+    "bin/stampede-monitor.sh:281-305"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-011-005",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "bounded-spawn-failure-modes",
+  "findings": [
+    "Launcher banned-model validation appears startup-only; worker/child launch failures do not clearly trigger fleet-wide halt.",
+    "Teardown kills tracked PIDs but may not recursively clean nested child agents, leaving orphan risk.",
+    "Preflight validates access/readiness but does not fully pre-validate later child-model launch authorization; partial status is recorded more than actively enforced."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:139-193",
+    "bin/stampede.sh:304-361",
+    "bin/stampede.sh:366-469",
+    "bin/stampede.sh:521-530",
+    "bin/stampede.sh:912-914",
+    "bin/stampede.sh:985-1034",
+    "agents/stampede-commander.agent.md:140-146",
+    "agents/stampede-commander.agent.md:213-236"
+  ],
+  "confidence": 0.88,
+  "status": "audit_complete"
+}

@@ -1,0 +1,11 @@
+{
+  "atom_id": "atm-003-001",
+  "area": "premium-model-policy",
+  "blockers": 2,
+  "highlights": [
+    "BLOCKER: --metaswarm does not enforce premium-only on commander panes; user --model passes through",
+    "BLOCKER: default MODEL=claude-haiku-4.5 in stampede.sh:15 (banned-for-metaswarm; silent fallback risk)",
+    "MAJOR: skills/SKILL.md missing canonical premium/banned lists (drift)",
+    "Commander doc requires premium model in launch_started records (instruction-only, no runtime guard)"
+  ]
+}

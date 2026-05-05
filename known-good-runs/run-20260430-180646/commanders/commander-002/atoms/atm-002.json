@@ -1,0 +1,118 @@
+{
+  "commander_id": "commander-002",
+  "confidence": 0.87,
+  "created_at": "2026-05-01T01:24:43Z",
+  "evidence": {
+    "models_used": [
+      "gpt-5.2",
+      "claude-sonnet-4.6",
+      "gpt-5.3-codex",
+      "claude-sonnet-4.5",
+      "gpt-5.2-codex"
+    ],
+    "notes": [
+      "Worker task tool did not expose persistent child agent ids in the returned result, so task_agent_id is null and worker names are recorded as ids.",
+      "All leaf prompts included the required non-delegation block."
+    ],
+    "review_only": true,
+    "source_files_modified": false,
+    "workers_launched": 5
+  },
+  "findings": [
+    {
+      "evidence_refs": [
+        "bin/stampede.sh:649-705",
+        "bin/stampede.sh:674-683",
+        "bin/stampede.sh:874-915"
+      ],
+      "id": "atomic-append-not-guaranteed",
+      "recommended_fix": "Provide a required atomic_append_jsonl helper using os.open(...O_APPEND...) plus optional fcntl lock, or shard ledgers per commander.",
+      "severity": "high",
+      "summary": "Collaboration ledgers are shared multi-writer JSONL files relying on append-mode guidance without an enforced single-write helper or locking."
+    },
+    {
+      "evidence_refs": [
+        "bin/stampede.sh:708-719",
+        "bin/stampede.sh:771-831",
+        ".stampede/run-20260430-180646/claimed/commander-002.json",
+        ".stampede/run-20260430-180646/commanders/commander-002/swarm-state.json"
+      ],
+      "id": "collab-path-not-in-manifest-or-initial-swarm-state",
+      "recommended_fix": "Embed the resolved collab dict in queue/claimed task manifests and initial swarm-state.json.",
+      "severity": "high",
+      "summary": "Resolved collab path propagates through state/fleet/env/prompt, but claimed task manifests can have collab=null and initial commander swarm-state omits collab."
+    },
+    {
+      "evidence_refs": [
+        "bin/stampede.sh:695-707",
+        "bin/stampede.sh:709-719",
+        "bin/stampede.sh:910",
+        "bin/stampede-monitor.sh:57-67"
+      ],
+      "id": "semantic-concurrency-unenforced",
+      "recommended_fix": "Add ledger reconciliation for schema, uniqueness, reference integrity, and explicit consensus arbitration rules.",
+      "severity": "high",
+      "summary": "Multi-commander concurrency assumes unique item_ids, ordered workflow, and non-conflicting consensus, but no validator, dedupe, epoch, quorum, or arbitration is implemented."
+    },
+    {
+      "evidence_refs": [
+        "bin/stampede.sh:701",
+        "bin/stampede.sh:910",
+        "bin/stampede-monitor.sh:32-39",
+        "bin/stampede-monitor.sh:57-67"
+      ],
+      "id": "recovery-contract-not-implemented",
+      "recommended_fix": "Add commander read contract: missing protocol is explicit failure, missing ledgers are empty with warnings, malformed JSONL lines are skipped/logged, and monitor flags missing ledgers.",
+      "severity": "critical",
+      "summary": "Protocol says readers must tolerate absent files and malformed trailing lines, but commander instructions lack file-existence checks, malformed-line skipping, or collab integrity recovery."
+    },
+    {
+      "evidence_refs": [
+        "bin/stampede.sh:772-818",
+        "bin/stampede.sh:1013-1014",
+        "agents/stampede-commander.agent.md:254-282",
+        "skills/SKILL.md"
+      ],
+      "id": "schema-too-generic-and-drifting",
+      "recommended_fix": "Define per-ledger JSON schemas with required link fields, enforce event values/types, and standardize bundle fields such as adopted_consensus_item_ids.",
+      "severity": "high",
+      "summary": "Shared required_fields are generic and do not define per-ledger linking fields; bundle adoption field expectations differ between launcher prompt and commander spec/examples."
+    },
+    {
+      "evidence_refs": [
+        "bin/stampede-monitor.sh:32-42",
+        "bin/stampede-monitor.sh:57-67"
+      ],
+      "id": "monitor-observability-count-only",
+      "recommended_fix": "Read collab.path from state.json, require protocol.json for metaswarm detection, parse JSONL, and surface missing/schema/error warnings.",
+      "severity": "medium",
+      "summary": "Monitor reads hardcoded $BASE/collab and counts lines only, so it cannot distinguish missing vs empty files or detect malformed, duplicate, out-of-order, or semantically invalid entries."
+    }
+  ],
+  "focus": "QA collaboration-bus, review-only",
+  "run_id": "run-20260430-180646",
+  "squad_id": "sq-002",
+  "status": "completed",
+  "worker_agent_ids": {
+    "wkr-002-001": {
+      "model": "gpt-5.2",
+      "task_agent_id": null
+    },
+    "wkr-002-002": {
+      "model": "claude-sonnet-4.6",
+      "task_agent_id": null
+    },
+    "wkr-002-003": {
+      "model": "gpt-5.3-codex",
+      "task_agent_id": null
+    },
+    "wkr-002-004": {
+      "model": "claude-sonnet-4.5",
+      "task_agent_id": null
+    },
+    "wkr-002-005": {
+      "model": "gpt-5.2-codex",
+      "task_agent_id": null
+    }
+  }
+}

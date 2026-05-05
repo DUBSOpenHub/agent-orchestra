@@ -1,0 +1,116 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_lead_id": "sq-004",
+  "atom_id": "atm-004",
+  "focus": "collaboration-bus semantics and adoption traceability",
+  "review_only": true,
+  "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+  "workers": [
+    {
+      "worker_id": "wkr-004-001",
+      "model": "gpt-5.2",
+      "focus": "proposals.jsonl semantics",
+      "status": "completed",
+      "verdict": "pass_with_minor_gaps",
+      "highlights": [
+        "protocol.json and launcher agree on append-only JSONL plus required_fields for proposals",
+        "proposals.jsonl is headerless one-object-per-line JSONL",
+        "proposal records satisfy required_fields but evidence/timestamp field types are inconsistent across records",
+        "adoption is not ledgered; bundle/result traceability is instructed but not validated"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-002",
+      "model": "claude-sonnet-4.6",
+      "focus": "reviews.jsonl semantics",
+      "status": "completed",
+      "verdict": "accept_with_major_additions",
+      "highlights": [
+        "all peer_review records omit required evidence field despite protocol required_fields contract",
+        "target_item_id, target_commander, and verdict are operationally necessary but undocumented",
+        "review-to-proposal linkage works today via target_item_id",
+        "review-to-improvement-to-adoption forward trace is not contractually defined"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-003",
+      "model": "gpt-5.3-codex",
+      "focus": "improvements.jsonl semantics",
+      "status": "completed",
+      "verdict": "high_risk_gap",
+      "highlights": [
+        "improvement records inherit only generic required_fields; no improvement-specific schema exists",
+        "launcher says write improvements but does not require linkage back to review/proposal or forward to consensus",
+        "empty/malformed-line tolerance exists only as protocol guidance; consumers mainly count lines",
+        "improvement provenance is too weak for deterministic adoption traceability"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-004",
+      "model": "claude-sonnet-4.5",
+      "focus": "consensus.jsonl semantics",
+      "status": "completed",
+      "verdict": "blockers_found",
+      "highlights": [
+        "protocol defines workflow stage consensus but not promotion criteria from improvements",
+        "actual consensus records rely on undocumented verdict and based_on fields",
+        "workflow includes adopt stage but no adoption ledger exists",
+        "bundle example in commander doc omits adopted_consensus_item_ids/source_refs required by launcher prompt"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-005",
+      "model": "gpt-5.2-codex",
+      "focus": "broadcasts.jsonl semantics and adoption traceability",
+      "status": "completed",
+      "verdict": "major_traceability_gap",
+      "highlights": [
+        "broadcasts trace to consensus via optional consensus_item_id, not a required protocol field",
+        "protocol required_fields are too generic to enforce end-to-end linkage",
+        "launcher requires adopted consensus item_ids/source_refs in bundle/results, but docs and manifest examples drift",
+        "adoption proof currently requires reading bundle outputs, not the collaboration bus alone"
+      ]
+    }
+  ],
+  "synthesis": {
+    "overall_assessment": "Collaboration-bus bootstrap is sound (precreated ledgers, append-only JSONL guidance, stable item_id intent), but per-ledger semantics are under-specified and end-to-end adoption traceability is not fully auditable from the bus alone.",
+    "positives": [
+      "stampede.sh precreates proposals, reviews, improvements, consensus, and broadcasts ledgers in append mode and writes protocol.json before commander work begins",
+      "proposal and broadcast/consensus records demonstrate organic cross-ledger linkage through item_id, based_on, and consensus_item_id",
+      "monitor safely counts ledger activity without mutating files"
+    ],
+    "blockers": [
+      "No formal adoption ledger or equivalent append-only proof for the adopt workflow stage",
+      "Consensus promotion criteria and required linkage fields are undocumented; actual records depend on ad hoc verdict/based_on fields",
+      "Commander bundle documentation omits adopted_consensus_item_ids/source_refs even though launcher prompt requires them"
+    ],
+    "majors": [
+      "reviews.jsonl records currently violate protocol required_fields by omitting evidence",
+      "protocol required_fields are generic and do not specify per-ledger linkage fields such as target_item_id, based_on, or consensus_item_id",
+      "improvements and broadcasts can be counted but not fully validated by existing consumers, so malformed semantics may pass unnoticed",
+      "bundle/result adoption traceability is not enforced by runtime validation"
+    ],
+    "minors": [
+      "proposal evidence and timestamp field types vary across commanders",
+      "cross-commander review coverage is currently asymmetric"
+    ],
+    "ship_recommendation": "HOLD",
+    "traceability_verdict": "Partial: backward references exist, but forward proof from review/improvement to adopted bundle output is not guaranteed by the protocol."
+  },
+  "evidence_refs": [
+    ".stampede/run-20260430-180646/collab/protocol.json",
+    ".stampede/run-20260430-180646/collab/proposals.jsonl",
+    ".stampede/run-20260430-180646/collab/reviews.jsonl",
+    ".stampede/run-20260430-180646/collab/improvements.jsonl",
+    ".stampede/run-20260430-180646/collab/consensus.jsonl",
+    ".stampede/run-20260430-180646/collab/broadcasts.jsonl",
+    ".stampede/run-20260430-180646/claimed/commander-002.json",
+    ".stampede/run-20260430-180646/commanders/commander-001/bundle.json",
+    "bin/stampede.sh",
+    "bin/stampede-monitor.sh",
+    "agents/stampede-commander.agent.md",
+    "skills/SKILL.md"
+  ],
+  "completed_at": "2026-05-01T01:15:47Z"
+}

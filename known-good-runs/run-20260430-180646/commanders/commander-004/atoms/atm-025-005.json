@@ -1,0 +1,28 @@
+{
+  "worker_id": "wkr-025-005",
+  "theme": "collaboration-bus",
+  "focus": "malformed-ledger-tolerance",
+  "findings": [
+    "Protocol states readers must tolerate absent/malformed files but no reader code implements this",
+    "JSON parse fallback inconsistent: some use || echo fallbacks but Python exceptions crash silently",
+    "Missing file tolerance partial: some existence checks before reads, others have none",
+    "Atomic write pattern correct: .tmp-* prefix + atomic rename/replace protects partial writes",
+    "JSONL ledger appends unvalidated: no line-by-line json.loads validation",
+    "No truncation detection: no checksums, length headers, or trailing markers",
+    "Race mitigation via mv for claiming but orphan recovery has TOCTOU window",
+    "try/except swallows all errors without logging - hides corruption",
+    "Monitor does not validate swarm-state JSON - can crash on malformed data",
+    "No ledger recovery: single malformed JSONL line breaks commander telemetry parsing"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:155-157",
+    "bin/stampede.sh:696-703",
+    "bin/stampede.sh:1004-1033",
+    "bin/stampede-monitor.sh:48-54",
+    "bin/stampede-monitor.sh:146-191",
+    "bin/stampede-monitor.sh:274-275",
+    "bin/stampede-monitor.sh:311-325"
+  ],
+  "confidence": 85,
+  "status": "success"
+}

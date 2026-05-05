@@ -1,0 +1,45 @@
+{
+  "squad_id": "sq-026",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "workers": [
+    {
+      "worker_id": "wkr-026-001",
+      "model": "gpt-5.2",
+      "assignment": "initialization idempotency",
+      "status": "completed",
+      "result_file": "atoms/wkr-026-001-result.json"
+    },
+    {
+      "worker_id": "wkr-026-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "ledger paths",
+      "status": "completed",
+      "result_file": "atoms/wkr-026-002-result.json"
+    },
+    {
+      "worker_id": "wkr-026-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "append safety",
+      "status": "completed",
+      "result_file": "atoms/wkr-026-003-result.json"
+    },
+    {
+      "worker_id": "wkr-026-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "bundle schema",
+      "status": "completed",
+      "result_file": "atoms/wkr-026-004-result.json"
+    },
+    {
+      "worker_id": "wkr-026-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "QA gate",
+      "status": "completed",
+      "result_file": "atoms/wkr-026-005-result.json"
+    }
+  ],
+  "overall_verdict": "HOLD",
+  "atom_path": "atoms/atm-026.json",
+  "completed_at": "2026-05-01T01:33:42.104238Z"
+}

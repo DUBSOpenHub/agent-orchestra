@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "run_id": "run-20260430-180646",
+  "profile": "metaswarm",
+  "ledgers": {
+    "proposals": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+      "event": "proposal"
+    },
+    "reviews": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+      "event": "peer_review"
+    },
+    "improvements": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+      "event": "improvement"
+    },
+    "consensus": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+      "event": "consensus"
+    },
+    "broadcasts": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl",
+      "event": "broadcast"
+    }
+  },
+  "atomic_append_guidance": {
+    "mode": "append-only-jsonl",
+    "rules": [
+      "Append exactly one complete JSON object per line.",
+      "Open ledgers in append mode so writers use O_APPEND semantics.",
+      "Never rewrite, truncate, sort, or compact ledgers during a run.",
+      "Readers must tolerate absent files and malformed trailing lines.",
+      "Use stable item_id values so proposals, reviews, improvements, consensus, and broadcasts can reference each other."
+    ]
+  },
+  "commander_workflow": {
+    "sequence": [
+      "propose",
+      "peer_review",
+      "improve",
+      "consensus",
+      "broadcast",
+      "adopt"
+    ],
+    "description": "propose -> peer_review -> improve -> consensus -> broadcast -> adopt"
+  },
+  "required_fields": [
+    "ts",
+    "run_id",
+    "commander_id",
+    "event",
+    "item_id",
+    "summary",
+    "evidence",
+    "confidence",
+    "source_refs"
+  ]
+}

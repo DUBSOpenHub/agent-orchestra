@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-044-005",
+  "theme": "recovery-stuck-detection",
+  "focus": "failure-containment",
+  "findings": [
+    "Commander instructions require leaf-only workers and bounded spawning, and launcher state encodes the full 50x5 metaswarm target.",
+    "Blocked/failed commander launch paths do emit containment telemetry and update run state.",
+    "If a commander or worker PID never starts, launcher output reports failure but may leave swarm-state stuck at starting without equivalent ledger updates."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:32-33",
+    "agents/stampede-commander.agent.md:140-146",
+    "agents/stampede-commander.agent.md:243-251",
+    "bin/stampede.sh:141-190",
+    "bin/stampede.sh:506-528",
+    "bin/stampede.sh:847-963",
+    "bin/stampede.sh:1096-1145",
+    "bin/stampede.sh:1318-1333"
+  ],
+  "confidence": "medium-high",
+  "status": "success"
+}

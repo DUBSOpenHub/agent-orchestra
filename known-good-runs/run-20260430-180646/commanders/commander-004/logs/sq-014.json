@@ -1,0 +1,51 @@
+{
+  "squad_id": "sq-014",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "status": "success",
+  "theme": "depth-guard-bounded-spawning",
+  "objective": "Audit premium model policy, banned-model enforcement, Depth Guard, bounded spawning, partial/failure handling, stop, teardown, and recovery behavior.",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "worker_atoms": [
+    "atm-014-001",
+    "atm-014-002",
+    "atm-014-003",
+    "atm-014-004",
+    "atm-014-005"
+  ],
+  "summary_findings": [
+    "Worker leaf prompts are present, but leaf enforcement is still policy-driven because bash remains available and queue-writing recursion is not explicitly blocked in the worker agent.",
+    "Commander guidance documents max depth, max workers, and premium model policy, but runtime enforcement for depth exhaustion, retry/timeout budgets, and squad-lead anti-recursion is incomplete.",
+    "Skill-level metaswarm launch instructions describe SS-250 shape but do not hard-cap commander count or explicitly block nested metaswarm recursion; sealed-test fan-out also lacks a spawn budget.",
+    "Depth-guard lint covers core worker invariants, but misses delegation phrase checks, recursive commander/squad-lead checks, and stronger launch-proof validation.",
+    "Launcher teardown/recovery is incomplete for metaswarm children: only pane PIDs and run-level state are updated, so commander progress files and nested child agents can survive stop/teardown paths."
+  ],
+  "blockers": [],
+  "consensus_notes": [
+    "Consensus: worker leaf lock text exists and premium model pool/banned-model policy are documented.",
+    "Consensus: most gaps are enforcement gaps rather than missing documentation\u2014especially for squad-lead recursion, launch budgets, and teardown/recovery telemetry.",
+    "Consensus: stop/recovery handling is weaker than launch-path documentation."
+  ],
+  "conflict_notes": [
+    "No material conflicts across worker findings; worker 5 primarily narrowed failure-mode gaps to launcher teardown and queue sizing."
+  ],
+  "overall_confidence": "high",
+  "key_source_refs": [
+    "agents/stampede-agent.agent.md:7-14",
+    "agents/stampede-agent.agent.md:23-28",
+    "agents/stampede-agent.agent.md:109-148",
+    "agents/stampede-agent.agent.md:332-338",
+    "agents/stampede-commander.agent.md:15",
+    "agents/stampede-commander.agent.md:80-91",
+    "agents/stampede-commander.agent.md:140-168",
+    "agents/stampede-commander.agent.md:228-252",
+    "skills/SKILL.md:341-343",
+    "skills/SKILL.md:393-417",
+    "tests/depth-guard-lint.sh:16-33",
+    "tests/depth-guard-lint.sh:35-63",
+    "bin/stampede.sh:304-363",
+    "bin/stampede.sh:700-731",
+    "bin/stampede.sh:1276-1304"
+  ]
+}

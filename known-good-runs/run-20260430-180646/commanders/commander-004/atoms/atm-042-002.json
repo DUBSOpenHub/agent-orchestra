@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-042-002",
+  "theme": "recovery-stuck-detection",
+  "focus": "recovery-paths",
+  "findings": [
+    "stampede.sh has no watchdog or restart loop; it launches panes, captures PIDs once after a fixed 5s sleep, and exits launcher control.",
+    "Teardown kills tracked PIDs and the tmux session but does not requeue claimed tasks, so in-flight work can be orphaned.",
+    "Commander launch failures are recorded into swarm-state.json and child-agents.jsonl, but there is no retry or substitution path.",
+    "Each pane sleeps for 86400 after agent exit, so pane liveness can outlast worker liveness and confuse recovery diagnostics.",
+    "PID capture depends on a fixed 5s delay and may record the wrong process if the actual worker spawns late."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:306-363",
+    "bin/stampede.sh:1096-1157",
+    "bin/stampede.sh:1275-1333"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

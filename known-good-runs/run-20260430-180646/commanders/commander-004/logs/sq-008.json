@@ -1,0 +1,91 @@
+{
+  "squad_id": "sq-008",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "premium-model-policy",
+  "status": "partial",
+  "review_only": true,
+  "launched_workers": [
+    "wkr-008-001",
+    "wkr-008-002",
+    "wkr-008-003",
+    "wkr-008-004",
+    "wkr-008-005"
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-008-001",
+      "status": "success",
+      "focus": "model-rotation",
+      "atom_id": "atm-008-001",
+      "confidence": 0.78
+    },
+    {
+      "worker_id": "wkr-008-002",
+      "status": "failed",
+      "focus": "banned-model-guardrails",
+      "atom_id": "atm-008-002",
+      "confidence": 0.2
+    },
+    {
+      "worker_id": "wkr-008-003",
+      "status": "success",
+      "focus": "docs-vs-runtime",
+      "atom_id": "atm-008-003",
+      "confidence": 0.92
+    },
+    {
+      "worker_id": "wkr-008-004",
+      "status": "success",
+      "focus": "child-override-propagation",
+      "atom_id": "atm-008-004",
+      "confidence": 0.85
+    },
+    {
+      "worker_id": "wkr-008-005",
+      "status": "success",
+      "focus": "fallback-violation-handling",
+      "atom_id": "atm-008-005",
+      "confidence": 0.68
+    }
+  ],
+  "summary_findings": [
+    "Model rotation exists at launcher level, but downstream child enforcement relies heavily on prompt/instruction propagation.",
+    "Launcher bans cheap models for metaswarm commander launch and records premium/banned pools in fleet/state metadata.",
+    "Potential silent fallback risk when custom --agent-cmd omits {model}, causing underlying CLI defaults to take over.",
+    "Documentation has premium/default-model consistency gaps (README vs AGENTS).",
+    "Fallback-violation language is strongest for metaswarm downgrade scenarios; broader runtime fallback handling is less explicit."
+  ],
+  "consensus_notes": [
+    "Consensus across successful workers: premium policy is clearly documented and injected, but not fully hard-enforced at every child boundary.",
+    "Consensus: metaswarm should report partial/failed rather than silently downgrade."
+  ],
+  "conflict_notes": [
+    "No direct technical conflicts in successful worker findings; coverage gap exists because wkr-008-002 failed to deliver file-level audit."
+  ],
+  "blockers": [
+    "wkr-008-002 returned refusal response and did not audit assigned files.",
+    "Task tool calls completed synchronously; no background agent IDs were returned by the tool interface in this run, so launch_started events used placeholder sync IDs."
+  ],
+  "overall_confidence": 0.69,
+  "key_source_refs": [
+    "bin/stampede.sh:515-530",
+    "bin/stampede.sh:603-629",
+    "bin/stampede.sh:729-757",
+    "bin/stampede.sh:760-778",
+    "bin/stampede.sh:814-832",
+    "bin/stampede.sh:883-893",
+    "bin/stampede.sh:907",
+    "skills/SKILL.md:121-129",
+    "skills/SKILL.md:407-416",
+    "agents/stampede-commander.agent.md:94-111",
+    "agents/stampede-commander.agent.md:150-166",
+    "agents/stampede-commander.agent.md:190-209",
+    "README.md:35",
+    "README.md:130",
+    "README.md:300-309",
+    "AGENTS.md:17",
+    "AGENTS.md:27",
+    "AGENTS.md:38"
+  ]
+}

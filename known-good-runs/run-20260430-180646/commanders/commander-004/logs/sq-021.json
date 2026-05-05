@@ -1,0 +1,73 @@
+{
+  "squad_id": "sq-021",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "collaboration-bus",
+  "status": "partial",
+  "overall_confidence": 0.93,
+  "summary": [
+    "Core collaboration-bus scaffolding exists in the metaswarm launcher: ledgers, protocol.json, commander prompt wiring, and env exports are implemented.",
+    "The commander agent spec and public docs do not independently document or enforce the collaboration-bus workflow, so behavior currently depends on launcher prompt injection.",
+    "Malformed-ledger tolerance is only partially implemented: missing files are safe, but malformed JSONL entries are not parsed/validated by launcher or monitor."
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-021-001",
+      "atom_id": "atm-021-001",
+      "focus": "ledger-creation",
+      "status": "partial",
+      "confidence": 0.95
+    },
+    {
+      "worker_id": "wkr-021-002",
+      "atom_id": "atm-021-002",
+      "focus": "protocol-alignment",
+      "status": "partial",
+      "confidence": 0.91
+    },
+    {
+      "worker_id": "wkr-021-003",
+      "atom_id": "atm-021-003",
+      "focus": "commander-ledger-usage",
+      "status": "missing",
+      "confidence": 0.95
+    },
+    {
+      "worker_id": "wkr-021-004",
+      "atom_id": "atm-021-004",
+      "focus": "broadcast-adoption",
+      "status": "partial",
+      "confidence": 0.92
+    },
+    {
+      "worker_id": "wkr-021-005",
+      "atom_id": "atm-021-005",
+      "focus": "malformed-ledger-tolerance",
+      "status": "partial",
+      "confidence": 0.94
+    }
+  ],
+  "consensus_notes": [
+    "All five workers agree the launcher implements collaboration-bus scaffolding only for metaswarm runs.",
+    "Workers agree documentation/spec coverage lags implementation: README/SKILL mention filesystem IPC, but commander-agent guidance and user-facing adoption flow are incomplete.",
+    "No worker found runtime validation for malformed JSONL ledger entries."
+  ],
+  "conflict_notes": [],
+  "blockers": [
+    "Task-tool responses in this interface did not expose background agent ids; launch_started telemetry used deterministic worker ids as agent_id placeholders."
+  ],
+  "key_source_refs": [
+    "bin/stampede.sh:613-615",
+    "bin/stampede.sh:671-727",
+    "bin/stampede.sh:904-910",
+    "bin/stampede.sh:928-936",
+    "bin/stampede-monitor.sh:32-38",
+    "bin/stampede-monitor.sh:41-66",
+    "README.md:39-40",
+    "README.md:52-54",
+    "README.md:221-227",
+    "skills/SKILL.md:165-170",
+    "agents/stampede-commander.agent.md:29-37",
+    "agents/stampede-commander.agent.md:254-257"
+  ]
+}

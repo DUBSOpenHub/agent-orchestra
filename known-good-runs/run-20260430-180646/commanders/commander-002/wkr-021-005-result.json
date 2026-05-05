@@ -1,0 +1,48 @@
+{
+  "worker_id": "wkr-021-005",
+  "model": "claude-opus-4.5",
+  "assignment": "bundle_source_refs",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "Bundle Shape (agents/stampede-commander.agent.md:240-267) omits source_refs, adopted_consensus, proposal_ids, review_ids, improvement_ids, broadcast_ids.",
+    "source_refs only required in runtime prompt prose (bin/stampede.sh:910).",
+    "Merger agent has zero collab/ledger awareness; only consumes results/*.json.",
+    "No JSON Schema or runtime validator for bundle anywhere.",
+    "Worker atom evidence format inconsistent across run."
+  ],
+  "evidence": [
+    {
+      "file": "agents/stampede-commander.agent.md",
+      "lines": "240-267",
+      "note": "Bundle required_fields: task_id, run_id, commander_id, status, role, profile, swarm_scale, per_commander_full_swarm, branch, files_changed, summary, confidence, consensus, telemetry. NO source_refs/adopted_consensus."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "718, 910",
+      "note": "protocol required_fields includes 'source_refs'; commander prompt asks for adopted consensus item_ids + source_refs in bundle.json."
+    },
+    {
+      "file": "agents/stampede-merger.agent.md",
+      "lines": "1-356",
+      "note": "no 'collab' or 'ledger' matches; reads results/*.json only at line 51."
+    },
+    {
+      "file": ".stampede/run-20260430-180646/commanders/commander-002/atoms/",
+      "note": "wkr-006-001.json uses {path,lines,note}; atm-001.json uses prose file:line strings; no uniform schema."
+    }
+  ],
+  "gaps": [
+    "Bundle Shape lacks source_refs / adopted_consensus / proposal_ids / review_ids / improvement_ids / broadcast_ids.",
+    "No schemas/bundle.schema.json or runtime validator.",
+    "Merger never reads collab ledgers; no provenance chain.",
+    "Worker atom evidence format not standardized.",
+    "No link from bundle items back to ledger msg_ids."
+  ],
+  "recommendations": [
+    "Add source_refs/adopted_consensus/proposal_ids/review_ids/improvement_ids/broadcast_ids to Bundle Shape.",
+    "Create schemas/bundle.schema.json and validate in merger Phase 1.",
+    "Have merger read collab/*.jsonl ledgers and cross-reference bundle claims to ledger msg_ids.",
+    "Standardize worker atom evidence format {file,line_start,line_end,excerpt}."
+  ]
+}

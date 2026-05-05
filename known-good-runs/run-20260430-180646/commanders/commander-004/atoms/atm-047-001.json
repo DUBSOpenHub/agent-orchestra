@@ -1,0 +1,24 @@
+{
+  "atom_id": "atm-047-001",
+  "worker_id": "wkr-047-001",
+  "theme": "docs-ci-readiness",
+  "focus": "ci-scope",
+  "findings": [
+    "CI does not run tests/smoke-test.sh or tests/depth-guard-lint.sh (ci.yml:15-56)",
+    "ShellCheck and bash -n only cover bin/*.sh + install.sh, not tests/*.sh (ci.yml:18-30)",
+    "Install smoke test writes /tmp/install-ci.sh \u2014 risky in restricted CI environments (ci.yml:41-43)",
+    "No CI steps for metaswarm commander-specific behavior, nested progress, or child-agent telemetry",
+    "Pinned action SHAs present and correctly formatted (ci.yml:16,26)",
+    "Trigger gap: no workflow_dispatch or branch protection beyond main (ci.yml:3-7)",
+    "YAML frontmatter check covers agents/*.md but not content/behavior (ci.yml:31-36)"
+  ],
+  "source_refs": [
+    ".github/workflows/ci.yml:15-56",
+    ".github/workflows/ci.yml:18-30",
+    ".github/workflows/ci.yml:38-44",
+    ".github/workflows/ci.yml:3-7"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "ts": "2026-05-01T01:29:05Z"
+}

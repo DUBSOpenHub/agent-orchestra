@@ -1,0 +1,28 @@
+{
+  "worker_id": "wkr-010-001",
+  "theme": "premium-model-policy",
+  "focus": "model-rotation",
+  "findings": [
+    "Launcher supports explicit model rotation via --models, with per-pane assignment and dry-run preview (bin/stampede.sh:545-574, 603-606, 850-854, 866-868).",
+    "Premium model policy exists as metadata/prompt guidance but launcher only sets --model for commander pane; child enforcement depends on commander behavior (bin/stampede.sh:739-757, 793-811, 942-956).",
+    "Default model mismatch: skill defaults to Sonnet but launcher default is claude-haiku-4.5, risking silent downgrade if script run directly (skills/SKILL.md:39-40, 104-111; bin/stampede.sh:15).",
+    "Preflight validates only first model in rotation and Copilot CLI fallback to gh copilot may be silent, risking runtime failures (bin/stampede.sh:202-203, 226-240, 112-125)."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:545-574",
+    "bin/stampede.sh:603-606",
+    "bin/stampede.sh:850-854",
+    "bin/stampede.sh:866-868",
+    "bin/stampede.sh:739-757",
+    "bin/stampede.sh:793-811",
+    "bin/stampede.sh:942-956",
+    "bin/stampede.sh:15",
+    "skills/SKILL.md:39-40",
+    "skills/SKILL.md:104-111",
+    "bin/stampede.sh:202-203",
+    "bin/stampede.sh:226-240",
+    "bin/stampede.sh:112-125"
+  ],
+  "confidence": 0.86,
+  "status": "success"
+}

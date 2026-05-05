@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-045-004",
+  "theme": "recovery-stuck-detection",
+  "focus": "docs-vs-runtime-recovery",
+  "findings": [
+    "README documents recovery at high level: monitor stuck detection, orchestrator re-queue on agent death",
+    "Docs mention stuck-agent detection but not threshold or automatic action",
+    "Documented CLI flags minimal: --teardown documented, no --restart/--resume",
+    "Docs do not match runtime: README claims PID-based recovery but impl uses tmux pane state",
+    "Code implements alert-only stuck detection (120s bell), not auto-restart",
+    "Undocumented features: orphan-task recovery, partial completion, missing-task reporting",
+    "README inaccurately describes dead-agent recovery mechanism"
+  ],
+  "source_refs": [
+    "README.md:79-87",
+    "README.md:229-235",
+    "README.md:255-258",
+    "README.md:299-312",
+    "bin/stampede-monitor.sh:25",
+    "bin/stampede-monitor.sh:200-277"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

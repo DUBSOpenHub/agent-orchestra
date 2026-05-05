@@ -1,0 +1,54 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_id": "sq-014",
+  "worker_id": "wkr-014-001",
+  "model": "gpt-5.2",
+  "focus": "ledger event required fields",
+  "status": "partial",
+  "verdict": "fail",
+  "summary": "protocol.json defines global required_fields incl. evidence, but multiple ledger entries omit evidence; enforcement appears advisory (prompt-only), not validated by launcher.",
+  "findings": [
+    {
+      "severity": "high",
+      "issue": "Ledger entries violate protocol.json required_fields (missing evidence)",
+      "details": "protocol.json requires evidence for all collab ledger events, but every reviews.jsonl entry omits evidence; additionally one consensus and one broadcast omit evidence.",
+      "evidence_refs": [
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json:48-58",
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl:1-11",
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl:5",
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl:3"
+      ]
+    },
+    {
+      "severity": "medium",
+      "issue": "required_fields appears global, but launcher prompt only explicitly enforces it for proposals",
+      "details": "Commander prompt explicitly says \u201cPublish a proposal early \u2026 using required fields \u2026\u201d but does not explicitly require the same fields for peer_review/improvement/consensus/broadcast entries, consistent with observed missing evidence in reviews and some other ledgers.",
+      "evidence_refs": [
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:910",
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl:1-11"
+      ]
+    },
+    {
+      "severity": "medium",
+      "issue": "No documented/implemented enforcement of required_fields in launcher; appears advisory",
+      "details": "stampede.sh writes protocol.json (including required_fields) and creates ledgers, but no validation of appended JSONL records against required_fields is present in the launcher sections reviewed; compliance relies on agent adherence to prompt guidance.",
+      "evidence_refs": [
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:653-721",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:910"
+      ]
+    }
+  ],
+  "source_refs": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json:48-58",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl:1-5",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl:1-11",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl:1-7",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl:1-5",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl:1-3",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:653-721",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:895-915"
+  ],
+  "confidence": 0.86,
+  "ts": "2026-05-01T01:20:18Z"
+}

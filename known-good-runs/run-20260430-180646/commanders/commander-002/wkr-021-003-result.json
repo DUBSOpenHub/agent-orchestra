@@ -1,0 +1,68 @@
+{
+  "worker_id": "wkr-021-003",
+  "model": "claude-opus-4.6",
+  "assignment": "append_semantics",
+  "status": "completed",
+  "severity": "medium",
+  "highlights": [
+    "protocol.json explicitly documents append-only rules (bin/stampede.sh:695-703).",
+    "One truncation hazard: child-agents.jsonl initialized with 'w' (bin/stampede.sh:853).",
+    "Atomic rename (.tmp + replace) consistent for non-JSONL artifacts.",
+    "All appended records end with explicit '\\n'; sizes well under PIPE_BUF.",
+    "Readers tolerate missing files; partial-line tolerance is implicit (wc -l)."
+  ],
+  "evidence": [
+    {
+      "file": "bin/stampede.sh",
+      "lines": "695-703",
+      "note": "atomic_append_guidance: append-only-jsonl, never rewrite/truncate, tolerate malformed trailing lines."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "line": 183,
+      "note": "blocked-commander event uses ledger.open('a')."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "1023-1030",
+      "note": "launch-failure child-agents.jsonl append + '\\n'."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "line": 853,
+      "note": "HAZARD: child-agents.jsonl opened with 'w' for first record."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "155-157, 664-668, 1016-1018",
+      "note": "atomic write helpers (tmp+os.replace)."
+    },
+    {
+      "file": "agents/stampede-agent.agent.md",
+      "lines": "98, 238-242, 303",
+      "note": "logs use 'a'; result writes use .tmp-{task_id}.json + os.rename."
+    },
+    {
+      "file": "agents/stampede-merger.agent.md",
+      "lines": "300-304, 318",
+      "note": "atomic merge-report rename + append-only merger.jsonl."
+    },
+    {
+      "file": "bin/stampede-monitor.sh",
+      "lines": "32-39, 257-258, 313, 316",
+      "note": "missing-file tolerance; .tmp- files skipped."
+    }
+  ],
+  "gaps": [
+    "Append-only is contract-only; no runtime enforcement against rogue 'w' opens.",
+    "Readers don't JSON-parse; malformed lines silently inflate counts.",
+    "swarm-state.json uses full overwrite via atomic rename; protocol does not explicitly carve this out.",
+    "No flock; relies solely on O_APPEND atomicity for short records."
+  ],
+  "recommendations": [
+    "Change bin/stampede.sh:853 from 'w' to 'a' for child-agents.jsonl init.",
+    "Document in protocol.json that swarm-state.json uses atomic-replace, not append.",
+    "Add monitor canary that flags ledger size decreases (truncation).",
+    "Document PIPE_BUF constraint to guard future record growth."
+  ]
+}

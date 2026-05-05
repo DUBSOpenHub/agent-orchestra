@@ -1,0 +1,50 @@
+{
+  "child_id": "sq-020",
+  "status": "success",
+  "findings": [
+    {
+      "type": "artifact_write",
+      "severity": "high",
+      "location": "bin/stampede.sh:954-967; run-20260430-180646/commanders/commander-002/swarm-state.json",
+      "description": "Launcher seeds swarm-state.json/child-agents.jsonl with truncating writes; commander-002 reports telemetry truncation and bundle/results missing",
+      "evidence": "Non-atomic writes in stampede.sh and run artifacts note truncated child-agents.jsonl; bundle/results required by contract absent"
+    },
+    {
+      "type": "claimed_cleanup",
+      "severity": "high",
+      "location": "skills/SKILL.md:519-546; bin/stampede-monitor.sh:237",
+      "description": "Orphan recovery re-queues via write+delete (non-atomic) and monitor only reclaims when live_agents==0, risking duplicate execution or stuck claims",
+      "evidence": "SKILL.md orphan sweep uses write+remove; monitor gates recovery on live_agents==0"
+    },
+    {
+      "type": "schema_drift",
+      "severity": "medium",
+      "location": "agents/stampede-commander.agent.md:80-83; skills/SKILL.md:610-618",
+      "description": "Status enums and result schemas diverge (success/partial vs done/completed); synthesizer treats commander success as warning",
+      "evidence": "Commander contract uses success/partial; SKILL treats only done/completed as success"
+    },
+    {
+      "type": "consensus_fields",
+      "severity": "medium",
+      "location": "agents/stampede-commander.agent.md:254-273; bin/stampede.sh:816,1013",
+      "description": "Bundle schema omits source_refs and adopted_consensus_item_ids though launcher/protocol require them; runtime bundles use inconsistent field names",
+      "evidence": "Protocol requires source_refs; bundles vary between adopted_consensus_item_ids and adopted_consensus"
+    },
+    {
+      "type": "partial_reporting",
+      "severity": "medium",
+      "location": "bin/stampede-monitor.sh:349-354; bin/stampede.sh:171-180",
+      "description": "Monitor renders partial as failure and launcher uses blocked status outside commander contract; run-level status can conflict with commander success",
+      "evidence": "Monitor only \u2705 for done/success; launcher sets blocked status; run state blocked while commander results success"
+    },
+    {
+      "type": "progress_counting",
+      "severity": "low",
+      "location": "bin/stampede-monitor.sh:27-30; results/",
+      "description": "Monitor counts all results/*.json, including non-task artifacts, inflating done totals",
+      "evidence": "results/ contains sq-028-completion.json and atoms alongside task results"
+    }
+  ],
+  "summary": "Audit found multiple QA gaps: non-atomic seeding of commander artifacts can truncate telemetry and commander-002 lacks required bundle/results; claimed cleanup uses non-atomic requeue and monitor only recovers when all agents are dead; result schemas/status enums drift between worker/commander/skill; consensus/source_refs fields are required by launcher/protocol but missing or inconsistent in schema docs; partial/blocked statuses are inconsistently rendered; and monitor counts non-task results. Worker result writes are otherwise atomic.",
+  "confidence": 0.86
+}

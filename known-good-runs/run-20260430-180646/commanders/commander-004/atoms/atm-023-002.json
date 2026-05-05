@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-023-002",
+  "theme": "collaboration-bus",
+  "focus": "protocol-alignment",
+  "findings": [
+    "SKILL.md has zero references to collaboration bus, shared ledgers, or propose->consensus flow",
+    "README mentions filesystem as atomic message bus but only for task claiming, not collaboration",
+    "Major doc/impl mismatch: launcher creates full collab protocol but docs do not describe it",
+    "Adoption path (env vars STAMPEDE_COLLAB_*, protocol.json) is implementation-only, undocumented",
+    "Missing protocol specs: record fields, append rules, consensus criteria, external agent participation"
+  ],
+  "source_refs": [
+    "skills/SKILL.md:165-170",
+    "skills/SKILL.md:407-417",
+    "README.md:39",
+    "README.md:200-204",
+    "bin/stampede.sh:930-936"
+  ],
+  "confidence": 0.9,
+  "status": "success"
+}

@@ -1,0 +1,122 @@
+{
+  "squad_id": "sq-006",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "QA Evidence Quality - Part 2",
+  "topic": "collaboration-bus evidence: proposals/reviews/improvements/consensus/broadcasts",
+  "ts": "2026-05-01T01:13:16Z",
+  "summary": {
+    "overall": "Collaboration bus exists and is actively used in run-20260430-180646. Ledger protocol defines only a minimal common schema; in practice, some ledgers include richer fields (reviews/verdicts; consensus/verdict tiers; broadcasts/consensus_item_id). Biggest QA risks are schema drift across ledgers (protocol vs actual fields), inconsistent typing (evidence as str vs list), and lack of enforcement/validation (monitor only counts lines).",
+    "evidence_quality": "Medium-High for run-20260430-180646 (populated ledgers with cross-references). Medium for earlier run-20260430-175714 (reviews/improvements empty)."
+  },
+  "checks": [
+    {
+      "id": "proposals-required-fields",
+      "status": "pass_with_gaps",
+      "what": "Verify proposals.jsonl required fields and consistency",
+      "findings": [
+        "Protocol required_fields are minimal: ts, run_id, commander_id, event, item_id, summary, evidence, confidence, source_refs (collab/protocol.json:48-58).",
+        "All proposal entries in run-20260430-180646 proposals.jsonl include these fields (collab/proposals.jsonl:1-4).",
+        "Schema is much thinner than 'rich proposal' expectations (no explicit problem/scope/risks/acceptance_criteria/status/author/squad_id).",
+        "Type drift: proposal evidence is sometimes a list and sometimes a string (collab/proposals.jsonl:1 evidence=list vs line 2 evidence=str).",
+        "ID/ts conventions are not enforced (item_id formats vary; ts mixes 'Z' and '+00:00' with/without microseconds)."
+      ],
+      "citations": [
+        "./.stampede/run-20260430-180646/collab/protocol.json:48-58",
+        "./.stampede/run-20260430-180646/collab/proposals.jsonl:1-4"
+      ]
+    },
+    {
+      "id": "reviews-structure",
+      "status": "pass_but_drift",
+      "what": "Verify reviews.jsonl structure + linkage to proposals",
+      "findings": [
+        "Reviews ledger is populated (3 entries) and uses richer fields beyond protocol: target_item_id, target_commander, verdict, plus item_id and required minimal fields (collab/reviews.jsonl:1-3).",
+        "Linkage: each review references a proposal via target_item_id (e.g., rev-c001-of-c002-collab -> prop-c002-collab-bus-001).",
+        "Drift: protocol.json required_fields does not list review-specific keys (target_item_id/verdict/etc), so consumers must be tolerant; schema not formally enforced."
+      ],
+      "citations": [
+        "./.stampede/run-20260430-180646/collab/reviews.jsonl:1-3",
+        "./.stampede/run-20260430-180646/collab/protocol.json:48-58"
+      ]
+    },
+    {
+      "id": "improvements-tracking",
+      "status": "pass_but_needs_linking",
+      "what": "Check improvements.jsonl tracking + correlation to proposals/reviews",
+      "findings": [
+        "Improvements ledger is populated (5 entries) and includes a de-facto linkage field 'based_on' listing proposal item_ids (collab/improvements.jsonl:1-5).",
+        "Drift: protocol.json required_fields does not include 'based_on' (or a formal target_item_id), so correlation is ad-hoc and may break if writers differ.",
+        "Earlier run shows collaboration bus exists but ledgers may be empty, indicating workflow adoption is inconsistent across runs (run-20260430-175714 reviews/improvements empty)."
+      ],
+      "citations": [
+        "./.stampede/run-20260430-180646/collab/improvements.jsonl:1-5",
+        "./.stampede/run-20260430-180646/collab/protocol.json:27-35",
+        "./.stampede/run-20260430-175714/collab/reviews.jsonl",
+        "./.stampede/run-20260430-175714/collab/improvements.jsonl"
+      ]
+    },
+    {
+      "id": "consensus-promotion-logic",
+      "status": "partial",
+      "what": "Verify consensus.jsonl promotion logic (quorum/threshold/state machine)",
+      "findings": [
+        "Consensus ledger is populated (3 entries) and uses a verdict tiering pattern (blocker/major/minor) plus 'based_on' linking to improvements (collab/consensus.jsonl:1-3).",
+        "However, there is no deterministic promotion logic implemented in code; launcher only creates ledgers and instructs commanders to write/promote consensus (bin/stampede.sh:649-699 and 883-890).",
+        "No quorum thresholds / required review counts are defined in protocol.json; promotion remains social/process-driven rather than enforced."
+      ],
+      "citations": [
+        "./.stampede/run-20260430-180646/collab/consensus.jsonl:1-3",
+        "./bin/stampede.sh:649-699",
+        "./bin/stampede.sh:883-890",
+        "./.stampede/run-20260430-180646/collab/protocol.json:37-58"
+      ]
+    },
+    {
+      "id": "broadcasts-adoption-tracking",
+      "status": "partial",
+      "what": "Check broadcasts.jsonl adoption tracking and correlation",
+      "findings": [
+        "Broadcasts ledger is populated (2 entries) and includes consensus_item_id to link to consensus records (collab/broadcasts.jsonl:1-2).",
+        "Protocol.json does not define adoption/ack fields (recipients, acked_by, adoption_status), so adoption cannot be measured; only the broadcast emission is evidenced.",
+        "Monitor only reports line counts; no schema validation or adoption completeness checks exist (bin/stampede-monitor.sh:57-67)."
+      ],
+      "citations": [
+        "./.stampede/run-20260430-180646/collab/broadcasts.jsonl:1-2",
+        "./.stampede/run-20260430-180646/collab/protocol.json:48-58",
+        "./bin/stampede-monitor.sh:57-67"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "action": "Define per-ledger schemas (proposals/reviews/improvements/consensus/broadcasts) with explicit correlation keys (e.g., target_item_id, based_on, consensus_item_id) and expected types (evidence: list[str] recommended).",
+      "why": "Current protocol.json defines only a minimal common schema; actual ledgers have drifted with extra fields, which is good but undocumented and fragile."
+    },
+    {
+      "priority": "high",
+      "action": "Add adoption tracking: recipients + ack/adopt events (either extend broadcasts.jsonl or add acks/adoptions ledgers).",
+      "why": "Without ack/adopt events, collaboration bus cannot prove adoption or consensus propagation."
+    },
+    {
+      "priority": "medium",
+      "action": "Add lightweight JSONL validation (at least warnings) to stampede-monitor.sh for malformed lines + missing required_fields + wrong types.",
+      "why": "Protocol explicitly tolerates malformed trailing lines; validation with warnings improves QA evidence quality without breaking runtime."
+    },
+    {
+      "priority": "medium",
+      "action": "Standardize IDs and timestamps (item_id naming conventions; ts as RFC3339 with Z and optional ms consistently).",
+      "why": "Improves correlation reliability and simplifies downstream analytics."
+    }
+  ],
+  "metrics": {
+    "run_180646_counts": {
+      "proposals": 4,
+      "reviews": 3,
+      "improvements": 5,
+      "consensus": 3,
+      "broadcasts": 2
+    }
+  }
+}

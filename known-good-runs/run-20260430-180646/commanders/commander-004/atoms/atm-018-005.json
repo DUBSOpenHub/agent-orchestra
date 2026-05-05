@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-018-005",
+  "theme": "telemetry-contract",
+  "focus": "result-bundle-paths",
+  "findings": [
+    "Worker queue/claimed/results/log paths are coherent between launcher prompts and README, including atomic `.tmp-` result guidance.",
+    "Commander progress paths (swarm-state.json, child-agents.jsonl) align with README, but bundle.json/result-copy handoff path is not documented in README.",
+    "Partial/failed bundle status is prompt-driven; monitor focuses on results/*.json and may miss commander-local bundle issues if results copy is absent."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:849-889",
+    "bin/stampede.sh:954-956",
+    "bin/stampede.sh:1001-1014",
+    "bin/stampede.sh:1184-1199",
+    "README.md:101-102",
+    "README.md:130",
+    "README.md:226-227",
+    "README.md:352-354"
+  ],
+  "confidence": "medium",
+  "status": "success"
+}

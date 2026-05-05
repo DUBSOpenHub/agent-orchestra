@@ -1,0 +1,96 @@
+{
+  "worker_id": "wkr-017-004",
+  "model": "gpt-5.4",
+  "squad_id": "sq-017",
+  "focus": "broadcasts_adoption",
+  "status": "ok",
+  "findings": {
+    "broadcast_audit": [
+      {
+        "item_id": "bcast-c001-adopt-blockers",
+        "adopt_recommendation_in_summary": true,
+        "consensus_item_id": "cons-c001-pre-build-blockers",
+        "consensus_item_id_valid": true,
+        "source_refs_present": true,
+        "notes": "Summary explicitly starts with ADOPT and references consensus item line 1 in consensus.jsonl."
+      },
+      {
+        "item_id": "bcast-c001-adopt-majors",
+        "adopt_recommendation_in_summary": true,
+        "consensus_item_id": "cons-c001-pre-build-majors",
+        "consensus_item_id_valid": true,
+        "source_refs_present": true,
+        "notes": "Summary explicitly starts with ADOPT and references consensus item line 2 in consensus.jsonl."
+      },
+      {
+        "item_id": "bcast-003-findings",
+        "adopt_recommendation_in_summary": false,
+        "consensus_item_id": null,
+        "consensus_item_id_valid": false,
+        "source_refs_present": true,
+        "notes": "Uses adopted_items=['con-003-telemetry-pass'] instead of consensus_item_id, and the summary is informational rather than an explicit adopt recommendation."
+      }
+    ],
+    "commander_agent_adoption": {
+      "describes_post_broadcast_behavior": false,
+      "explicit_adoption_step": false,
+      "notes": "The commander agent workflow covers launch, collection, validation, and bundle writing, but the agent contract does not describe collab ledgers, a broadcast->adopt step, or adopted consensus fields in the bundle shape. Adoption appears only in the launcher prompt, not in the agent file itself."
+    },
+    "launcher_enforcement": {
+      "describes_adopt_workflow": true,
+      "requires_broadcast_before_completion": false,
+      "enforces_adoption": false,
+      "notes": "stampede.sh creates the collab protocol with propose->peer_review->improve->consensus->broadcast->adopt and tells commanders to include adopted consensus ids/source_refs, but there is no launcher-side validation that a commander emitted a broadcast or adopted anything before bundle/result completion."
+    },
+    "skill_adoption": {
+      "describes_adopt_phase": false,
+      "synthesis_consumes_broadcast_ledger": false,
+      "merge_consumes_broadcast_ledger": false,
+      "notes": "SKILL.md documents synthesis and auto-merge, but not the collab bus, adopt phase, or broadcast/consensus ledger consumption."
+    },
+    "merger_behavior": {
+      "reads_broadcasts_or_consensus": false,
+      "validates_adoption_before_merge": false,
+      "notes": "stampede-merge.sh merges branches discovered from results JSON only; it does not read collab ledgers or gate merge on broadcast/adoption evidence."
+    },
+    "monitor_behavior": {
+      "shows_broadcast_counts": true,
+      "shows_adoption_status": false,
+      "notes": "stampede-monitor.sh prints a collab summary with proposal/review/improvement/consensus/broadcast counts, but it does not display adoption state or validate broadcast structure."
+    },
+    "atoms_context": {
+      "existing_atom_files": 0,
+      "notes": "No prior squad atom JSON files were present in the atoms directory, so there was nothing to de-duplicate against."
+    }
+  },
+  "gaps": [
+    "broadcasts.jsonl is schema-inconsistent: bcast-003-findings omits consensus_item_id and uses adopted_items instead.",
+    "broadcasts.jsonl line 3 is not an explicit adopt recommendation, unlike the first two broadcast entries.",
+    "agents/stampede-commander.agent.md does not define a post-broadcast adoption step or adopted consensus fields in the bundle contract.",
+    "bin/stampede.sh instructs adopt behavior but does not enforce that commanders broadcast or adopt before completion.",
+    "skills/SKILL.md does not document the adopt phase or any synthesis/merge consumption of collab ledgers.",
+    "bin/stampede-merge.sh ignores broadcasts/consensus entirely and performs no adoption validation.",
+    "bin/stampede-monitor.sh surfaces broadcast counts only, not adoption status or invalid broadcast entries."
+  ],
+  "evidence": [
+    "collab/broadcasts.jsonl:1 -> bcast-c001-adopt-blockers summary begins 'ADOPT:' and references consensus_item_id cons-c001-pre-build-blockers with source_refs.",
+    "collab/broadcasts.jsonl:2 -> bcast-c001-adopt-majors summary begins 'ADOPT:' and references consensus_item_id cons-c001-pre-build-majors with source_refs.",
+    "collab/broadcasts.jsonl:3 -> bcast-003-findings has source_refs and adopted_items but no consensus_item_id and no explicit ADOPT recommendation in summary.",
+    "collab/consensus.jsonl:1 -> cons-c001-pre-build-blockers exists.",
+    "collab/consensus.jsonl:2 -> cons-c001-pre-build-majors exists.",
+    "collab/consensus.jsonl:4 -> con-003-telemetry-pass exists, matching broadcast line 3 adopted_items rather than consensus_item_id.",
+    "agents/stampede-commander.agent.md:41-61 -> required workflow ends at bundle writing and contains no broadcast/adopt step.",
+    "agents/stampede-commander.agent.md:140-168 -> completion validation checks launch proof/model policy, not adoption/broadcast proof.",
+    "agents/stampede-commander.agent.md:238-267 -> bundle shape includes consensus notes but no adopted_consensus_item_ids or source_refs fields.",
+    "bin/stampede.sh:674-720 -> protocol.json defines propose->peer_review->improve->consensus->broadcast->adopt.",
+    "bin/stampede.sh:904-911 -> commander prompt instructs consume broadcasts and include adopted consensus item_ids/source_refs, but this is prompt text only.",
+    "bin/stampede.sh:1071-1085 and bin/stampede-monitor.sh:295-307 -> run completion is driven by result files/task counts, not broadcast/adoption validation.",
+    "skills/SKILL.md:631-665 -> synthesis and merge guidance discuss branch merges only; no collab/adopt/broadcast ledger consumption is described.",
+    "bin/stampede-merge.sh:87-99 and 141-199 -> merger builds branch list from results/*.json and merges branches without reading collab ledgers.",
+    "bin/stampede-monitor.sh:57-67 -> monitor prints proposals/reviews/improvements/consensus/broadcast counts.",
+    "bin/stampede-monitor.sh:143-193 -> commander status display shows launch proof telemetry, not adoption status.",
+    "commanders/commander-002/squads/sq-017/atoms -> directory contained no existing JSON atoms."
+  ],
+  "confidence": 0.96,
+  "ts": "2026-05-01T01:20:54.804304Z"
+}

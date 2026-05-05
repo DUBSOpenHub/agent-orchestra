@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-012-004",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "lint-coverage",
+  "findings": [
+    "The lint script enforces core string-level invariants: worker tool bans, leaf-node phrases, commander scale, premium model policy, and required worker prompt text.",
+    "Coverage is structural only and brittle: it relies on substring checks and does not validate launcher-side gating, runtime enforcement, or nested commander prevention.",
+    "This complements the agent docs, but it does not prove real stop/recovery behavior."
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:17-33",
+    "tests/depth-guard-lint.sh:35-61"
+  ],
+  "confidence": "medium-high",
+  "status": "success"
+}

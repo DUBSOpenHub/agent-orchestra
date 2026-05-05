@@ -1,0 +1,70 @@
+{
+  "squad_lead": "sq-013",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "task": "Synced Launcher Verification - Part 1",
+  "timestamp": "2026-05-01T01:12:47.214319Z",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "depth": 2,
+  "findings": {
+    "metaswarm_flag_handling": {
+      "status": "functional_with_bugs",
+      "summary": "Flag parsed correctly; sets METASWARM=true, creates commander dirs, switches agent to stampede-commander, caps count at 5.",
+      "bugs": [
+        "Preflight hardcodes stampede-agent even in metaswarm mode (should use stampede-commander)",
+        "Cap message says 1600 total workers but 5x250=1250",
+        "Custom --agent-cmd bypasses commander enforcement entirely"
+      ]
+    },
+    "commander_pane_creation": {
+      "status": "correct",
+      "summary": "Pane creation is identical mechanism (tmux split-window); difference is in script content, agent name, env vars, and pane titles.",
+      "details": [
+        "Commander panes titled: Commander #N \u00b7 model \u00b7 full SS-250",
+        "Commander-specific env vars: STAMPEDE_COMMANDER_ID, STAMPEDE_PROGRESS_DIR, collab vars",
+        "Failure handling writes to swarm-state.json and child-agents.jsonl"
+      ]
+    },
+    "model_rotation": {
+      "status": "functional_with_edge_cases",
+      "summary": "Deterministic round-robin via modulo. Same logic for both workers and commanders. --models overrides --model.",
+      "bugs": [
+        "Bash IFS split vs Python split disagree on trailing commas (fleet.json may mismatch actual model)",
+        "No whitespace trimming on model tokens",
+        "Empty model entries not validated (can pass --model empty string to CLI)",
+        "Preflight only probes first model in rotation"
+      ]
+    },
+    "pid_tracking": {
+      "status": "functional_with_race_conditions",
+      "summary": "PIDs captured after 5s sleep via process tree walk. Commander PIDs use commander-NNN.pid naming. Sub-agent PIDs invisible to launcher.",
+      "bugs": [
+        "5-second hardcoded sleep is a race condition (Landmine #16)",
+        "head -n1 in find_leaf_pid may capture tee instead of copilot",
+        "No trap for unexpected launcher crash - orphans tmux session",
+        "PID files not written atomically (no .tmp+mv pattern)",
+        "Commander sub-agent PIDs completely untracked by launcher"
+      ]
+    },
+    "tmux_session_management": {
+      "status": "correct",
+      "summary": "Single session stampede-{RUN_ID} with one window, tiled panes. Existing session killed before launch. Monitor in pane 0.",
+      "details": [
+        "Pre-existing session detected and killed before new launch",
+        "Older tmux compatibility handled via 2>/dev/null || true on cosmetic features",
+        "No automatic cleanup on Ctrl+C (only --teardown explicit path)",
+        "Layout identical for normal/metaswarm; difference is semantic role/title only"
+      ]
+    }
+  },
+  "overall_assessment": {
+    "score": 7.5,
+    "max_score": 10,
+    "verdict": "Launcher synchronization and metaswarm support is structurally sound. Core paths work correctly. Several edge-case bugs exist (preflight validation mismatch, PID race, model parsing inconsistencies) but none are blockers for normal operation.",
+    "critical_issues": 0,
+    "high_issues": 3,
+    "medium_issues": 5,
+    "low_issues": 2
+  }
+}

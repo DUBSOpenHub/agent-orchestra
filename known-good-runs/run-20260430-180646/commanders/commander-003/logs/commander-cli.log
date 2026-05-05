@@ -1,0 +1,1674 @@
+● List claimed tasks (shell)
+  │ ls /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/c
+  │ laimed/ 2>/dev/null
+  └ 1 line...
+
+● List queue tasks (shell)
+  │ ls /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/q
+  │ ueue/ 2>/dev/null
+  └ 2 lines...
+
+● Read commander-003 task (shell)
+  │ cat /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/
+  │ queue/commander-003.json
+  └ 58 lines...
+
+● Claim task atomically (shell)
+  │ mv /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/q
+  │ ueue/commander-003.json /Users/greggcochran/dev/terminal-stampede/.stampede/
+  │ run-20260430-180646/claimed/commander-003.json 2>&1 && echo "CLAIMED OK"
+  └ 2 lines...
+
+● Create branch and dirs (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && \
+  │ git checkout -B havoc-swarm/run-20260430-180646/commander-003 2>&1 | tail
+  │ -1 && \
+  │ mkdir -p
+  │ .stampede/run-20260430-180646/commanders/commander-003/{atoms,logs} && \…
+  └ 5 lines...
+
+Now I'll initialize swarm-state.json, child-agents.jsonl, publish the early proposal, and then launch the 50 Squad Leads with their workers.
+
+● Initialize swarm state (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 -c "
+  │ import json, datetime
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()…
+  └ 61 lines...
+
+● Publish early proposal (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 -c "
+  │ import json, datetime
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()…
+  └ 29 lines...
+
+Now I'll update swarm-state to "decomposing" phase and build the context capsule, then launch the 50 Squad Leads. Given this is a review-only QA task, I'll decompose it into audit sub-domains for the squad leads.
+
+● Update phase to decomposing (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 -c "
+  │ import json, datetime
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()…
+  └ 16 lines...
+
+Now I need to launch 50 Squad Leads each with 5 workers. Given the review-only QA nature of this task, I'll decompose into audit areas and launch the squad leads as background agents. Let me read the key files first to build proper audit context.
+
+● Check file sizes (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && wc -l
+  │ agents/stampede-commander.agent.md bin/stampede-monitor.sh bin/stampede.sh
+  │ skills/SKILL.md
+  └ 6 lines...
+
+● Read stampede-commander.agent.md
+  │ agents/stampede-commander.agent.md
+  └ 267 lines read
+
+● Read stampede-monitor.sh
+  │ bin/stampede-monitor.sh
+  └ 401 lines read
+
+● Read stampede.sh
+  │ bin/stampede.sh
+  └ L100:250 (151 lines read)
+
+● Read stampede.sh
+  │ bin/stampede.sh
+  └ L1:100 (100 lines read)
+
+● Read stampede.sh
+  │ bin/stampede.sh
+  └ L250:500 (251 lines read)
+
+I have enough context now. Let me decompose the QA audit into 50 sub-tasks for squad leads, launch the swarm, and track everything properly. I'll organize squad leads into 10 audit domains with 5 squads each:
+
+1. **swarm-state.json schema** (sq-001 to sq-005)
+2. **child-agents.jsonl format** (sq-006 to sq-010)
+3. **Agent Pulse / monitor live counts** (sq-011 to sq-015)
+4. **Premium model policy enforcement** (sq-016 to sq-020)
+5. **Launch-proof contract** (sq-021 to sq-025)
+6. **stampede.sh metaswarm code paths** (sq-026 to sq-030)
+7. **Commander agent depth guard** (sq-031 to sq-035)
+8. **Stop/recovery behavior** (sq-036 to sq-040)
+9. **Sub-agent terminology audit** (sq-041 to sq-045)
+10. **Collaboration bus integration** (sq-046 to sq-050)
+
+● Define 50 squad tasks (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 << 'PYTHON'
+  │ import json, datetime
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  │ RUN_DIR = ".stampede/run-20260430-180646"…
+  └ 120 lines...
+
+Now I'll launch the 50 Squad Leads. Given the volume, I'll launch them in batches using the `task` tool with background mode. Each squad lead gets 5 workers (explore agents). Let me launch the first batch of squad leads:
+
+● Write launch_requested records (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 << 'PYTHON'
+  │ import json, datetime, pathlib
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  │ CMD_DIR = …
+  └ 34 lines...
+
+Now I'll launch the actual squad leads. Given there are 50 squad leads each needing 5 workers (250 total), I'll launch them in parallel batches. Each squad lead is a `general-purpose` agent that will investigate the codebase and launch 5 explore workers.
+
+Let me launch the first 10 squad leads:
+
+● Check agent tools list (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && cat
+  │ agents/stampede-agent.agent.md | head -20
+  └ 21 lines...
+
+Good - stampede-agent has no `task` tool (leaf enforcement confirmed). Now I'll launch all 50 squad leads in parallel batches. Each squad lead will investigate its assigned QA area and spawn 5 explore workers. Let me build the squad lead prompts and launch them.
+
+Given the scale (50 squad leads × 5 workers = 250 agents), I'll launch squad leads in batches of 10, each spawning their own workers internally.
+
+● Save squad assignments (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 << 'PYTHON'
+  │ import json, datetime, pathlib
+  │
+  │ # Build the full list of squad assignments for reference
+  │ domains = […
+  └ 138 lines...
+
+Now I'll launch all 50 squad leads in parallel batches. Each squad lead is a `general-purpose` agent that will investigate its area and launch 5 explore workers. I'll launch 10 at a time to stay within limits.
+
+● Explore(claude-opus-4.6) Audit swarm-state schema
+  └ Agent started in background with agent_id: sq-001. You'll be notified wh...
+
+● Explore(gpt-5.5) Audit phase transitions
+  └ Agent started in background with agent_id: sq-002. You'll be notified wh...
+
+● Explore(claude-opus-4.6) Audit telemetry counters
+  └ Agent started in background with agent_id: sq-003. You'll be notified wh...
+
+● Explore(gpt-5.4) Audit heartbeat timestamps
+  └ Agent started in background with agent_id: sq-004. You'll be notified wh...
+
+● Explore(claude-opus-4.5) Audit launch proof validation
+  └ Agent started in background with agent_id: sq-005. You'll be notified wh...
+
+● Explore(gpt-5.2) Audit JSONL record format
+  └ Agent started in background with agent_id: sq-006. You'll be notified wh...
+
+● Explore(claude-sonnet-4.6) Audit JSONL event types
+  └ Agent started in background with agent_id: sq-007. You'll be notified wh...
+
+● Explore(gpt-5.3-codex) Audit JSONL depth fields
+  └ Agent started in background with agent_id: sq-008. You'll be notified wh...
+
+● Explore(claude-sonnet-4.5) Audit model field requirement
+  └ Agent started in background with agent_id: sq-009. You'll be notified wh...
+
+● Explore(gpt-5.2-codex) Audit JSONL atomicity
+  └ Agent started in background with agent_id: sq-010. You'll be notified wh...
+
+Launching next batch (sq-011 to sq-020):I'll verify the Premium Model Policy requirements in the stampede-commander agent documentation.I have the full file content. Now I'll compare the documented `swarm-state.json` schema against the required fields from the Launch-Proof Contract spec.
+
+**Required fields checklist:**
+
+| Field | Present? | Type Match? |
+|-------|----------|-------------|
+| run_id | ✅ | string ✅ |
+| commander_id | ✅ | string ✅ |
+| task_id | ✅ | string ✅ |
+| role | ✅ | string ✅ |
+| profile | ✅ | string ✅ |
+| swarm_scale | ✅ | string ✅ |
+| per_commander_full_swarm | ✅ | boolean ✅ |
+| phase | ✅ | string (enum) ✅ |
+| status | ✅ | string (enum) ✅ |
+| launch_proof_required | ✅ | boolean ✅ |
+| launch_proof.squad_leads_started | ✅ | number ✅ |
+| launch_proof.workers_started | ✅ | number ✅ |
+| launch_proof.first_child_started_at | ✅ | string (ISO-8601) ✅ |
+| launch_proof.last_child_started_at | ✅ | string (ISO-8601) ✅ |
+| depth_budget.squads_allocated | ✅ | number ✅ |
+| depth_budget.squads_max | ✅ | number ✅ |
+| model_policy | ✅ | string ✅ |
+| premium_model_pool | ✅ | array of strings ✅ |
+| banned_child_models | ✅ | array of strings ✅ |
+| telemetry.squad_leads_target | ✅ | number ✅ |
+| telemetry.squad_leads_launched | ✅ | number ✅ |
+| telemetry.squad_leads_running | ✅ | number ✅ |
+| telemetry.squad_leads_completed | ✅ | number ✅ |
+| telemetry.squad_leads_failed | ✅ | number ✅ |
+| telemetry.workers_per_squad_lead | ✅ | number ✅ |
+| telemetry.workers_target | ✅ | number ✅ |
+| telemetry.workers_launched | ✅ | number ✅ |
+| telemetry.workers_running | ✅ | number ✅ |
+| telemetry.workers_completed | ✅ | number ✅ |
+| telemetry.workers_failed | ✅ | number ✅ |
+| telemetry.atoms_received | ✅ | number ✅ |
+| telemetry.children_failed | ✅ | number ✅ |
+| updated_at |I'll verify the Premium Model Policy requirements in the stampede-commander documentation. ✅ | string (ISO-8601) ✅ |
+| last_heartbeat_at | ✅ | string (ISO-8601) ✅ |
+
+All required fields are present with correct types. No extra undocumented fields exist in the schema beyond what is specified.
+
+```json
+{
+  "finding_count": 0,
+  "findings": [],
+  "pass": true
+}
+```
+
+**Summary:** The `swarm-state.json` schema in `stampede-commander.agent.md` is fully compliant with the Launch-Proof Contract spec. All 35 required fields (including nested sub-fields) are present with correct types. No missing fields, no type mismatches, and no extra undocumented fields.Based on my direct read of `/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md`, here are the audit findings. No `child-agents.jsonl` file exists in the repo — the auditBased on my analysis of `/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md`, here is the auditBased on my analysis of `/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md`:
+
+## QA Audit Report - Squad Lead sq-009
+
+```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "id": 1,
+      "type": "PASS",
+      "location": "Line 166-167",
+      "requirement": "Premium Model Policy must state that every launch_started record must include the model field",
+      "actual": "Every `child-agents.jsonl` `launch_started` record must include the selected premium `model`.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": 2,
+      "type": "PASS",
+      "location": "Line 135",
+      "requirement": "Examples must{"finding show model field in launch_started records",
+      "actual": "Squad Lead example includes: \"model\":\"claude-opus-4.7\"",
+      "status": "VERIFIED"
+    },
+    {
+      "id": 3,
+      "type": "PASS",
+      "location": "Line 136",
+      "requirement": "Examples must show model field in launch_started records",
+      "actual": "Worker example includes: \"model\":\"gpt-5.5\"",
+      "status": "VERIFIED"
+    }
+  ],
+  "pass": true
+}
+```
+
+**Verification Summary:**
+- ✅ Premium_count":3,"findingsBased on my review of `/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md`, here is result:
+
+```json
+{
+  "finding_count": 7,
+  "findings": [
+    "NO INCREMENT INSTRUCTION: squad_leads_running, squad_leads_completed, squad_leads_failed — step 7 only says 'update swarm-state.json' after launch but never specifies when/how to increment running→completed/failed transitions.",
+    "NO INCREMENT INSTRUCTION: workers_running, workers_completed, workers_failed —":[{"id":1,"topic":"heartbeat_frequency","status":"fail","answer":"No explicit heartbeat frequency is specified in the commander requirements. The doc only says to keep swarm-state.json and child-agents.jsonl current while active and to update swarm-state.json on child launch/update. See /Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:34-35, /Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:57, /Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:65 no step describes decrementing 'running' or incrementing 'completed'/'failed' upon child completion events.",
+    "NO INCREMENT INSTRUCTION: atoms_received — the example child-agents.jsonl shows a 'completed' event with 'atom_id' but no instruction ties this to incrementing atoms_received in swarm-state.json.",
+    "NO INCREMENT INSTRUCTION: children_failed — no step specifies when this Model Policy section (lines 148-169) explicitly states: "Every `child-agents.jsonl` `launch_started` record must include the selected premium `model`."
+- ✅ Launch-Proof Contract section (lines 135-136) provides two complete examples of `launch_started` records, both including the `model` field with premium model values
+- ✅ Line 57 reinforces the requirement in the workflow section: "append `launch_started` with the child agent id/model/depth"
+
+All requirements verified. The policy is clearly stated and properly demonstrated. my audit report:
+
+## Audit Findings
+
+**File analyzed:** `/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md`
+
+**Key observations:**
+
+1. **Validation rules exist (lines 141-147):**
+   - ✅ Success: `squad_leads_launched == 50` AND `workers_launched == 250`
+   - ✅ Partial: circuit breaker/timeout/cost ceiling prevents full launch
+   - ✅ Failed: no Squad Leads launched
+
+2. **Critical gap - Field name mismatch:**
+   --67, /Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:127-128."},{"id":2,"topic":"stale_threshold","status":"partial","answer":"Yes in code, not in the commander doc: the monitor uses ORPHAN_RECOVERY_AFTER=180 seconds as the active/stale threshold, comparing age of last_heartbeat_at or updated_at against that threshold. See /Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:25, /Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:255-268."},{"id":3,"topic":"missing_heartbeat_behavior counter should be incremented (on squad_lead failure? worker failure? both?).",
+    "VALIDATION GAP: Success only checks squad_leads_launched==50 and workers_launched==250. No validation that workers_completed==250, atoms_received==250, or children_failed==0. A commander that launches 250 workers that all fail could still report 'success'.",
+    "VALIDATION GAP: No validation rule for squad_leads_completed==50. A run where","status":"pass","answer":"If last_heartbeat_at is missing, the monitor falls back to updated_at; if both are missing (or state file is absent/un `launch_proof` object (lines 83-88) uses: `squad_leads_started`, `workers_started`
+   - Validation rules (lines 142-143) reference: `squad_leads_launched`, `workers_launched` (from `telemetry`)
+   - The `launch_proof` object fields are **never validated** in the documented rules
+
+3. **No cross-validation requirement:**
+   - No rule requires `launch_proof.squad_leads_started == telemetry.squad_leads_launched`
+   - No rule requires `launch_proofparseable), commander_active=false. Once the claim age reaches 180s and no result exists, is against the specification document only.
+
+---
+
+**Event Types Identified and Documentation Status:**
+
+| Event | Mentioned in Prose | JSONL Schema/Example |
+|---|---|---|
+| `launch_requested` | ✅ Line 57 | ❌ No example record |
+| `launch_started` | ✅ Lines 57, 167 | ✅ Two examples (lines 135–136) |
+| `completed` | ✅ Line 137 (implicit) | ✅ One example (line 137) |
+| `failed` | ❌ Not as an event type | ❌ No example record |
+
+---
+
+```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "id": "F-001",
+      "event_type": "launch_requested",
+      "severity": "HIGH",
+      "description": "Event type 'launch_requested' is referenced in prose (Required Workflow step 7, line 57) — 'append a launch_requested record to child-agents.jsonl' — but NO JSONL schema or example record is provided anywhere in the document. The only JSONL examples shown begin at launch_started. Fields, required keys, and format are completely undocumented.",
+      "documented": false
+    },
+    {
+      "id": "F-002",
+      "event_type": "failed",
+      "severity": "HIGH",
+      "description": "Event type 'failed' has no documented JSONL format. The word 'failed' appears only as a status value within swarm-state.json (e.g. 'status: failed', 'squad_leads_failed', 'workers_failed') and in bundle shape status enums. There is no {'event':'failed',...} JSONL record example anywhere. It is entirely absent from the child-agents.jsonl contract section.",
+      "documented": false
+    },
+    {
+      "id": "F-003",
+      "event_type": "completed",
+      "severity": "LOW",
+      "description": "Event type 'completed' has a minimal example: {\"ts\":\"ISO-8601\",\"event\":\"completed\",\"child_id\":\"wkr-001-001\",\"status\":\"success the task is returned to the queue as stale/agent died. See /Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:247-268, /Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:274-276."}],"pass":false} all squad leads are launched but none complete has no defined status.",
+    "RACE CONDITION: swarm-state.json is a monolithic JSON object requiring read-modify-write to update counters. Multiple squad leads completing concurrently (up to 50 parallel) will race on this file. Unlike the task queue (atomic mv) and child-agents.jsonl (append-only{
+  "finding_count": 2,
+  "findings": [
+    "Undocumented phase used in code: bin/st.workers_started == telemetry.workers_launched`
+
+```json
+{
+  "finding_count": 2,
+  "findings": [
+    {
+      "id": "GAP-001",
+      "severity": "high",
+      "location": "lines 83-88 vs 141-147",
+      "description": "launch_proof uses 'squad_leads_started' and 'workers_started' but validation rules check 'squad_leads_launched' and 'workers_launched' from telemetry. launch_proof fields are defined but never explicitlyampede.sh:780 initializes swarm-state.json with phase='commander_pane_starting', but agents/stampede-commander.agent.md:80 documents only claiming, decomposing, launching_squad_leads, launching_workers, collecting, complete.",
+    "Phase transition order is not enforced: stampede-monitor.sh only reads s.get('phase', 'running') and prints it at bin/stampede-monitor.sh:157 and :188; no validation/order checks for the documented sequence."
+ \",\"atom_id\":\"atm-001-001\"} (line 137). However, the schema for squad_lead completion (vs. worker completion) is not separately documented — it is unclear whether squad leads emit this event and if the atom_id field is required or optional for non-worker roles.",
+      "documented": true,
+      "caveat": "Schema is incomplete — worker-only example, squad_lead variant undefined"
+    }
+  ],
+  "event_coverage": {
+    "launch_requested": { "documented": false, "has_example": false },
+    "launch_started":   { "documented": true,  "has_example": true  },
+    "completed":        { "documented": true,  "has_example": true, "caveat": "worker-only schema" },
+    "failed":           { "documented": false, "has_example": false }
+  },
+  "pass": false,
+  "summary": "Audit FAILED. 2 of 4 required event types (launch_requested, failed) have zero documented schema or example records in stampede-commander.agent.md. A third (completed) has an incomplete schema. Only launch_started is fully documented with multiple examples."
+}
+``` ],
+  "pass": false
+} JSONL), no atomic update or locking mechanism is specified for swarm-state.json counter mutations."
+  ],
+  "pass": false
+}
+```
+
+**Summary:** The spec defines the *final shape* of telemetry counters but lacks procedural increment instructions for 8 of 11 mutable counters (only validated before bundle write."
+    },
+    {
+      "id": "GAP-002",
+      "severity": "medium",
+      "location": "lines 141-147",
+      "description": "No cross-validation requirement between launch_proof and telemetry counters. A commander could have mismatched values (e.g., launch_proof.squad_leads_started=50 but telemetry.squad_leads_launched=40) with no documented check to catch the inconsistency."
+    }
+  ],
+  "pass": false
+}
+``` `squad_leads_launched` and `workers_launched` are implicitly tied to step 7's launch loop). Validation is launch-count-only with no completion/failure checks, and the read-modify-write pattern on `swarm-state.json` is inherently race-prone under 50 concurrent squad leads.
+
+● Explore(claude-opus-4.6) Audit monitor squad parsing
+  └ Agent started in background with agent_id: sq-011. You'll be notified wh...
+
+● Explore(gpt-5.5) Audit monitor worker count
+  └ Agent started in background with agent_id: sq-012. You'll be notified wh...
+
+● Explore(claude-opus-4.6) Audit running count display
+  └ Agent started in background with agent_id: sq-013. You'll be notified wh...
+
+● Explore(gpt-5.4) Audit heartbeat age calc
+  └ Agent started in background with agent_id: sq-014. You'll be notified wh...
+
+● Explore(claude-opus-4.5) Audit warning conditions
+  └ Agent started in background with agent_id: sq-015. You'll be notified wh...
+
+● Explore(gpt-5.2) Audit premium pool consistency
+  └ Agent started in background with agent_id: sq-016. You'll be notified wh...
+
+● Explore(claude-sonnet-4.6) Audit banned models consistency
+  └ Agent started in background with agent_id: sq-017. You'll be notified wh...
+
+● Explore(gpt-5.3-codex) Audit model enforcement
+  └ Agent started in background with agent_id: sq-018. You'll be notified wh...
+
+● Explore(claude-sonnet-4.5) Audit model rotation
+  └ Agent started in background with agent_id: sq-019. You'll be notified wh...
+
+● Explore(gpt-5.2-codex) Audit model violation handling
+  └ Agent started in background with agent_id: sq-020. You'll be notified wh...
+
+{"finding_countI'll verify the model rotation logic by reading the specified files and checking for the three requirements.":3,"findings":[{"id":"no_file_locking","evidence":[{"path":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh","lines":"180-182,1002-1003","note":"child-agents.jsonl opened with open(\"a\") and written; no flock/lock"},{"path":"/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md","lines":"35-57","note":"instructions only say append; no locking guidance"}],"impact":"No fileI'll read all three files in parallel now. locking around JSONL appends."},{"id":"append_mode_only_no_temp_mv","evidence":[{"path":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh","lines":"180-182,1002-1003","note":"append-only{
+  "finding_count": 0,
+  "findings": [],
+  " writes via open(\"a\")"},{"path":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.shpass": true
+}","lines":"674-679","note":"protocol guidance: use append mode/O_APPEND"}],"impact":"Atomicity relies on O_APPEND semantics only; no temp+mv strategy for JSONL."},{"id":"concurrent_write_risk","evidence":[{"path":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh","lines":"180-188","note":"launcher appends commander_blocked to each commander’s child-agents.jsonl"},{"path":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh","lines":"830-839","note":"initializes child-agents.jsonl with open(\"w\") (truncate)"}],"impact":"Multiple processes can write same child-agents.jsonl (commander + launcher); no coordination → potential interleaved writes or truncation loss."}],"pass":false}Based on my reading of `/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh`, here are the findings:
+
+**Line 162**: `running = t.get("workers_running", 0)` — reads `workers_running` from `telemetry` dict in `swarm-state.json`.
+
+**Line 163-164**: `completed` and `failed` are also read from tel{
+  "finding_count": 3,
+  "findings": [
+    {
+      "check": 1,
+      "result": "yes",
+      "evidence": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:150-152",
+      "note": "It explicitly requires every Squad Lead and Worker launch to set a model override from the premium pool."
+    },
+    {
+      "check": 2,
+      "resultemetry (`workers_completed`, `workers_failed` with fallbacks).
+
+**Lines 182-185**: The display output uses the exact required format:
+```python
+f" · run {running} done {completed} fail {failed}"
+```
+
+This matches the expected format `"run {running} done {completed} fail {failed}"` precisely.
+
+The full": "partial/no explicit validation step",
+      "evidence": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:166Launching next batch (sq-021 to sq-030) while updating telemetry:{"finding_count":1,"findings":[{"path":"/Users/greggco-168, 140-146",
+      "note": "It requires launch_started records to include model and defines what to do on banned fallback, but the explicit completion validation block only validates launch counts, not a banned-model scan."
+    },
+    {
+      "check": 3,
+     chran/dev/terminal-stampede/agents/stampede-commander.agent.md","lines":"166-168","evidence":"“If a child "result": "defined",
+      "evidence": "/Users launch falls back to a banned model, mark the commander bundle partial and report the violation.”","checks":{"partial_status":true,"report_violation":/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:167-168",
+```json
+{
+  "finding_count": 2,
+  "findings": [
+    {
+      "condition": "no sub-agent proof",
+      "line": 177,
+      "expected": "launch_proof_required=true AND squad_leads_launched==0 AND phase not in {claiming, commander_pane_starting}",
+      "actual": "launchtrue}}Now let me search the large files for the banned model lists in parallel.      "note": "If fallback to a banned model occurs, commander bundle must be marked partial],"pass":true} and violation reported."
+    }
+  ],
+  "pass": false
+}```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "location data flow is:
+1. `swarm-state.json` is loaded at line 152
+2. `telemetry` dict extracted at line 156
+3. `workers_running` read at line 162 into `running`
+4. Formatted into display string at line 185
+5. Printed to the commander roster line at line 193 via `${nested}`
+
+```{"finding_count":3,"findings":[{"check":"heartbeat_source_fallback","pass":true,"evidence":["/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:167","_proof_required=True AND squads_launched==0 AND phase not in {\"commander_pane_starting\", \"claiming\"}",
+      "status": "MISMATCH",
+      "detail": "Variable named 'squads_launched' not 'squad_leads_launched'; logic otherwise correct"
+    },
+    {
+      "condition": "incomplete proof",
+      "line": 179,
+      "expected": "workers_launched < workers_target AND status==\"success\"",
+      "actual": "workers_launched AND workers_launched < workers_target AND s.get(\"status\") == \"success\"",
+      "status": "PARTIAL/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:262"],"summary":"Heartbeat uses last_heartbeat_at with fallback to updated_at."},{"check":"iso8601_parsing","pass":true,"evidence":["/Users/gregg": "bin/stampede-monitor.sh:160",
+      "description": "squads_launched correctly resolves telemetry.squad_leads_launched with fallback to launch_proof.squad_leads_started via `t.get(\"squad_leads_launched\", proof.get(\"squad_leads_started\", 0))`. Both paths handled; final fallback is 0.",
+      "severity": "info",
+      "status": "correct"
+    },
+    {
+      "location": "bin/stampede-monitor.cochran/dev/terminal-stampede/bin/stampede-monitor.sh:171-173","/Users/greggcochjson
+{
+  "finding_count": 3,
+  "findings": [
+    "Line 162: `running = t.get(\"workers_running\", 0)` correctly reads workers_running from swarm-state.json telemetry dict",
+    "Line 185: Output format is exactly `run {running} done {completed} fail {failed}` — matches required spec",
+    "Line 193: The nested summary (containing run/doneran/dev/terminal-stampede/bin/stampede-monitor.sh:266-268"],"summary":"Parses ISO-8601/fail) is printed inline on the Commander roster row via printf"
+  ],
+  "pass": true
+}
+``` with datetime.fromisoformat(heartbeat.replace(\"Z\", \"+00:00\")); handles Z-suffixed UTC timestamps."},{"check":"stale_threshold","_MATCH",
+      "detail": "Extra truthy check on workers_launched (guards against None/0 false positives); core logic matches"
+    }
+  ],
+  "pass": false
+}
+```
+
+**Summary:**
+- Line 177: Uses `squads_launched` instead of `squad_leads_launched` — naming discrepancy vs spec.
+- Line 179: Adds a guard `pass":true,"evidence":["/Users/greggcoworkers_launched` (truthy check) before the comparison — functionally defensive but not in spec.chran/dev/terminal-stampede/bin/stampede-monitor.sh:25","/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:247-255","/Users/gregsh:177",
+      "description": "Warning logic correctly uses the resolved squads_launched value (from either source) to detect missing launch proof when launch_proof_required is True and count is 0, excluding early phases.",
+      "severity": "info",
+      "status": "correct"
+    },
+    {
+      "location": "bin/stampede-monitor.sh:183",
+      "description": "Display line `gcochran/dev/terminal-stampede/bin/stampede-monitor.sh:274-276"],"summary":"Stale/orphan recovery threshold is defined as ORPHAN_RECOVERY_AFTER=180 and used for commander heartbeat activity and claim-age requeue logic."}],"pass":true}squads {squads_launched}/{squads_target}` reports accurate counts from whichever source provided the value. No double-counting or stale-path risk since t.get() short-circuits—if telemetry key exists (even as 0), launch_proof is never consulted.",
+      "severity": "note",
+      "status": "correct"
+    }
+  ],
+  "pass": true
+}
+```
+
+**```json
+{
+  "finding_count": 4,
+  "findings": [
+    {
+      "path": "/Users/greggcochran/dev/terminal-stampLet me look at more of the model rotation implementation logic in stampede.sh:ede/agents/stampede-commander.agent.md",
+      "lines": "135-137",
+      "event_type": "Summary:** Line 160 uses Python's `dict.get` with a nested fallback: `telemetry.squad_leads_launched` → `launch_proof.squad_leads_started` → `0`. Both JSON paths are handled correctly and the reported count is accurate. No bugs found.completed",
+      "issue": "Example 'completed' record is missing required fields: ts and commander_id (spec requires ts,event,commander_id,child_id).",
+      "evidence": "{\"ts\":... present inLet me get more context around the SKILL.md hit, and also search for the banned list definition in SKILL.md more broadly. launch_started examples (135-136) but completed example is: {\"ts\" MISSING, \"commander_id\" MISSING, \"event\":\"completed\",\"child_id\":\"wkr-001-001\",...}"
+    },
+    {
+      "path": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md",
+      "lines": "57, 132-138",
+      "event_type": "launch_requested",
+      "issue": "launch_requested is required by workflow text, but the documented JSONL format block provides no launch_requested example and no required-field list for it.",
+      "evidence": "Line 57 mandates launch_requested; lines 135-137 only show launch_started + completed examples."
+    },
+    {
+      "path": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "lines": "832-839",
+      "event_type": "commander_registered",
+      "issue": "Implementation writes a child-agents.jsonl record without child_id (spec says records should include ts,event,commander_id,child_id).",
+      "evidence": "{\"ts\": now, \"event\": \"commander_registered\", \"commander_id\": cid, ...} (no child_id)"
+    },
+    {
+      "path": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "lines": "1002-1010",
+      "event_type": "commander_launch_failed",
+      "issue": "Implementation writes a child-agents.jsonl record without child_id (spec says records should include ts,event,commander_id,child_id).",
+      "evidence": "{\"ts\": now, \"event\": \"commander_launch_failed\", \"commander_id\": progress_dir.name, ...} (no child_id)"
+    }
+  ],
+  "pass": false
+}
+```Now let me search for specific guidance about distributing models evenly across the 50 squad leads:Based on my analysis of both files, here are my findings:
+
+```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "requirement": "Is rotation documented?",
+      "status": "PARTIAL",
+      "evidence": [
+        "stampede.sh:16 declares MODELS variable for 'comma-separated list for multi-model rotation'",
+        "stampede.sh:603-606 has dedicated '─── Model Rotation ───' section that parses MODELS into MODEL_LIST array",
+        "stampede.sh:886 instructs commanders to 'rotate claude-opus-4.7, gpt-5.5, claude-opus-4.6, gpt-5.4, claude-opus-4.5, gpt-5.2, claude-sonnet-4.6, gpt-5.3-codex, claude-sonnet-4.5, and gpt-5.2-codex'",
+        "stampede-commander.agent.md:94-104 lists premium_model_pool (10Let me check that context in SKILL.md around line 767. models) but does NOT document rotation mechanics"
+      ],
+      "gap": "Commander agent docs mention premium models but provide no rotation algorithm or implementation guidance"
+    },
+    {
+      "requirement": "Does the launcher support --models for rotation?",
+      "status": "PASS",
+      "evidence": [
+        "stampede.sh:36 accepts --models parameter",
+        "stampede.sh:51 help text: '--
+
+● Explore(claude-opus-4.6) Audit launch proof success
+  └ Agent started in background with agent_id: sq-021. You'll be notified wh...
+
+● Explore(gpt-5.5) Audit partial status rules
+  └ Agent started in background with agent_id: sq-022. You'll be notified wh...
+
+● Explore(claude-opus-4.6) Audit failed status rules
+  └ Agent started in background with agent_id: sq-023. You'll be notified wh...
+
+● Explore(gpt-5.4) Audit monitor launch proof
+  └ Agent started in background with agent_id: sq-024. You'll be notified wh...
+
+● Explore(claude-opus-4.5) Audit timing timestamps
+  └ Agent started in background with agent_id: sq-025. You'll be notified wh...
+
+● Explore(gpt-5.2) Audit metaswarm flag
+  └ Agent started in background with agent_id: sq-026. You'll be notified wh...
+
+● Explore(claude-sonnet-4.6) Audit commander limit
+  └ Agent started in background with agent_id: sq-027. You'll be notified wh...
+
+● Explore(gpt-5.3-codex) Audit models flag handling
+  └ Agent started in background with agent_id: sq-028. You'll be notified wh...
+
+● Explore(claude-sonnet-4.5) Audit fleet.json structure
+  └ Agent started in background with agent_id: sq-029. You'll be notified wh...
+
+● Explore(gpt-5.2-codex) Audit agent selection
+  └ Agent started in background with agent_id: sq-030. You'll be notified wh...
+
+models <list>    Comma-separated models for rotation'",
+        "stampede.sh:605 parses models: 'IFS=',' read -ra MODEL_LIST <<<\"${MODELS:-$MODEL}\"'",
+        "stampede.sh:850-854 get_worker_model() function: 'idx=$((● Update telemetry for 20 launched (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 << 'PYTHON'
+  │ import json, datetime, pathlib
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  │ CMD_DIR = …
+  └ 43 lines...
+
+ (worker_num - 1) % MODEL_COUNT )); echo \"${MODEL_LIST[$idx]}\"'",
+        "stampede.sh:617-622 displays rotation status for commanders or workers",
+        "stampede.sh:867,943,953 applies worker_model=$(get_worker_model \"$worker_num\") to each launch"
+      ]{
+  "finding_count": 1,
+  "findings": [
+    {
+      "file": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md",
+      "lines": "
+    },
+    {
+      "requirement": "Is there guidance on distributing models across 50 squad leads evenly?",
+      "status": "FAIL",
+      "evidence": [
+        "stampede.sh:850-854 implements modulo rotation: (worker_num - 1) % MODEL_COUNT for launcher-level workers/commanders",
+        "stampede.sh:886 tells commanders to 'rotate' premium models but provides no algorithm",
+        "stampede-commander.agent.md:54-56 specifies '50 squad leads,140-145",
+      "finding": "Partial status is documented under Launch-Proof Contract completion validation. It explicitly says success requires `squad_leads_launched == 50` and `workers_launched == 250`; 5 workers per squad lead, 250 total' but NO rotation guidance",
+        "stampede-commander.agent.md:135-137 shows child-agents.jsonl examples with model field but no distribution pattern",
+        "NO documentation on whether to use modulo, round-robin, or other algorithm for the 10-model pool across 50 squad leads"
+      ],
+      " if the circuit breaker, timeout, or cost ceiling prevents full launch, write `status: \"partial\"` and include the exact launch counts."
+    }
+  ],
+  "pass": true
+}I now have all the data needed. Here is the full report:
+
+---
+
+## Findings Summary
+
+**Expected banned list:** `claude-haiku-4.5`, `gpt-5.4-mini`, `gpt-5-mini`, `gpt-4.1`
+
+| Component | `banned_child_models` list present? | List correct? | Notes |
+|---|---|---|---|
+| `stampede-commander.agent.md` | ✅ Yes (×2, lines 106–111, 203–208) | ✅ All 4 models, both occurrences match | Clean |
+| `skills/SKILL.md` | ❌ **No** — no `banned_child_models` field exists | ❌ Missing entirely | `claude-haiku-4.5` appears only in a model leaderboard table (line 767), not as a ban; `gpt-5.4-mini`, `gpt-5-mini`, `gpt-4.1` absent |
+| `bin/stampede.sh` | ✅ Yes (×2, lines 752–756, 806–810) | ✅ All 4 models, both occurrences match | **Separate issue:** Line 15 sets `MODEL="claude-haiku-4.5"` as the default model for regular (non-metaswarm) stampede workers — a banned model used as a default |
+
+---
+
+``````json
+{
+  "finding_count": 1,
+  "findings": [
+    {
+      "area": "skills/SKILL.md",
+     I'll read the stampede.sh file and analyze where fleet.json is written to verify the requirements. "issue": "No premiumgap": "Commander must figure out rotation independently; no explicit guidance that (squad_lead_num - 1) % 10 achieves even distribution"
+    }
+  ],
+  "pass": false
+}
+```
+
+**Summary**: The launcher implements modulo-based model rotation (`(worker_num - 1) % MODEL_COUNT`) and supports `--models`, but the commander_model_pool (or equivalent premium pool list) present to match the expected pool; SKILL.md only documents a default single model (claude-sonnet-4.5).",
+      "expected_pool": [
+        "claude-opus-4.7",
+        "gpt-5.5",
+        "claude-opus-4.6",
+        "gpt-5.4",
+        "claude-opus-4.5",
+        "gpt-5.2",
+        "claude-sonnet-4.6",
+ agent documentation lacks explicit guidance on distributing the 10-model premium pool evenly across 50 squad leads. While rotation is mentioned in the prompt (line 886), the agent markdown provides no implementation pattern or formula to ensure even distribution.        "gpt-5.3-codex",
+        "claude-sonnet-4.5",
+        "gpt-5.2-codex"
+      ],
+      "e{"finding_count":3,"findings":[{"check":"reads launch_proofvidence": [
+        {
+          "file": "/Users/greggcochran/dev/terminal-stampede/skills/SKILL.md",
+          "linesLaunching remaining squad leads (sq-031 to sq-050): object","pass":true,"evidence":"bin/stampede-monitor.sh:156 reads `proof = s.get(\"launch_proof\", {})` and lines 160-161 fall back to `": "39, 110, 316 (and other occurrencesproof.get(\"squad_leads```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "requirement":_started\")` / `proof)",
+          "snippet_summary": "Defaults/fields show model = claude-sonnet-4..get(\"workers_started\")`."},{"check":"displays squad and worker counts","pass":true,"evidence":"bin/stampede-monitor.sh:183-184 prints `squads {5; no premium_model_pool orsquads_launched}/{squads_target}` and `workers {workers_launched}/{workers_target}`."},{"check":"shows heartbeat age","pass":true,"evidence":"bin/stampede-monitor.sh:167-172 computes `hb_age` from `last_heartbeat_at`/`updated_at`, and line 187 prints `hb {hb_age}`."}],"pass": expected premium list found."
+        }
+json
+{
+  "finding_count": 2,
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "high",
+      "component": "skills/SKILL.md",
+      "description": "banned_child_models list is entirely absent. No definition of banned models exists anywhere in this file. The only mention of a banned model (claude-haiku-4.5) is in a sample model leaderboard table at line 767 — not as an enforcement rule. Models gpt-5.4-mini, gpt-5-mini, and gpt-4.1 are not referenced at all.",
+      "expected": ["claude-haiku-4.5", "gpt-5.4-mini", "gpt-5-mini", "gpt-4.1"],
+      "found": []
+    },
+    {
+      "id": "F-002",
+      "severity": "medium",
+      "component": "bin/stampede.sh",
+      "description": "Line 15 sets MODEL='claude-haiku-4.5' as the default model for stampede worker launches. This is a model that appears in the banned_child_models list (lines 752–756, 806–810 of the same file). While the ban explicitly targets metaswarm child agents and regular workers are a separate context, the inconsistency within the same file is a risk — any regular stampede worker launched with the default model would use a model explicitly banned for child roles.",
+      "location": "bin/stampede.sh:15",
+      "banned_list_locations": ["bin/stampede.sh:752-756", "bin/stampede.sh:806-810"],
+      "default_model": "claude-haiku-4.5"
+    }
+  ],
+  "pass": false
+}
+```true}      ],
+      "note": "By contrast, commander + launcher DO contain the expected pool (see commander: agents/stampede-commander.agent.md lines 94-104 and 191-201; launcher: bin/stampede.sh lines 740-750 and 794-804)."
+    }
+  ],
+  "fields documented in swarm-state.json schema",
+      "verified": true,
+      "location": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:87-88",
+      "evidence": "\"first_child_started_at\": \"ISO-8601\", \"last_child_started_at\": \"ISO-8601\""
+    },
+    {
+      "requirement": "must be ISO-8601 format",
+      "verified": true,
+      "location": "/Users/gre "pass": false
+}
+```Let me search for where fleet.json is written in the stampede.sh file.Based on my findings from `/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md` (ggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:87-88",
+      "evidence": "Both fields use \"ISO-8601\" as the documented value format"
+    },
+    {
+      "requirement": "inside launch_proof object",
+      "verified": true,
+      "location": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:83-89",
+      "evidence": "Fields are nested within \"launch_proof\": { ... } block at lines 83-89"
+    }
+  ],
+  "pass": true
+}
+```Based on the file content at **lines 145–146** of `/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md`:
+
+> If no Squad Leads were launched, write `status: "failed"`; do not call it a successful metaswarm.
+
+```json
+{
+  "finding_count": 1,
+  "findings": [
+    {
+      "file": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md",
+      "lines": "145-146",
+      "text": "If no Squad Leads were launched, write `status: \"failed\"`; do not call it a successful metaswarm.",
+      "matches{
+  "finding_count": 3,
+  "findings": [
+    {
+      "check": "Comma-separated --models list is split into array",
+      "status": "pass",
+      "evidence": [
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:605",
+        "/Users/greggco_expected": true
+    }
+  ],
+  "pass": true
+}
+```
+
+The failure condition is present exactly as specified. The file explicitly states that when no Squad Leads were launched, the commander must write `status: "failed"` and must not call it a successful metaswarm. **Verification passes.**chran/dev/terminal-stampede/bin/stampede.sh:545",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:637"
+      ],
+      "notes": "Uses IFS=',' read -ra MODEL_LIST and Python .split(',')."
+    },
+    {
+      "check": "Rotation assigns models across commanders/workers",
+      "status": "line 142):
+
+```json
+{
+  "finding_count": 2,
+  "findings": [
+    {
+      "condition": "squad_leads_launched == 50",
+      "documented_at": "agents/stampede-commander.agent.md:142",
+      "exact_text": "Success requires `squad_leads_launched == 50` and `workers_launched == 250`.",
+      "verified": true
+    },
+    {
+      "condition": "workers_launched == 250",
+      "documented_at": "agents/stampede-commander.agent.md:142",
+      "exact_text": "Success requires `squad_leads_launched ==pass",
+      "evidence": [
+        "/Users/greggcochran/dev/ 50` and `workers_launched == 250`.",
+      "verified": true
+    }
+  ],
+  "pass": true
+}
+```
+
+Both success criteria (`squad_leads_launched==50` and `workers_launched==250`) are explicitly documented at line 142 as required for `"success"` status. Partial or failed statuses apply when these counts are not met (lines 143–146).terminal-stampede/bin/stampede.sh:568-569",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:852-853",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:723",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:730",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:867"
+      ],
+      "notes": "Modulo indexing ((i-1)%N) rotates models per slot."
+    },
+    {
+      "check": "All models provided in --models are enforced to be from premium pool in metaswarm",
+      "status": "fail",
+      "evidence": [
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:605",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:723",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:739-751",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:793-Now let me view the complete Python code block that writes fleet.json to see the full logic:805"
+      ],
+      "notes": "Premium pool is declared in metadata/prompt, but there is no validation that --models entries are members of that pool before assignment."
+    }
+  ],
+  "pass": false
+}```json
+{
+  "squad_lead": "sq-027",
+  "commander": "commander-003",
+  "task": "Verify --metaswarm caps at 5 commanders",
+  "file": "bin/stampede.sh",
+  "requested_lines": "493-496",
+  "actual_lines_containing_cap": "502-505",
+  "note": "Lines 493-496 contain run-id format validation (Landmine #20), NOT the metaswarm cap. The metaswarm cap logic is at lines 502-505.",
+  "code_found": [
+    "502: if $METASWARM && [[ \"$WORKER_COUNT\" -gt 5 ]]; then",
+    "503:     echo \"ERROR: --metaswarm supports at most 5 commanders (250 workers each; total cap 1600)\" >&2",
+    "504:     exit 1",
+    "505: fi"
+  ],
+  "finding_count": 3,
+  "findings": [
+    {
+      "id": 1,
+      "check": "Cap is 5",
+      "result": "PASS",
+      "detail": "Condition `WORKER_COUNT -gt 5` triggers the error, enforcing a maximum of 5 commanders."
+    },
+    {
+      "id": 2,
+      "check": "Error message mentions 250 workers each AND total cap",
+      "result": "PASS",
+      "detail": "Message reads: '250 workers each; total cap 1600' — both required phrases are present. Note: total cap is 1600, not 1250 (5×250)."
+    },
+    {
+      "id": 3,
+      "check": "Exits with error if cap exceeded",
+      "result": "PASS",
+      "detail": "`exit 1` is called immediately after the error message is emitted to stderr."
+    }
+  ],
+  "pass": true,
+  "caveat": "Line range in the task brief (493-496) was off — those lines hold run-id validation. Metaswarm cap is at lines 502-505. All three verification criteria pass against the actual code."
+}
+```{
+  "finding_count": 2,
+  "findings": [
+    {
+      "severity": "info",
+      "message": "Depth hierarchyPerfect! I now have all the information needed to verify the requirements. Let me analyze the code:
+
+**Analysis of fleet.json writing logic (lines 632-844):**
+
+**For METASWARM mode (lines 724-770 examples are defined as commander=1, squad_lead=2, worker=3 in commander spec.",
+      "evidence": [
+        "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:135",
+        "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:136",
+        "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:212",
+        "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:213",
+        "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:214"
+      ]
+    },
+    {
+      "severity": "warn",
+      "message": "commander-003 child-agent records match squad_lead depth=2 and worker depth=3 (including sq-008), with no observed depth>3):**
+- Line 732: `'role': 'commander'` ✓
+- Line 768: `'progress_dir': progress_dir` where `progress_dir = f'{base}/commanders/{cid}'` (line 726) ✓
+- Line 730: `'model': m` ✓
+
+**For non-METASWARM mode (lines 840-841):**
+- Line 841: `fleet[f'worker-{i}'] = {'model': m, 'slot': i, 'role': 'worker'}` ✓ (includes role and; however swarm-state.json does not contain depth_config/max_depth, so max_depth=3 is not explicitly enforceable from runtime state metadata.",
+      "evidence": [
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-175714/commanders/commander-003/child-agents.jsonl:16",
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-175714/commanders/commander-003/child-agents.jsonl:171",
+        "/Users/greggcochran/dev/{"finding_count":terminal-stampede/.stampede/run-20260430-3,"findings":[{"check175714/commanders/":"metaswarmcommander-003/child-ag model)
+
+```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "requirement": "Each entry includes role field (worker or commander)",
+      "status": "PASS",
+      "evidence": "Line 732: commander entries include 'role': 'commander'. Line 841: worker entries include 'role': 'worker'",
+      "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "lines": [732, 841]
+    },
+    {
+      "requirement": "Commander entries include progress_dir pointing toents.jsonl:172",
+        "/Users/greggcochran/dev/terminal-stamp uses stampede-commander","status":"pass","evidence":"/Users/greggcochranede/.stampede/run-20260430-193337/commanders/commander-003/swarm-state.json:1/dev/terminal-stampede-72"
+      ]
+    }
+  ],
+  "pass": false
+}/bin/stampede.sh:874-883 sets agent_name=stampede-commander when METASWARM; /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:941-953 uses --agent \"${agent_name}\" for copilot/gh."},{"check":"non-metaswarm uses stampede-agent","status":"pass","evidence":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:869-872 default agent_name=\"stampede-agent\" when not METASWARM; /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:941-953 passes --agent \"${agent_name}\"."},{"check":"preflight probe switches agent by mode","status":"pass commanders/{id}/",
+      "status": "PASS",
+      "evidence": "Line 768: 'progress_dir': progress_dir where progress_dir = f'{base}/commanders/{cid}' (line 726). Format: commanders/commander-001/, commander-002/, etc.",
+      "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "lines": [726, 768]
+    },
+    {
+      "requirement": "Model field is included",
+      "status": "PASS",
+      "evidence": "Line 730: commander entries include 'model': m. Line 841: worker entries include 'model': m. Both roles receive","evidence":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:197-200 sets probe_agent=stampede-agent by default and stampede-commander when METASWARM; /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:223-236 uses --agent {agent} in the preflight script."}]," model assignment from models list (line 723)",
+      "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "lines": [723, 730, 841]
+    }
+  ],
+  "pass": true
+}
+```pass":true}```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "id": "metaswarm_commander_panes",
+      "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "evidence": [
+        "Pane creation always calls build_worker_script() then tmux split-window; in metaswarm mode build_worker_script() switches role/agent to commander, so panes are commanders (not worker panes).
+
+● Explore(claude-opus-4.6) Audit depth guard rules
+  └ Agent started in background with agent_id: sq-031. You'll be notified wh...
+
+● Explore(gpt-5.5) Audit worker depth lock
+  └ Agent started in background with agent_id: sq-032. You'll be notified wh...
+
+● Explore(claude-opus-4.6) Audit agent tools list
+  └ Agent started in background with agent_id: sq-033. You'll be notified wh...
+
+● Explore(gpt-5.4) Audit max depth enforcement
+  └ Agent started in background with agent_id: sq-034. You'll be notified wh...
+
+● Explore(claude-opus-4.5) Audit can_launch field
+  └ Agent started in background with agent_id: sq-035. You'll be notified wh...
+
+● Explore(gpt-5.2) Audit orphan recovery
+  └ Agent started in background with agent_id: sq-036. You'll be notified wh...
+
+● Explore(claude-sonnet-4.6) Audit heartbeat stale check
+  └ Agent started in background with agent_id: sq-037. You'll be notified wh...
+
+● Explore(gpt-5.3-codex) Audit dead pane detection
+  └ Agent started in background with agent_id: sq-038. You'll be notified wh...
+
+● Explore(claude-sonnet-4.5) Audit grace period
+  └ Agent started in background with agent_id: sq-039. You'll be notified wh...
+
+● Explore(gpt-5.2-codex) Audit teardown command
+  └ Agent started in background with agent_id: sq-040. You'll be notified wh...
+
+",
+        "Pane titles explicitly label commanders when METASWARM=true."
+      ],
+      "locations": [
+        { "line_range": [864, 895], "note": "build_worker_script(): if $METASWARM -> role_label=commander, agent_name=stampede-commander" },
+        { "line_range": [1094, 1099], "note": "tmux split-window uses WORKER_SCRIPT from build_worker_script()" },
+        { "line_range": [1123, 1132], "note": "if $METASWARM -> tmux pane title 'Commander #...'" }
+      ],
+      "result": "pass"
+    },
+    {
+      "id": "uses_stampede_commander_agent",
+      "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "evidence": [
+        "Preflight probes stampede-commander when METASWARM=true.",
+        "Generated per-pane script runs copilot/gh copilot with --agent \"${agent_name}\"; in metaswarm, agent_name is set to stampede-commander."
+      ],
+      "locations": [
+        { "line_range": [194, 200], "note": "run_default_agent_launch_preflight(): probe_agent=stampede-commander when $METASWARM" },
+        { "line_range": [874, 883], "note": "build_worker_script(): agent_name=\"stampede-commander\" when $METASWARM" },
+        { "line_range": [940, 955], "note": "copilot invocation uses --agent \"${agent_name}\"" }
+      ],
+      "result": "pass"
+    },
+    {
+      "id": "passes_model_and_commander_config",
+      "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+      "evidence": [
+        "Per-pane model is selected via get_worker_model() and passed to copilot/gh copilot as --model \"${worker_model}\".",
+        "Metaswarm commander-specific configuration is embedded into the commander prompt (ss-250 / per_commander_full_swarm=true / 250 workers, etc.) and commander env vars (progress/collab paths) are exported."
+      ],
+      "locations": [
+        { "line_range": [850, 854], "note": "get_worker_model(): rotates through MODEL_LIST" },
+        { "line_range": [864, 868], "note": "build_worker_script(): worker_model=$(get_worker_model ...)" },
+        { "line_range": [883, 890], "note": "Commander prompt includes metaswarm SS-250 config + launch requirements" },
+        { "line_range": [900, 916], "note": "Exports STAMPEDE_ROLE and commander-specific env vars when $METASWARM" },
+        { "line_range": [941, 959], "note": "copilot/gh copilot call passes --model \"${worker_model}\"" }
+      ],
+      "result": "pass"
+    }
+ Launching ],
+  "pass": true
+}
+```{"finding_count":4,"findings":[{"id":"pid_cleanup","status":"pass","evidence":"/Users/greggcochran/dev/terminal-stampede{"finding_count":3,"findings":[{"check":"Context Capsule depth_config current_depth for commander","status":"pass","expected":1,"actual":1,"evidence":{"file":"/Users/greg/bin/stampede.sh:323-335 loops pidfiles, reads PID, kill -0 then kill, removes pidfiles."},{"id":"tmux_session_k final batch (sq-041 to sq-050):gcochran/dev/terminalill","status":"pass","e-stampede/agents/stvidence":"/Users/gregampede-commander.agent.mdgcochran/dev/terminal-stampede/bin/stamp","lines":[212,215]}ede.sh:339-341 tm},{"check":"Context Capsule depthux has-session then tmux kill-session."},{"id":"state_update_torn_down","status":"pass","evidence":"/_config max_depth","status":"pass","expected":3,"actual":Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:346-351 python3 loads state.json and sets state['phase']='torn_down'."},{"id":"run_dir_search","status3,"evidence":{"file":"pass","evidence":"/Users/greggcoch":"/Users/greggcoran/dev/terminal-stampede/bin/stampede.sh:chran/dev/terminal-stampede/agents/stampede309-318 checks REPO_PATH-commander.agent.md","lines/.stampede, HOME/.":[212,215]}},{"check":"child-agentscopilot/stampede, HOME/.stampede for RUN_ID.jsonl examples depth values","status":"pass","expected":{"squad_lead":2,"worker":3."}],"pass":true}},"actual":{"squad_lead":2,"worker":3},"evidence":{"file":"/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md","lines":[132,137]}}],"pass":true}```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "id": 1,
+      "check": "Claimed tasks are returned to queue whenBased on my reading of both agent files, here are the findings:
+
+```json
+{
+  "finding_count": 3,
+  "findings": [ agents die",
+      "pass{
+  "finding_count": 3,
+  "findings": true,
+      "evidence": {
+        "file": "/Users/greggcoch": [
+    {
+      "check": "uses tmux list-panes with #{ran/dev/terminal-stampedepane_dead} format",
+      "result": "pass",
+      "evidence": "//bin/stampede-monitor.sh",
+Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:232 (`tmux list-panes ... -        "lines": "237-277",
+        "details":{
+  "finding_count": 0,
+  "findings": [],
+  " "Orphan recovery runs when liveF '#{pane_index} #{pane_current_command}_agents==0 and claimed>pass": true
+}0 (237). For each claimed/*.json (238-246), if no results file exists and claim_age>=ORPHAN_RECOVERY_AFTER and commander_active!=true, it mv's the claim back to queue (274-276)."
+      }
+    },
+    {
+      "id":  #{pane_dead}'2,
+      "check": "
+    {
+      "check": "stampede-agent tools list does NOT include 'task'",
+      "result": "PASS",
+      "detail": "stampede-agent.agent.md tools (lines 7-14): bash, grep, glob, view, edit, create, sql — no 'task' present"
+    },
+    {
+      "check": "stampede-agent tools list does NOT include 'read_agent' or 'list_agents'",
+      "result": "PASS",
+      "detail": "stampede-agent.agent.md tools (lines 7-14): bash, grep, glob, view, edit, create, sql — neither 'read_agent' nor commander_active is checked via heartbeat age",
+      "pass": true,
+      "evidence":`)"
+    },
+    {
+      "check": "correctly identifies dead vs done vs active states",
+ {
+        "file": "/```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "id": 1,
+      "check": "reads last_heartbeat_at from swarm-state.json",
+      "result": "PASS",
+      "detail": "Line 262: `heartbeat = s.get(\"last_heartbeat_at\") or s.get(\"updated_at\")` — reads `last_heartbeat_at` from the parsed swarm-state.json, with `updated_at` as a fallback."
+    },
+    {
+      "id": 2,
+      "check": "compares age against threshold parameter (ORPHAN_RECOVERY_AFTER)",
+      "result": "PASS",
+      "detail": "Line 247Users/greggcochran/dev/terminal-stampede      "result": "pass",
+      "e/bin/stampede-monitor.sh",
+        "lines": "247-vidence": "/Users/greggcochran/dev```json
+{
+  "finding_count": 2,
+  "findings": [
+    {
+      "id": 1,
+      "check": "Critical Rules state /terminal-stampede/bin270",
+        "details":/stampede-monitor.sh:225-230 (` "Python reads commanders/<task_id>/swarm-state.json, takespdead==1` => dead/no last_heartbeat_at or updated_at (262), parses ISO time count; `pcmd==sleep` (266), computes age in => done_agents++; else => live_agents++) seconds (267), and sets commander_active true if age < threshold (268)."
+      }
+    },
+    {
+      "id":"
+    },
+    {
+      "check": "skips monitor pane ( 3,
+      "check": "ORPHAN_RECOVERY_AFTER=180 threshold is used in orphan recovery logic",
+      "pass": true,
+      "e'list_agents' present"
+    },
+    {
+      "check": "stampede-commander tools list DOES include 'task'",
+      "result": "PASS",
+      "detail": "stampede-commander.agent.md tools (lines 7-17): bash, grep, glob, view, edit, create, sql, task, read_agent, list_agents — 'task' present at line 15"
+    }
+  ],
+  "pass": true
+}
+```
+
+**Summary:** Leaf enforcement is correctly implemented. The `stampede-agent` (leaf worker) has no spawning tools (`vidence": {
+        "file": "/Users/greggcochran/dev/terminal-stampindex 0)",
+      "result": "pass",
+      "evidence": "/Users/greggcochran/dev/terminal-stede/bin/stampede-monitor.sh",
+        "lines": " passes `$ORPHAN_RECOVERY_AFTER` as `sys.argv[3]`; line 255 captures it as `threshold = int(sys.argv[3])`; line 267 computes `age = (dt.datetime.now(dt.timezone.utc) - parsed).total_seconds()`; line 268 compares `age < threshold`."
+    },
+    {
+      "id": 3,
+      "check": "returns 'true' if age < threshold",
+      "result": "PASS",
+      "detail": "Line 268: `print(\"true\" if age < threshold else \"false\")` — emits the string `true` when the heartbeat age is strictly less than the threshold, `false` otherwise."
+    }
+  ],
+  "pass": true
+}
+```
+
+All three verification criteria pass. The Python block at lines 247–271 of `bin/stampede-monitor.sh` correctly:
+1. Reads `last_heartbeat_at` (line 262) from `swarm-state.json` (line 256/261)
+2. Computes the heartbeat age in seconds and compares it against `threshold` (sourced from `$ORPHAN_RECOVERY_AFTER`) on lines 267–268
+3. Prints `"true"` when `age < threshold` on line 268ampede/bin/stampede-monitor.sh:223'Enforce Depth Guard: workers are always explore or task agents and must be told they are leaf nodes'",
+      "location": "agents/stampede-commander.agent.md, line 31",
+      "exact_text": "Enforce Depth Guard: workers are always `explore` or `task` agents and must be told they are leaf nodes.",task`, `read_agent`, `list_agents`), while `stampede-commander` retains them for its metaswarm orchestration role. This matches the project's documented constraint that nested swarm work belongs exclusively to the commander role.
+      "status": "PASS"
+    },
+    {
+      "id": 2,
+      "check": "Worker Depth Lock section exists with exact block text",
+      "location": "agents/stampede-commander.agent.md, lines 229-236",
+      "exact_text": "DO NOT use the task tool.\nDO NOT (`[[ \"$pidx\" == \"0\" ]] && continue247, 274",
+        "details": "ORPHAN_RECOVERY_AFTER is passed into the heartbeat-age check as the threshold arg (247) and used to gate recovery by claim_age>=ORPHAN_RECOVERY_AFTER (274  # skip monitor pane`)"
+    }
+  ],
+  "pass": true
+}). (Value assignment to 180 is not shown in lines 234-279, but the variable is actively used here.)"
+      }
+    }
+  ],
+  "pass": true
+}
+``` attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.",
+      "status": "PASS"
+    }
+  ],
+  "pass": true
+}
+```
+
+Both Depth Guard rules are present and correct. Workers are constrained as leaf nodes via (1) the Critical Rules bullet on line 31 and (2) the mandatory verbatim prompt block in the "Worker Depth Lock" section (lines 229–236).Based on the file content I just read, here are the findings:
+
+**child-agents.jsonl examples found at lines 133-138:**
+
+- **Line 135 (squad_lead):** `{"ts":"ISO-8601","event":"launch_started","commander_id":"commander-001","child_id":"sq-001","role":"squad_lead","depth":2,"agent_type":"general-purpose","model":"claude-opus-4.7","workers_target":5}`
+  - ✅ No `can_launch` field present (correct - squad leads can launch workers)
+
+- **Line 136 (worker):** `{"ts":"ISO-8601","event":"launch_started","commander_id":"commander-001","child_id":"wkr-001-001","parent_id":"sq-001","role":"worker","depth":3,"agent_type":"explore","model":"gpt-5.5","can_launch":false}`
+  - ✅ Has `"can_launch":false` (correct - workers are leaf```json
+{
+  "finding_count": 3,
+  "findings": [
+    {
+      "requirement": "ALL_DEAD_SINCE is set when live_agents==0 and tasks remain",
+      "lines": "284-287",
+      "status": "PASS",
+      "details": "ALL_DEAD_SINCE=$(date +%s) is set when all_done_or_dead=true AND done_count < TOTAL_TASKS AND queued==0 AND claimed==0. Line 282 sets all_done_or_dead=true when total_agents > 0 AND live_agents==0." nodes)
+
+```json
+{
+  "finding_count": 2,
+  "findings": [
+    {
+      "line": 136,
+      "role": "worker",
+      "child_id": "wkr-001-001",
+      "has_can_launch_false": true,
+      "status": "PASS"
+    },
+    {
+      "line": 135,
+      "role": "squad_lead",
+      "child_id": "sq-001",
+      "has_can_launch_false": false,
+      "status": "PASS"
+    }
+  ],
+  "pass": true
+}
+```
+    },
+    {
+      "requirement": "15-second grace period before partial completion",
+      "lines": "299-300",
+      "status": "PASS",
+      "details": "Grace period calculated as grace=$(( $(date +%s) - ALL_DEAD_SINCE )). Partial completion only triggers when grace >= 15 AND done_count > 0 (line 300: is_complete=true; partial=true)."
+    },
+    {
+      "requirement": "Normal completion when done_count >= TOTAL_TASKS",
+      "lines": "296-297",
+      "status": "PASS",
+      "details": "Normal completion path: if [[ $done_count -ge $TOTAL_TASKS ]] && [[ $TOTAL_TASKS -gt 0 ]]; then is_complete=true. This takes precedence over partial completion logic."
+    }
+  ],
+  "pass": true
+}
+```
+
+**Verification complete.** All three requirements confirmed:
+- **ALL_DEAD_SINCE** timestamp set at line 286 when agents dead + tasks incomplete
+- **15-second grace** enforced at line 300 before partial completion
+- **Normal completion** at line 297 when done_count >= TOTAL_TASKS
+
+● Explore(claude-opus-4.6) Audit sub-agent terminology
+  └ Agent started in background with agent_id: sq-041. You'll be notified wh...
+
+● Explore(gpt-5.5) Audit Squad Lead naming
+  └ Agent started in background with agent_id: sq-042. You'll be notified wh...
+
+● Explore(claude-opus-4.6) Audit commander naming
+  └ Agent started in background with agent_id: sq-043. You'll be notified wh...
+
+● Explore(gpt-5.4) Audit metaswarm naming
+  └ Agent started in background with agent_id: sq-044. You'll be notified wh...
+
+● Explore(claude-opus-4.5) Audit Agent Pulse naming
+  └ Agent started in background with agent_id: sq-045. You'll be notified wh...
+
+● Explore(gpt-5.2) Audit collab bus creation
+  └ Agent started in background with agent_id: sq-046. You'll be notified wh...
+
+● Explore(claude-sonnet-4.6) Audit collab protocol
+  └ Agent started in background with agent_id: sq-047. You'll be notified wh...
+
+● Explore(gpt-5.3-codex) Audit proposals format
+  └ Agent started in background with agent_id: sq-048. You'll be notified wh...
+
+● Explore(claude-sonnet-4.5) Audit peer review workflow
+  └ Agent started in background with agent_id: sq-049. You'll be notified wh...
+
+● Explore(gpt-5.2-codex) Audit consensus flow
+  └ Agent started in background with agent_id: sq-050. You'll be notified wh...
+
+{
+  "finding_count": 1,
+  "findings": [
+    {
+      "file": "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md",
+      "lines": [54, 55],
+      "issue": "Lowercase prose usage: 'squad leads per commander' and 'workers per squad lead' are inconsistent with preferred title-case 'Squad Lead' usage elsewhere."
+    }
+  ],
+  "pass": false
+}I'll read both files in parallel right away.I'll audit the peer review workflow documentation by reading SKILL.md and verifying the specified requirements.Now let me search SKILL.md for collaboration bus documentation.Let me view SKILL.md in sections to search for the peer review workflow documentation.```json
+{
+  "finding_countThe grep confirms "pulse" only appears in the GIF animation code (visual animation effect), not as a feature name. There is no "Agent Pulse" naming": 3,
+  "findings": [
+    {
+      "requirement": "collab/ directory is created for metaswarm runs",
+      "status": "pass",
+      "evidence": [
+        {
+          "file": "/Users/greggI have all the information needed. Here are my findings:
+
+```json
+{
+  "finding_count": 4,
+  "findings": [
+    {
+      "location": "bin/stampede.sh:732,775",
+      "description": "fleet.json role field uses 'role': 'commander' forcochran/dev/terminal-stampede/bin/stampede.sh",
+          "lines": "591-594",
+          "snippet": "if $METASWARM; then\n    mkdir -p \"${BASE_DIR}/commanders\" \"${BASE_DIR}/collab\"\nfi"
+        },
+        {
+          in the codebase - the live counts display is referred to as "Agent / commander roster" (line 118) or just the monitor.
+
+```json
+{
+  "finding_count": 0,
+  "findings": [],
+  "pass": true
+}
+```
+
+**Summary:** "Agent Pulse" is NOT explicitly "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+          "lines": "649-652",
+          "snippet": "if metaswarm:\n    collab_dir = f'{base}/collab'\n    os.makedirs(collab_dir, exist_ok=True)"
+        }
+      ]
+    },
+    commander panes (lines 732, 775)"
+    },
+    {
+      "location": "bin/stampede-monitor.sh:193",
+      "description": "Monitor displays 'Commander #${idx}' label for commander panes"
+    },
+    {
+      "location": "bin/stampede.sh:881,1128",
+      "description": "role_label set to 'commander' (line 881); tmux pane titled 'Commander #${i}' (line 1128)"
+    },
+    {
+      "location {
+      "requirement": "protocol.json is initialized",
+      "status": "pass",
+      "evidence": [
+        {
+          "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+          "lines": "663-700",
+          "snippet": "protocol = { ... }\nwrite_json_atomic(f'{collab_dir}/protocol.json', protocol)"
+        }
+      ]
+    },
+    {
+      "requirement": "JSONL ledger files are created",
+      "status": "pass",
+      "evidence": [
+        named anywhere in the code or documentation. The search found:
+- No matches for "Agent Pulse", "agent pulse", or "AgentPulse"
+- The only "pulse" reference is in `gen-stampede-gif.py:334-335` for animation color pulsing
+- The live {
+          "file": "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+          "lines": "653-662",
+          "snippet": "ledger_events = { 'proposals': ..., 'reviews': ..., ' counts display is called "Agent / commander roster" in `bin/stampede-monitor.sh:118`
+- "Agent Pulse" is purely a conceptual/colloquial name, not a named featureimprovements': ..., 'consNow let me pull the specific SKILL.md sections on the collab bus and required fields:ensus': ..., 'broadcasts': ... }\nledgers = {": "README.md:35,83,130",
+      "description": "README documents commander role consistently: metaswarm commander panes, commander agent table entry, and Metaswarm commander mode section"
+    }
+  ],
+  "pass": true
+}
+```
+
+**Summary:** The 'commander' role naming is consistent across all three locations — `fleet.json` generationname: f'{collab_dir}/{name}.jsonl' for name in ledger_events}\nfor ledger_path in ledgers.values():\n    open(ledger_path, 'a').close()"
+        },
+        {
+          "file": "/Users/greggcochran/dev uses `'role': 'commander'`, the monitor displays `Commander #N`, and the README documents it as "commander" throughout. Naming is uniform and correct./terminal-stampede/bin/stampede.sh",
+          "lines": "909-915",
+          "snippet": "export STAMPEDE_COLLAB_PROPOSALS=\"${BASE_DIR}/collab/proposals.jsonl\"\nexport STAMPEDE_COLLAB_REVIEWS=\"${BASE_DIR}/collab/reviews.jsonl\"\nexport STAMPEDE_COLLAB_IMPROVEMENTS=\"${BASE_DIR}/collab/improvements.jsonl\"\nexport STAMPEDE_COLLAB_CONSENSUS=\"${BASE_DIR}/collab/consensus.jsonl\"\nexport STAMPEDE_COLLAB_BROADCASTS=\"${BASE_DIR}/collab/broadcasts.jsonl\""
+        }
+All 50 squad leads launched. Now updating telemetry and recording worker launches, then collecting results:      ]
+    }
+  ],
+ Let me search for any mention of reviews.jsonl or peer review workflow in the entire repository: "pass": true
+}
+```{"finding_count":4,"findings":[{"file":"agents/stampede-commander.agent.md","status":"fail","details":"Not consistently lowercase: 'Metaswarm' appears at lines 150, 159, 221; lowercase 'metaswarm' also appears at lines 4, 22, 36, 77, 146, 184, 223, 247."},{"file":"bin/stampede.sh","status":"fail","details":"Not consistently lowercase: uppercase 'METASWARM' appears at lines 21, 41, 198, 502, 538, 570, 592, 608, 618, 624, 634, 874, 905, 1126, 1159, 1166, 1176, 1177, 1185, 1204; lowercase 'metaswarm' also appears in flags/
+
+● Read (Explore agent — Audit swarm-state schema)
+  └ Completed
+
+● Read (Explore agent — Audit monitor squad parsing)
+  └ Completed
+
+● Read (Explore agent — Audit premium pool consistency)
+  └ Completed
+
+● Read (Explore agent — Audit depth guard rules)
+  └ Completed
+
+strings (e.g. 44, 56, 503, 540, 609, 638, 650, 666, 714, 724, 733, 776, 883, 885, 886)."},{"file":"README.md","status":"fail","details":"Not consistently lowercase: 'Metaswarm' appears at line 130; lowercase 'metaswarm' appears at lines 35, 83, 133, 136."},{"file":"skills/SKILL.md","status":"pass","details":"Checked matches are consistently lowercase 'metaswarm' (lines 34, 39, 109, 145, 287, 288, 320, 407, 411)."}],"pass":false}Based on my search results, here is the audit report:
+
+```json
+{
+  "finding_count": 5,
+  "findings": [
+    {
+      "● Record all worker launches (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 << 'PYTHON'
+  │ import json, datetime, pathlib
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  │ CMD_DIR = …
+  └ 58 lines...
+
+id": 1,
+      "severity": "medium",
+      "description": "stampede.sh line 765 defines BOTH 'child_ledger' and 'sub_agent_ledger' keys pointing to the same child-agents.jsonl file — mixing terminology in the same data structure",
+      "file": "bin/stampede.sh",
+      "line": 765
+    },
+    {
+      "id": 2,
+      "severity": "medium",
+      "description": "stampede-commander.agent.md line 66 says 'nested sub-agent activity' but the file tracking that activity is named 'child-agents.jsonl' — sub-agent description, child-agent filename",
+      "file": "agents/stampede-commander.agent.md",
+      "line": 66
+    },
+    {
+      "id": 3,
+      "severity": "low",
+      "description": "stampede-monitor.sh line 178 warns 'no sub-agent proof' but the proof file it checks is 'child-agents.jsonl'",
+      "file": "bin/stampede-monitor.sh",
+      "line": 178
+    },
+    {
+      "id": 4,
+      "severity": "low",
+      "description": "stampede.sh line 1207 prints 'sub-agent telemetry in child-agents.jsonl' — mixes 'sub-agent' descriptor with 'child-agent' filename in the same sentence",
+      "file": "bin/stampede.sh",
+      "line": 1207
+    },
+    {
+      "id": 5,
+      "severity": "info",
+      "description": "'Worker' is used consistently as a role name (depth-3 leaf nodes) and is NOT interchangeable with sub-agent/child-agent.Good! I found reviews.jsonl files. Let me examine them and search for the workflow documentation: 'child worker' (AGENTS.md:72, README.md:136) correctly refers to workers nested under commanders. No inconsistency here.",
+      "file": "multiple",
+      "line": null
+    }
+  ],
+  "pass": false,
+  "summary": "The codebase inconsistently alternates between 'sub-agent' and 'child agent' to describe the same concept (nested agents launched by commanders). The canonical filename is 'child-agents.json{"finding_count":3,"findings":[{"file":"/Users/greggl' suggesting 'child agent' is the intended term, but runtime prompts and monitor output use 'sub-agent'. 'Worker' is used consistently as a distinct role name and is not part of this conflict. Recommend standardizing on 'child agent' to match the JSONL filename, or renaming the file to 'sub-agents.jsonl'."
+}
+```● Read (Explore agent — Audit sub-agent terminology)
+  └ Completed
+
+cochran/dev/terminal-stampede/skills/SKILL.md","lines":"(search result)","status":"not_found","detail":"No documentation found for `proposals.jsonl` or proposal record format in SKILL.md."},{"file":"/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md","lines":"(search result)","status":"not_found","detail":"No documentation found for `proposals.jsonl` or proposal record format in stampede-commander.agent.md."},{"file":"/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh;/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json","lines":"889;48-57","status":"found","detail":"Proposal required fields are documented and include all requested keys: `ts`, `run_id`, `commander_id`, `event`, `item_id`, `summary` (plus `evidence`, `confidence`, `source_refs`)."}],"pass":true}Now let me check the stampede-commander agent file more thoroughly for the workflow documentation:{"finding_count":2,"findings":[{"summary":"No consensus/broadcast documentation in SKILL.md; only JSONL mention is logs directory and orchestrator log, not consensus.jsonl/broadcasts.jsonl formats.","file":"/Users/greggcochran/dev/terminal-stampede/skills/SKILL.md","lines":"165-170, 442-445"},{"summary":"Metaswarm section mentions commander bundle status (partial/failed) but no bundle.json schema or adopted consensus item_ids inclusion described.","file":"/Users/greggcochran/dev/terminal-stampede/skills/SKILL.md","lines":"407-408"}],"pass":false}Collecting remaining results and updating telemetry:
+
+● Read (Explore agent — Audit agent tools list)
+  └ Completed
+
+● Read (Explore agent — Audit orphan recovery)
+  └ Completed
+
+● Read (Explore agent — Audit collab bus creation)
+  └ Completed
+
+● Read (Explore agent — Audit Agent Pulse naming)
+  └ Completed
+
+● Read (Explore agent — Audit metaswarm flag)
+  └ Completed
+
+Let me continue searching for the peer review workflow documentation:I now have everything needed. Here is the complete audit report:
+
+---
+
+```json
+{
+  "squad_lead": "sq-047",
+  "commander": "commander-003",
+  "task": "Audit✗ Read (Checking agent sq-046)
+  └ Failed
+
+● Read (Explore agent — Audit proposals format)
+  └ Completed
+
+● Read (Explore agent — Audit consensus flow)
+  └ Completed
+
+● Read (Explore agent — Audit Squad Lead naming)
+  └ Completed
+
+● Read (Explore agent — Audit metaswarm naming)
+  └ Completed
+
+● Listing background agents
+
+Let me search for workflow or collaboration documentation more broadly: collab/protocol.json schema and required fields",
+  "finding_count": 7,
+  "findings": [
+    {
+      "id": 1,
+      "title": "protocol.json exists and is valid JSON",
+      "status": "PASS",
+      "detail": "File found at .stampede/run-20260430-180646/collab/protocol.json. Parses cleanly with all top-level keys present.",
+      "source": ".stampede/run-20260430-180646/collab/protocol.json"
+    },
+    {
+      "id": 2,
+      "title": "All 9 required_fields present and match source template",
+      "status": "PASS",
+      "detail": "protocol.json required_fields array contains exactly: ts, run_id, commander_id, event, item_id, summary, evidence, confidence, source_refs — identical to the generator template in bin/stampede.sh lines 688-698 and the commander prompt at line 889.",
+      "required_fields": ["ts","run_id","commander_id","event","item_id","summary","evidence","confidence","source_refs"],
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/protocol.json:48-58",
+        "bin/stampede.sh:688-698"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "All 5 ledger entries defined with correct event types",
+      "status": "PASS",
+      "detail": "protocol.json ledgers block contains proposals→proposal, reviews→peer_review, improvements→improvement, consensus→consensus, broadcasts→broadcast. Paths all resolve under the correct run-scoped collab/ directory.",
+      "source": ".stampede/run-20260430-180646/collab/protocol.json:5-26"
+    },
+    {
+      "id": 4,
+      "title": "commander_workflow sequence is correct and complete",
+      "status": "PASS",
+      "detail": "Sequence is [propose, peer_review, improve, consensus, broadcast, adopt] — 6 steps, matching bin/stampede.sh line 685 template and the collaboration bus description at line 889 and stampede-monitor.sh line 1Two agents still running (sq-047, sq-049). Let me wait for them and then also check collaboration bus for other commanders' proposals to review:
+
+● Check other proposals (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && cat
+  │ .stampede/run-20260430-180646/collab/proposals.jsonl 2>/dev/null | head -20
+  └ 6 lines...
+
+Excellent! I found the collab workflow files. Let me examine the protocol.json and check for documentation:208.",
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/protocol.json:37-47",
+        "bin/stampede.sh:685-686"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "atomic_append_guidance present with all 5 rules",
+      "status": "PASS",
+      "detail": "mode=append-only-jsonl and all five rules are present: one-object-per-line, O_APPEND semantics, no rewrite/truncate/compact, tolerate absent/malformed files, stable item_id cross-referencing.",
+      "source": ".stampede/run-20260430-180646/collab/protocol.json:27-36"
+    },
+    {
+      "id": 6,
+      "title": "Extra 'profile' field in protocol.json not in generator template",
+      "status": "WARN",
+      "detail": "protocol.json contains a top-level 'profile: metaswarm' field (line 4). This field does NOT appear in the protocol dictionary in bin/stampede.sh lines 663–699. It is likely injected post-generation or manually patched. Functionally harmless but creates a schema drift between template and output.",
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/protocol.json:4",
+        "bin/stampede.sh:663-699"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Collab bus documentation absent from SKILL.md; lives in stampede.sh and stampede-commander.agent.md",
+      "status": "WARN",
+      "detail": "skills/SKILL.md contains no direct collaboration bus documentation. Authoritative collab bus documentation is in bin/stampede.sh (commander prompt string, line 889; protocol generator, lines 649–700) and referenced in agents/stampede-commander.agent.md. SKILL.md should ideally cross-reference the collab bus workflow for orchestrator-level visibility.",
+      "source_refs": [
+        "bin/stampede.sh:889",
+        "bin/stampede.sh:649-700",
+        "bin/stampede-monitor.sh:57-66",
+        "agents/stampede-commander.agent.md:254-255"
+      ]
+    }
+  ],
+  "pass": true,
+  "summary": "protocol.json is structurally sound. All 9 required_fields, all 5 ledgers, the 6-step commander_workflow, and atomic_append_guidance are present and consistent with the bin/stampede.sh generator. Two non-blocking warnings: (1) an undocumented 'profile' field in the live file not in the template, and (2) collab bus documentation is absent from SKILL.md — it resides only in the launcher script and commander agent. No required fields are missing. Audit result: PASS."
+}
+```● Read (Explore agent — Audit collab protocol)
+  └ Completed
+
+Perfect! Now I have all the information I need. Let me compile the audit report:
+
+```json
+{
+  "finding_count": 2,
+  "findings": [
+    {
+      "requirement": "(1) propose -> peer_review -> improve -> consensus -> broadcast -> adopt flow is documented",
+      "status": "PASS",
+      "locations": [
+        {
+          "file": "bin/stampede.sh",
+          "line": 685,
+          "content": "'sequence': ['propose', 'peer_review', 'improve', 'consensus', 'broadcast', 'adopt']"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "line": 686,
+          "content": "'description': 'propose -> peer_review -> improve -> consensus -> broadcast -> adopt'"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "line": 889,
+          "content": "Collaboration bus prompt includes: 'Follow workflow propose -> peer_review -> improve -> consensus -> broadcast -> adopt'"
+        },
+        {
+          "file": ".stampede/run-20260430-180646/collab/protocol.json",
+          "lines": "38-46",
+          "content": "commander_workflow section documents sequence array and description"
+        }
+      ],
+      "evidence": "The full workflow sequence is explicitly documented in multiple locations: bin/stampede.sh defines it in the collab protocol generation (lines 685-686), embeds it in commander prompts (line 889), and protocol.json stores it as the canonical workflow definition."
+    },
+    {
+      "requirement": "(2) reviews.jsonl format is specified",
+      "status": "PASS",
+      "locations": [
+        {
+          "file": ".stampede/run-20260430-180646/collab/protocol.json",
+          "lines": "10-13",
+          "content": "reviews ledger defined with path and event='peer_review'"
+        },
+        {
+          "file": ".stampede/run-20260430-180646/collab/protocol.json",
+          "lines": "48-58",
+          "content": "required_fields: ['ts', 'run_id', 'commander_id', 'event', 'item_id', 'summary', 'evidence', 'confidence', 'source_refs']"
+        },
+        {
+          "file": ".stampede/run-20260430-180646/collab/reviews.jsonl",
+          "lines": "1-3",
+          "content": "Example records showing peer_review event with target_item_id, target_commander, verdict, confidence, summary, and source_refs"
+        },
+        {
+          "file": ".stampede/run-20260430-180646/collab/protocol.json",
+          "lines": "27-35",
+          "content": "atomic_append_guidance specifies append-only JSONL mode and rules"
+        }
+      ],
+      "evidence": "reviews.jsonl format is specified via protocol.json which defines: (a) the ledger path and event type 'peer_review', (b) required fields for all ledger entries including reviews, (c) atomic append-only JSONL semantics. Actual reviews.jsonl files demonstrate the format with peer_review events containing target_item_id, target_commander, verdict, confidence, summary, and source_refs."
+    }
+  ],
+  "pass": true
+}
+```
+
+**Audit Summary:**
+
+Both requirements are satisfied:
+
+1. **Workflow Documentation (PASS)**: The `propose -> peer_review -> improve -> consensus -> broadcast -> adopt` flow is documented in:
+   - `bin/stampede.sh` lines 685-686 (canonical sequence definition)
+   - `bin/stampede.sh` line 889 (embedded in commander prompts)
+   - `.stampede/run-*/collab/protocol.json` (commander_workflow section)
+
+2. **reviews.jsonl Format (PASS)**: Format is specified through:
+   - `protocol.json` ledger registry (defines path and event type)
+   - `protocol.json` required_fields array (applies to all ledgers)
+   - `protocol.json` atomic_append_guidance (JSONL semantics)
+   - Example records in actual `reviews.jsonl` files demonstrate implementation
+
+**No gaps found.** The peer review workflow is fully documented and the reviews.jsonl format specification is complete.● Read (Explore agent — Audit peer review workflow)
+  └ Completed
+
+All 50 squad leads complete. Now I'll write peer reviews, update telemetry, synthesize findings, and write the final bundle:
+
+● Update collab bus with reviews/consensus (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 << 'PYTHON'
+  │ import json, datetime, pathlib
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  │ RUN_DIR = pathlib.Path(".stampede/run-20260430-180646")…
+  └ 167 lines...
+
+Now writing the final bundle atomically:
+
+● Write final bundle atomically (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 << 'PYTHON'
+  │ import json, datetime, pathlib, shutil
+  │
+  │ now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  │ RUN_DIR = pathlib.Path(".stampede/run-20260430-180646")…
+  └ 125 lines...
+
+Now let me commit and verify everything:
+
+● Commit commander results (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && git add
+  │ .stampede/run-20260430-180646/commanders/commander-003/
+  │ .stampede/run-20260430-180646/results/commander-003.json
+  │ .stampede/run-20260430-180646/collab/ && git commit -m "commander-003:
+  │ telemetry-dashboard QA audit complete…
+  └ 15 lines...
+
+● Force-add and commit (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && git add -f
+  │ .stampede/run-20260430-180646/commanders/commander-003/
+  │ .stampede/run-20260430-180646/results/commander-003.json
+  │ .stampede/run-20260430-180646/collab/ && git commit -m "commander-003:
+  │ telemetry-dashboard QA audit complete…
+  └ 14 lines...
+
+● Verify bundle (shell)
+  │ cd /Users/greggcochran/dev/terminal-stampede && python3 -c "
+  │ import json
+  │ with
+  │ open('.stampede/run-20260430-180646/commanders/commander-003/bundle.json')
+  │ as f:…
+  └ 13 lines...
+
+
+Changes   +0 -0
+Requests  3 Premium (8m 48s)
+Tokens    ↑ 3.8m • ↓ 102.7k • 3.0m (cached) • 19.5k (reasoning)

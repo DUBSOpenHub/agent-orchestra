@@ -1,0 +1,83 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead": "sq-042",
+  "focus": "Git Commit Trailer Verification",
+  "status": "complete",
+  "depth": 2,
+  "workers_launched": [
+    {
+      "id": "wkr-042-001",
+      "model": "claude-opus-4.6",
+      "task": "Check commit trailer in agent docs",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-042-002",
+      "model": "gpt-5.4",
+      "task": "Verify trailer format",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-042-003",
+      "model": "claude-opus-4.5",
+      "task": "Check trailer in worker agent",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-042-004",
+      "model": "gpt-5.2",
+      "task": "Verify trailer in commander agent",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-042-005",
+      "model": "claude-sonnet-4.6",
+      "task": "Check trailer in skill",
+      "status": "complete"
+    }
+  ],
+  "required_trailer": "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+  "summary": "The exact Copilot co-author trailer is present in the worker agent commit template, but not explicitly present in commander, merger, or skill merge/commit instructions. No malformed variants were found.",
+  "findings": [
+    {
+      "area": "worker_agent",
+      "file": "agents/stampede-agent.agent.md",
+      "lines": "184-189",
+      "result": "pass",
+      "details": "Worker agent commits on isolated stampede/TASK_ID branches and includes the exact required trailer in its git commit template."
+    },
+    {
+      "area": "commander_agent",
+      "file": "agents/stampede-commander.agent.md",
+      "lines": "60",
+      "result": "partial",
+      "details": "Commander instructions say to commit with the required Copilot co-author trailer, but do not spell out the exact required trailer string."
+    },
+    {
+      "area": "merger_agent",
+      "file": "agents/stampede-merger.agent.md",
+      "lines": "117-122",
+      "result": "gap",
+      "details": "Merger commit example lacks the Copilot co-author trailer. This is a gap if merger commits must carry the same trailer."
+    },
+    {
+      "area": "skill",
+      "file": "skills/SKILL.md",
+      "lines": "635-638, 643-665, 855",
+      "result": "gap",
+      "details": "Skill merge/auto-merge instructions contain no Co-authored-by trailer requirement; merge command uses only 'Merge $branch'."
+    },
+    {
+      "area": "format_search",
+      "file": "repository-wide",
+      "lines": null,
+      "result": "pass",
+      "details": "One exact trailer occurrence was found and no malformed Copilot co-author trailer variants were identified."
+    }
+  ],
+  "recommendations": [
+    "Add the literal required trailer to agents/stampede-commander.agent.md where it references the required Copilot co-author trailer.",
+    "If merger and skill-generated merge commits are expected to include the trailer, update agents/stampede-merger.agent.md and skills/SKILL.md commit examples/instructions accordingly."
+  ]
+}

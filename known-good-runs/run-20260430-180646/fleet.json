@@ -1,0 +1,337 @@
+{
+  "commander-001": {
+    "model": "claude-opus-4.7",
+    "slot": 1,
+    "role": "commander",
+    "profile": "metaswarm",
+    "swarm_scale": "ss-250",
+    "per_commander_full_swarm": true,
+    "squad_leads_per_commander": 50,
+    "workers_per_squad_lead": 5,
+    "workers_per_commander": 250,
+    "model_policy": "premium",
+    "premium_model_pool": [
+      "claude-opus-4.7",
+      "gpt-5.5",
+      "claude-opus-4.6",
+      "gpt-5.4",
+      "claude-opus-4.5",
+      "gpt-5.2",
+      "claude-sonnet-4.6",
+      "gpt-5.3-codex",
+      "claude-sonnet-4.5",
+      "gpt-5.2-codex"
+    ],
+    "banned_child_models": [
+      "claude-haiku-4.5",
+      "gpt-5.4-mini",
+      "gpt-5-mini",
+      "gpt-4.1"
+    ],
+    "depth_budget": {
+      "squads_allocated": 50,
+      "squads_max": 50
+    },
+    "telemetry_contract": {
+      "state_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-001/swarm-state.json",
+      "child_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-001/child-agents.jsonl",
+      "sub_agent_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-001/child-agents.jsonl",
+      "launch_proof_required": true
+    },
+    "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-001",
+    "collab": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab",
+      "protocol": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+      "ledgers": {
+        "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+        "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+        "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+        "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+        "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+      },
+      "workflow": [
+        "propose",
+        "peer_review",
+        "improve",
+        "consensus",
+        "broadcast",
+        "adopt"
+      ],
+      "counts": {
+        "proposals": 0,
+        "reviews": 0,
+        "improvements": 0,
+        "consensus": 0,
+        "broadcasts": 0
+      }
+    }
+  },
+  "commander-002": {
+    "model": "gpt-5.5",
+    "slot": 2,
+    "role": "commander",
+    "profile": "metaswarm",
+    "swarm_scale": "ss-250",
+    "per_commander_full_swarm": true,
+    "squad_leads_per_commander": 50,
+    "workers_per_squad_lead": 5,
+    "workers_per_commander": 250,
+    "model_policy": "premium",
+    "premium_model_pool": [
+      "claude-opus-4.7",
+      "gpt-5.5",
+      "claude-opus-4.6",
+      "gpt-5.4",
+      "claude-opus-4.5",
+      "gpt-5.2",
+      "claude-sonnet-4.6",
+      "gpt-5.3-codex",
+      "claude-sonnet-4.5",
+      "gpt-5.2-codex"
+    ],
+    "banned_child_models": [
+      "claude-haiku-4.5",
+      "gpt-5.4-mini",
+      "gpt-5-mini",
+      "gpt-4.1"
+    ],
+    "depth_budget": {
+      "squads_allocated": 50,
+      "squads_max": 50
+    },
+    "telemetry_contract": {
+      "state_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/swarm-state.json",
+      "child_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/child-agents.jsonl",
+      "sub_agent_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/child-agents.jsonl",
+      "launch_proof_required": true
+    },
+    "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002",
+    "collab": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab",
+      "protocol": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+      "ledgers": {
+        "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+        "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+        "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+        "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+        "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+      },
+      "workflow": [
+        "propose",
+        "peer_review",
+        "improve",
+        "consensus",
+        "broadcast",
+        "adopt"
+      ],
+      "counts": {
+        "proposals": 0,
+        "reviews": 0,
+        "improvements": 0,
+        "consensus": 0,
+        "broadcasts": 0
+      }
+    }
+  },
+  "commander-003": {
+    "model": "claude-opus-4.6",
+    "slot": 3,
+    "role": "commander",
+    "profile": "metaswarm",
+    "swarm_scale": "ss-250",
+    "per_commander_full_swarm": true,
+    "squad_leads_per_commander": 50,
+    "workers_per_squad_lead": 5,
+    "workers_per_commander": 250,
+    "model_policy": "premium",
+    "premium_model_pool": [
+      "claude-opus-4.7",
+      "gpt-5.5",
+      "claude-opus-4.6",
+      "gpt-5.4",
+      "claude-opus-4.5",
+      "gpt-5.2",
+      "claude-sonnet-4.6",
+      "gpt-5.3-codex",
+      "claude-sonnet-4.5",
+      "gpt-5.2-codex"
+    ],
+    "banned_child_models": [
+      "claude-haiku-4.5",
+      "gpt-5.4-mini",
+      "gpt-5-mini",
+      "gpt-4.1"
+    ],
+    "depth_budget": {
+      "squads_allocated": 50,
+      "squads_max": 50
+    },
+    "telemetry_contract": {
+      "state_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-003/swarm-state.json",
+      "child_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-003/child-agents.jsonl",
+      "sub_agent_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-003/child-agents.jsonl",
+      "launch_proof_required": true
+    },
+    "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-003",
+    "collab": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab",
+      "protocol": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+      "ledgers": {
+        "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+        "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+        "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+        "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+        "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+      },
+      "workflow": [
+        "propose",
+        "peer_review",
+        "improve",
+        "consensus",
+        "broadcast",
+        "adopt"
+      ],
+      "counts": {
+        "proposals": 0,
+        "reviews": 0,
+        "improvements": 0,
+        "consensus": 0,
+        "broadcasts": 0
+      }
+    }
+  },
+  "commander-004": {
+    "model": "gpt-5.4",
+    "slot": 4,
+    "role": "commander",
+    "profile": "metaswarm",
+    "swarm_scale": "ss-250",
+    "per_commander_full_swarm": true,
+    "squad_leads_per_commander": 50,
+    "workers_per_squad_lead": 5,
+    "workers_per_commander": 250,
+    "model_policy": "premium",
+    "premium_model_pool": [
+      "claude-opus-4.7",
+      "gpt-5.5",
+      "claude-opus-4.6",
+      "gpt-5.4",
+      "claude-opus-4.5",
+      "gpt-5.2",
+      "claude-sonnet-4.6",
+      "gpt-5.3-codex",
+      "claude-sonnet-4.5",
+      "gpt-5.2-codex"
+    ],
+    "banned_child_models": [
+      "claude-haiku-4.5",
+      "gpt-5.4-mini",
+      "gpt-5-mini",
+      "gpt-4.1"
+    ],
+    "depth_budget": {
+      "squads_allocated": 50,
+      "squads_max": 50
+    },
+    "telemetry_contract": {
+      "state_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/swarm-state.json",
+      "child_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/child-agents.jsonl",
+      "sub_agent_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/child-agents.jsonl",
+      "launch_proof_required": true
+    },
+    "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+    "collab": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab",
+      "protocol": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+      "ledgers": {
+        "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+        "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+        "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+        "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+        "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+      },
+      "workflow": [
+        "propose",
+        "peer_review",
+        "improve",
+        "consensus",
+        "broadcast",
+        "adopt"
+      ],
+      "counts": {
+        "proposals": 0,
+        "reviews": 0,
+        "improvements": 0,
+        "consensus": 0,
+        "broadcasts": 0
+      }
+    }
+  },
+  "commander-005": {
+    "model": "claude-opus-4.5",
+    "slot": 5,
+    "role": "commander",
+    "profile": "metaswarm",
+    "swarm_scale": "ss-250",
+    "per_commander_full_swarm": true,
+    "squad_leads_per_commander": 50,
+    "workers_per_squad_lead": 5,
+    "workers_per_commander": 250,
+    "model_policy": "premium",
+    "premium_model_pool": [
+      "claude-opus-4.7",
+      "gpt-5.5",
+      "claude-opus-4.6",
+      "gpt-5.4",
+      "claude-opus-4.5",
+      "gpt-5.2",
+      "claude-sonnet-4.6",
+      "gpt-5.3-codex",
+      "claude-sonnet-4.5",
+      "gpt-5.2-codex"
+    ],
+    "banned_child_models": [
+      "claude-haiku-4.5",
+      "gpt-5.4-mini",
+      "gpt-5-mini",
+      "gpt-4.1"
+    ],
+    "depth_budget": {
+      "squads_allocated": 50,
+      "squads_max": 50
+    },
+    "telemetry_contract": {
+      "state_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-005/swarm-state.json",
+      "child_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-005/child-agents.jsonl",
+      "sub_agent_ledger": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-005/child-agents.jsonl",
+      "launch_proof_required": true
+    },
+    "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-005",
+    "collab": {
+      "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab",
+      "protocol": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+      "ledgers": {
+        "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+        "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+        "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+        "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+        "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+      },
+      "workflow": [
+        "propose",
+        "peer_review",
+        "improve",
+        "consensus",
+        "broadcast",
+        "adopt"
+      ],
+      "counts": {
+        "proposals": 0,
+        "reviews": 0,
+        "improvements": 0,
+        "consensus": 0,
+        "broadcasts": 0
+      }
+    }
+  }
+}

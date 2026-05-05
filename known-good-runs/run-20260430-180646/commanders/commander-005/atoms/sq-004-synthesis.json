@@ -1,0 +1,137 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_id": "sq-004",
+  "focus": "Result Synthesis Pipeline - Part 2",
+  "subtask": "Review merger agent logic in agents/stampede-merger.agent.md with emphasis on conflict resolution and shadow scoring.",
+  "source_file": "agents/stampede-merger.agent.md",
+  "generated_at": "2026-05-01T01:12:05Z",
+  "status": "completed",
+  "workers": [
+    {
+      "worker_id": "wkr-004-001",
+      "topic": "conflict resolution",
+      "model": "claude-opus-4.5",
+      "summary": "Conflict handling is clearly staged, but the strategy is internally inconsistent because it says to prefer the higher-scoring branch during conflict resolution even though scoring happens only after all merges complete.",
+      "citations": [
+        "agents/stampede-merger.agent.md:141-143",
+        "agents/stampede-merger.agent.md:330-332"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-002",
+      "topic": "shadow score implementation",
+      "model": "gpt-5.2",
+      "summary": "Shadow Score is specified as prompt instructions and report fields, not as a hardened scoring engine. The advertised 3-layer model is only partially formalized, while the concrete scoring system is five weighted dimensions plus runtime adjustment.",
+      "citations": [
+        "agents/stampede-merger.agent.md:6",
+        "agents/stampede-merger.agent.md:141-172",
+        "agents/stampede-merger.agent.md:204-227",
+        "agents/stampede-merger.agent.md:239-304"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-003",
+      "topic": "branch merge order",
+      "model": "claude-sonnet-4.6",
+      "summary": "The merger agent sorts branches by file count ascending, but AGENTS.md says merger order should be driven by output size largest first as a quality proxy. The sort also hardcodes main in diffs, creating default-branch mismatch risk.",
+      "citations": [
+        "agents/stampede-merger.agent.md:63-77",
+        "agents/stampede-merger.agent.md:343",
+        "AGENTS.md:31-33"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-004",
+      "topic": "merge report structure",
+      "model": "gpt-5.3-codex",
+      "summary": "The report schema is fairly rich and atomically written, but it is example-shaped rather than a strict schema and omits key fields such as skip_reason and a defined structure for resolution entries.",
+      "citations": [
+        "agents/stampede-merger.agent.md:137",
+        "agents/stampede-merger.agent.md:243-304",
+        "agents/stampede-merger.agent.md:344"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-005",
+      "topic": "edge cases",
+      "model": "claude-sonnet-4.5",
+      "summary": "Important edge cases are under-specified, including zero/one branch runs, missing result/fleet files, merge failure escalation, test timeouts, and cleanup expectations after skipped or failed merges.",
+      "citations": [
+        "agents/stampede-merger.agent.md:29-30",
+        "agents/stampede-merger.agent.md:40-53",
+        "agents/stampede-merger.agent.md:63-77",
+        "agents/stampede-merger.agent.md:192-202"
+      ]
+    }
+  ],
+  "synthesis": {
+    "overall_assessment": "The merger agent prompt is detailed enough to guide a capable agent, but several parts remain specification-level and not fully self-consistent. The biggest weaknesses are an ordering contradiction, a conflict-resolution/scoring time paradox, and under-specified edge-case behavior.",
+    "critical_findings": [
+      {
+        "id": "merge-order-doc-drift",
+        "severity": "high",
+        "finding": "Documented merge order conflicts with implemented instructions. AGENTS.md says largest-first by output size, while the merger agent instructs ascending file-count order.",
+        "citations": [
+          "AGENTS.md:31-33",
+          "agents/stampede-merger.agent.md:68-77",
+          "agents/stampede-merger.agent.md:343"
+        ]
+      },
+      {
+        "id": "score-timing-paradox",
+        "severity": "high",
+        "finding": "Conflict strategy says overlapping edits should prefer the higher-scoring branch, but scoring is defined only after all merges complete, so that rule cannot be executed as written during Phase 1.",
+        "citations": [
+          "agents/stampede-merger.agent.md:141-143",
+          "agents/stampede-merger.agent.md:326-334"
+        ]
+      },
+      {
+        "id": "shadow-score-spec-not-engine",
+        "severity": "medium",
+        "finding": "Shadow scoring is a prompt rubric with example commands and JSON shape, not an enforced scoring implementation. The claimed 3-layer system is less explicit than the actual five-dimension formula plus runtime bonus/penalty.",
+        "citations": [
+          "agents/stampede-merger.agent.md:6",
+          "agents/stampede-merger.agent.md:145-172",
+          "agents/stampede-merger.agent.md:204-227",
+          "agents/stampede-merger.agent.md:239-304"
+        ]
+      },
+      {
+        "id": "report-schema-gaps",
+        "severity": "medium",
+        "finding": "The merge report shape is mostly clear, but it lacks explicit fields for skip reasons, resolution item schema, and a clean representation for penalties versus bonuses in runtime adjustments.",
+        "citations": [
+          "agents/stampede-merger.agent.md:137",
+          "agents/stampede-merger.agent.md:243-297",
+          "agents/stampede-merger.agent.md:344"
+        ]
+      },
+      {
+        "id": "edge-case-coverage",
+        "severity": "medium",
+        "finding": "The prompt does not clearly define behavior for empty branch lists, single-branch runs, missing manifests/fleet files, silent git pull failure, default-branch mismatch in diff commands, or escalation/cleanup after irreconcilable conflicts.",
+        "citations": [
+          "agents/stampede-merger.agent.md:29-30",
+          "agents/stampede-merger.agent.md:40-53",
+          "agents/stampede-merger.agent.md:63-77",
+          "agents/stampede-merger.agent.md:192-202"
+        ]
+      }
+    ],
+    "notable_observations": [
+      "The prompt does preserve strong safety intent: never commit to main, avoid force-resolving ambiguous conflicts, and write JSON atomically.",
+      "Conflict friendliness is acknowledged as partly merge-order-dependent, but the score still feeds the final ranking, so merge order materially affects evaluation outcomes.",
+      "Tests are run once on the merged branch with a suggested bisect-style fallback, but attribution logic is not concretely operationalized."
+    ],
+    "recommended_followups": [
+      "Make merge ordering canonical across docs and merger instructions; define direction and tie-breakers explicitly.",
+      "Replace 'prefer higher-scoring branch' with a rule available at merge time, or introduce a pre-merge heuristic that is actually computed before resolution.",
+      "Turn the report example into a strict schema with required fields such as skip_reason and structured resolutions entries.",
+      "Define explicit behavior for zero/one branch runs, missing context files, master-vs-main repos, test timeouts, and escalation/cleanup paths.",
+      "Clarify the Shadow Score architecture so the advertised layers, weighted dimensions, and runtime adjustments describe one coherent model."
+    ],
+    "confidence": "high"
+  }
+}

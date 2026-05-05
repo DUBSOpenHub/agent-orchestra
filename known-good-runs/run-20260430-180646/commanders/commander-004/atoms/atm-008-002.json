@@ -1,0 +1,11 @@
+{
+  "worker_id": "wkr-008-002",
+  "theme": "premium-model-policy",
+  "focus": "banned-model-guardrails",
+  "findings": [
+    "Worker refused execution due perceived prompt-injection/hierarchy framing; no file-level audit returned."
+  ],
+  "source_refs": [],
+  "confidence": 0.2,
+  "status": "failed"
+}

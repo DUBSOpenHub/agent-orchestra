@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-045-005",
+  "theme": "recovery-stuck-detection",
+  "focus": "failure-containment",
+  "findings": [
+    "Commander defines partial status for incomplete swarm launches (circuit breaker, timeout, cost ceiling)",
+    "Commander tracks failure telemetry via swarm-state.json fields",
+    "Teardown scoped to session-specific PIDs only, avoiding cross-session cascade",
+    "Agents run in isolated tmux panes with remain-on-exit=on for debugging",
+    "Metaswarm caps at 5 commanders max, providing runaway spawn safeguard",
+    "Commander launch failures logged to swarm-state.json and child-agents.jsonl",
+    "Worker Depth Lock prevents leaf nodes from spawning sub-agents",
+    "No active watchdog or auto-restart for stuck agents",
+    "Preflight check validates agent access before fleet launch"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:81,117-145,246-252",
+    "bin/stampede.sh:28,306-364,506-508,941-949,1119-1167"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

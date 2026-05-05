@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-017-004",
+  "theme": "telemetry-contract",
+  "focus": "launch-proof-counters",
+  "findings": [
+    "squads_launched falls back to proof.squad_leads_started when telemetry missing \u2014 masks stale state",
+    "50 squads / 0 workers produces no warning (workers check requires truthy workers_launched)",
+    "monitor does not enforce 'no silent downgrade' \u2014 only the commander bundle sets status",
+    "monitor reads swarm-state.json only; child-agents.jsonl proof not directly verified",
+    "squad_leads_started and squad_leads_launched can diverge with no sync check",
+    "workers_target=0 causes no division but incomplete-proof warning becomes inert"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:155-161",
+    "bin/stampede-monitor.sh:177-180",
+    "README.md:130"
+  ],
+  "confidence": 0.94,
+  "status": "success"
+}

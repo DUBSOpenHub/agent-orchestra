@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-020-001",
+  "theme": "telemetry-contract",
+  "focus": "state-shape",
+  "findings": [
+    "README documents swarm-state.json and child-agents.jsonl locations but not required schema/fields for telemetry contract.",
+    "swarm-state.json example sets task_id to commander id, conflicting with requirement to record claimed task_id.",
+    "child-agents.jsonl examples omit launch_requested event shape despite requirement to log it before each child launch.",
+    "Telemetry fields use mixed terminology (started vs launched) between launch_proof and telemetry counters.",
+    "README mentions nested progress but not swarm-state heartbeat/updated_at requirements."
+  ],
+  "source_refs": [
+    "README.md:35",
+    "README.md:130-136",
+    "agents/stampede-commander.agent.md:47",
+    "agents/stampede-commander.agent.md:73-88",
+    "agents/stampede-commander.agent.md:112-144"
+  ],
+  "confidence": 0.84,
+  "status": "success"
+}

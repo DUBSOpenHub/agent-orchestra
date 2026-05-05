@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-043-002",
+  "theme": "recovery-stuck-detection",
+  "focus": "recovery-paths",
+  "findings": [
+    "No automatic restart of crashed agents; dead panes remain visible (remain-on-exit)",
+    "No top-level trap for abnormal exit cleanup; PID cleanup only via explicit --teardown",
+    "Re-queue logic in monitor only, gated on live_agents==0 AND claim age>180s",
+    "Single dead worker while others alive: claimed task stays orphaned",
+    "No monitor installed: fallback watch is display-only with zero recovery",
+    "Launcher abnormal exit leaves stale PID files until manual --teardown"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:1164-1167",
+    "bin/stampede.sh:306-340",
+    "bin/stampede.sh:1171-1210",
+    "bin/stampede-monitor.sh:218-277"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

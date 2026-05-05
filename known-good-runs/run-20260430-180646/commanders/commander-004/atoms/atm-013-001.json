@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-013-001",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "worker-leaf-lock",
+  "findings": [
+    "Frontmatter tools list correctly excludes task and ask_user (lines 7-15)",
+    "Required leaf-lock phrases present: DO NOT attempt to spawn sub-agents (line 27), You are a LEAF NODE (line 28), NEVER ask the user questions (line 26)",
+    "No can_launch permission found anywhere in the file",
+    "Policy-level loophole: bash tool remains enabled (line 8) which could theoretically allow spawning via shell commands, though forbidden by text"
+  ],
+  "source_refs": [
+    "agents/stampede-agent.agent.md:7-15",
+    "agents/stampede-agent.agent.md:26-28",
+    "agents/stampede-agent.agent.md:8"
+  ],
+  "confidence": 0.92,
+  "status": "success"
+}

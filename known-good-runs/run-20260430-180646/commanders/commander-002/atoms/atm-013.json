@@ -1,0 +1,53 @@
+{
+  "atom_id": "atm-013",
+  "squad_lead": "sq-013",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "task": "collaboration-bus-qa",
+  "status": "complete",
+  "timestamp": "2026-05-01T01:20:56.618535+00:00",
+  "workers": [
+    {
+      "id": "wkr-013-001",
+      "model": "claude-opus-4.7",
+      "task": "source-docs-vs-prompt-drift",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-013-002",
+      "model": "gpt-5.5",
+      "task": "commander-collab-coverage",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-013-003",
+      "model": "claude-opus-4.6",
+      "task": "launcher-protocol-shape",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-013-004",
+      "model": "gpt-5.4",
+      "task": "monitor-collab-summary",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-013-005",
+      "model": "claude-opus-4.5",
+      "task": "bundle-schema-audit",
+      "status": "complete"
+    }
+  ],
+  "key_findings": [
+    "MAJOR drift: merger sort order contradicts AGENTS.md documentation",
+    "Branch naming documented as 3-segment but runtime uses 2-segment",
+    "IPC surface underdocumented - runtime adds commanders/, scripts/, fleet.json, state.json",
+    "Monitor does not read child-agents.jsonl despite it being a core telemetry file",
+    "No formal JSON Schema - all bundle schemas are implicit",
+    "files_changed vs files_modified naming inconsistency across components",
+    "Commander lacks explicit .tmp-/rename atomic write recipe",
+    "Orphan recovery path mismatch in monitor (task_id vs commander_id)"
+  ],
+  "summary": "Collaboration-bus QA reveals moderate drift between documentation and runtime prompts. Core atomic claim protocol is sound but naming, schema, and monitor integration have gaps. 3 major, 5 moderate, 4 minor drift items identified across 5 audit dimensions."
+}

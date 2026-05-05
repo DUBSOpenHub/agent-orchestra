@@ -1,0 +1,26 @@
+{
+  "worker_id": "wkr-004-002",
+  "theme": "commander-launch-profile",
+  "focus": "commander-agent-contract",
+  "findings": [
+    "Commander launch profile is explicit: SS-250, 50 squad leads \u00d7 5 workers = 250 leaf workers, per_commander_full_swarm=true.",
+    "Premium model policy is explicit: 10-model premium pool required for every Squad Lead and Worker launch; no implicit/default model allowed.",
+    "Banned model enforcement is explicit: 4 models banned; fallback to a banned model must produce partial status and a violation report.",
+    "No silent downgrade policy is explicit: partial if circuit breaker/timeout/cost ceiling prevents full launch; failed if zero squad leads launched.",
+    "Collaboration bus creation is not mentioned in the commander agent contract.",
+    "Sub-agent telemetry and launch proof are fully specified via swarm-state.json and child-agents.jsonl schemas.",
+    "Depth Guard and leaf-node lock are explicit, including the required DO NOT use the task tool block.",
+    "Stop/recovery behavior is limited to retry_budget=1; no detailed restart procedure is defined."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:43-61",
+    "agents/stampede-commander.agent.md:149-168",
+    "agents/stampede-commander.agent.md:140-147",
+    "agents/stampede-commander.agent.md:112-138",
+    "agents/stampede-commander.agent.md:172-225",
+    "agents/stampede-commander.agent.md:227-236",
+    "agents/stampede-commander.agent.md:257-265"
+  ],
+  "confidence": 0.97,
+  "status": "success"
+}

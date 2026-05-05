@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-029-005",
+  "theme": "agent-pulse-monitoring",
+  "focus": "docs-claims",
+  "findings": [
+    "Live monitoring claim verified: real-time progress, stuck detection, runtime stats all implemented (README.md:86,118; bin/stampede-monitor.sh:86-116,200-216)",
+    "Nested progress display claim verified: commanders write and monitor displays squads/workers/running/done/fail counts (README.md:83,136; bin/stampede-monitor.sh:143-193)",
+    "Telemetry tracking claim verified: child-agents.jsonl logging confirmed (README.md:130; bin/stampede.sh:956,1136)",
+    "PID-based death detection claim verified: uses tmux pane state (README.md:235; bin/stampede-monitor.sh:127-141)",
+    "Heartbeat display claim verified: monitor shows hb age from swarm-state.json (README.md:187; bin/stampede-monitor.sh:167-174)",
+    "Minor note: README does not use phrase Agent Pulse; describes as stuck detection and heartbeat tracking"
+  ],
+  "source_refs": [
+    "README.md:83,86,118,130,136,232,235",
+    "bin/stampede-monitor.sh:126-141,143-193,200-216",
+    "agents/stampede-commander.agent.md:35,65,132"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

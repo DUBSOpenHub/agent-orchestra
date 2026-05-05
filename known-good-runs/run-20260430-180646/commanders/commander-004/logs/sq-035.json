@@ -1,0 +1,39 @@
+{
+  "squad_id": "sq-035",
+  "commander_id": "commander-004",
+  "theme": "partial-failure-bundles",
+  "theme_summary": "Audit partial/failure status rules, exact launch counts, bundle completeness, and no false-success cases",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "status": "success",
+  "consensus": {
+    "tier": "strong",
+    "notes": "All 5 workers converged on consistent findings with high confidence"
+  },
+  "key_findings": [
+    "Success threshold is 50 squad leads + 250 workers - explicit in stampede-commander.agent.md:140-146",
+    "CRITICAL GAP: stampede.sh has no guard for LAUNCHED==0 - continues even if all agents fail",
+    "Partial status only documented narratively for metaswarm - not in SKILL status schema",
+    "No explicit partial vs failed decision criteria documented",
+    "Banned-model triggers partial but not documented in SKILL.md or README",
+    "Bundle schema identical for all statuses - no pre-write completeness validation",
+    "Telemetry self-reported by commanders - no external verification",
+    "fleet.json written non-atomically - corruption risk on crash"
+  ],
+  "critical_gaps": [
+    "No LAUNCHED==0 guard in stampede.sh",
+    "No post-launch watchdog or retry mechanism",
+    "No explicit timeout-failure path for stuck launches",
+    "No fleet-level state.json update on total launch failure",
+    "No cross-validation between PID files, tmux panes, and fleet.json"
+  ],
+  "blockers": [],
+  "confidence": "high",
+  "source_refs": [
+    "agents/stampede-commander.agent.md:140-146",
+    "bin/stampede.sh:1318-1358",
+    "skills/SKILL.md:407",
+    "README.md:35"
+  ]
+}

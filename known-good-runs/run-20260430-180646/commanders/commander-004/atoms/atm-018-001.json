@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-018-001",
+  "theme": "telemetry-contract",
+  "focus": "state-shape",
+  "findings": [
+    "Commander state schema is explicit in agent doc but README only names proof files, so cross-doc telemetry contract is underspecified.",
+    "Example `task_id` value in swarm-state schema appears commander-like rather than claimed task id, creating potential validator confusion.",
+    "Atomic write contract differs: README specifies `.tmp-` + `mv` while commander doc says python json dump + atomic without concrete mechanism."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:69-90",
+    "agents/stampede-commander.agent.md:75-76",
+    "agents/stampede-commander.agent.md:112-126",
+    "README.md:130-131",
+    "README.md:223-227"
+  ],
+  "confidence": "high",
+  "status": "partial"
+}

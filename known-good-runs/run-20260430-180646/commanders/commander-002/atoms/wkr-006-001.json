@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-006-001",
+  "model": "gpt-5.2",
+  "assignment": "audit collaboration bus initialization idempotency",
+  "summary": [
+    "Collaboration-bus appears implemented in bin/stampede.sh as filesystem protocol.json + JSONL ledgers under .stampede/{run_id}/collab/.",
+    "Directory/file creation is mostly idempotent, but atomic JSON writes use fixed {path}.tmp (not process-safe) and metaswarm commander telemetry init truncates child-agents.jsonl (not restart-idempotent)."
+  ],
+  "evidence": [
+    {"path": "bin/stampede.sh", "lines": "612-615", "note": "creates commanders + collab dirs"},
+    {"path": "bin/stampede.sh", "lines": "670-728", "note": "os.makedirs(exist_ok=True), open(...,'a').close(), write_json_atomic(protocol.json)"},
+    {"path": "bin/stampede.sh", "lines": "664-669", "note": "write_json_atomic uses tmp=f'{path}.tmp' then os.replace"},
+    {"path": "bin/stampede.sh", "lines": "851-860", "note": "opens swarm-state.json and child-agents.jsonl with 'w' (truncates)"}
+  ],
+  "risks": [
+    "Concurrent init collisions on fixed .tmp names can clobber protocol.json/state.json.",
+    "Restarting stampede.sh against same run may wipe telemetry evidence due to 'w' on child-agents.jsonl."
+  ],
+  "recommendations": [
+    "Use unique temp names (PID+rand) or lock for atomic JSON writes.",
+    "Do not truncate child-agents.jsonl/swarm-state on restart; append restart marker and merge state.",
+    "Skip rewriting protocol.json when already initialized for same run_id."
+  ],
+  "confidence": 0.74
+}

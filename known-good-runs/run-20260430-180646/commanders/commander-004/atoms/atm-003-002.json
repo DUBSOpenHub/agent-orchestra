@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-003-002",
+  "theme": "commander-launch-profile",
+  "focus": "commander-agent-contract",
+  "findings": [
+    "Depth Guard explicitly defined and bounded to 3 levels with can_launch:false at depth 3",
+    "50 Squad Leads x 5 Workers = 250 contract encoded but not absolute - swarm_scale manifest can override",
+    "Partial/failure handling present: success requires exactly 50 SLs and 250 workers; fewer = partial",
+    "Premium model policy explicit with named pool and banned list",
+    "Commander may use task tool; workers forbidden via exact leaf-node block in prompts",
+    "Telemetry/launch-proof/atomic-write requirements are strong (swarm-state.json, child-agents.jsonl)"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:31-32,212-216,135-136,227-236",
+    "agents/stampede-commander.agent.md:31,48-56,84-85,113-120,142-145,183-190",
+    "agents/stampede-commander.agent.md:81,140-146,166-168",
+    "agents/stampede-commander.agent.md:93-111,148-168,190-208",
+    "agents/stampede-commander.agent.md:7-17,32,229-236",
+    "agents/stampede-commander.agent.md:34-37,44,57,63-67,132-138"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

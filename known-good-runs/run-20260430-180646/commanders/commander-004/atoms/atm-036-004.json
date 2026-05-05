@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-036-004",
+  "theme": "stop-teardown-behavior",
+  "focus": "detach-vs-session-lifetime",
+  "status": "success",
+  "confidence": "high",
+  "findings": [
+    "Launcher ties agent lifecycle to tmux panes (no setsid/nohup/disown); tmux detach keeps agents running but tmux session loss stops fleet.",
+    "Teardown uses SIGTERM only for pidfile PIDs; no escalation if hung.",
+    "README claims --teardown \u201cKill agents, clean up\u201d and tmux detach \u201cagents keep running\u201d; implementation mostly matches but manual tmux session termination bypasses pidfile cleanup and can leave stale pidfiles."
+  ],
+  "source_refs": [
+    "README.md:299-323",
+    "bin/stampede.sh:304-345",
+    "bin/stampede.sh:1166-1230",
+    "bin/stampede.sh:327-340"
+  ]
+}

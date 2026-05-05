@@ -1,0 +1,151 @@
+{
+  "squad_id": "sq-004",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "commander-launch-profile",
+  "theme_summary": "Audit commander launch path, metaswarm gating, branch/task claim flow, and no silent downgrade behavior.",
+  "objective": "Final pre-build QA review of metaswarm and SwarmMesh readiness using the synced launcher and fixed Agent Pulse. Verify commander launch, premium model policy, collaboration bus creation, sub-agent telemetry, Agent Pulse live counts, stop/recovery behavior, and implementation gaps.",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "status": "partial",
+  "blockers": [
+    "All 5 workers launched and completed, but the task tool in this environment returned synchronous results and did not expose background agent ids, so launch_started events could not include returned background agent ids as requested."
+  ],
+  "consensus_notes": [
+    "Commander launch profile, SS-250 sizing, leaf-node restrictions, and no-silent-downgrade expectations are consistently documented across launcher metadata, commander contract, skill text, and docs.",
+    "Premium model policy and banned child-model lists are clearly defined in commander/launcher artifacts, but several checks rely on prompts/metadata rather than hard runtime validation.",
+    "Telemetry expectations are strong: swarm-state.json and child-agents.jsonl are treated as required launch proof and live-count evidence."
+  ],
+  "conflict_notes": [
+    "Launcher default model remains claude-haiku-4.5 outside explicit overrides, while metaswarm contracts require premium child models; enforcement is contextual rather than universal.",
+    "Documentation mentions premium child-model overrides but does not enumerate the premium pool or banned models, creating a docs-to-contract gap.",
+    "bin/stampede.sh reports a 1600-worker cap message even though 5 commanders \u00d7 250 workers implies 1250 leaf workers."
+  ],
+  "key_findings": [
+    {
+      "summary": "No-silent-downgrade and partial/failure expectations are explicit, but some enforcement still depends on prompts/contracts rather than launcher-side verification.",
+      "source_refs": [
+        "bin/stampede.sh:721-829",
+        "bin/stampede.sh:908-913",
+        "agents/stampede-commander.agent.md:140-168",
+        "skills/SKILL.md:407"
+      ]
+    },
+    {
+      "summary": "Telemetry and launch proof are a strong point: swarm-state.json and child-agents.jsonl are consistently required for real-time tracking.",
+      "source_refs": [
+        "bin/stampede.sh:750-831",
+        "agents/stampede-commander.agent.md:112-138",
+        "README.md:130",
+        "AGENTS.md:22-29"
+      ]
+    },
+    {
+      "summary": "Documentation is directionally aligned on metaswarm behavior and partial-status requirements, but omits banned-model details and detailed stop/recovery guidance.",
+      "source_refs": [
+        "README.md:35",
+        "README.md:83",
+        "README.md:202",
+        "AGENTS.md:29",
+        "AGENTS.md:69-72"
+      ]
+    }
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-004-001",
+      "focus": "launcher-flags",
+      "model": "gpt-5.2",
+      "status": "success",
+      "confidence": 0.83,
+      "atom_id": "atm-004-001",
+      "findings": [
+        "Metaswarm is explicitly gated by --metaswarm and seeds commander-specific progress/telemetry files.",
+        "Launcher default model is still claude-haiku-4.5 unless overridden, so premium child policy is not globally enforced by launcher defaults.",
+        "Metaswarm cap error text appears numerically inconsistent with 5\u00d7250 leaf-worker math."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:470-505",
+        "bin/stampede.sh:721-829",
+        "bin/stampede.sh:938-1016"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-002",
+      "focus": "commander-agent-contract",
+      "model": "claude-sonnet-4.6",
+      "status": "success",
+      "confidence": 0.97,
+      "atom_id": "atm-004-002",
+      "findings": [
+        "Commander contract explicitly defines premium pool, banned models, leaf-node lock, launch proof schema, and partial/failed status rules.",
+        "Collaboration bus creation is not covered in the commander contract.",
+        "Recovery guidance is thin beyond retry_budget and status reporting."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:112-168",
+        "agents/stampede-commander.agent.md:172-236"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-003",
+      "focus": "skill-launch-phrasing",
+      "model": "gpt-5.3-codex",
+      "status": "success",
+      "confidence": "high",
+      "atom_id": "atm-004-003",
+      "findings": [
+        "SKILL.md clearly phrases metaswarm as explicit opt-in and requires partial/failed reporting for under-launch.",
+        "Skill text does not itself spell out the premium pool or banned-model list.",
+        "Teardown/resume grammar exists, but collaboration-bus language is absent."
+      ],
+      "source_refs": [
+        "skills/SKILL.md:33-39",
+        "skills/SKILL.md:407",
+        "skills/SKILL.md:841"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-004",
+      "focus": "docs-claim-branch-alignment",
+      "model": "claude-sonnet-4.5",
+      "status": "success",
+      "confidence": "high",
+      "atom_id": "atm-004-004",
+      "findings": [
+        "README and AGENTS align on nested progress, partial-status expectations, and branch/task isolation at a high level.",
+        "Docs do not enumerate banned models or the premium model pool.",
+        "Stop/teardown/recovery details remain sparse in docs."
+      ],
+      "source_refs": [
+        "README.md:35",
+        "README.md:83",
+        "README.md:130",
+        "README.md:202",
+        "AGENTS.md:22-29",
+        "AGENTS.md:69-72"
+      ]
+    },
+    {
+      "worker_id": "wkr-004-005",
+      "focus": "negative-downgrade-cases",
+      "model": "gpt-5.2-codex",
+      "status": "success",
+      "confidence": 0.63,
+      "atom_id": "atm-004-005",
+      "findings": [
+        "Banned/cheap models are rejected at metaswarm launch time rather than silently downgraded.",
+        "Smoke tests cover premium/banned model metadata, helping catch downgrade regressions.",
+        "Partial status for incomplete launches is defined, but runtime proof of actual launched child models is still telemetry-driven."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:514-528",
+        "bin/stampede.sh:908-913",
+        "tests/smoke-test.sh:124-141"
+      ]
+    }
+  ],
+  "overall_confidence": 0.86,
+  "completed_at": "2026-05-01T01:21:30Z"
+}

@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-021-003",
+  "theme": "collaboration-bus",
+  "focus": "commander-ledger-usage",
+  "status": "missing",
+  "confidence": 0.95,
+  "findings": [
+    "Commander agent instructions require child telemetry files but do not mention the collaboration bus or any shared ledgers.",
+    "The only consensus reference is a final bundle label, not an active multi-agent consensus protocol.",
+    "Commander agent spec therefore does not independently enforce ledger use; launcher prompt injection currently carries that behavior."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:29-37",
+    "agents/stampede-commander.agent.md:57-58",
+    "agents/stampede-commander.agent.md:254-257"
+  ]
+}

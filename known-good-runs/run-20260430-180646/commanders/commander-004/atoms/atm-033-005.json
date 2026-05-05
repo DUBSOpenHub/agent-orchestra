@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-033-005",
+  "theme": "partial-failure-bundles",
+  "focus": "count-accuracy",
+  "findings": [
+    "Counts are filesystem-based (find *.json in queue/claimed/results dirs) \u2014 stampede-monitor.sh:87-89",
+    "Agent liveness via tmux pane status, NOT PID files (which exist but are unused by monitor)",
+    "Orphan recovery 180s delay inflates claimed count during agent death (stampede-monitor.sh:274)",
+    "No explicit failed-task counter\u2014failures inferred from absence of results",
+    "Metaswarm rollups trust commander self-report in swarm-state.json with no cross-validation against child-agents.jsonl",
+    "TOTAL_TASKS=1 fallback masks empty-queue bugs (line 77)"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:87-89",
+    "bin/stampede-monitor.sh:144-191",
+    "bin/stampede-monitor.sh:221-232",
+    "bin/stampede-monitor.sh:274"
+  ],
+  "confidence": 68,
+  "status": "success"
+}

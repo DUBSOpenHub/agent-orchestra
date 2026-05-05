@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-022-002",
+  "theme": "collaboration-bus",
+  "focus": "protocol-alignment",
+  "findings": [
+    "SKILL.md and README align on explicit metaswarm shape, child telemetry files, and partial-not-silent-downgrade policy.",
+    "Documentation mismatch: SKILL.md default model is claude-sonnet-4.5 while README says claude-haiku-4.5.",
+    "Documentation mismatch: SKILL.md caps agents at 8 while README advertises up to 20.",
+    "Checklist path mismatch: SKILL.md references ~/.stampede/agents for worker install, but README documents ~/.copilot/agents."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:39",
+    "skills/SKILL.md:108",
+    "skills/SKILL.md:407-417",
+    "skills/SKILL.md:879",
+    "README.md:35",
+    "README.md:83",
+    "README.md:130",
+    "README.md:307"
+  ],
+  "confidence": "high",
+  "status": "partial"
+}

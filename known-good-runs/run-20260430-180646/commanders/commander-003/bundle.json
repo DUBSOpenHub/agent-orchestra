@@ -1,0 +1,41 @@
+{
+  "task_id": "commander-003",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-003",
+  "status": "success",
+  "role": "commander",
+  "profile": "metaswarm",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "branch": "havoc-swarm/run-20260430-180646/commander-003",
+  "files_changed": [],
+  "summary": "Pre-build QA review of telemetry-dashboard domain PASSED. 50 Squad Leads launched 250 workers across 10 premium models auditing: swarm-state.json schema, child-agents.jsonl format, stampede-monitor live counts, premium model policy, launch-proof contract, launcher metaswarm code paths, Depth Guard enforcement, stop/recovery behavior, sub-agent terminology, and collaboration bus integration.\n\nKEY FINDINGS:\n\u2022 swarm-state.json schema: PASS \u2014 all 35 required fields present with correct types\n\u2022 child-agents.jsonl: PASS \u2014 format, events, depth, model fields all compliant\n\u2022 Monitor live counts: PASS \u2014 correctly reads telemetry with launch_proof fallback\n\u2022 Premium model policy: PARTIAL \u2014 consistent in commander+launcher but absent from SKILL.md\n\u2022 Launch-proof contract: PASS \u2014 success/partial/failed conditions clearly documented\n\u2022 Launcher metaswarm: PASS \u2014 creates commander panes, uses stampede-commander agent, caps at 5\n\u2022 Depth Guard: PASS \u2014 workers are leaf nodes, tools enforced, max_depth=3\n\u2022 Stop/recovery: PASS \u2014 orphan recovery, heartbeat stale check, dead pane detection all correct\n\u2022 Terminology: NEEDS WORK \u2014 'sub-agent' vs 'child agent' inconsistent across files; 'metaswarm' capitalization varies; 'Agent Pulse' not a named feature in code\n\u2022 Collaboration bus: PASS \u2014 directory creation, protocol.json, all 5 ledgers functional\n\nNON-BLOCKING ISSUES: (1) premium_model_pool missing from SKILL.md, (2) terminology drift sub-agent/child-agent, (3) Metaswarm/metaswarm capitalization, (4) SKILL.md lacks collab bus documentation, (5) Squad Lead lowercase in agent.md lines 54-55.",
+  "confidence": 0.92,
+  "consensus": {
+    "tier": "CONSENSUS",
+    "notes": [
+      "42/50 squads passed with no issues",
+      "8/50 identified non-blocking terminology and documentation gaps",
+      "No structural defects found in telemetry pipeline"
+    ]
+  },
+  "adopted_consensus": [
+    "con-003-telemetry-pass"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md",
+    "bin/stampede-monitor.sh",
+    "bin/stampede.sh",
+    "skills/SKILL.md",
+    "agents/stampede-agent.agent.md"
+  ],
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 50,
+    "workers_target": 250,
+    "workers_launched": 250,
+    "atoms_received": 250,
+    "children_failed": 0
+  },
+  "completed_at": "2026-05-01T01:16:09.414953+00:00"
+}

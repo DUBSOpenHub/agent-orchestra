@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-022-003",
+  "theme": "collaboration-bus",
+  "focus": "commander-ledger-usage",
+  "findings": [
+    "Commander agent requires swarm-state.json and child-agents.jsonl as live source-of-truth and mandates launch_requested/launch_started/completed flow.",
+    "Premium child-model pool, banned models, Depth Guard, and 50x5 bounded launch proof are explicitly specified.",
+    "Partial and failed outcomes are clearly defined for incomplete or zero-squad launches.",
+    "Gap: commander instructions do not define a concrete recovery/requeue protocol or a bus-specific ledger schema beyond launch telemetry."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:34-37",
+    "agents/stampede-commander.agent.md:57",
+    "agents/stampede-commander.agent.md:63-68",
+    "agents/stampede-commander.agent.md:140-168",
+    "agents/stampede-commander.agent.md:181-211",
+    "agents/stampede-commander.agent.md:217-236"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,263 @@
+{
+  "atom_id": "atm-011",
+  "ts": "2026-05-01T01:21:50Z",
+  "commander_id": "commander-002",
+  "squad_id": "sq-011",
+  "domain": "collaboration-bus QA (review-only)",
+  "depth": 2,
+  "worker_agent_ids": [
+    "wkr-011-001",
+    "wkr-011-002",
+    "wkr-011-003",
+    "wkr-011-004",
+    "wkr-011-005"
+  ],
+  "worker_models": {
+    "wkr-011-001": "claude-opus-4.7",
+    "wkr-011-002": "gpt-5.5",
+    "wkr-011-003": "claude-opus-4.6",
+    "wkr-011-004": "gpt-5.4",
+    "wkr-011-005": "claude-opus-4.5"
+  },
+  "worker_domains": {
+    "wkr-011-001": "protocol_schema",
+    "wkr-011-002": "launcher_ledger_creation",
+    "wkr-011-003": "workflow_traceability",
+    "wkr-011-004": "final_bundle_adoption_fields",
+    "wkr-011-005": "test_coverage"
+  },
+  "confidence": 0.91,
+  "summary": "Five leaf workers independently audited the collaboration-bus surface. Schema is declared (protocol.json v1.0) but only weakly enforced. Launcher correctly seeds collab/ ledgers and protocol.json idempotently for collab files but TRUNCATES child-agents.jsonl/swarm-state.json on rerun. Workflow traceability is broken by inconsistent timestamps, missing required 'evidence' on reviews, unilateral consensus (no quorum), missing 'adopt' ledger, and undocumented linkage fields (consensus_item_id vs adopted_items vs based_on vs source_item_id). Final bundle adoption fields are ad hoc and inconsistent across commanders (adopted_consensus_item_ids vs adopted_consensus vs adopted_items); merger report omits adoption entirely; no rejected/dissent accounting; no schema_version. Test coverage gap is high: tests/smoke-test.sh and tests/depth-guard-lint.sh exist but are NOT wired into CI; no schema validation, no atomic-append stress, no consensus workflow test, no adoption-field bundle test, no runtime banned-model enforcement test.",
+  "findings": [
+    {
+      "id": "sq011-F1",
+      "severity": "high",
+      "worker": "wkr-011-002",
+      "summary": "Per-commander child-agents.jsonl & swarm-state.json opened in 'w' mode by launcher, truncating prior records on rerun (bin/stampede.sh L851-860)."
+    },
+    {
+      "id": "sq011-F2",
+      "severity": "high",
+      "worker": "wkr-011-003",
+      "summary": "Consensus is unilateral: each consensus item authored by a single commander; no quorum field in protocol.json; commanders self-promote improvements."
+    },
+    {
+      "id": "sq011-F3",
+      "severity": "high",
+      "worker": "wkr-011-003",
+      "summary": "Protocol declares 'adopt' as final stage but no adopt ledger exists and no finalization marker is emitted."
+    },
+    {
+      "id": "sq011-F4",
+      "severity": "high",
+      "worker": "wkr-011-004",
+      "summary": "Final bundle adoption schema undocumented; commanders use divergent field names (adopted_consensus_item_ids, adopted_consensus, adopted_items); merger report has zero adoption fields."
+    },
+    {
+      "id": "sq011-F5",
+      "severity": "high",
+      "worker": "wkr-011-005",
+      "summary": "CI (.github/workflows/ci.yml) does NOT execute tests/smoke-test.sh or tests/depth-guard-lint.sh; protocol schema, atomic append, consensus workflow, and adoption fields are entirely untested."
+    },
+    {
+      "id": "sq011-F6",
+      "severity": "med",
+      "worker": "wkr-011-001",
+      "summary": "Reviews.jsonl records omit required 'evidence' field declared in protocol.required_fields (schema/producer disagreement)."
+    },
+    {
+      "id": "sq011-F7",
+      "severity": "med",
+      "worker": "wkr-011-001",
+      "summary": "Cross-reference fields (target_item_id, based_on, consensus_item_id, verdict) are used in ledgers but undeclared in protocol.json."
+    },
+    {
+      "id": "sq011-F8",
+      "severity": "med",
+      "worker": "wkr-011-001",
+      "summary": "Atomic-append semantics are guidance-only; launcher does not enforce O_APPEND/flock; no validator code consumes protocol.json."
+    },
+    {
+      "id": "sq011-F9",
+      "severity": "med",
+      "worker": "wkr-011-003",
+      "summary": "Timestamp formats mix 'Z' and '+00:00' across commanders, breaking lexicographic ordering and monotonicity checks."
+    },
+    {
+      "id": "sq011-F10",
+      "severity": "med",
+      "worker": "wkr-011-003",
+      "summary": "Commanders 002 and 004 dropped out after proposal stage with zero reviews/improvements/consensus/broadcast records and no detection."
+    },
+    {
+      "id": "sq011-F11",
+      "severity": "med",
+      "worker": "wkr-011-003",
+      "summary": "SKILL.md and stampede-commander.agent.md contain ZERO documentation of the collaboration workflow; entire contract lives only in runtime prompt at bin/stampede.sh L909-910."
+    },
+    {
+      "id": "sq011-F12",
+      "severity": "med",
+      "worker": "wkr-011-003",
+      "summary": "Causality violation: commander-001 improvements posted (01:11:39Z) before commander-003/005 reviews (01:14:38Z, 01:15:41Z) they would need to incorporate."
+    },
+    {
+      "id": "sq011-F13",
+      "severity": "med",
+      "worker": "wkr-011-004",
+      "summary": "Tracing adopted item -> proposal_id is only partial (con-003-telemetry-pass has no based_on)."
+    },
+    {
+      "id": "sq011-F14",
+      "severity": "med",
+      "worker": "wkr-011-004",
+      "summary": "No final-bundle accounting for rejected/abstained/dissenting items; auditability incomplete."
+    },
+    {
+      "id": "sq011-F15",
+      "severity": "low",
+      "worker": "wkr-011-001",
+      "summary": "protocol.json embeds absolute paths and lacks schema_version/min_reader_version compatibility policy."
+    },
+    {
+      "id": "sq011-F16",
+      "severity": "low",
+      "worker": "wkr-011-003",
+      "summary": "item_id naming convention drifts across commanders (prop-c001-*, prop-003-*, commander-004-prop-001, prop-005-*)."
+    }
+  ],
+  "evidence": [
+    {
+      "worker": "wkr-011-001",
+      "path": ".stampede/run-20260430-180646/collab/protocol.json",
+      "line_range": "L1-L46",
+      "quote": "version 1.0; ledgers{...}; required_fields=[ts,run_id,commander_id,event,item_id,summary,evidence,confidence,source_refs]"
+    },
+    {
+      "worker": "wkr-011-001",
+      "path": "bin/stampede.sh",
+      "line_range": "L664-L668",
+      "quote": "def write_json_atomic(path,data): tmp=f'{path}.tmp'; ... os.replace(tmp,path)"
+    },
+    {
+      "worker": "wkr-011-001",
+      "path": ".stampede/run-20260430-180646/collab/reviews.jsonl",
+      "line_range": "L1",
+      "quote": "peer_review records omit 'evidence' key despite protocol marking it required"
+    },
+    {
+      "worker": "wkr-011-002",
+      "path": "bin/stampede.sh",
+      "line_range": "L670-L683",
+      "quote": "if metaswarm: collab_dir=...; for ledger_path in ledgers.values(): open(ledger_path,'a').close()"
+    },
+    {
+      "worker": "wkr-011-002",
+      "path": "bin/stampede.sh",
+      "line_range": "L851-L860",
+      "quote": "with open(f'{progress_dir}/swarm-state.json','w'): ... with open(f'{progress_dir}/child-agents.jsonl','w'): -- truncates on rerun"
+    },
+    {
+      "worker": "wkr-011-003",
+      "path": ".stampede/run-20260430-180646/collab/consensus.jsonl",
+      "line_range": "L1-L5",
+      "quote": "each consensus item authored by single commander; no quorum mechanism"
+    },
+    {
+      "worker": "wkr-011-003",
+      "path": ".stampede/run-20260430-180646/collab/broadcasts.jsonl",
+      "line_range": "L1-L3",
+      "quote": "line 1/2 use consensus_item_id; line 3 uses adopted_items -- inconsistent linkage"
+    },
+    {
+      "worker": "wkr-011-003",
+      "path": "agents/stampede-commander.agent.md",
+      "line_range": "L1-L267",
+      "quote": "no mention of proposals/reviews/improvements/consensus/broadcasts anywhere"
+    },
+    {
+      "worker": "wkr-011-004",
+      "path": ".stampede/run-20260430-180646/results/commander-001.json",
+      "line_range": "L23-L32",
+      "quote": "adopted_consensus_item_ids[]; broadcasts[]; source_refs[]"
+    },
+    {
+      "worker": "wkr-011-004",
+      "path": ".stampede/run-20260430-180646/results/commander-003.json",
+      "line_range": "L22-L30",
+      "quote": "adopted_consensus[]; source_refs[] -- divergent naming from commander-001"
+    },
+    {
+      "worker": "wkr-011-004",
+      "path": "agents/stampede-merger.agent.md",
+      "line_range": "L243-L298",
+      "quote": "merge report schema: run_id, merged_branch, timestamp, branches, summary, model_scores -- no adoption fields"
+    },
+    {
+      "worker": "wkr-011-005",
+      "path": ".github/workflows/ci.yml",
+      "line_range": "L1-L57",
+      "quote": "CI does not execute tests/smoke-test.sh or tests/depth-guard-lint.sh"
+    },
+    {
+      "worker": "wkr-011-005",
+      "path": "tests/smoke-test.sh",
+      "line_range": "L112-148",
+      "quote": "asserts fleet.json/swarm-state.json/child-agents.jsonl structure with --agent-cmd true (no-op); no real commander execution"
+    },
+    {
+      "worker": "wkr-011-005",
+      "path": "bin/stampede.sh",
+      "line_range": "L514-531",
+      "quote": "banned model rejection at launcher only; no runtime enforcement test"
+    }
+  ],
+  "recommendations": [
+    "Add per-event JSON schemas (proposal/peer_review/improvement/consensus/broadcast/adopt) and a validator script wired into stampede-monitor.sh and CI.",
+    "Define quorum_required in protocol.json and require N-of-M peer endorsements before consensus promotion.",
+    "Add an adoptions ledger (or mandatory adopt event with consensus_item_id/proposal_item_ids[]) so the workflow closes.",
+    "Standardize the final bundle adoption schema with adoptions[] containing consensus_item_id, proposal_item_ids[], adopted_by, adoption_ts, adoption_reason, dissent[]; carry this schema into the merger report with schema_version.",
+    "Stop truncating child-agents.jsonl/swarm-state.json on rerun; open append-or-create and gate reset behind explicit --reset.",
+    "Wire tests/smoke-test.sh and tests/depth-guard-lint.sh into CI; add schema validation, atomic-append stress, consensus workflow, adoption-field, and runtime banned-model enforcement tests.",
+    "Document the collaboration bus as a first-class section in skills/SKILL.md and agents/stampede-commander.agent.md instead of relying solely on prompt injection.",
+    "Normalize ISO-8601 timestamps to a single format ('Z' suffix, no microseconds); enforce item_id regex; replace absolute ledger paths with relative names + base.",
+    "Make 'evidence' optional in protocol or fix the reviews emitter so producers and schema agree."
+  ],
+  "worker_summaries": {
+    "wkr-011-001": {
+      "domain": "protocol_schema",
+      "confidence": 0.85,
+      "high": 0,
+      "med": 3,
+      "low": 3
+    },
+    "wkr-011-002": {
+      "domain": "launcher_ledger_creation",
+      "confidence": 0.9,
+      "high": 1,
+      "med": 1,
+      "low": 3
+    },
+    "wkr-011-003": {
+      "domain": "workflow_traceability",
+      "confidence": 0.92,
+      "high": 2,
+      "med": 5,
+      "low": 2
+    },
+    "wkr-011-004": {
+      "domain": "final_bundle_adoption_fields",
+      "confidence": 0.91,
+      "high": 2,
+      "med": 2,
+      "low": 0
+    },
+    "wkr-011-005": {
+      "domain": "test_coverage",
+      "confidence": 0.95,
+      "high": 5,
+      "med": 3,
+      "low": 2
+    }
+  }
+}

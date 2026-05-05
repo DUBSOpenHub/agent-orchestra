@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-027-002",
+  "theme": "agent-pulse-monitoring",
+  "focus": "nested-progress-display",
+  "findings": [
+    "Monitor reads swarm-state.json via progress_dir from fleet.json (not hard-coded path). stampede-monitor.sh:122,145-147",
+    "Per-commander rows show squads launched/target and workers launched/target separately from top summary bar. stampede-monitor.sh:158-166,183-189",
+    "README documents metaswarm at high level (swarm-state.json path, 'real-time nested progress summaries') but omits rendered fields: squads, workers, run/done/fail/atoms, hb, phase, warnings. README.md:130-136",
+    "No visual separator between commander rows and worker rows; mixed roster differentiated only by row label text. stampede-monitor.sh:118-197",
+    "Orphan recovery hard-codes $BASE/commanders/$task_id/swarm-state.json but UI display trusts fleet.json progress_dir \u2014 minor divergence. stampede-monitor.sh:247-268"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:115",
+    "bin/stampede-monitor.sh:118-197",
+    "bin/stampede-monitor.sh:145-147",
+    "bin/stampede-monitor.sh:155-189",
+    "bin/stampede-monitor.sh:193-195",
+    "bin/stampede-monitor.sh:247-268",
+    "README.md:130-136"
+  ],
+  "confidence": 0.96,
+  "status": "complete"
+}

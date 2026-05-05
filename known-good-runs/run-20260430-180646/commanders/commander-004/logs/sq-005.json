@@ -1,0 +1,70 @@
+{
+  "squad_id": "sq-005",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "commander-launch-profile",
+  "theme_summary": "Audit commander launch path, metaswarm gating, branch/task claim flow, and no silent downgrade behavior.",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "status": "success",
+  "worker_results": [
+    {
+      "worker_id": "wkr-005-001",
+      "focus": "launcher-flags",
+      "model": "claude-opus-4.7",
+      "status": "success",
+      "confidence": 0.9
+    },
+    {
+      "worker_id": "wkr-005-002",
+      "focus": "commander-agent-contract",
+      "model": "gpt-5.5",
+      "status": "success",
+      "confidence": 0.95
+    },
+    {
+      "worker_id": "wkr-005-003",
+      "focus": "skill-launch-phrasing",
+      "model": "claude-opus-4.6",
+      "status": "success",
+      "confidence": 0.88
+    },
+    {
+      "worker_id": "wkr-005-004",
+      "focus": "docs-claim-branch-alignment",
+      "model": "gpt-5.4",
+      "status": "success",
+      "confidence": 0.92
+    },
+    {
+      "worker_id": "wkr-005-005",
+      "focus": "negative-downgrade-cases",
+      "model": "claude-opus-4.5",
+      "status": "success",
+      "confidence": 0.85
+    }
+  ],
+  "consensus": {
+    "tier": "CONSENSUS",
+    "notes": [
+      "All workers agree commander agent contract is well-defined (Depth Guard, 50x5=250, premium policy)",
+      "Multiple workers flagged: no runtime enforcement of banned models or 250-worker min",
+      "Docs inconsistent on branch naming (stampede/ vs havoc-swarm/)",
+      "SQL schema lacks commander-specific tracking"
+    ]
+  },
+  "conflicts": [
+    "launcher.sh:503 claims 1600 worker cap (5\u00d7320?) but code enforces 5\u00d7250=1250"
+  ],
+  "blockers": [],
+  "key_findings": [
+    "HIGH: Silent downgrade possible - 250 workers enforced by prompt only, not launcher validation",
+    "HIGH: Banned model enforcement is prompt-level only, no hard gate",
+    "MEDIUM: --preflight --metaswarm tests wrong agent (stampede-agent not commander)",
+    "MEDIUM: No commander crash recovery / resume capability",
+    "LOW: Branch naming docs inconsistent between README and AGENTS.md"
+  ],
+  "overall_confidence": 0.9,
+  "completed_at": "2026-05-01T01:18:47Z"
+}

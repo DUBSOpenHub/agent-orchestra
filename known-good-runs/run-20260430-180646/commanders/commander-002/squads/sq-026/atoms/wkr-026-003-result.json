@@ -1,0 +1,88 @@
+{
+  "worker_id": "wkr-026-003",
+  "squad_id": "sq-026",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "focus": "JSONL append-only safety under concurrency (collab ledgers + child-agents.jsonl)",
+  "review_only": true,
+  "status": "completed",
+  "verdict": "partial_risk_confirmed",
+  "confidence": 0.94,
+  "ts": "2026-05-01T01:30:00Z",
+  "findings": [
+    {
+      "id": "collab-ledgers-current-run",
+      "severity": "medium",
+      "summary": "Collab ledgers are currently parse-clean under multi-commander writes, but safety is policy-based (not enforcement-based).",
+      "evidence": [
+        "collab/*.jsonl parse check: proposals=5/reviews=18/improvements=11/consensus=8/broadcasts=7, malformed lines=0",
+        "all ledgers end with newline; max line sizes <=1367B (well below 4KB)",
+        "writers observed from 5 commanders across the same ledgers"
+      ],
+      "risk": "No writer lock, no append helper, and no schema gate means correctness depends on every writer behaving perfectly."
+    },
+    {
+      "id": "child-ledger-integrity",
+      "severity": "high",
+      "summary": "child-agents.jsonl experienced a real integrity incident consistent with concurrent writer clobber/truncation.",
+      "evidence": [
+        "child-agents.jsonl contains telemetry_integrity_warning event stating file was truncated/restarted during concurrent child writes (line 99)",
+        "re-appended recovery records are present with note \"re-appended after concurrent telemetry truncation/overwrite\" (lines 213-222)",
+        "additional reconciled/reconstructed backfill events exist (e.g., lines 324-330, 351)"
+      ],
+      "risk": "Causal ordering and launch-proof confidence are degraded after reconstruction; append-only invariant was violated in practice."
+    },
+    {
+      "id": "root-cause-surface",
+      "severity": "high",
+      "summary": "Code/docs advertise O_APPEND semantics, but there is no concrete cross-process append primitive or lock discipline.",
+      "evidence": [
+        "bin/stampede.sh:797 only documents O_APPEND guidance in protocol text",
+        "bin/stampede.sh:956 initializes child-agents.jsonl with mode \"w\" (truncate-on-open hazard on re-init/restart)",
+        "search across bin/agents/skills/run scripts found no flock/lockf/fcntl-based serialization helper"
+      ],
+      "risk": "Any process opening ledger in write mode or performing buffered multi-write appends can break invariants under contention."
+    }
+  ],
+  "proposed_fixes": [
+    {
+      "priority": "P0",
+      "change": "Introduce one shared append_jsonl() helper used by commander/squad/worker paths for ALL ledgers.",
+      "details": [
+        "Use os.open(path, O_APPEND|O_CREAT|O_WRONLY)",
+        "Optionally lock a sidecar .lock with fcntl.flock(LOCK_EX) for process serialization",
+        "Emit exactly one JSON-serialized line via os.write(... + b\"\\n\")",
+        "fsync/fdatasync before unlock/close"
+      ]
+    },
+    {
+      "priority": "P0",
+      "change": "Make child-agents.jsonl initialization idempotent and non-destructive.",
+      "details": [
+        "Replace open(...,\"w\") seeding (bin/stampede.sh:956) with create-if-absent semantics",
+        "Never truncate existing ledgers during run or restart paths",
+        "If file exists, append commander_registered only when not already present for this run/commander"
+      ]
+    },
+    {
+      "priority": "P1",
+      "change": "Add monitor/runtime integrity canaries.",
+      "details": [
+        "Track and alert on ledger size regression (shrink => truncation)",
+        "Track per-ledger monotonic append count and last byte offset",
+        "Fail launch-proof gate to partial if integrity canary trips"
+      ]
+    },
+    {
+      "priority": "P1",
+      "change": "Enforce minimal schema envelope on append.",
+      "details": [
+        "Require event_id, writer_id, ts, run_id, commander_id, event for every write",
+        "Reject/redirect malformed records to quarantine ledger instead of polluting primary ledger",
+        "Keep reader tolerant, but make writer strict"
+      ]
+    }
+  ],
+  "ship_gate_recommendation": "HOLD for launch-proof claims until P0 fixes land; collab bus can remain usable but not trust-grade under heavy concurrency."
+}

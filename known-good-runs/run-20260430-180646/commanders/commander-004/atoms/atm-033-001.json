@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-033-001",
+  "theme": "partial-failure-bundles",
+  "focus": "success-thresholds",
+  "findings": [
+    "Success requires squad_leads_launched==50 AND workers_launched==250 (commander.agent.md:140-143)",
+    "partial mandated for circuit-breaker/timeout/cost-ceiling shortfall (commander.agent.md:143-145)",
+    "failed if zero squad leads launched (commander.agent.md:145-146)",
+    "EDGE CASE: success gates on launched counts not completions\u2014workers can crash post-launch and still count as success",
+    "Banned-model fallback forces partial (commander.agent.md:166-168)"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:140-146",
+    "agents/stampede-commander.agent.md:48-56",
+    "agents/stampede-commander.agent.md:166-168"
+  ],
+  "confidence": 88,
+  "status": "success"
+}

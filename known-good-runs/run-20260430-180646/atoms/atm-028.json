@@ -1,0 +1,181 @@
+{
+  "atom_id": "atm-028",
+  "squad_id": "sq-028",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "review_only": true,
+  "domain": "collaboration-bus QA",
+  "workers_launched": 5,
+  "workers": [
+    {
+      "id": "wkr-028-001",
+      "model": "gpt-5.2",
+      "assignment": "malformed line tolerance"
+    },
+    {
+      "id": "wkr-028-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "empty ledger behavior"
+    },
+    {
+      "id": "wkr-028-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "required fields"
+    },
+    {
+      "id": "wkr-028-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "source refs"
+    },
+    {
+      "id": "wkr-028-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "final result linkage"
+    }
+  ],
+  "leaf_prompt_block_exact": "DO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.",
+  "checks": {
+    "malformed_line_tolerance": "pass_with_caveat: tolerance is documented and operational, but malformed lines are not surfaced as warnings.",
+    "empty_ledger_behavior": "pass",
+    "required_fields": "fail",
+    "source_refs": "pass",
+    "final_result_linkage": "fail"
+  },
+  "worker_results": [
+    {
+      "worker_id": "wkr-028-001",
+      "model": "gpt-5.2",
+      "assignment": "malformed line tolerance",
+      "status": "completed",
+      "finding": "Protocol explicitly requires malformed trailing line tolerance for readers; monitor counting strategy avoids parse failures by using wc -l.",
+      "evidence": [
+        ".stampede/run-20260430-180646/collab/protocol.json:33",
+        ".stampede/run-20260430-180646/collab/protocol.json:27-35",
+        "bin/stampede-monitor.sh:32-38"
+      ],
+      "result": "pass_with_caveat: tolerance is documented and operational, but malformed lines are not surfaced as warnings."
+    },
+    {
+      "worker_id": "wkr-028-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "empty ledger behavior",
+      "status": "completed",
+      "finding": "Ledgers are pre-created in append mode and missing files count as zero; current empty ledgers: none.",
+      "evidence": [
+        "bin/stampede.sh:681-683",
+        "bin/stampede-monitor.sh:34-38"
+      ],
+      "result": "pass",
+      "ledger_line_counts": {
+        "proposals": 5,
+        "reviews": 11,
+        "improvements": 7,
+        "consensus": 5,
+        "broadcasts": 4
+      }
+    },
+    {
+      "worker_id": "wkr-028-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "required fields",
+      "status": "completed",
+      "finding": "Protocol requires 9 fields; observed 13 records missing at least one required field.",
+      "evidence": [
+        ".stampede/run-20260430-180646/collab/protocol.json:48-58",
+        ".stampede/run-20260430-180646/collab/reviews.jsonl:1-12"
+      ],
+      "result": "fail",
+      "missing_required_fields_samples": [
+        {
+          "ledger": "reviews",
+          "line": 1,
+          "item_id": "rev-c001-of-c002-collab",
+          "missing": [
+            "evidence"
+          ]
+        },
+        {
+          "ledger": "reviews",
+          "line": 2,
+          "item_id": "rev-c001-of-c003-telemetry",
+          "missing": [
+            "evidence"
+          ]
+        },
+        {
+          "ledger": "reviews",
+          "line": 3,
+          "item_id": "rev-c001-of-c005-synthesis",
+          "missing": [
+            "evidence"
+          ]
+        },
+        {
+          "ledger": "reviews",
+          "line": 4,
+          "item_id": "review-005-for-001",
+          "missing": [
+            "evidence"
+          ]
+        },
+        {
+          "ledger": "reviews",
+          "line": 5,
+          "item_id": "review-005-for-003",
+          "missing": [
+            "evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "worker_id": "wkr-028-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "source refs",
+      "status": "completed",
+      "finding": "source_refs is required; observed 0 entries with missing/empty source_refs.",
+      "evidence": [
+        ".stampede/run-20260430-180646/collab/protocol.json:57",
+        "bin/stampede.sh:909-911"
+      ],
+      "result": "pass",
+      "missing_source_refs_samples": []
+    },
+    {
+      "worker_id": "wkr-028-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "final result linkage",
+      "status": "completed",
+      "finding": "Launcher/claim requires adopted consensus item_ids + source_refs in bundle and final result; commander-002 bundle exists=False, result exists=False.",
+      "evidence": [
+        "bin/stampede.sh:910-911",
+        ".stampede/run-20260430-180646/claimed/commander-002.json:45-51"
+      ],
+      "result": "fail",
+      "linkage_checks": {
+        "launcher_requires_linkage": true,
+        "bundle_exists": false,
+        "result_exists": false,
+        "adopted_source_refs_in_atom_005": true,
+        "adopted_item_ids_in_atom_005": true
+      }
+    }
+  ],
+  "summary": {
+    "overall": "mixed",
+    "passes": [
+      "malformed line tolerance",
+      "empty ledger behavior",
+      "source refs"
+    ],
+    "fails": [
+      "required fields",
+      "final result linkage"
+    ],
+    "required_field_violations": 13,
+    "source_ref_violations": 0,
+    "malformed_lines_detected": 0
+  },
+  "completed_at": "2026-05-01T01:20:40.242405Z"
+}

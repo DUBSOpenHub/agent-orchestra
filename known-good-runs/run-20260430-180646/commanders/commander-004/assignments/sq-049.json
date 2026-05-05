@@ -1,0 +1,130 @@
+{
+  "child_id": "sq-049",
+  "role": "squad_lead",
+  "depth": 2,
+  "agent_type": "general-purpose",
+  "model": "claude-sonnet-4.5",
+  "theme": "docs-ci-readiness",
+  "theme_summary": "Audit README/AGENTS/install docs plus CI/lint/smoke coverage for metaswarm and SwarmMesh readiness claims.",
+  "variant": 4,
+  "files": [
+    ".github/workflows/ci.yml",
+    "tests/smoke-test.sh",
+    "tests/depth-guard-lint.sh",
+    "README.md",
+    "AGENTS.md",
+    "install.sh"
+  ],
+  "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+  "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+  "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+  "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+  "helper_script": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/swarm_progress.py",
+  "workers": [
+    {
+      "child_id": "wkr-049-001",
+      "parent_id": "sq-049",
+      "role": "worker",
+      "depth": 3,
+      "agent_type": "explore",
+      "model": "claude-opus-4.7",
+      "theme": "docs-ci-readiness",
+      "focus": "ci-scope",
+      "variant": 4,
+      "files": [
+        ".github/workflows/ci.yml"
+      ],
+      "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+      "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+      "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+      "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+      "output_atom": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/atoms/atm-049-001.json",
+      "deliverable": "Return concise findings only. Do not modify source files. Cite exact files and line references when possible."
+    },
+    {
+      "child_id": "wkr-049-002",
+      "parent_id": "sq-049",
+      "role": "worker",
+      "depth": 3,
+      "agent_type": "explore",
+      "model": "gpt-5.5",
+      "theme": "docs-ci-readiness",
+      "focus": "smoke-gap-analysis",
+      "variant": 4,
+      "files": [
+        "tests/smoke-test.sh"
+      ],
+      "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+      "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+      "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+      "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+      "output_atom": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/atoms/atm-049-002.json",
+      "deliverable": "Return concise findings only. Do not modify source files. Cite exact files and line references when possible."
+    },
+    {
+      "child_id": "wkr-049-003",
+      "parent_id": "sq-049",
+      "role": "worker",
+      "depth": 3,
+      "agent_type": "task",
+      "model": "claude-opus-4.6",
+      "theme": "docs-ci-readiness",
+      "focus": "depth-lint-gap-analysis",
+      "variant": 4,
+      "files": [
+        "tests/depth-guard-lint.sh"
+      ],
+      "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+      "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+      "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+      "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+      "output_atom": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/atoms/atm-049-003.json",
+      "deliverable": "Return concise findings only. Do not modify source files. Cite exact files and line references when possible."
+    },
+    {
+      "child_id": "wkr-049-004",
+      "parent_id": "sq-049",
+      "role": "worker",
+      "depth": 3,
+      "agent_type": "explore",
+      "model": "gpt-5.4",
+      "theme": "docs-ci-readiness",
+      "focus": "install-doc-alignment",
+      "variant": 4,
+      "files": [
+        "install.sh",
+        "README.md"
+      ],
+      "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+      "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+      "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+      "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+      "output_atom": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/atoms/atm-049-004.json",
+      "deliverable": "Return concise findings only. Do not modify source files. Cite exact files and line references when possible."
+    },
+    {
+      "child_id": "wkr-049-005",
+      "parent_id": "sq-049",
+      "role": "worker",
+      "depth": 3,
+      "agent_type": "task",
+      "model": "claude-opus-4.5",
+      "theme": "docs-ci-readiness",
+      "focus": "agents-doc-alignment",
+      "variant": 4,
+      "files": [
+        "AGENTS.md",
+        "README.md"
+      ],
+      "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+      "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+      "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+      "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+      "output_atom": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/atoms/atm-049-005.json",
+      "deliverable": "Return concise findings only. Do not modify source files. Cite exact files and line references when possible."
+    }
+  ],
+  "squad_report": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/logs/sq-049.json",
+  "objective": "Final pre-build QA review of metaswarm and SwarmMesh readiness using the synced launcher and fixed Agent Pulse. Verify commander launch, premium model policy, collaboration bus creation, sub-agent telemetry, Agent Pulse live counts, stop/recovery behavior, and implementation gaps. Review-only: do not modify source files.\nFocus: Audit premium model policy, banned-model enforcement, Depth Guard, bounded spawning, partial/failure handling, stop, teardown, and recovery behavior.",
+  "review_only": true
+}

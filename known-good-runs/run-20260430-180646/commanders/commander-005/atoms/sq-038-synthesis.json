@@ -1,0 +1,143 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_id": "sq-038",
+  "focus": "Shadow Score Integration - Part 2",
+  "task": "Verify merger shadow scoring implementation",
+  "overall_verdict": "partial",
+  "overall_confidence": "high",
+  "summary": [
+    "Merger shadow scoring is implemented with runtime signals, conflict friendliness, weighted quality scoring, and report generation.",
+    "Core gaps are documentation/implementation drift (report schema mismatches, threshold semantics, and incomplete 3-layer labeling).",
+    "Ranking mostly works but tie-breaking is non-deterministic on equal adjusted scores."
+  ],
+  "workers": [
+    {
+      "worker_id": "wkr-038-001",
+      "check": "merger 3-layer scoring",
+      "verdict": "partial",
+      "confidence": "high",
+      "findings": [
+        "Implementation references Layer 1 (runtime) and Layer 2 (conflict friendliness), and computes weighted quality scoring as a third stage.",
+        "Docs claim 3 layers, but merger agent spec does not consistently and explicitly label Layer 3 sectionally.",
+        "Architecture messaging is directionally correct but documentation naming is inconsistent."
+      ],
+      "evidence": [
+        "bin/stampede-merge.sh:306-427",
+        "bin/stampede-merge.sh:136-198",
+        "bin/stampede-merge.sh:347-418",
+        "agents/stampede-merger.agent.md:6",
+        "agents/stampede-merger.agent.md:53",
+        "agents/stampede-merger.agent.md:81",
+        "agents/stampede-merger.agent.md:145-172"
+      ]
+    },
+    {
+      "worker_id": "wkr-038-002",
+      "check": "score report structure",
+      "verdict": "partial",
+      "confidence": "high",
+      "findings": [
+        "merge-report.json is atomically written with stable top-level sections: run metadata, branches, summary, and model_scores.",
+        "Implementation omits fields documented in merger agent schema (e.g., per-branch resolutions[], scores.justifications{}, summary.tests_pass).",
+        "Machine-readable structure exists but does not fully match documented contract."
+      ],
+      "evidence": [
+        "bin/stampede-merge.sh:430-505",
+        "bin/stampede-merge.sh:463-497",
+        "agents/stampede-merger.agent.md:256-291"
+      ]
+    },
+    {
+      "worker_id": "wkr-038-003",
+      "check": "score ranking logic",
+      "verdict": "partial",
+      "confidence": "high",
+      "findings": [
+        "Ranking uses adjusted_total and correctly sorts model leaderboard descending by avg_score.",
+        "best/worst selection on ties is non-deterministic (no explicit tie-break key).",
+        "Missing/invalid operational data has safe fallbacks in multiple branches."
+      ],
+      "evidence": [
+        "bin/stampede-merge.sh:413-418",
+        "bin/stampede-merge.sh:454-457",
+        "bin/stampede-merge.sh:552-554",
+        "bin/stampede-merge.sh:299-304",
+        "bin/stampede-merge.sh:356-358",
+        "bin/stampede-merge.sh:473"
+      ]
+    },
+    {
+      "worker_id": "wkr-038-004",
+      "check": "score thresholds",
+      "verdict": "partial",
+      "confidence": "high",
+      "findings": [
+        "Threshold constants are implemented for dimensions, conflict levels, runtime bonus/penalty, and sealed score labeling.",
+        "No-test weight override exists, but scorecard display remains hardcoded to default percentages.",
+        "Some documented threshold behaviors are not implemented (e.g., Makefile test detection, test-failure penalty flow).",
+        "Sealed Shadow Score thresholds are informational and not integrated into adjusted_total ranking."
+      ],
+      "evidence": [
+        "bin/stampede-merge.sh:230-244",
+        "bin/stampede-merge.sh:321-334",
+        "bin/stampede-merge.sh:360-418",
+        "bin/stampede-merge.sh:420-427",
+        "bin/stampede-merge.sh:510-545",
+        "agents/stampede-merger.agent.md:151-170",
+        "agents/stampede-merger.agent.md:192-202",
+        "skills/SKILL.md:688-707"
+      ]
+    },
+    {
+      "worker_id": "wkr-038-005",
+      "check": "score documentation",
+      "verdict": "pass",
+      "confidence": "high",
+      "findings": [
+        "Documentation broadly covers 3-layer scoring, weighted ranking model, thresholds, and report output.",
+        "Identified minor contradictions/staleness (merge sort order wording, speculative old wording in docs/story, terminology mismatch between Phase vs Layer labels).",
+        "Doc coverage is strong but needs alignment edits across AGENTS/docs/story/merger spec wording."
+      ],
+      "evidence": [
+        "README.md:253-261",
+        "CHANGELOG.md:25-28",
+        "agents/stampede-merger.agent.md:141-166",
+        "agents/stampede-merger.agent.md:237-305",
+        "skills/SKILL.md:643-700",
+        "AGENTS.md:33",
+        "docs/story.md:61",
+        "BLOG.md:66"
+      ]
+    }
+  ],
+  "priority_issues": [
+    {
+      "id": "schema-drift",
+      "severity": "high",
+      "issue": "Implemented merge-report schema diverges from documented merger-agent schema."
+    },
+    {
+      "id": "ranking-tie-break",
+      "severity": "medium",
+      "issue": "best/worst ranking lacks deterministic tie-breaker for equal adjusted_total."
+    },
+    {
+      "id": "threshold-doc-drift",
+      "severity": "medium",
+      "issue": "Displayed thresholds/weights and documented behaviors diverge from runtime branches in several edge cases."
+    },
+    {
+      "id": "layer-labeling-gap",
+      "severity": "low",
+      "issue": "3-layer terminology is inconsistently labeled across docs/spec/implementation comments."
+    }
+  ],
+  "recommended_actions": [
+    "Align merge-report.json contract with merger agent schema or update schema docs to match actual output.",
+    "Add deterministic tie-break key for equal adjusted_total (e.g., task_id or stable branch key).",
+    "Make scorecard labels reflect dynamic no-test weight adjustments.",
+    "Reconcile test-impact documentation with implemented detection/scoring behavior.",
+    "Normalize 'Layer 1/2/3' terminology in merger docs and AGENTS references."
+  ]
+}

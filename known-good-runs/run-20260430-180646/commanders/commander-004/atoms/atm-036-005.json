@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-036-005",
+  "theme": "stop-teardown-behavior",
+  "focus": "cleanup-gaps",
+  "status": "success",
+  "confidence": "high",
+  "findings": [
+    "CI does not exercise stop/teardown; it runs syntax, ShellCheck, frontmatter check, install smoke test (demo skipped), and stampede.sh --help only.",
+    "Teardown exists only behind --teardown; launcher has no ERR/INT/EXIT trap to auto-teardown on failure/interrupt.",
+    "Teardown removes pidfiles and ends tmux session but does not remove run dir contents (queue/claimed/results/logs/scripts remain).",
+    "Launcher writes temporary attach/task files under /tmp without cleanup after use (may violate some environments\u2019 policies)."
+  ],
+  "source_refs": [
+    ".github/workflows/ci.yml:18-49",
+    "bin/stampede.sh:304-345",
+    "bin/stampede.sh:626-631",
+    "bin/stampede.sh:1366-1376"
+  ]
+}

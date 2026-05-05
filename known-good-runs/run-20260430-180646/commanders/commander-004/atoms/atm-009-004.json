@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-009-004",
+  "theme": "premium-model-policy",
+  "focus": "child-override-propagation",
+  "findings": [
+    "Launcher propagation is only to commander sessions: --model/--models are parsed in bin/stampede.sh:37-38, expanded into MODEL_LIST in bin/stampede.sh:625-627, rotated by get_worker_model() in bin/stampede.sh:871-874, and each commander is launched with --model worker_model in bin/stampede.sh:888-889, 901-909, 962-979.",
+    "Commander-to-child propagation is prompt/policy only, not CLI inheritance: the launcher tells commanders to use a hard-coded premium pool for Squad Leads/Workers in bin/stampede.sh:906-909, and the commander spec says every child launch must set an explicit override from that pool in agents/stampede-commander.agent.md:150-167.",
+    "Yes, a Squad Lead can override the commander own model choice: child launches must choose an explicit model from the premium pool (agents/stampede-commander.agent.md:150-167), and the child pool is independent of the commander assigned worker_model; no line binds children to the commander selected --model from bin/stampede.sh:962-979.",
+    "Banned-model inheritance is mostly blocked at launch: metaswarm rejects banned --model/--models values in bin/stampede.sh:515-526, and the commander policy bans those same child models in agents/stampede-commander.agent.md:159-168, 203-208. Gap: commander layer only detects banned fallback after launch (partial) rather than preventing it (agents/stampede-commander.agent.md:166-168).",
+    "Rotation gap: launcher rotation applies across commanders only (bin/stampede.sh:625-627, 871-874), but commander instructions do not define a deterministic child rotation algorithm/state\u2014only pick from this pool plus telemetry (agents/stampede-commander.agent.md:57, 150-167). So child model rotation can skip, repeat, or fail without violating any explicit mechanism."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:37-38",
+    "bin/stampede.sh:515-526",
+    "bin/stampede.sh:625-627",
+    "bin/stampede.sh:871-874",
+    "bin/stampede.sh:888-909",
+    "bin/stampede.sh:962-979",
+    "agents/stampede-commander.agent.md:57",
+    "agents/stampede-commander.agent.md:150-168",
+    "agents/stampede-commander.agent.md:203-208"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

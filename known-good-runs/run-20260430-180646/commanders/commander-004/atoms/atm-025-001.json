@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-025-001",
+  "theme": "collaboration-bus",
+  "focus": "ledger-creation",
+  "findings": [
+    "bin/stampede.sh does not create .stampede/{run_id}/queue; derives BASE_DIR, requires queue to exist, exits if missing/empty",
+    "Script does not write task JSON files; only counts/reads queue/*.json and workers claim via atomic mv",
+    "Metaswarm ledger init creates commanders/ and collab/ dirs, append-only collab ledgers, atomic protocol.json via os.replace",
+    "Per-commander progress dirs created via Python os.makedirs with exist_ok=True",
+    "Atomic write pattern uses *.tmp suffix + os.replace, NOT .tmp- prefix + mv",
+    "Initial writes of swarm-state.json and child-agents.jsonl use plain w truncating writes with no temp-file rename"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:533-546",
+    "bin/stampede.sh:602-615",
+    "bin/stampede.sh:379-405",
+    "bin/stampede.sh:664-683",
+    "bin/stampede.sh:721-738",
+    "bin/stampede.sh:1016-1024"
+  ],
+  "confidence": 93,
+  "status": "success"
+}

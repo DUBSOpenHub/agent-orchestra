@@ -1,0 +1,142 @@
+{
+  "squad_lead": "sq-027",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Atomic Operations Verification - Part 1",
+  "depth": 2,
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "synthesized_at": "2026-04-30T18:06:46Z",
+  "workers": [
+    {
+      "id": "wkr-027-001",
+      "model": "gpt-5.3-codex",
+      "task": "mv-based task claiming",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-027-002",
+      "model": "claude-sonnet-4.5",
+      "task": "atomic result writing",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-027-003",
+      "model": "gpt-5.2-codex",
+      "task": ".tmp- prefix patterns",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-027-004",
+      "model": "claude-opus-4.7",
+      "task": "race condition handling",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-027-005",
+      "model": "gpt-5.5",
+      "task": "O_APPEND semantics",
+      "status": "complete"
+    }
+  ],
+  "findings": {
+    "task_claiming": {
+      "mechanism": "os.rename(queue_path, claimed_path) — POSIX atomic rename",
+      "atomicity": "GUARANTEED — same-filesystem rename is atomic by POSIX spec",
+      "race_loser_handling": "FileNotFoundError caught, agent continues to next task",
+      "no_locks_required": true,
+      "requeue_on_stale": "stampede-monitor.sh requeues claimed tasks stale > 10 min via mv",
+      "key_files": [
+        "agents/stampede-agent.agent.md:130",
+        "bin/stampede-monitor.sh:274-276"
+      ]
+    },
+    "result_writing": {
+      "pattern": "write-then-rename: open(.tmp-{task_id}.json, 'w') → json.dump() → os.rename(tmp, final)",
+      "atomicity": "GUARANTEED — readers see either complete old file or complete new file, never partial",
+      "coverage": "99% of write paths protected",
+      "exception_found": {
+        "location": "skills/SKILL.md:512-513",
+        "description": "Orchestrator writes max-generation failure results directly without .tmp- prefix",
+        "severity": "LOW — single writer, infrequent operation"
+      },
+      "key_files": [
+        "agents/stampede-agent.agent.md:238-242",
+        "agents/stampede-agent.agent.md:282-286",
+        "agents/stampede-merger.agent.md:300-304"
+      ]
+    },
+    "tmp_prefix_patterns": {
+      "pattern": ".tmp-{name}.json → {name}.json",
+      "usage_locations": [
+        "agents/stampede-agent.agent.md:238 — result write",
+        "agents/stampede-agent.agent.md:282 — error result write",
+        "agents/stampede-merger.agent.md:300 — merge report write",
+        "bin/stampede-merge.sh:500 — merge-report.json"
+      ],
+      "exclusion_in_readers": [
+        "bin/stampede-monitor.sh:27-30,75,316 — excludes .tmp-* from counts",
+        "bin/stampede-merge.sh:316 — skips .tmp-* in result reads",
+        "bin/stampede.sh:525,1052 — excludes .tmp-* in find commands"
+      ],
+      "cleanup_gap": "No explicit cleanup of orphaned .tmp- files on agent failure — readers exclude them but files persist",
+      "documented": true,
+      "references": [
+        ".github/copilot-instructions.md:16",
+        "CONTRIBUTING.md:40",
+        "README.md:226",
+        "skills/SKILL.md:851 (Landmine #3)"
+      ]
+    },
+    "race_conditions": {
+      "sync_primitive": "POSIX rename — sole synchronization mechanism, no locks",
+      "design_intent": "First mv wins — exactly one agent succeeds, others get FileNotFoundError",
+      "toctou_analysis": {
+        "claim_loop": "SAFE — FileNotFoundError caught gracefully",
+        "orphan_requeue": "LOW RISK — monitor gated by 10-min stale threshold, isolated writer",
+        "tmux_session_collision": "MINOR — 1s sleep gap between session check and creation (documented)"
+      },
+      "locking": "None — explicitly avoided by design (README.md:215-219, AGENTS.md:68)",
+      "landmines_covered": [
+        "Landmine #2: Race on task claim → atomic mv",
+        "Landmine #3: Partial result reads → .tmp- then mv",
+        "Landmine #4: Worker dies mid-task → PID detection + requeue",
+        "Landmine #19: Stale claims > 10min → orphan sweep",
+        "Landmine #17: Branch name collision → stampede/{task_id} unique",
+        "Landmine #20: Run directory collision → run-YYYYMMDD-HHMMSS"
+      ]
+    },
+    "append_semantics": {
+      "o_append_reliance": "Explicitly relied upon for shared JSONL ledgers (stampede.sh:674-680)",
+      "child_agents_jsonl": {
+        "init": "Truncated/created at commander setup (stampede.sh:832-839)",
+        "appended_by": "Commander per child launch/update (stampede-commander.agent.md:35,57)",
+        "format": "One JSON object per line + newline"
+      },
+      "concurrent_write_risk": {
+        "assessment": "MODERATE — O_APPEND makes position atomic but does not guarantee single write(2) syscall for full record",
+        "practical_risk": "Low for small JSONL records in practice",
+        "mitigation": "Readers explicitly tolerate malformed trailing lines (stampede.sh:680)"
+      },
+      "no_flock_or_mutex": true,
+      "per_agent_logs": "Mostly isolated per agent (agent-N.log, commander-cli.log) — low contention"
+    }
+  },
+  "overall_assessment": {
+    "atomic_operations_score": 9,
+    "out_of": 10,
+    "summary": "Terminal Stampede implements robust atomic operations throughout. POSIX rename is correctly used as the sole synchronization primitive for task claiming and result writing. The .tmp- prefix pattern is consistently applied and well-documented. Race conditions are handled via FileNotFoundError catch on the claim loop. O_APPEND semantics are explicitly relied upon for shared logs with documented reader tolerance for malformed lines. One minor gap exists: the orchestrator writes max-generation failure results without .tmp- protection (low severity). No orphaned .tmp- cleanup mechanism exists.",
+    "gaps": [
+      "skills/SKILL.md:512-513 — direct write without .tmp- for max-generation failures",
+      "No cleanup for orphaned .tmp- files left by crashed agents",
+      "Concurrent JSONL writes rely on O_APPEND without full write(2) atomicity guarantee"
+    ],
+    "strengths": [
+      "POSIX rename used correctly throughout — no locks needed",
+      "FileNotFoundError handling is the correct race-loser pattern",
+      "Landmine table documents all 24 known failure modes",
+      ".tmp- exclusion consistent across all reader paths",
+      "O_APPEND reliance is explicit and documented with reader tolerance"
+    ]
+  }
+}

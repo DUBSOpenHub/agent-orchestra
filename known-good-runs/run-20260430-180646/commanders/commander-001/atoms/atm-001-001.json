@@ -1,0 +1,12 @@
+{
+  "atom_id": "atm-001-001",
+  "area": "launcher-tmux-preflight",
+  "blockers": 3,
+  "highlights": [
+    "tmux preflight + session reset OK",
+    "MAJOR: no per-commander manifest emitted to queue/ in metaswarm",
+    "MAJOR: state.json updated atomically only if pre-existing; no initial atomic write",
+    "MAJOR: PID capture one-shot after sleep 5; no refresh on restart",
+    "INFO: collab/ + commander progress dirs precreated correctly"
+  ]
+}

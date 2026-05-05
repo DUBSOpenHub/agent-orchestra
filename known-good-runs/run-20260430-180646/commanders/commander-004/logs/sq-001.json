@@ -1,0 +1,171 @@
+{
+  "squad_id": "sq-001",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "commander-launch-profile",
+  "objective": "Final pre-build QA review of metaswarm and SwarmMesh readiness using the synced launcher and fixed Agent Pulse.",
+  "status": "success",
+  "overall_confidence": "high",
+  "worker_count": 5,
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "blockers": [
+    "Task tool in this environment did not expose background agent ids; launch_started ledger entries use stable surrogate agent_id values sync::<worker_id>."
+  ],
+  "consensus_notes": [
+    "Metaswarm opt-in and no-silent-downgrade policy are documented consistently in launcher prompts, commander agent instructions, README, and SKILL.md.",
+    "Main implementation gap is enforcement: banned-model/runtime model verification, depth guard, and partial-status validation rely heavily on prompts/contracts rather than hard launcher checks.",
+    "Documentation is not fully aligned on worker branch naming and operational teardown/recovery guidance."
+  ],
+  "conflict_notes": [
+    "SKILL.md presents premium model handling as explicit user-selectable phrasing, while launcher metaswarm mode force-defaults a premium rotation and ordinary launcher default remains claude-haiku-4.5.",
+    "Commander contract defines success by launch counts; worker audits highlight that child completion/failure is not part of the success gate."
+  ],
+  "main_findings": [
+    {
+      "summary": "Launcher enforces a banned-model preflight for metaswarm arguments, but runtime child model compliance is not verified.",
+      "source_refs": [
+        "bin/stampede.sh:521-527",
+        "bin/stampede.sh:907-913",
+        "agents/stampede-commander.agent.md:166-168"
+      ]
+    },
+    {
+      "summary": "Depth Guard and partial/failure handling are mostly contractual/prompt-based rather than code-enforced.",
+      "source_refs": [
+        "agents/stampede-commander.agent.md:31-37",
+        "skills/SKILL.md:407",
+        "bin/stampede.sh:908-913"
+      ]
+    },
+    {
+      "summary": "Docs disagree on branch naming and differ in teardown/recovery detail.",
+      "source_refs": [
+        "README.md:202-225",
+        "AGENTS.md:69-72",
+        "README.md:300-310"
+      ]
+    },
+    {
+      "summary": "Launcher seeds launch-proof telemetry but does not validate proof counts before success on the happy path.",
+      "source_refs": [
+        "bin/stampede.sh:783-788",
+        "bin/stampede.sh:803-840",
+        "bin/stampede.sh:962-1023"
+      ]
+    }
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-001-001",
+      "theme": "commander-launch-profile",
+      "focus": "launcher-flags",
+      "findings": [
+        "Launcher does not fully hard-enforce premium/banned model policy outside metaswarm gating; default MODEL is claude-haiku-4.5 and --agent-cmd can bypass model templating.",
+        "Metaswarm max-5 commanders error message claims total cap 1600 even though 5 x 250 implies 1250 leaf workers.",
+        "Teardown/recovery UX is inconsistent: usage suggests --teardown --run-id alone, but repo-local cleanup depends on repo context.",
+        "Launch-proof files are seeded and prompted, but launcher success path does not verify proof counts before declaring completion."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:15",
+        "bin/stampede.sh:35-38",
+        "bin/stampede.sh:309-319",
+        "bin/stampede.sh:502-505",
+        "bin/stampede.sh:605-606",
+        "bin/stampede.sh:739-756",
+        "bin/stampede.sh:782-788",
+        "bin/stampede.sh:886",
+        "bin/stampede.sh:922-958",
+        "bin/stampede.sh:962-1023",
+        "bin/stampede.sh:1221-1222"
+      ],
+      "confidence": "high",
+      "status": "success",
+      "atom_id": "atm-001-001"
+    },
+    {
+      "worker_id": "wkr-001-002",
+      "theme": "commander-launch-profile",
+      "focus": "commander-agent-contract",
+      "findings": [
+        "Commander agent contract does not require an explicit launcher-side metaswarm-mode verification before task claim and child spawning.",
+        "Success criteria gate only on launch counts, not downstream child completion/failure outcomes.",
+        "Premium/banned model policy requires explicit premium selection but does not require runtime verification that launches honored requested models.",
+        "Stop/teardown/recovery instructions are underspecified for already-launched children and interrupted commander state."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:22-25",
+        "agents/stampede-commander.agent.md:43-59",
+        "agents/stampede-commander.agent.md:112-125",
+        "agents/stampede-commander.agent.md:140-146",
+        "agents/stampede-commander.agent.md:150-168"
+      ],
+      "confidence": "high",
+      "status": "issues-found",
+      "atom_id": "atm-001-002"
+    },
+    {
+      "worker_id": "wkr-001-003",
+      "theme": "commander-launch-profile",
+      "focus": "skill-launch-phrasing",
+      "findings": [
+        "SKILL.md correctly makes metaswarm explicit opt-in and requires partial/failed rather than silent downgrade for incomplete full-child launch.",
+        "SKILL.md lacks banned-model validation in parse/launch phrasing, so a user-supplied banned model string is not blocked at the skill layer.",
+        "Depth Guard is implicit through squad allocation/leaf instructions rather than enforced as an explicit numeric depth check.",
+        "Recovery is well-defined, but there is no explicit graceful stop command beyond teardown."
+      ],
+      "source_refs": [
+        "skills/SKILL.md:108-114",
+        "skills/SKILL.md:407",
+        "skills/SKILL.md:509-510",
+        "skills/SKILL.md:772-815",
+        "skills/SKILL.md:883-884"
+      ],
+      "confidence": "high",
+      "status": "pass_with_gaps",
+      "atom_id": "atm-001-003"
+    },
+    {
+      "worker_id": "wkr-001-004",
+      "theme": "commander-launch-profile",
+      "focus": "docs-claim-branch-alignment",
+      "findings": [
+        "README and AGENTS disagree on worker branch naming: README uses stampede/task-001 style while AGENTS documents stampede/<agent-id>/<task-id>.",
+        "README documents runtime proof files and premium child-model defaults for metaswarm more explicitly than AGENTS.",
+        "Neither README nor AGENTS documents banned-model enforcement in depth.",
+        "README documents teardown, while AGENTS lacks parallel stop/teardown/recovery guidance."
+      ],
+      "source_refs": [
+        "README.md:130-136",
+        "README.md:202-225",
+        "README.md:300-310",
+        "AGENTS.md:22-29",
+        "AGENTS.md:69-72"
+      ],
+      "confidence": "high",
+      "status": "fail",
+      "atom_id": "atm-001-004"
+    },
+    {
+      "worker_id": "wkr-001-005",
+      "theme": "commander-launch-profile",
+      "focus": "negative-downgrade-cases",
+      "findings": [
+        "Banned models are rejected at metaswarm launch time, but runtime verification of actual child model use is not enforced beyond telemetry logging.",
+        "Depth Guard is documented/prompted rather than implemented as code-level enforcement in stampede.sh.",
+        "Partial status is instructed in commander prompts, but launcher code does not validate bundle status against actual worker launch counts.",
+        "Smoke test checks banned_child_models metadata presence but does not execute a negative banned-model rejection test."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:521-527",
+        "bin/stampede.sh:773-778",
+        "bin/stampede.sh:827-832",
+        "bin/stampede.sh:907-913",
+        "tests/smoke-test.sh:127-130"
+      ],
+      "confidence": "high",
+      "status": "success",
+      "atom_id": "atm-001-005"
+    }
+  ]
+}

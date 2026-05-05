@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-035-001",
+  "theme": "partial-failure-bundles",
+  "focus": "success-thresholds",
+  "findings": [
+    "Success requires squad_leads_launched==50 and workers_launched==250 (stampede-commander.agent.md:140-146)",
+    "Partial required if circuit breaker/timeout/cost ceiling prevents full launch",
+    "Failed required if no Squad Leads were launched (stampede-commander.agent.md:146)",
+    "False-success guarded: cannot satisfy metaswarm with single wrapped agent (stampede-commander.agent.md:36)",
+    "Status propagated via swarm-state.json with required status field"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:48-56",
+    "agents/stampede-commander.agent.md:140-146",
+    "agents/stampede-commander.agent.md:166-168"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "gaps": "Success threshold based on launched counts, not completed/atoms_received; no broader numeric partial threshold beyond blocked full launch"
+}

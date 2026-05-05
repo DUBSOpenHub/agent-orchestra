@@ -1,0 +1,21 @@
+{
+  "atom_id": "atm-026-001",
+  "worker_id": "wkr-026-001",
+  "theme": "agent-pulse-monitoring",
+  "focus": "pulse-count-sources",
+  "status": "success",
+  "confidence": 0.88,
+  "findings": [
+    "Monitor live counts derive primarily from filesystem counts (queue/claimed/results) and tmux pane census (live/done/dead), not PID files; PID staleness generally does not affect counts.",
+    "TOTAL_TASKS fallback counts JSON file paths across queue/claimed/results and uses sort -u on full paths; duplicated task files across dirs can overcount denominator and skew percent.",
+    "Per-agent status assumes fleet.json order maps to tmux pane_index; if panes reorder or tmux query fails, agent status can be misreported as dead/unknown.",
+    "Commander nested counts are taken from swarm-state.json telemetry fields with fallbacks; monitor does not cross-check against child-agents.jsonl."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:27-30",
+    "bin/stampede-monitor.sh:69-77",
+    "bin/stampede-monitor.sh:120-141",
+    "bin/stampede-monitor.sh:145-190",
+    "bin/stampede-monitor.sh:218-233"
+  ]
+}

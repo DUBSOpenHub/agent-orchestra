@@ -1,0 +1,217 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead": "sq-032",
+  "focus": "Branch Handling Verification - Part 2",
+  "depth": 2,
+  "leaf_workers_launched": 5,
+  "worker_depth_lock_enforced": true,
+  "overall_verdict": "partial",
+  "summary": "Merge workflow and branch management are functional for the standard local Stampede flow, but verification found documentation drift, local-only discovery, simplistic conflict resolution, hardcoded base-branch assumptions, and incomplete cleanup semantics.",
+  "workers": [
+    {
+      "worker_id": "wkr-032-001",
+      "task": "Check merger branch discovery",
+      "model": "claude-opus-4.6",
+      "verdict": "partial",
+      "findings": [
+        "Merger discovers branches from result JSON files in the run results directory, not by listing git branches directly.",
+        "Only result entries with non-empty branch and status=done are considered, and git rev-parse verifies the branch exists locally.",
+        "Discovery is local-only; there is no fetch or remote branch handling.",
+        "No fallback discovers existing stampede/* branches when result JSON is missing or malformed.",
+        "Duplicate branch references are not deduplicated before merge.",
+        "Metaswarm commander branches under havoc-swarm/* are not discovered unless standard result JSON is also emitted."
+      ],
+      "references": [
+        "bin/stampede-merge.sh:87-99",
+        "agents/stampede-agent.agent.md:31",
+        "agents/stampede-agent.agent.md:159",
+        "agents/stampede-agent.agent.md:210",
+        "skills/SKILL.md:237",
+        "agents/stampede-commander.agent.md:250"
+      ],
+      "risks": [
+        "Distributed or CI flows with remote-only branches will be missed.",
+        "Crashed workers can leave orphaned branches that never merge.",
+        "Duplicate result JSONs can trigger noisy duplicate merge attempts.",
+        "Docs disagree on branch naming in places."
+      ],
+      "recommendations": [
+        "Add optional git branch --list fallback for stampede/* after JSON discovery.",
+        "Document local-only behavior or add an explicit fetch path.",
+        "Deduplicate discovered branches.",
+        "Filter .tmp-* result files consistently."
+      ]
+    },
+    {
+      "worker_id": "wkr-032-002",
+      "task": "Verify merge order logic",
+      "model": "gpt-5.4",
+      "verdict": "partial",
+      "findings": [
+        "Merge order is determined by number of files changed versus main, sorted ascending (smallest first).",
+        "Sort is deterministic enough because ties fall back to branch text ordering from sort.",
+        "README and merger-agent instructions mostly match smallest-first/file-count behavior.",
+        "AGENTS.md conflicts by describing output size largest-first behavior.",
+        "Missing results directory or no mergeable branches cause hard failure; skipped/missing branch entries are warned or ignored."
+      ],
+      "references": [
+        "bin/stampede-merge.sh:113-125",
+        "bin/stampede-merge.sh:141-143",
+        "bin/stampede-merge.sh:76-78",
+        "bin/stampede-merge.sh:87-103",
+        "README.md:251",
+        "agents/stampede-merger.agent.md:68-76",
+        "CHANGELOG.md:31",
+        "AGENTS.md:33"
+      ],
+      "risks": [
+        "Operator confusion from docs saying largest-first/output-size while implementation uses smallest-first/file-count.",
+        "File count may be a poor proxy for actual conflict risk or output size.",
+        "Hardcoded main can mis-order merges in master-default repos."
+      ],
+      "recommendations": [
+        "Align AGENTS.md with implementation or change implementation to match docs.",
+        "If output size is intended, sort by diff lines/bytes or result size rather than file count.",
+        "Use detected base branch consistently."
+      ]
+    },
+    {
+      "worker_id": "wkr-032-003",
+      "task": "Check conflict resolution",
+      "model": "claude-opus-4.5",
+      "verdict": "partial",
+      "findings": [
+        "Conflicts are detected using git diff --name-only --diff-filter=U.",
+        "The script checks for conflict markers and attempts auto-resolution for simple marker counts.",
+        "Resolution is sed-based marker removal that keeps both sides, not semantic AI resolution.",
+        "Branches with complex conflicts are aborted, skipped, and reported.",
+        "Merge report records conflict counts and statuses."
+      ],
+      "references": [
+        "bin/stampede-merge.sh:149",
+        "bin/stampede-merge.sh:156-182",
+        "bin/stampede-merge.sh:167-175",
+        "bin/stampede-merge.sh:189-191",
+        "bin/stampede-merge.sh:397-405",
+        "bin/stampede-merge.sh:436",
+        "bin/stampede-merge.sh:471",
+        "agents/stampede-merger.agent.md:98-109"
+      ],
+      "risks": [
+        "Naive marker removal can concatenate incompatible code and commit broken logic.",
+        "No post-resolution syntax or marker validation occurs before git add/commit.",
+        "Marker variants or diff3 markers may leak through.",
+        "Docs imply AI conflict resolution, but shell implementation is mechanical."
+      ],
+      "recommendations": [
+        "Add post-resolution grep for all conflict markers before staging.",
+        "Run available syntax/tests for changed files after conflict resolution.",
+        "Either implement true AI-assisted conflict resolution in the merger agent or update docs to describe sed-based behavior.",
+        "Expand marker matching to include common variants."
+      ]
+    },
+    {
+      "worker_id": "wkr-032-004",
+      "task": "Verify combined branch creation",
+      "model": "gpt-5.2",
+      "verdict": "partial",
+      "findings": [
+        "Combined branch is named stampede/merged-${RUN_ID}.",
+        "Script checks out main, falling back to master, pulls fast-forward only, then deletes and recreates the merged branch.",
+        "Merges happen into the combined branch with --no-ff and do not automatically merge to main.",
+        "Re-running for the same run id force-deletes the prior local merged branch.",
+        "The script changes HEAD and does not restore the user's previous branch."
+      ],
+      "references": [
+        "bin/stampede-merge.sh:129",
+        "bin/stampede-merge.sh:131-134",
+        "bin/stampede-merge.sh:141-146",
+        "bin/stampede-merge.sh:611-616",
+        "agents/stampede-merger.agent.md:27",
+        "skills/SKILL.md:643-663",
+        "skills/SKILL.md:702"
+      ],
+      "risks": [
+        "Unconditional git branch -D can discard local work on an existing merged branch for the same run id.",
+        "No clean-working-tree guard before checkout/delete operations.",
+        "Diff/order logic hardcodes main even when master fallback is used."
+      ],
+      "recommendations": [
+        "Add clean-tree checks before branch operations.",
+        "Determine BASE_BRANCH once and use it for checkout, pull, and diffs.",
+        "Prefer explicit git switch -C semantics or warn before destructive reset.",
+        "Optionally restore the previous branch when merge completes."
+      ]
+    },
+    {
+      "worker_id": "wkr-032-005",
+      "task": "Check branch cleanup after merge",
+      "model": "claude-sonnet-4.6",
+      "verdict": "partial",
+      "findings": [
+        "Task branches are intentionally retained after worker completion and after merge.",
+        "stampede.sh teardown removes runtime artifacts and marks state torn_down but does not delete git branches.",
+        "The merged branch persists after merge; a prior merged branch is only force-deleted on rerun.",
+        "No git worktrees or temporary branches are used.",
+        "Commander/metaswarm havoc-swarm/* branches are not cleaned up and are not documented well.",
+        "Claimed task files are cleaned up by worker instructions."
+      ],
+      "references": [
+        "agents/stampede-agent.agent.md:35",
+        "agents/stampede-agent.agent.md:251-252",
+        "README.md:202",
+        "bin/stampede.sh:302-360",
+        "bin/stampede-merge.sh:133",
+        "agents/stampede-commander.agent.md:30-34"
+      ],
+      "risks": [
+        "stampede/* and havoc-swarm/* branches accumulate over many runs.",
+        "README wording around teardown can imply branch cleanup that does not happen.",
+        "Force-deleting merged branch on rerun can lose unpushed local merge work."
+      ],
+      "recommendations": [
+        "Clarify docs that teardown does not delete git branches, or add an explicit branch-cleanup mode.",
+        "Document commander branch lifecycle.",
+        "Warn when deleting a pre-existing merged branch.",
+        "Provide safe manual cleanup commands for retained branches."
+      ]
+    }
+  ],
+  "cross_cutting_findings": [
+    "The core local single-repo merge flow is present and usable.",
+    "Base branch handling is inconsistent: checkout supports main/master, but diff/order logic uses main.",
+    "Documentation disagrees in several places about branch naming, merge ordering, and cleanup semantics.",
+    "Conflict handling is the highest-risk area because it can commit syntactically or semantically invalid code after naive marker deletion.",
+    "Metaswarm commander branches are outside the normal merger/cleanup path."
+  ],
+  "priority_fixes": [
+    {
+      "priority": "P0",
+      "fix": "Add post-conflict marker validation and available syntax/test validation before committing auto-resolved conflicts."
+    },
+    {
+      "priority": "P1",
+      "fix": "Detect BASE_BRANCH once and use it consistently for checkout, pull, diff sizing, and merge-base comparisons."
+    },
+    {
+      "priority": "P1",
+      "fix": "Add clean-working-tree guard and warning/confirmation flag around destructive merged-branch reset."
+    },
+    {
+      "priority": "P2",
+      "fix": "Deduplicate branch discovery and optionally add stampede/* fallback for missing result JSONs."
+    },
+    {
+      "priority": "P2",
+      "fix": "Reconcile README, AGENTS.md, merger-agent docs, and skill docs on branch naming, merge order, and cleanup."
+    },
+    {
+      "priority": "P2",
+      "fix": "Document or implement cleanup for retained stampede/* and havoc-swarm/* branches."
+    }
+  ],
+  "artifacts": {
+    "synthesis_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-005/atoms/sq-032-synthesis.json"
+  }
+}

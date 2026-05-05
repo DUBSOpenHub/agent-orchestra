@@ -1,0 +1,20 @@
+{
+  "child_id": "wkr-023-003",
+  "parent_id": "sq-023",
+  "role": "worker",
+  "depth": 3,
+  "agent_type": "task",
+  "model": "claude-opus-4.6",
+  "theme": "collaboration-bus",
+  "focus": "commander-ledger-usage",
+  "variant": 3,
+  "files": [
+    "agents/stampede-commander.agent.md"
+  ],
+  "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+  "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+  "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+  "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+  "output_atom": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/atoms/atm-023-003.json",
+  "deliverable": "Return concise findings only. Do not modify source files. Cite exact files and line references when possible."
+}

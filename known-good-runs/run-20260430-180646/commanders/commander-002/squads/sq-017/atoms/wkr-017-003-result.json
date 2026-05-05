@@ -1,0 +1,124 @@
+{
+  "worker_id": "wkr-017-003",
+  "model": "claude-opus-4.6",
+  "squad_id": "sq-017",
+  "focus": "consensus_linkage",
+  "status": "ok",
+  "findings": {
+    "ledger_counts": {
+      "proposals": 5,
+      "reviews": 11,
+      "improvements": 7,
+      "consensus": 5,
+      "broadcasts": 4
+    },
+    "linkage_analysis": {
+      "orphaned_proposals_no_review": [],
+      "reviewed_proposals_not_in_improvements_based_on": [
+        "commander-004-prop-001"
+      ],
+      "orphaned_improvements_no_consensus_ref": [
+        "imp-003-terminology"
+      ],
+      "consensus_items_not_broadcast": [
+        "cons-c001-pre-build-minors"
+      ],
+      "broadcasts_referencing_invalid_consensus": []
+    },
+    "workflow_completeness": {
+      "commanders_full_workflow": 3,
+      "commanders_partial_workflow": 2,
+      "total_commanders": 5,
+      "per_commander": {
+        "commander-001": {
+          "phases_completed": [
+            "propose",
+            "peer_review",
+            "improve",
+            "consensus",
+            "broadcast",
+            "adopt"
+          ],
+          "full_workflow": true,
+          "missing": []
+        },
+        "commander-002": {
+          "phases_completed": [
+            "propose"
+          ],
+          "full_workflow": false,
+          "missing": [
+            "peer_review",
+            "improve",
+            "consensus",
+            "broadcast",
+            "adopt"
+          ]
+        },
+        "commander-003": {
+          "phases_completed": [
+            "propose",
+            "peer_review",
+            "improve",
+            "consensus",
+            "broadcast",
+            "adopt"
+          ],
+          "full_workflow": true,
+          "missing": []
+        },
+        "commander-004": {
+          "phases_completed": [
+            "propose"
+          ],
+          "full_workflow": false,
+          "missing": [
+            "peer_review",
+            "improve",
+            "consensus",
+            "broadcast",
+            "adopt"
+          ]
+        },
+        "commander-005": {
+          "phases_completed": [
+            "propose",
+            "peer_review",
+            "improve",
+            "consensus",
+            "broadcast",
+            "adopt"
+          ],
+          "full_workflow": true,
+          "missing": []
+        }
+      }
+    },
+    "adoption_analysis": {
+      "broadcasts_with_adopt_language": 3,
+      "broadcasts_with_adopted_items_field": 1,
+      "note": "No dedicated adopt ledger. Adoption signaled via 'ADOPT' keyword in broadcast summary or 'adopted_items' field. Both patterns observed."
+    }
+  },
+  "gaps": [
+    "commander-004 completed only propose phase - no reviews, improvements, consensus, or broadcasts authored",
+    "commander-002 completed only propose phase - received peer reviews from others but authored none of its own workflow outputs",
+    "cons-c001-pre-build-minors has no broadcast entry (1 of 5 consensus items unbroadcast)",
+    "1 improvements not referenced by any consensus based_on: imp-003-terminology",
+    "Inconsistent adoption referencing: c001 uses consensus_item_id field, c003 uses adopted_items array - no standard pattern enforced",
+    "Reviews use inconsistent verdict vocabulary: accept_with_additions, approve_with_suggestions, approve, endorse, endorse_with_caveat - no controlled vocabulary in protocol.json"
+  ],
+  "evidence": [
+    "5 proposals from 5 commanders",
+    "11 reviews: c001=3, c003=4, c005=4",
+    "7 improvements: c001=5, c003=1, c005=1",
+    "5 consensus: c001=3, c003=1, c005=1",
+    "4 broadcasts: c001=2, c003=1, c005=1",
+    "All proposals received at least one peer review (0 orphaned proposals)",
+    "3/5 commanders completed full workflow (propose through adopt)",
+    "2/5 commanders stalled at propose phase only (c002, c004)",
+    "Linkage is largely intact: proposals\u2192reviews complete, reviews\u2192improvements partial, improvements\u2192consensus partial, consensus\u2192broadcasts mostly complete"
+  ],
+  "confidence": 0.93,
+  "ts": "2026-05-01T01:21:11.873163+00:00"
+}

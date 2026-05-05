@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-005-001",
+  "theme": "commander-launch-profile",
+  "focus": "launcher-flags",
+  "findings": [
+    "OK: --metaswarm flag dispatch wired correctly (lines 41, 197-200, 869-881, 942-953)",
+    "BUG: --preflight --metaswarm hardcodes stampede-agent not commander (line 411-428)",
+    "OK: Model rotation logic correct (lines 605-606, 850-853)",
+    "GAP: No validation for bad --models input, empty list unsafe",
+    "GAP: No upper bound on --count for non-metaswarm (docs say max 20)",
+    "CONTRADICTION: Metaswarm cap says 1600 workers but 5\u00d7250=1250 (line 503 vs 736-738)"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:41",
+    "bin/stampede.sh:197-200",
+    "bin/stampede.sh:411-428",
+    "bin/stampede.sh:503",
+    "bin/stampede.sh:605-606",
+    "bin/stampede.sh:736-738",
+    "bin/stampede.sh:850-853",
+    "bin/stampede.sh:869-881"
+  ],
+  "confidence": 0.9,
+  "status": "success"
+}

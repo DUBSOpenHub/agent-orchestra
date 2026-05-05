@@ -1,0 +1,35 @@
+{
+  "squad_id": "sq-023",
+  "commander_id": "commander-004",
+  "theme": "collaboration-bus",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "blockers": [],
+  "consensus_notes": "All 5 workers agree: collaboration bus is implemented in stampede.sh but undocumented in SKILL.md/README and absent from the commander agent definition. The protocol relies entirely on runtime prompt injection, creating a fragile contract.",
+  "conflict_notes": "No conflicts between worker findings.",
+  "key_findings": [
+    "Collab bus (propose->review->improve->consensus->broadcast->adopt) exists in stampede.sh but is completely undocumented in SKILL.md, README, and commander agent.md",
+    "Commander agent.md has zero collab bus awareness \u2014 protocol delivered solely via runtime prompt injection at stampede.sh:910",
+    "Bundle schema in agent.md lacks adopted/source_refs fields required by the launcher prompt",
+    "Ledger initialization uses plain writes not atomic temp+rename for swarm-state.json and child-agents.jsonl",
+    "Malformed ledger tolerance is good (silent degradation, isolated blast radius) but has zero observability",
+    "Broadcast/adoption phases have no documentation or enforcement \u2014 commanders operate in documented isolation"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:664-721",
+    "bin/stampede.sh:905-936",
+    "agents/stampede-commander.agent.md:240-267",
+    "skills/SKILL.md:165-170",
+    "README.md:200-204"
+  ],
+  "overall_confidence": 0.91,
+  "recommendations": [
+    "Add collaboration bus section to commander agent.md with ledger formats and participation rules",
+    "Document collab protocol in SKILL.md and README for contributor visibility",
+    "Use atomic temp+rename for initial swarm-state.json and child-agents.jsonl writes",
+    "Add adopted/source_refs fields to bundle schema in agent.md",
+    "Add a ledger-audit subcommand or post-run sanity check for malformed lines"
+  ]
+}

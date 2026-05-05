@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-040-002",
+  "theme": "stop-teardown-behavior",
+  "focus": "monitor-stop-flows",
+  "findings": [
+    "Normal completion path defaults to auto-merge on read timeout (answer=\"y\").",
+    "No signal/EXIT trap; stopping monitor during read can leave terminal state dirty and skip stats write.",
+    "All-dead partial path uses 15s grace and requeues orphans; exit code does not distinguish partial vs success."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:6-18",
+    "bin/stampede-monitor.sh:281-305",
+    "bin/stampede-monitor.sh:296-398",
+    "bin/stampede-monitor.sh:329",
+    "bin/stampede-monitor.sh:380",
+    "bin/stampede-monitor.sh:333-366",
+    "bin/stampede-monitor.sh:237-279"
+  ],
+  "confidence": 0.97,
+  "status": "success"
+}

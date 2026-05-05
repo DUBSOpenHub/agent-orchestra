@@ -1,0 +1,66 @@
+{
+  "run_id": "run-20260430-180646",
+  "base": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646",
+  "objective": "Final pre-build QA review of metaswarm and SwarmMesh readiness using the synced launcher and fixed Agent Pulse. Verify commander launch, premium model policy, collaboration bus creation, sub-agent telemetry, Agent Pulse live counts, stop/recovery behavior, and implementation gaps. Review-only: do not modify source files.",
+  "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+  "model": "premium-rotation",
+  "models": [
+    "claude-opus-4.7",
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5"
+  ],
+  "worker_count": 5,
+  "commander_count": 5,
+  "total_tasks": 5,
+  "profile": "metaswarm",
+  "qa_gate": "pre-build-final",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "phase": "auth_blocked",
+  "status": "blocked",
+  "tasks": {
+    "queued": [
+      "commander-001",
+      "commander-002",
+      "commander-003",
+      "commander-004",
+      "commander-005"
+    ],
+    "claimed": [],
+    "completed": []
+  },
+  "workers": [],
+  "collaboration_required": true,
+  "sub_agent_terminology": true,
+  "updated_at": "2026-05-01T01:07:38Z",
+  "collab": {
+    "path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab",
+    "protocol": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+    "ledgers": {
+      "proposals": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/proposals.jsonl",
+      "reviews": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/reviews.jsonl",
+      "improvements": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/improvements.jsonl",
+      "consensus": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+      "broadcasts": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/broadcasts.jsonl"
+    },
+    "workflow": [
+      "propose",
+      "peer_review",
+      "improve",
+      "consensus",
+      "broadcast",
+      "adopt"
+    ],
+    "counts": {
+      "proposals": 0,
+      "reviews": 0,
+      "improvements": 0,
+      "consensus": 0,
+      "broadcasts": 0
+    }
+  },
+  "blocked_reason": "auth_blocked",
+  "blocked_detail": "Error: Authentication token found but could not be validated.    Failed to fetch OAuth user login: TypeError: fetch failed  Your token may still be valid. Check your network connection and try again.  To authenticate, you can use any of the following methods:   \u2022 Start 'copilot' and run the '/login' command   \u2022 Set the COPILOT_GITHUB_TOKEN, GH_TOKEN, or GITHUB_TOKEN environment variable   \u2022 Run 'gh auth login' to authenticate with the GitHub CLI EXIT:1 "
+}

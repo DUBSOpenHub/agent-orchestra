@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-041-004",
+  "theme": "recovery-stuck-detection",
+  "focus": "docs-vs-runtime-recovery",
+  "findings": [
+    "README documents dead-agent PID recovery and metaswarm partial/no-silent-downgrade guardrails",
+    "stuck detection is mentioned, but recovery behavior for stuck-yet-still-alive agents is not explained",
+    "observability language overstates visibility by saying every agent runs in a visible pane, while metaswarm later clarifies only commander panes are visible and child-worker recovery/visibility semantics remain undocumented",
+    "teardown documentation is minimal and does not explain treatment of in-flight work, nested commander state, logs/pids, or partial results during stop/recovery"
+  ],
+  "source_refs": [
+    "README.md:229-235",
+    "README.md:130-136",
+    "README.md:35",
+    "README.md:86",
+    "README.md:50",
+    "README.md:118",
+    "README.md:202",
+    "README.md:257",
+    "README.md:299-310",
+    "README.md:322"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

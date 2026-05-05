@@ -1,0 +1,71 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_id": "sq-048",
+  "focus": "24-Landmine Awareness",
+  "depth_lock": {
+    "required_leaf_workers": 5,
+    "launched_leaf_workers": 5,
+    "compliant": true,
+    "workers": [
+      "wkr-048-001",
+      "wkr-048-002",
+      "wkr-048-003",
+      "wkr-048-004",
+      "wkr-048-005"
+    ]
+  },
+  "synthesis": {
+    "table_status": {
+      "present": true,
+      "location": "skills/SKILL.md:845-872",
+      "assessment": "24-entry landmine reference table exists and is largely consistent with repo guardrails.",
+      "noted_inconsistency": "Landmine #21 is defined as monitor-pane failure in table, but an inline launcher comment tags a different concern as #21 (skills/SKILL.md:393-396)."
+    },
+    "awareness_coverage": {
+      "primary_reference": ".github/copilot-instructions.md:31 points to SKILL.md landmine table",
+      "implementation_references": [
+        "skills/SKILL.md inline landmine tags across orchestration steps",
+        "agents/stampede-agent.agent.md critical rules",
+        "agents/stampede-commander.agent.md depth guard and launch-proof constraints",
+        "bin/stampede.sh runtime validations and teardown safeguards"
+      ]
+    },
+    "mitigations": {
+      "status": "documented",
+      "summary": "All 24 landmines in the reference table have explicit mitigation text; additional enforcement appears in agents and launcher scripts.",
+      "examples": [
+        "#1 JSON via Python json.dump",
+        "#2 atomic claim via mv",
+        "#5 requeue cap max_generation=2",
+        "#13 autopilot continue limit",
+        "#20 run_id format validation",
+        "#22 prereq checks"
+      ]
+    },
+    "documentation_gaps": [
+      "README.md does not mention 24-landmine awareness or point to SKILL.md table.",
+      "AGENTS.md includes constraints but lacks explicit reference to the 24-landmine table.",
+      "Install flow does not verify/announce preservation of landmine constraints."
+    ],
+    "test_coverage": {
+      "direct_landmine_tests": "none",
+      "indirect_coverage": [
+        "tests/smoke-test.sh checks run_id format, directory creation, Python JSON writing, atomic claim/write patterns",
+        "tests/depth-guard-lint.sh checks leaf-node no-spawn/no-task invariants and commander depth-guard fields"
+      ],
+      "coverage_gaps": [
+        "No explicit automated verification for every one of the 24 landmines",
+        "Limited/no automated coverage for #4-#9, #11, #12, #14, #16-#19"
+      ]
+    }
+  },
+  "sources": {
+    "wkr-048-001": "Landmine references search",
+    "wkr-048-002": "SKILL.md table integrity",
+    "wkr-048-003": "Mitigation verification",
+    "wkr-048-004": "Documentation coverage",
+    "wkr-048-005": "Test coverage verification"
+  },
+  "overall_confidence": "high"
+}

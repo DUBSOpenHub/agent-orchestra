@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Pulse — Real-Time Agent Dashboard for GitHub Copilot CLI</title>
+<meta name="description" content="Agent Pulse is a real-time terminal dashboard for monitoring GitHub Copilot CLI agents. Track sessions, agent types, trends, and velocity in a stunning TUI.">
+<meta name="keywords" content="GitHub Copilot, CLI, agent, dashboard, terminal, monitoring, real-time">
+<meta name="author" content="DUBSOpenHub">
+<meta property="og:title" content="Agent Pulse — Real-Time Agent Dashboard for GitHub Copilot CLI">
+<meta property="og:description" content="A stunning real-time terminal dashboard for monitoring GitHub Copilot CLI agents. Track sessions, agents, trends, and velocity.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/DUBSOpenHub/copilot-cli-agent-pulse">
+<meta property="og:image" content="https://raw.githubusercontent.com/DUBSOpenHub/copilot-cli-agent-pulse/main/assets/og-share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agent Pulse — Real-Time Agent Dashboard">
+<meta name="twitter:description" content="Real-time terminal dashboard for monitoring GitHub Copilot CLI agents.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DUBSOpenHub/copilot-cli-agent-pulse/main/assets/og-share.png">
+<meta name="theme-color" content="#00f5ff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&family=Mona+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ─────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050510;--bg2:#0a0a1a;--bg3:#0f0f2a;
+  --cyan:#00f5ff;--green:#00ff87;--pink:#ff00ff;--red:#ff5f5f;--yellow:#ffd700;--orange:#ff8c00;
+  --text:#e0e0ff;--text-dim:#6a6a8a;
+  --font-display:'Orbitron',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --font-body:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;line-height:1.6}
+a{color:var(--cyan);text-decoration:none;transition:color .3s}
+a:hover{color:var(--green)}
+::selection{background:rgba(0,245,255,.25);color:#fff}
+
+/* ── Scanline Overlay ─────────────────────────────────── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+}
+
+/* ── Tron Grid Background ────────────────────────────── */
+.grid-bg{
+  position:fixed;inset:0;z-index:-2;overflow:hidden;
+}
+.grid-bg::before{
+  content:'';position:absolute;left:50%;bottom:0;width:200%;height:80vh;
+  transform:translateX(-50%) perspective(500px) rotateX(60deg);transform-origin:bottom center;
+  background:
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(0,245,255,.07) 59px,rgba(0,245,255,.07) 60px),
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(0,245,255,.07) 59px,rgba(0,245,255,.07) 60px);
+  animation:gridScroll 20s linear infinite;
+}
+.grid-bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,245,255,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at 20% 50%,rgba(255,0,255,.04) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 80%,rgba(0,255,135,.04) 0%,transparent 50%);
+}
+@keyframes gridScroll{
+  0%{background-position:0 0,0 0}
+  100%{background-position:0 60px,0 60px}
+}
+
+/* ── Floating Particles ──────────────────────────────── */
+.particles{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.particle{
+  position:absolute;border-radius:50%;
+  animation:floatUp linear infinite;
+  opacity:0;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+/* ── Navigation ──────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(5,5,16,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,245,255,.15);
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 0 30px rgba(0,245,255,.15)}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:.75rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-family:var(--font-display);font-weight:900;font-size:1.1rem;color:var(--cyan);
+  text-shadow:0 0 10px rgba(0,245,255,.5);display:flex;align-items:center;gap:.5rem}
+.nav-logo .pulse-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite;
+}
+.nav-links{display:flex;gap:1.5rem;list-style:none;align-items:center}
+.nav-links a{
+  font-size:.85rem;font-weight:600;color:var(--text-dim);
+  transition:color .3s,text-shadow .3s;position:relative;
+}
+.nav-links a.active,.nav-links a:hover{color:var(--cyan);text-shadow:0 0 8px rgba(0,245,255,.5)}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;
+  background:var(--cyan);transform:scaleX(0);transition:transform .3s;
+}
+.nav-links a.active::after{transform:scaleX(1)}
+.nav-toggle{display:none;background:none;border:none;color:var(--cyan);font-size:1.5rem;cursor:pointer}
+@media(max-width:768px){
+  .nav-links{
+    position:fixed;top:56px;left:0;right:0;background:rgba(5,5,16,.95);
+    flex-direction:column;padding:1.5rem;gap:1rem;
+    transform:translateY(-120%);transition:transform .3s;backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(0,245,255,.15);
+  }
+  .nav-links.open{transform:translateY(0)}
+  .nav-toggle{display:block}
+}
+
+/* ── Sections ────────────────────────────────────────── */
+section{position:relative;padding:6rem 1.5rem}
+.container{max-width:1100px;margin:0 auto}
+.section-tag{
+  font-family:var(--font-mono);font-size:.75rem;color:var(--pink);
+  text-transform:uppercase;letter-spacing:3px;margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.section-tag::before{content:'//';color:var(--text-dim)}
+.section-title{
+  font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;
+  margin-bottom:1rem;
+}
+.glow-cyan{color:var(--cyan);text-shadow:0 0 10px rgba(0,245,255,.4)}
+.glow-green{color:var(--green);text-shadow:0 0 10px rgba(0,255,135,.4)}
+.glow-pink{color:var(--pink);text-shadow:0 0 10px rgba(255,0,255,.4)}
+
+/* ── Scroll Reveal ───────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+.reveal-delay-5{transition-delay:.5s}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── HERO ─────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════ */
+#hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding-top:5rem;
+}
+.hero-content{position:relative}
+.hero-badge{
+  display:inline-block;font-family:var(--font-mono);font-size:.75rem;
+  color:var(--green);border:1px solid rgba(0,255,135,.3);
+  padding:.35rem 1rem;border-radius:999px;margin-bottom:1.5rem;
+  background:rgba(0,255,135,.05);
+  animation:pulse 3s ease-in-out infinite;
+}
+.hero-title{
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(2.5rem,8vw,6rem);line-height:1.1;
+  color:#fff;margin-bottom:1rem;
+  text-shadow:0 0 20px rgba(0,245,255,.5),0 0 60px rgba(0,245,255,.2),0 0 100px rgba(0,245,255,.1);
+}
+.hero-sub{
+  font-size:clamp(1rem,2.5vw,1.35rem);color:var(--text-dim);
+  max-width:600px;margin:0 auto 1.5rem;font-weight:300;
+}
+.hero-sub strong{color:var(--text);font-weight:600}
+
+/* Pulse Wave */
+.pulse-wave{
+  font-family:var(--font-mono);font-size:1.5rem;
+  color:var(--cyan);margin-bottom:2.5rem;
+  text-shadow:0 0 8px rgba(0,245,255,.6);
+  height:2rem;overflow:hidden;
+}
+.pulse-wave span{
+  display:inline-block;animation:waveChar 2s ease-in-out infinite;
+}
+
+@keyframes waveChar{
+  0%,100%{opacity:.3;transform:scaleY(.6)}
+  50%{opacity:1;transform:scaleY(1)}
+}
+
+/* Heartbeat */
+.heartbeat{
+  font-size:1.5rem;margin-bottom:2rem;
+  animation:heartbeatAnim 1.5s ease-in-out infinite;
+}
+/* Hero Powered-by Line */
+.hero-powered{
+  display:flex;align-items:center;justify-content:center;gap:.75rem;
+  margin:.75rem 0 1.25rem;
+}
+.hero-powered-text{
+  font-family:var(--font-display);font-size:clamp(1rem,2.5vw,1.4rem);
+  font-weight:700;color:var(--cyan);letter-spacing:2px;
+  text-shadow:0 0 15px rgba(0,245,255,.6),0 0 30px rgba(0,245,255,.3);
+}
+.hero-heart{
+  font-size:1.6rem;
+  animation:heartbeatAnim 1.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 8px rgba(255,0,255,.6));
+}
+@keyframes heartbeatAnim{
+  0%,100%{transform:scale(1)}
+  15%{transform:scale(1.15)}
+  30%{transform:scale(1)}
+  45%{transform:scale(1.1)}
+}
+
+/* CTA Buttons */
+.cta-group{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.cta-group .btn{flex:1;max-width:220px;justify-content:center}
+.btn{
+  font-family:var(--font-display);font-size:.85rem;font-weight:700;
+  padding:.85rem 2rem;border-radius:6px;cursor:pointer;
+  transition:all .3s;letter-spacing:1px;
+  display:inline-flex;align-items:center;gap:.5rem;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--cyan),#0088aa);color:var(--bg);
+  border:none;box-shadow:0 0 20px rgba(0,245,255,.3);
+}
+.btn-primary:hover{
+  box-shadow:0 0 40px rgba(0,245,255,.5);transform:translateY(-2px);color:var(--bg)
+}
+.btn-outline{
+  background:transparent;color:var(--cyan);
+  border:2px solid rgba(0,245,255,.4);
+}
+.btn-outline:hover{
+  background:rgba(0,245,255,.1);border-color:var(--cyan);
+  box-shadow:0 0 20px rgba(0,245,255,.2);transform:translateY(-2px);color:var(--cyan)
+}
+.btn-github{
+  background:transparent;color:white;
+  border:2px solid rgba(255,255,255,.4);
+  font-family:'Mona Sans','Inter',sans-serif;letter-spacing:0;
+}
+.btn-github:hover{
+  background:rgba(255,255,255,.1);border-color:white;
+  box-shadow:0 0 20px rgba(255,255,255,.15);transform:translateY(-2px);color:white
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── TERMINAL DEMO ───────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════ */
+#demo{background:var(--bg2)}
+.terminal{
+  position:relative;
+  background:#0c0c1e;border:1px solid rgba(0,245,255,.25);
+  border-radius:12px;overflow:hidden;
+  box-shadow:0 0 28px rgba(0,245,255,.18),0 0 80px rgba(0,245,255,.08),0 24px 80px rgba(0,0,0,.7),inset 0 0 28px rgba(0,245,255,.04);
+  max-width:900px;margin:2rem auto 0;
+}
+.terminal::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,.07) 0,rgba(0,0,0,.07) 1px,
+    transparent 1px,transparent 4px
+  );
+  mix-blend-mode:multiply;opacity:.8;z-index:3;
+}
+.terminal-bar{
+  background:rgba(0,245,255,.05);padding:.6rem 1rem;
+  display:flex;align-items:center;gap:.5rem;
+  border-bottom:1px solid rgba(0,245,255,.15);
+}
+.terminal-dot{width:12px;height:12px;border-radius:50%}
+.terminal-dot.r{background:#ff5f5f;box-shadow:0 0 6px #ff5f5f}
+.terminal-dot.y{background:#ffd700;box-shadow:0 0 6px #ffd700}
+.terminal-dot.g{background:#00ff87;box-shadow:0 0 6px #00ff87}
+.terminal-title{
+  flex:1;text-align:center;font-family:var(--font-mono);
+  font-size:.75rem;color:var(--text-dim);
+}
+.terminal-body{
+  padding:1.25rem;font-family:var(--font-mono);font-size:.75rem;
+  line-height:1.7;overflow-x:auto;min-height:480px;
+  color:var(--green);
+  text-shadow:0 0 8px rgba(0,255,135,.18);
+  position:relative;z-index:2;
+}
+.terminal-body .t-cyan{color:var(--cyan);text-shadow:0 0 8px rgba(0,245,255,.3)}
+.terminal-body .t-green{color:var(--green);text-shadow:0 0 8px rgba(0,255,135,.28)}
+.terminal-body .t-pink{color:var(--pink);text-shadow:0 0 8px rgba(255,0,255,.28)}
+.terminal-body .t-red{color:var(--red);text-shadow:0 0 8px rgba(255,95,95,.28)}
+.terminal-body .t-yellow{color:var(--yellow);text-shadow:0 0 8px rgba(255,215,0,.22)}
+.terminal-body .t-dim{color:var(--text-dim);text-shadow:none}
+.terminal-body .t-white{color:#fff;text-shadow:0 0 6px rgba(255,255,255,.18)}
+.terminal-body .t-orange{color:var(--orange);text-shadow:0 0 8px rgba(255,165,0,.24)}
+.terminal-body .t-purple{color:#B388FF;text-shadow:0 0 8px rgba(179,136,255,.24)}
+.terminal-body .t-bold{font-weight:700}
+
+.term-line{white-space:pre;opacity:0;animation:termFadeIn .3s forwards}
+@keyframes termFadeIn{to{opacity:1}}
+
+/* Typing cursor */
+.typing-cursor{display:inline-block;width:7px;height:.9em;background:var(--cyan);
+  animation:blink .6s step-end infinite;vertical-align:text-bottom;
+  box-shadow:0 0 8px var(--cyan)}
+
+/* Blinking cursor */
+.cursor{display:inline-block;width:8px;height:14px;background:var(--green);
+  box-shadow:0 0 8px rgba(0,255,135,.6);
+  animation:blink 1s step-end infinite;vertical-align:middle}
+@keyframes blink{50%{opacity:0}}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── FEATURES ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════ */
+.features-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.5rem;margin-top:2.5rem;
+}
+.feature-card{
+  background:rgba(0,245,255,.03);border:1px solid rgba(0,245,255,.1);
+  border-radius:12px;padding:1.75rem;position:relative;overflow:hidden;
+  transition:all .4s;
+}
+.feature-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(0,245,255,.08),transparent 70%);
+  opacity:0;transition:opacity .4s;
+}
+.feature-card:hover{
+  animation:borderRotate 3s linear infinite;
+  transform:translateY(-4px) perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+}
+.feature-card:hover .feature-icon{animation:iconPulse 1s ease-in-out infinite}
+.feature-card:hover::before{opacity:1}
+.feature-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.feature-card h3{
+  font-family:var(--font-display);font-size:1rem;font-weight:700;
+  color:var(--cyan);margin-bottom:.5rem;
+}
+.feature-card p{font-size:.9rem;color:var(--text-dim);line-height:1.6;position:relative}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── MODES ───────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════ */
+#modes{background:var(--bg2)}
+.modes-list{margin-top:2.5rem;display:flex;flex-direction:column;gap:1rem}
+.mode-item{
+  display:flex;align-items:center;gap:1.5rem;
+  background:rgba(0,245,255,.03);border:1px solid rgba(0,245,255,.08);
+  border-radius:10px;padding:1.25rem 1.5rem;
+  transition:all .3s;
+}
+.mode-item:hover{
+  border-color:rgba(0,245,255,.25);
+  box-shadow:0 0 15px rgba(0,245,255,.1);
+}
+.mode-cmd{
+  font-family:var(--font-mono);font-size:.85rem;color:var(--green);
+  white-space:nowrap;min-width:280px;flex-shrink:0;
+  background:rgba(0,0,0,.3);padding:.5rem 1rem;border-radius:6px;
+  border:1px solid rgba(0,255,135,.15);
+}
+.mode-cmd .prompt{color:var(--text-dim)}
+.mode-label{
+  font-family:var(--font-display);font-size:.85rem;font-weight:700;
+  color:var(--cyan);min-width:100px;
+}
+.mode-desc{font-size:.9rem;color:var(--text-dim)}
+@media(max-width:768px){
+  .mode-item{flex-direction:column;align-items:flex-start;gap:.75rem}
+  .mode-cmd{min-width:unset;width:100%;overflow-x:auto}
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── ARCHITECTURE ────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════ */
+.arch-flow{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;margin-top:3rem;flex-wrap:wrap;
+}
+.arch-box{
+  background:rgba(0,245,255,.05);border:2px solid rgba(0,245,255,.25);
+  border-radius:12px;padding:1.25rem 1.5rem;text-align:center;
+  position:relative;min-width:180px;
+  transition:all .4s;
+}
+.arch-box:hover{
+  border-color:var(--cyan);
+  box-shadow:0 0 25px rgba(0,245,255,.2);
+}
+.arch-box h4{font-family:var(--font-display);font-size:.8rem;color:var(--cyan);margin-bottom:.3rem}
+.arch-box p{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim)}
+.arch-arrow{
+  font-size:1.5rem;color:var(--cyan);padding:0 .5rem;
+  animation:arrowPulse 2s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes arrowPulse{
+  0%,100%{opacity:.3;transform:translateX(0)}
+  50%{opacity:1;transform:translateX(4px)}
+}
+@media(max-width:768px){
+  .arch-flow{flex-direction:column}
+  .arch-arrow{transform:rotate(90deg) !important;padding:.5rem 0}
+  @keyframes arrowPulse{
+    0%,100%{opacity:.3;transform:rotate(90deg) translateX(0)}
+    50%{opacity:1;transform:rotate(90deg) translateX(4px)}
+  }
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── QUICK START ─────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════ */
+#quickstart{background:var(--bg2)}
+.install-terminal{
+  background:#0c0c1e;border:1px solid rgba(0,245,255,.2);
+  border-radius:12px;overflow:hidden;max-width:700px;
+  margin:2rem auto 0;
+  box-shadow:0 0 30px rgba(0,245,255,.08);
+}
+.install-terminal .terminal-body{min-height:auto;padding:1.5rem}
+.install-line{margin-bottom:.25rem;white-space:pre}
+.install-line .prompt{color:var(--text-dim)}
+.install-line .cmd{color:var(--green)}
+.install-line .comment{color:var(--text-dim);font-style:italic}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── FOOTER ──────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════ */
+footer{
+  text-align:center;padding:3rem 1.5rem;
+  border-top:1px solid rgba(0,245,255,.1);
+}
+footer p{color:var(--text-dim);font-size:.9rem}
+footer a{color:var(--cyan)}
+.footer-heart{color:var(--red);display:inline-block;animation:heartbeatAnim 1.5s ease-in-out infinite}
+
+/* ── Back to Top ─────────────────────────────────────── */
+.back-top{
+  position:fixed;bottom:2rem;right:2rem;z-index:999;
+  width:44px;height:44px;border-radius:50%;border:2px solid rgba(0,245,255,.3);
+  background:rgba(5,5,16,.9);color:var(--cyan);font-size:1.2rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateY(20px);transition:all .3s;
+  backdrop-filter:blur(10px);
+}
+.back-top.visible{opacity:1;transform:translateY(0)}
+.back-top:hover{
+  border-color:var(--cyan);box-shadow:0 0 15px rgba(0,245,255,.3);
+  background:rgba(0,245,255,.1);
+}
+
+/* ── Pulse Keyframe ──────────────────────────────────── */
+@keyframes pulse{
+  0%,100%{opacity:1;box-shadow:0 0 8px currentColor}
+  50%{opacity:.6;box-shadow:0 0 20px currentColor}
+}
+
+/* ── Neon separator ──────────────────────────────────── */
+.neon-sep{
+  height:1px;border:none;margin:3rem auto;max-width:300px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:.4;
+}
+
+/* ── Scroll Progress Bar ─────────────────────────────── */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:3px;z-index:10001;
+  background:linear-gradient(90deg,var(--cyan),var(--green),var(--pink));
+  width:0%;pointer-events:none;
+}
+
+/* ── Typing Subtitle ─────────────────────────────────── */
+.hero-sub-typed{min-height:2em}
+.typed-cursor{
+  display:inline-block;width:2px;height:1.15em;
+  background:var(--cyan);vertical-align:text-bottom;
+  animation:blink .7s step-end infinite;margin-left:2px;
+}
+
+/* ── Stat Counter Strip ──────────────────────────────── */
+.stat-strip{
+  display:flex;justify-content:center;gap:clamp(1rem,4vw,3rem);
+  padding:3rem 1.5rem;flex-wrap:wrap;max-width:900px;margin:0 auto;
+}
+.stat-item{text-align:center;min-width:100px}
+.stat-value{
+  font-family:var(--font-display);font-size:clamp(2rem,5vw,3rem);
+  font-weight:900;color:var(--cyan);
+  text-shadow:0 0 15px rgba(0,245,255,.4);
+}
+.stat-label{
+  font-family:var(--font-mono);font-size:.7rem;
+  color:var(--text-dim);text-transform:uppercase;
+  letter-spacing:2px;margin-top:.25rem;
+}
+.stat-item:nth-child(2) .stat-value{color:var(--green);text-shadow:0 0 15px rgba(0,255,135,.4)}
+.stat-item:nth-child(3) .stat-value{color:var(--yellow);text-shadow:0 0 15px rgba(255,215,0,.4)}
+.stat-item:nth-child(4) .stat-value{color:var(--pink);text-shadow:0 0 15px rgba(255,0,255,.4)}
+
+/* ── Feature Card Upgrades ──────────────────────────── */
+@keyframes borderRotate{
+  0%,100%{border-color:rgba(0,245,255,.45);box-shadow:0 0 25px rgba(0,245,255,.2),inset 0 0 20px rgba(0,245,255,.05)}
+  33%{border-color:rgba(0,255,135,.45);box-shadow:0 0 25px rgba(0,255,135,.2),inset 0 0 20px rgba(0,255,135,.05)}
+  66%{border-color:rgba(255,0,255,.45);box-shadow:0 0 25px rgba(255,0,255,.2),inset 0 0 20px rgba(255,0,255,.05)}
+}
+@keyframes iconPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+
+/* ── Varied Scroll Reveals ──────────────────────────── */
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .8s ease,transform .8s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity .8s ease,transform .8s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .8s ease,transform .8s ease}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-blur{opacity:0;filter:blur(10px);transition:opacity .8s ease,filter .8s ease,transform .8s ease}
+.reveal-blur.visible{opacity:1;filter:blur(0)}
+
+/* ── CTA Button Shimmer ─────────────────────────────── */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{
+  content:'';position:absolute;top:-50%;left:-75%;width:50%;height:200%;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.2) 50%,transparent 60%);
+  transform:skewX(-20deg);
+  animation:shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer{0%,100%{left:-75%}50%{left:150%}}
+
+/* ── Click-to-Copy ──────────────────────────────────── */
+.install-line-wrap{position:relative;display:flex;align-items:center}
+.copy-btn{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.2);
+  color:var(--cyan);font-family:var(--font-mono);font-size:.6rem;
+  padding:.15rem .5rem;border-radius:4px;cursor:pointer;
+  opacity:0;transition:all .3s;text-transform:uppercase;
+}
+.install-line-wrap:hover .copy-btn{opacity:1}
+.copy-btn:hover{background:rgba(0,245,255,.2);border-color:var(--cyan)}
+.copy-btn.copied{
+  background:rgba(0,255,135,.12);border-color:var(--green);color:var(--green);
+  box-shadow:0 0 12px rgba(0,255,135,.3);opacity:1;
+}
+
+/* ── Architecture Particles ─────────────────────────── */
+.arch-arrow{position:relative;display:inline-block;overflow:visible}
+.arch-particle{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 6px var(--cyan);
+  top:50%;margin-top:-1.5px;
+  animation:archDotFlow 1.8s linear infinite;
+  pointer-events:none;
+}
+@keyframes archDotFlow{
+  0%{left:-4px;opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{left:100%;opacity:0}
+}
+
+/* ── prefers-reduced-motion ─────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  html{scroll-behavior:auto}
+  .particle{display:none}
+  body::after,.terminal::after{display:none}
+  .grid-bg::before{animation:none !important}
+  .reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-blur{
+    opacity:1 !important;transform:none !important;filter:none !important;
+  }
+  .btn-primary::after{display:none}
+  .scroll-progress{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Grid Background -->
+<div class="grid-bg" aria-hidden="true"></div>
+
+<!-- Floating Particles -->
+<div class="particles" id="particles" aria-hidden="true"></div>
+
+<!-- ═══ Navigation ═══════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo"><span class="pulse-dot"></span> AGENT PULSE</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#modes">Shortcuts</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#quickstart">Quick Start</a></li>
+      <li><a href="https://github.com/DUBSOpenHub/copilot-cli-agent-pulse" class="btn btn-github" style="padding:.4rem 1rem;font-size:.75rem"><svg height="16" width="16" viewBox="0 0 16 16" fill="white" style="vertical-align:text-bottom;margin-right:.3rem"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge" id="heroBadge">⚡ for GitHub Copilot CLI</div>
+    <h1 class="hero-title">AGENT<br>PULSE</h1>
+    <div class="hero-powered" id="heroPowered">
+      <span class="hero-heart" id="heroHeart">💗</span>
+      <span class="hero-powered-text">for GitHub Copilot CLI</span>
+      <span class="hero-heart" id="heroHeart2">💖</span>
+    </div>
+    <p class="hero-sub hero-sub-typed" id="heroSubTyped"><span id="typedText"></span><span class="typed-cursor"></span></p>
+    <div class="pulse-wave" id="pulseWave" aria-label="Animated pulse wave"></div>
+    <div class="cta-group">
+      <a href="#quickstart" class="btn btn-primary">🚀 Start</a>
+      <a href="https://github.com/DUBSOpenHub/copilot-cli-agent-pulse" class="btn btn-github"><svg height="20" width="20" viewBox="0 0 16 16" fill="white" style="vertical-align:text-bottom"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STAT STRIP ═══════════════════════════════════ -->
+<section id="stats" style="padding:2rem 1.5rem;background:var(--bg)">
+  <div class="stat-strip">
+    <div class="stat-item reveal-scale">
+      <div class="stat-value" data-target="15" data-suffix="+">0</div>
+      <div class="stat-label">Agent Types</div>
+    </div>
+    <div class="stat-item reveal-scale reveal-delay-1">
+      <div class="stat-value" data-target="5">0</div>
+      <div class="stat-label">Keyboard Shortcuts</div>
+    </div>
+    <div class="stat-item reveal-scale reveal-delay-2">
+      <div class="stat-value" data-target="24" data-suffix="h">0</div>
+      <div class="stat-label">Activity Heatmap</div>
+    </div>
+    <div class="stat-item reveal-scale reveal-delay-3">
+      <div class="stat-value" data-target="1" data-prefix="<" data-suffix="s">0</div>
+      <div class="stat-label">Refresh Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TERMINAL DEMO ═══════════════════════════════ -->
+<section id="demo">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Live Preview</span>
+      <h2 class="section-title glow-cyan">Dashboard in Action</h2>
+      <p style="color:var(--text-dim);max-width:600px">Watch Agent Pulse track your Copilot CLI sessions in real time — sparklines, heatmaps, velocity metrics, and more.</p>
+    </div>
+    <div class="terminal reveal reveal-delay-2">
+      <div class="terminal-bar">
+        <span class="terminal-dot r"></span>
+        <span class="terminal-dot y"></span>
+        <span class="terminal-dot g"></span>
+        <span class="terminal-title">agent_pulse.py — live dashboard</span>
+      </div>
+      <div class="terminal-body" id="terminalBody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ════════════════════════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Capabilities</span>
+      <h2 class="section-title glow-green">Powerful Features</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal-left reveal-delay-1">
+        <span class="feature-icon">🖥️</span>
+        <h3>Live Session Tracking</h3>
+        <p>Real-time monitoring of active Copilot CLI sessions with instant updates and process-level scanning.</p>
+      </div>
+      <div class="feature-card reveal-right reveal-delay-2">
+        <span class="feature-icon">🤖</span>
+        <h3>Agent Monitoring</h3>
+        <p>Track all agent types: task, explore, general-purpose, rubber-duck, code-review, and 10+ custom agents.</p>
+      </div>
+      <div class="feature-card reveal-scale reveal-delay-3">
+        <span class="feature-icon">📊</span>
+        <h3>Trend Analysis</h3>
+        <p>14-day sparklines, daily breakdowns, trend arrows, and historical comparisons at a glance.</p>
+      </div>
+      <div class="feature-card reveal-left reveal-delay-4">
+        <span class="feature-icon">🔥</span>
+        <h3>24h Activity Heatmap</h3>
+        <p>Hourly session density visualization shows when you're most productive with AI agents.</p>
+      </div>
+      <div class="feature-card reveal-right reveal-delay-5">
+        <span class="feature-icon">♥</span>
+        <h3>Fleet Health Score</h3>
+        <p>Composite 0-100 health score combining success rates, error rates, and session stability at a glance.</p>
+      </div>
+      <div class="feature-card reveal-blur reveal-delay-1">
+        <span class="feature-icon">🧠</span>
+        <h3>Model Distribution</h3>
+        <p>See which AI models are running across your sessions — Claude, GPT, Haiku — with colored bars and percentages.</p>
+      </div>
+      <div class="feature-card reveal-left reveal-delay-2">
+        <span class="feature-icon">🚀</span>
+        <h3>Agent Velocity</h3>
+        <p>Agents-per-hour velocity metric with peak tracking and acceleration indicators.</p>
+      </div>
+      <div class="feature-card reveal-right reveal-delay-3">
+        <span class="feature-icon">🔔</span>
+        <h3>Alert System</h3>
+        <p>Toast notifications for new agent launches, error rate spikes, and milestone celebrations.</p>
+      </div>
+      <div class="feature-card reveal-scale reveal-delay-4">
+        <span class="feature-icon">⌨️</span>
+        <h3>Keyboard Shortcuts</h3>
+        <p>Pause, cycle timeframes, export snapshots — power-user keybinds for zero-mouse operation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MODES ═══════════════════════════════════════ -->
+<section id="modes">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Keyboard Shortcuts</span>
+      <h2 class="section-title glow-pink">One Command, All Controls Inside</h2>
+      <p style="color:var(--text-dim);max-width:550px">Just run <code style="color:var(--cyan)">python agent_pulse.py</code> — everything is controlled with keyboard shortcuts from inside the dashboard.</p>
+    </div>
+    <div class="modes-list">
+      <div class="mode-item reveal-left reveal-delay-1">
+        <div class="mode-cmd"><span class="prompt">SPACE</span></div>
+        <span class="mode-label">⏸ Pause / Resume</span>
+        <span class="mode-desc">Freeze the dashboard to read metrics without data churn, resume anytime</span>
+      </div>
+      <div class="mode-item reveal-right reveal-delay-2">
+        <div class="mode-cmd"><span class="prompt">t</span></div>
+        <span class="mode-label">⏱ Cycle Timeframe</span>
+        <span class="mode-desc">Switch between 1h → 6h → 24h → 7d views to zoom in and out of your data</span>
+      </div>
+      <div class="mode-item reveal-left reveal-delay-3">
+        <div class="mode-cmd"><span class="prompt">e</span></div>
+        <span class="mode-label">📤 Export Snapshot</span>
+        <span class="mode-desc">Save current metrics as JSON for integration with other tools and scripts</span>
+      </div>
+      <div class="mode-item reveal-right reveal-delay-4">
+        <div class="mode-cmd"><span class="prompt">r</span></div>
+        <span class="mode-label">🔄 Refresh</span>
+        <span class="mode-desc">Force an immediate data refresh — pull latest sessions, agents, and metrics</span>
+      </div>
+      <div class="mode-item reveal-left reveal-delay-5">
+        <div class="mode-cmd"><span class="prompt">q</span></div>
+        <span class="mode-label">👋 Quit</span>
+        <span class="mode-desc">Exit the dashboard cleanly — all data is persisted to SQLite automatically</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ARCHITECTURE ════════════════════════════════ -->
+<section id="architecture">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Under the Hood</span>
+      <h2 class="section-title glow-cyan">Architecture</h2>
+      <p style="color:var(--text-dim);max-width:550px">A clean four-stage pipeline from process discovery to beautiful terminal output.</p>
+    </div>
+    <div class="arch-flow reveal-scale reveal-delay-2">
+      <div class="arch-box">
+        <h4>🔍 Process Scanner</h4>
+        <p>Discovers CLI sessions</p>
+      </div>
+      <span class="arch-arrow">→<span class="arch-particle" style="animation-delay:0s"></span><span class="arch-particle" style="animation-delay:.6s"></span><span class="arch-particle" style="animation-delay:1.2s"></span></span>
+      <div class="arch-box">
+        <h4>🗄️ Session Store</h4>
+        <p>Local file &amp; SQLite scanner</p>
+      </div>
+      <span class="arch-arrow">→<span class="arch-particle" style="animation-delay:.2s"></span><span class="arch-particle" style="animation-delay:.8s"></span><span class="arch-particle" style="animation-delay:1.4s"></span></span>
+      <div class="arch-box">
+        <h4>🎨 Dashboard Renderer</h4>
+        <p>Layout &amp; sparklines</p>
+      </div>
+      <span class="arch-arrow">→<span class="arch-particle" style="animation-delay:.4s"></span><span class="arch-particle" style="animation-delay:1s"></span><span class="arch-particle" style="animation-delay:1.6s"></span></span>
+      <div class="arch-box">
+        <h4>🖥️ Terminal Output</h4>
+        <p>Textual TUI display</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUICK START ═════════════════════════════════ -->
+<section id="quickstart">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Get Started</span>
+      <h2 class="section-title glow-green">Up and Running in 30 Seconds</h2>
+    </div>
+    <div class="install-terminal reveal-blur reveal-delay-2">
+      <div class="terminal-bar">
+        <span class="terminal-dot r"></span>
+        <span class="terminal-dot y"></span>
+        <span class="terminal-dot g"></span>
+        <span class="terminal-title">installation</span>
+      </div>
+      <div class="terminal-body">
+        <div class="install-line"><span class="comment"># Clone the repository</span></div>
+        <div class="install-line"><span class="comment"># Install with Homebrew (macOS)</span></div>
+        <div class="install-line install-line-wrap"><span class="prompt">$ </span><span class="cmd">brew tap DUBSOpenHub/copilot-cli-agent-pulse &amp;&amp; brew install agent-pulse</span><button class="copy-btn" data-cmd="brew tap DUBSOpenHub/copilot-cli-agent-pulse && brew install agent-pulse">COPY</button></div>
+        <div class="install-line">&nbsp;</div>
+        <div class="install-line"><span class="comment"># — or — clone the repository</span></div>
+        <div class="install-line install-line-wrap"><span class="prompt">$ </span><span class="cmd">git clone https://github.com/DUBSOpenHub/copilot-cli-agent-pulse.git</span><button class="copy-btn" data-cmd="git clone https://github.com/DUBSOpenHub/copilot-cli-agent-pulse.git">COPY</button></div>
+        <div class="install-line">&nbsp;</div>
+        <div class="install-line"><span class="comment"># Enter the directory</span></div>
+        <div class="install-line install-line-wrap"><span class="prompt">$ </span><span class="cmd">cd copilot-cli-agent-pulse</span><button class="copy-btn" data-cmd="cd copilot-cli-agent-pulse">COPY</button></div>
+        <div class="install-line">&nbsp;</div>
+        <div class="install-line"><span class="comment"># Install dependencies</span></div>
+        <div class="install-line install-line-wrap"><span class="prompt">$ </span><span class="cmd">pip install -r requirements.txt</span><button class="copy-btn" data-cmd="pip install -r requirements.txt">COPY</button></div>
+        <div class="install-line">&nbsp;</div>
+        <div class="install-line"><span class="comment"># Launch the dashboard</span></div>
+        <div class="install-line install-line-wrap"><span class="prompt">$ </span><span class="cmd">agentpulse</span><button class="copy-btn" data-cmd="agentpulse">COPY</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="neon-sep">
+
+<!-- ═══ FOOTER ══════════════════════════════════════ -->
+<footer>
+  <p>Built with <span class="footer-heart">❤️</span> for the <a href="https://github.com/DUBSOpenHub/copilot-cli-agent-pulse">GitHub Copilot CLI</a> community</p>
+  <p style="margin-top:.5rem;font-size:.75rem;color:var(--text-dim)">© 2026 Agent Pulse · DUBSOpenHub</p>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- ── JavaScript ─────────────────────────────────── -->
+<!-- ═══════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+
+  /* ── Particles ─────────────────────────────────── */
+  const particlesEl = document.getElementById('particles');
+  const colors = ['#00f5ff','#00ff87','#ff00ff','#ff5f5f','#ffd700'];
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const size=Math.random()*4+1;
+    const c=colors[Math.floor(Math.random()*colors.length)];
+    Object.assign(p.style,{
+      width:size+'px',height:size+'px',
+      left:Math.random()*100+'%',
+      background:c,
+      boxShadow:'0 0 '+size*3+'px '+c,
+      animationDuration:(Math.random()*15+10)+'s',
+      animationDelay:(Math.random()*15)+'s',
+    });
+    particlesEl.appendChild(p);
+  }
+
+  /* ── Pulse Wave ────────────────────────────────── */
+  const waveChars='▁▂▃▄▅▆▇█▇▆▅▄▃▂▁';
+  const pulseWave=document.getElementById('pulseWave');
+  let waveOffset=0;
+  function renderWave(){
+    let html='';
+    for(let i=0;i<30;i++){
+      const idx=(i+waveOffset)%waveChars.length;
+      const delay=(i*0.08).toFixed(2);
+      html+=`<span style="animation-delay:${delay}s">${waveChars[idx]}</span>`;
+    }
+    pulseWave.innerHTML=html;
+    waveOffset++;
+  }
+  renderWave();
+  setInterval(renderWave,600);
+
+  /* ── Mobile Nav Toggle ─────────────────────────── */
+  const navToggle=document.getElementById('navToggle');
+  const navLinks=document.getElementById('navLinks');
+  navToggle.addEventListener('click',()=>{
+    navLinks.classList.toggle('open');
+    navToggle.textContent=navLinks.classList.contains('open')?'✕':'☰';
+  });
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    navLinks.classList.remove('open');
+    navToggle.textContent='☰';
+  }));
+
+  /* ── Scroll: nav highlight, reveal, back-top ─── */
+  const sections=document.querySelectorAll('section[id]');
+  const navAnchors=navLinks.querySelectorAll('a[href^="#"]');
+  const backTop=document.getElementById('backTop');
+  const navbar=document.getElementById('navbar');
+  const reveals=document.querySelectorAll('.reveal');
+
+  function onScroll(){
+    const sy=window.scrollY;
+    // Nav scrolled state
+    navbar.classList.toggle('scrolled',sy>50);
+    // Back-to-top
+    backTop.classList.toggle('visible',sy>400);
+    // Active section
+    let current='';
+    sections.forEach(s=>{
+      if(sy>=s.offsetTop-200) current=s.id;
+    });
+    navAnchors.forEach(a=>{
+      a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+    });
+    // Reveal
+    reveals.forEach(el=>{
+      if(el.getBoundingClientRect().top<window.innerHeight-80){
+        el.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+  /* ── Terminal Demo Animation ───────────────────────────── */
+  const termBody=document.getElementById('terminalBody');
+  const agentTypes=['explore','task','general-purpose','code-review','rubber-duck'];
+  const agentIcons=['⚡','⚙','◉','🔍','🦆'];
+  const agentColors=['t-cyan','t-yellow','t-green','t-pink','t-orange'];
+  const sparkChars='▁▂▃▄▅▆▇█';
+  const heatChars=' ░▒▓█';
+  const WAVE_CHARS='▁▂▃▄▅▆▇█▇▆▅▄▃▂';
+  const heartbeats=['💗','💖','💓','❤️','💓','💗'];
+  const W=59;
+
+  let heartIdx=0;
+  let uptimeStart=Date.now();
+  let bannerTyped=false;
+  let waveTimer=null,heartTimer=null,uptimeTimer=null;
+  let lastVals={sessions:0,agents:0,velocity:0.0,today:0};
+
+  const ACTIVE_SESSIONS=[
+    {id:'sess_7f3a',pid:12847,type:'explore',       status:'RUN',baseSec:382},
+    {id:'sess_2b9c',pid:14203,type:'task',           status:'RUN',baseSec:214},
+    {id:'sess_8e1d',pid:15891,type:'code-review',    status:'IDL',baseSec:905},
+    {id:'sess_4a7f',pid:16102,type:'general-purpose',status:'RUN',baseSec:67},
+  ];
+  const INSTALLED_AGENTS=[
+    {name:'dark-factory',  version:'2.1.0',state:'ACTIVE', dot:'●',dotCls:'t-green', stCls:'t-green'},
+    {name:'swarm-command', version:'1.8.3',state:'ACTIVE', dot:'●',dotCls:'t-green', stCls:'t-green'},
+    {name:'hive1k',        version:'1.5.1',state:'ACTIVE', dot:'●',dotCls:'t-green', stCls:'t-green'},
+    {name:'dispatch',      version:'1.3.2',state:'ACTIVE', dot:'◐',dotCls:'t-yellow',stCls:'t-yellow'},
+    {name:'evo-forge',     version:'1.1.0',state:'LOADING',dot:'○',dotCls:'t-dim',   stCls:'t-yellow'},
+  ];
+  const bannerLines=[
+    '     _                    _     ____        _          ',
+    '    / \\   __ _  ___ _ __ | |_  |  _ \\ _   _| |___  ___ ',
+    '   / _ \\ / _` |/ _ \\ \'_ \\| __| | |_) | | | | / __|/ _ \\',
+    '  / ___ \\ (_| |  __/ | | | |_  |  __/| |_| | \\__ \\  __/',
+    ' /_/   \\_\\__, |\\___|_| |_|\\__| |_|    \\__,_|_|___/\\___|',
+    '         |___/                                         ',
+  ];
+
+  function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+  function sparkline(len){let s='';for(let i=0;i<len;i++)s+=sparkChars[rnd(0,7)];return s;}
+  function heatmap(){let s='';for(let i=0;i<24;i++)s+=heatChars[rnd(0,4)];return s;}
+  function pad2(n){return String(n).padStart(2,'0')}
+
+  function bar(val,max,width){
+    const filled=Math.round((val/max)*width);
+    let s='';
+    for(let i=0;i<width;i++){
+      if(i<filled){
+        if(i<width*0.55) s+='<span class="t-green">█</span>';
+        else if(i<width*0.82) s+='<span class="t-yellow">█</span>';
+        else s+='<span class="t-red">█</span>';
+      } else s+='<span style="color:#1a1a3e">░</span>';
+    }
+    return s;
+  }
+
+  function getUptime(){
+    const total=Math.floor((Date.now()-uptimeStart)/1000);
+    return pad2(Math.floor(total/3600))+':'+pad2(Math.floor((total%3600)/60))+':'+pad2(total%60);
+  }
+
+  function getWave(len=34){
+    let html='';
+    for(let i=0;i<len;i++){
+      const ch=WAVE_CHARS[(i+waveOffset)%WAVE_CHARS.length];
+      let cls='t-dim';
+      if(ch==='▇'||ch==='█') cls=((i+waveOffset)%2===0)?'t-pink':'t-cyan';
+      else if('▃▄▅▆'.includes(ch)) cls='t-green';
+      html+='<span class="'+cls+'">'+ch+'</span>';
+    }
+    return html;
+  }
+
+  function panelTop(title){
+    const inner=W-2;
+    const text=' '+title+' ';
+    const pad=Math.max(0,inner-text.length);
+    const left=Math.floor(pad/2);
+    const right=pad-left;
+    return '<span class="t-dim">╔'+'═'.repeat(left)+'</span><span class="t-cyan t-bold">'+text+'</span><span class="t-dim">'+'═'.repeat(right)+'╗</span>';
+  }
+  function panelBot(){return '<span class="t-dim">╚'+'═'.repeat(W-2)+'╝</span>';}
+
+  function startWave(){
+    if(waveTimer) return;
+    waveTimer=setInterval(function(){
+      waveOffset=(waveOffset+1)%WAVE_CHARS.length;
+      const el=document.getElementById('waveEl');
+      if(el) el.innerHTML=getWave();
+    },120);
+  }
+  function startHeartbeat(){
+    if(heartTimer) return;
+    heartTimer=setInterval(function(){
+      heartIdx=(heartIdx+1)%heartbeats.length;
+      var el=document.getElementById('heartEl');
+      if(el) el.textContent=heartbeats[heartIdx];
+      var h1=document.getElementById('heroHeart');
+      var h2=document.getElementById('heroHeart2');
+      if(h1) h1.textContent=heartbeats[heartIdx];
+      if(h2) h2.textContent=heartbeats[heartIdx];
+    },400);
+  }
+  function startUptime(){
+    if(uptimeTimer) return;
+    uptimeTimer=setInterval(function(){
+      const el=document.getElementById('uptimeEl');
+      if(el) el.textContent=getUptime();
+    },1000);
+  }
+
+  function animCount(elId,from,to,isFloat){
+    const el=document.getElementById(elId);
+    if(!el) return;
+    const start=performance.now();
+    const dur=500;
+    function step(now){
+      const p=Math.min((now-start)/dur,1);
+      const e=p<0.5?2*p*p:(4-2*p)*p-1;
+      const v=from+(to-from)*e;
+      el.textContent=isFloat?v.toFixed(1):(elId==='numAgts'?String(Math.round(v)).padStart(2):String(Math.round(v)));
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function buildDashboard(sessions,agents,velocity,today,peak,agentCounts){
+    const total=agentCounts.reduce(function(a,b){return a+b;},1);
+    const typeClsMap={'explore':'t-cyan','task':'t-yellow','code-review':'t-pink','general-purpose':'t-green','rubber-duck':'t-orange'};
+    let html='';
+
+    // Banner — white ASCII art (matches real dashboard)
+    bannerLines.forEach(function(l){
+      html+='<div class="term-line"><span class="t-white t-bold">'+l+'</span></div>';
+    });
+    html+='<div class="term-line" style="text-align:center"><span class="t-white t-bold">Agent Dashboard for the Copilot CLI</span></div>';
+
+    html+='<div class="term-line" style="text-align:center"><span class="t-pink t-bold">⚡ for GitHub Copilot CLI</span></div>';
+    html+='<div class="term-line">  <span id="heartEl">'+heartbeats[heartIdx]+'</span>  <span class="t-dim">monitoring</span> <span class="t-green t-bold">'+agents+'</span> <span class="t-dim">agents across</span> <span class="t-cyan t-bold">'+sessions+'</span> <span class="t-dim">active sessions</span></div>';
+    html+='<div class="term-line">  <span class="t-dim">AGENT PULSE v2.1.0</span>  <span class="t-dim">│</span>  <span class="t-dim">uptime: </span><span class="t-yellow" id="uptimeEl">'+getUptime()+'</span>  <span class="t-dim">│</span>  <span class="t-dim">pid: </span><span class="t-cyan">'+rnd(10000,20000)+'</span></div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Row 1: Fleet Health + Live Metrics + Trend Analysis + Heatmap+Signal
+    var healthScore=Math.min(100,Math.max(0,85+rnd(-10,10)));
+    var hColor=healthScore>=80?'t-green':healthScore>=60?'t-yellow':'t-pink';
+    var hLabel=healthScore>=80?'EXCELLENT':healthScore>=60?'GOOD':'WARNING';
+    var hGauge='';
+    var hFilled=Math.round(healthScore/100*16);
+    for(var gi=0;gi<16;gi++) hGauge+=gi<hFilled?'<span class="'+hColor+'">█</span>':'<span class="t-dim">░</span>';
+
+    html+='<div class="term-line">'+panelTop('♥ FLEET HEALTH')+'</div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  '+hGauge+' <span class="'+hColor+' t-bold">'+healthScore+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="'+hColor+' t-bold">  '+hLabel+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    html+='<div class="term-line">'+panelTop('● LIVE METRICS')+'</div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-white t-bold">Active Sessions:</span>  <span class="t-green t-bold" id="numSess">'+lastVals.sessions+'</span>    '+bar(sessions,10,20)+'  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-white t-bold">Running Agents :</span>  <span class="t-cyan t-bold" id="numAgts">'+String(lastVals.agents).padStart(2)+'</span>    '+bar(agents,20,20)+'  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-white t-bold">Velocity       :</span>  <span class="t-yellow t-bold" id="numVel">'+lastVals.velocity.toFixed(1)+'</span><span class="t-dim">/hr</span>  <span class="t-dim">peak: '+peak+'/hr</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-white t-bold">Today\u2019s Total  :</span>  <span class="t-pink t-bold" id="numTod">'+lastVals.today+'</span>   <span class="t-dim">▲ trending up</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-dim">⠋ </span><span class="t-green t-bold">LIVE</span>  <span class="t-green">●</span>  <span class="t-dim">PULSE LOCK</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Row 1 continued: Trend Analysis
+    var s24h=rnd(30,80),s7d=rnd(200,500),s30d=rnd(800,2000);
+    html+='<div class="term-line">'+panelTop('📊 TREND ANALYSIS')+'</div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-dim">           24h    7d    30d</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-cyan t-bold">Sessions</span>   <span class="t-yellow">'+String(rnd(5,15)).padStart(3)+'</span>  <span class="t-green">'+String(rnd(30,80)).padStart(4)+'</span>  <span class="t-purple">'+String(rnd(100,300)).padStart(4)+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-green t-bold">Agents  </span>   <span class="t-yellow">'+String(s24h).padStart(3)+'</span>  <span class="t-green">'+String(s7d).padStart(4)+'</span>  <span class="t-purple">'+String(s30d).padStart(4)+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-green">14d agents   '+sparkline(14)+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-cyan">14d sessions '+sparkline(14)+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-green t-bold">  ▲ trending up</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-dim">All-time: </span><span class="t-cyan t-bold">'+rnd(1000,5000)+'</span><span class="t-dim"> agents</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Heatmap + Signal
+    html+='<div class="term-line">'+panelTop('🔥 HEATMAP + SIGNAL')+'</div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-pink t-bold">🔥 24h heatmap</span>  <span class="t-orange">'+heatmap()+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>                 <span class="t-dim">0h          12h         23h</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-green t-bold">sessions   </span>  <span class="t-green">'+sparkline(24)+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-yellow t-bold">launches(5m)</span>  <span class="t-yellow">'+sparkline(24)+'</span>  <span class="t-dim">║</span></div>';
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Row 2: Agent Breakdown + Model Distribution
+    html+='<div class="term-line">'+panelTop('◆ AGENT BREAKDOWN')+'</div>';
+    agentTypes.forEach(function(t,i){
+      const cnt=agentCounts[i];
+      const pct=Math.round(cnt/total*100);
+      html+='<div class="term-line"><span class="t-dim">║</span>  <span class="'+agentColors[i]+'">'+agentIcons[i]+' '+t.padEnd(18)+'</span> <span class="t-white t-bold">'+String(cnt).padStart(2)+'</span> <span class="t-dim">('+String(pct).padStart(2)+'%)</span>  '+bar(cnt,5,12)+'<span class="t-dim">║</span></div>';
+    });
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Model Distribution (new)
+    var models=[
+      {name:'c/sonnet-4.6',  cnt:rnd(15,40), cls:'t-purple'},
+      {name:'c/haiku-4.5',   cnt:rnd(10,30), cls:'t-green'},
+      {name:'g/5.2',         cnt:rnd(5,20),  cls:'t-cyan'},
+      {name:'c/opus-4.6',    cnt:rnd(3,15),  cls:'t-pink'},
+      {name:'g/4.1',         cnt:rnd(2,10),  cls:'t-yellow'},
+    ];
+    var mTotal=models.reduce(function(a,m){return a+m.cnt;},0);
+    var mMax=models.reduce(function(a,m){return Math.max(a,m.cnt);},1);
+    html+='<div class="term-line">'+panelTop('🧠 MODEL DISTRIBUTION')+'</div>';
+    models.forEach(function(m){
+      var pct=Math.round(m.cnt/mTotal*100);
+      var mbar='';var mfilled=Math.round((m.cnt/mMax)*12);
+      for(var bi=0;bi<12;bi++) mbar+=bi<mfilled?'<span class="'+m.cls+'">█</span>':'<span class="t-dim">░</span>';
+      html+='<div class="term-line"><span class="t-dim">║</span>  <span class="'+m.cls+' t-bold">'+m.name.padEnd(16)+'</span> <span class="'+m.cls+' t-bold">'+String(m.cnt).padStart(3)+'</span> <span class="t-dim">('+String(pct).padStart(2)+'%)</span>  '+mbar+'  <span class="t-dim">║</span></div>';
+    });
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Row 3: Active Sessions + Installed Agents
+    html+='<div class="term-line">'+panelTop('▶ ACTIVE SESSIONS')+'</div>';
+    html+='<div class="term-line"><span class="t-dim">║  SESSION-ID    PID    TYPE              STATUS  RUNTIME  ║</span></div>';
+    ACTIVE_SESSIONS.forEach(function(s){
+      const sec=Math.max(0,s.baseSec+rnd(-30,30));
+      const rt=pad2(Math.floor(sec/60))+':'+pad2(sec%60);
+      const tc=typeClsMap[s.type]||'t-cyan';
+      const stHtml=s.status==='RUN'?'<span class="t-green">RUN</span>':'<span class="t-dim">IDL</span>';
+      html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-cyan">'+s.id+'</span>  <span class="t-dim">'+String(s.pid).padStart(5)+'</span>  <span class="'+tc+'">'+s.type.padEnd(17)+'</span>  '+stHtml+'  <span class="t-yellow">'+rt+'</span>  <span class="t-dim">║</span></div>';
+    });
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    html+='<div class="term-line">'+panelTop('⧡ INSTALLED AGENTS')+'</div>';
+    INSTALLED_AGENTS.forEach(function(a){
+      const dot='<span class="'+a.dotCls+'">'+a.dot+'</span>';
+      const st='<span class="'+a.stCls+'">'+a.state+'</span>';
+      html+='<div class="term-line"><span class="t-dim">║</span>  '+dot+' <span class="t-cyan">'+a.name.padEnd(20)+'</span>  <span class="t-dim">v'+a.version+'</span>  '+st+'  <span class="t-dim">║</span></div>';
+    });
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Row 4: Recent Launches
+    html+='<div class="term-line">'+panelTop('📡 RECENT LAUNCHES')+'</div>';
+    html+='<div class="term-line"><span class="t-dim">║  AGE    TYPE              NAME                    MODEL    ║</span></div>';
+    var recentNames=['build-parser','find-auth','review-pr-42','run-tests','refactor-api','lint-check'];
+    var recentModels=['sonnet','haiku','sonnet','haiku','opus','haiku'];
+    for(var ri=0;ri<6;ri++){
+      var rAge=String(rnd(1,30))+'m';
+      var rType=agentTypes[ri%agentTypes.length];
+      var rTc=typeClsMap[rType]||'t-cyan';
+      html+='<div class="term-line"><span class="t-dim">║</span>  <span class="t-dim">'+rAge.padEnd(6)+'</span>  <span class="'+rTc+' t-bold">'+rType.padEnd(17)+'</span>  <span class="t-green">'+recentNames[ri].padEnd(22)+'</span>  <span class="t-dim">'+recentModels[ri].padEnd(8)+'</span>  <span class="t-dim">║</span></div>';
+    }
+    html+='<div class="term-line">'+panelBot()+'</div>';
+    html+='<div class="term-line">&nbsp;</div>';
+
+    // Footer
+    html+='<div class="term-line"><span class="t-dim">  q Quit  r Refresh  ⏸ Pause  ⏱ Time  📤 Export</span><span class="cursor"></span></div>';
+    return html;
+  }
+
+  function typeBanner(onDone){
+    termBody.innerHTML='';
+    const bootDiv=document.createElement('div');
+    bootDiv.id='bannerArea';
+    termBody.appendChild(bootDiv);
+
+    // Instant banner (white, like real dashboard)
+    let bHtml='';
+    bannerLines.forEach(function(l){
+      bHtml+='<div class="term-line" style="opacity:1"><span class="t-white t-bold">'+l+'</span></div>';
+    });
+    bHtml+='<div class="term-line" style="opacity:1;text-align:center"><span class="t-white t-bold">Agent Dashboard for the Copilot CLI</span></div>';
+    bHtml+='<div class="term-line">&nbsp;</div>';
+    bootDiv.innerHTML=bHtml;
+
+    // Braille spinner boot stages (matches real dashboard)
+    const braille='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏';
+    const stages=[
+      {label:'Scanning processes',         dur:800,  color:'#00f5ff'},
+      {label:'Connecting to session store', dur:900,  color:'#00ff87'},
+      {label:'Loading agent registry',     dur:900,  color:'#ff00ff'},
+      {label:'Mapping active sessions',    dur:1000, color:'#ffd75f'},
+      {label:'Rendering dashboard',        dur:700,  color:'#bf7fff'},
+    ];
+    let stageIdx=0;
+    const stageArea=document.createElement('div');
+    bootDiv.appendChild(stageArea);
+
+    function runStage(){
+      if(stageIdx>=stages.length){
+        // Show ONLINE then transition to dashboard
+        const onlineDiv=document.createElement('div');
+        onlineDiv.className='term-line';
+        onlineDiv.style.opacity='1';
+        onlineDiv.style.textAlign='center';
+        onlineDiv.innerHTML='<span style="color:#00ff87;font-weight:bold">  ◉ ONLINE</span>';
+        stageArea.appendChild(onlineDiv);
+        setTimeout(function(){
+          bannerTyped=true;
+          onDone();
+        },400);
+        return;
+      }
+      const s=stages[stageIdx];
+      const spinLine=document.createElement('div');
+      spinLine.className='term-line';
+      spinLine.style.opacity='1';
+      spinLine.style.textAlign='center';
+      stageArea.appendChild(spinLine);
+
+      let frame=0;
+      const spinInterval=setInterval(function(){
+        spinLine.innerHTML='<span style="color:'+s.color+';font-weight:bold">'+braille[frame%braille.length]+' '+s.label+'</span>';
+        frame++;
+      },80);
+
+      setTimeout(function(){
+        clearInterval(spinInterval);
+        spinLine.innerHTML='<span style="color:'+s.color+';font-weight:bold">  ✓ '+s.label+'</span>';
+        stageIdx++;
+        runStage();
+      },s.dur);
+    }
+    runStage();
+  }
+
+  function afterRender(sessions,agents,velocity,today){
+    const lines=termBody.querySelectorAll('.term-line');
+    lines.forEach(function(l,i){l.style.animationDelay=(i*0.025)+'s';});
+    animCount('numSess',lastVals.sessions,sessions,false);
+    animCount('numAgts',lastVals.agents,agents,false);
+    animCount('numVel',lastVals.velocity,velocity,true);
+    animCount('numTod',lastVals.today,today,false);
+    lastVals={sessions:sessions,agents:agents,velocity:velocity,today:today};
+    startWave();startHeartbeat();startUptime();
+  }
+
+  function renderDashboard(){
+    const sessions=rnd(2,8);
+    const agents=rnd(4,14);
+    const velocity=parseFloat((Math.random()*3+0.5).toFixed(1));
+    const today=rnd(20,60);
+    const peak=rnd(6,12);
+    const agentCounts=agentTypes.map(function(){return rnd(0,5);});
+
+    if(!bannerTyped){
+      typeBanner(function(){
+        termBody.innerHTML=buildDashboard(sessions,agents,velocity,today,peak,agentCounts);
+        afterRender(sessions,agents,velocity,today);
+      });
+    } else {
+      termBody.innerHTML=buildDashboard(sessions,agents,velocity,today,peak,agentCounts);
+      afterRender(sessions,agents,velocity,today);
+    }
+  }
+
+  const demObs=new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){
+      renderDashboard();
+      setInterval(function(){if(bannerTyped) renderDashboard();},5000);
+      demObs.disconnect();
+    }
+  },{threshold:0.2});
+  demObs.observe(document.getElementById('demo'));
+
+  /* ── Scroll Progress Bar (#14) ───────────────────── */
+  var scrollProg=document.getElementById('scrollProgress');
+  function updateScrollProgress(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    if(h>0) scrollProg.style.width=(window.scrollY/h*100)+'%';
+  }
+  window.addEventListener('scroll',updateScrollProgress,{passive:true});
+
+  /* ── Typing Subtitle (#9) ────────────────────────── */
+  var subtitles=[
+    'Track your agents in real time',
+    'Sparklines \u00b7 Heatmaps \u00b7 Velocity metrics',
+    'Powered by Python + Textual',
+  ];
+  var typedTextEl=document.getElementById('typedText');
+  var subIdx2=0,subCharIdx2=0,subDeleting=false,subPauseFrames=0;
+  function typeSubLoop(){
+    if(!typedTextEl) return;
+    if(subPauseFrames>0){subPauseFrames--;setTimeout(typeSubLoop,50);return;}
+    var cur=subtitles[subIdx2];
+    if(!subDeleting){
+      subCharIdx2++;
+      typedTextEl.textContent=cur.substring(0,subCharIdx2);
+      if(subCharIdx2>=cur.length){subDeleting=true;subPauseFrames=40;}
+    } else {
+      subCharIdx2--;
+      typedTextEl.textContent=cur.substring(0,subCharIdx2);
+      if(subCharIdx2===0){subDeleting=false;subIdx2=(subIdx2+1)%subtitles.length;subPauseFrames=8;}
+    }
+    setTimeout(typeSubLoop,subDeleting?25:55);
+  }
+  typeSubLoop();
+
+  /* ── Dynamic Hero Badge (#10) ────────────────────── */
+  var badgeTexts=['⚡ for GitHub Copilot CLI','📊 Real-Time Agent Metrics'];
+  var badgeEl=document.getElementById('heroBadge');
+  var bIdx=0;
+  setInterval(function(){
+    if(!badgeEl) return;
+    badgeEl.style.transition='opacity .4s ease';
+    badgeEl.style.opacity='0';
+    setTimeout(function(){
+      bIdx=(bIdx+1)%badgeTexts.length;
+      badgeEl.textContent=badgeTexts[bIdx];
+      badgeEl.style.opacity='1';
+    },400);
+  },3000);
+
+  /* ── Stat Counter Strip (#11) ────────────────────── */
+  var statObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.stat-value').forEach(function(sv){
+          var target=parseInt(sv.dataset.target,10);
+          var prefix=sv.dataset.prefix||'';
+          var suffix=sv.dataset.suffix||'';
+          var t0=performance.now(),dur=1200;
+          function step(now){
+            var p=Math.min((now-t0)/dur,1);
+            var ease=p<0.5?2*p*p:(4-2*p)*p-1;
+            var v=Math.round(target*ease);
+            sv.textContent=prefix+v+suffix;
+            if(p<1) requestAnimationFrame(step);
+            else sv.textContent=prefix+target+suffix;
+          }
+          requestAnimationFrame(step);
+        });
+        statObs.disconnect();
+      }
+    });
+  },{threshold:0.3});
+  var statsEl=document.getElementById('stats');
+  if(statsEl) statObs.observe(statsEl);
+
+  /* ── Feature Card 3D Tilt (#12) ──────────────────── */
+  document.querySelectorAll('.feature-card').forEach(function(card){
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width-0.5;
+      var y=(e.clientY-r.top)/r.height-0.5;
+      card.style.setProperty('--rx',(-y*8)+'deg');
+      card.style.setProperty('--ry',(x*8)+'deg');
+    });
+    card.addEventListener('mouseleave',function(){
+      card.style.setProperty('--rx','0deg');
+      card.style.setProperty('--ry','0deg');
+    });
+  });
+
+  /* ── Click-to-Copy (#15) ─────────────────────────── */
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var cmd=btn.dataset.cmd;
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(cmd).then(function(){
+          btn.textContent='\u2713 Copied';
+          btn.classList.add('copied');
+          setTimeout(function(){btn.textContent='COPY';btn.classList.remove('copied');},2000);
+        });
+      }
+    });
+  });
+
+  /* ── Varied Reveal Observer (#13) ────────────────── */
+  var varReveals=document.querySelectorAll('.reveal-left,.reveal-right,.reveal-scale,.reveal-blur');
+  function checkVarReveals(){
+    varReveals.forEach(function(el){
+      if(el.getBoundingClientRect().top<window.innerHeight-80){
+        el.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll',checkVarReveals,{passive:true});
+  checkVarReveals();
+
+})();
+</script>
+</body>
+</html>

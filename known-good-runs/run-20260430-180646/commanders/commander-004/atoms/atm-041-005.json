@@ -1,0 +1,29 @@
+{
+  "worker_id": "wkr-041-005",
+  "theme": "recovery-stuck-detection",
+  "focus": "failure-containment",
+  "findings": [
+    "Depth Guard is present: the Worker Depth Lock block forbids task-tool use and child spawning by leaf workers",
+    "bounded spawning is explicitly constrained with max_workers=250, squads_allocated=50, and max_depth=3",
+    "partial/failed status contract exists: commanders must report partial when gates prevent full launch and failed if no squad leads launch",
+    "banned-child-model safety is enforced in the launcher with a hard exit on banned models and the ban list is exported to commanders",
+    "child failure containment is visible in swarm-state counters and child-agents ledger failure events",
+    "gap: there is no explicit shell-level stuck-launch timeout for commander child spawning; the 90s capsule timeout is advisory only",
+    "gap: STAMPEDE_METASWARM_NO_GATES=1 can disable local circuit breakers, leaving only platform limits as a backstop"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:29-39",
+    "agents/stampede-commander.agent.md:51-56",
+    "agents/stampede-commander.agent.md:106-109",
+    "agents/stampede-commander.agent.md:142-147",
+    "agents/stampede-commander.agent.md:243-252",
+    "bin/stampede.sh:141-196",
+    "bin/stampede.sh:520-530",
+    "bin/stampede.sh:597-614",
+    "bin/stampede.sh:936-949",
+    "bin/stampede.sh:1015-1017",
+    "bin/stampede.sh:1096-1149"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

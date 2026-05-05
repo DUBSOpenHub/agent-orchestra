@@ -1,0 +1,422 @@
+[
+  {
+    "id": "sq-001",
+    "name": "swarm-state-schema",
+    "objective": "Audit swarm-state.json schema compliance in stampede-commander.agent.md: verify all required fields match the Launch-Proof Contract spec",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-002",
+    "name": "swarm-state-phases",
+    "objective": "Verify swarm-state.json phase transitions are all documented and monitor reads them correctly",
+    "files": [
+      "agents/stampede-commander.agent.md",
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-003",
+    "name": "swarm-state-telemetry",
+    "objective": "Audit telemetry counters in swarm-state.json: verify increment logic and final validation",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-004",
+    "name": "swarm-state-heartbeat",
+    "objective": "Verify heartbeat and updated_at timestamps are maintained during active runs",
+    "files": [
+      "agents/stampede-commander.agent.md",
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-005",
+    "name": "swarm-state-proof",
+    "objective": "Audit launch_proof object: verify squad_leads_started and workers_started are validated before bundle",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-006",
+    "name": "child-jsonl-format",
+    "objective": "Verify child-agents.jsonl record format matches spec: ts, event, commander_id, child_id fields",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-007",
+    "name": "child-jsonl-events",
+    "objective": "Audit all event types in child-agents.jsonl: launch_requested, launch_started, completed, failed",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-008",
+    "name": "child-jsonl-depth",
+    "objective": "Verify depth field in child-agents.jsonl records: squad_lead=2, worker=3",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-009",
+    "name": "child-jsonl-model",
+    "objective": "Verify model field is present in every launch_started record in child-agents.jsonl",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-010",
+    "name": "child-jsonl-atomicity",
+    "objective": "Audit atomicity of JSONL appends: check for race conditions in concurrent writes",
+    "files": [
+      "agents/stampede-commander.agent.md",
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-011",
+    "name": "monitor-squad-count",
+    "objective": "Audit stampede-monitor.sh parsing of squad_leads_launched from swarm-state.json",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-012",
+    "name": "monitor-worker-count",
+    "objective": "Audit stampede-monitor.sh parsing of workers_launched and display format",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-013",
+    "name": "monitor-running-count",
+    "objective": "Verify monitor displays workers_running count correctly from telemetry",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-014",
+    "name": "monitor-heartbeat-age",
+    "objective": "Audit heartbeat age calculation in monitor and stale detection threshold",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-015",
+    "name": "monitor-warning-logic",
+    "objective": "Verify 'no sub-agent proof' and 'incomplete proof' warning conditions",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-016",
+    "name": "premium-pool-list",
+    "objective": "Verify premium_model_pool matches across commander agent, SKILL.md, and launcher",
+    "files": [
+      "agents/stampede-commander.agent.md",
+      "skills/SKILL.md",
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-017",
+    "name": "premium-banned-list",
+    "objective": "Verify banned_child_models list is consistent across all components",
+    "files": [
+      "agents/stampede-commander.agent.md",
+      "skills/SKILL.md",
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-018",
+    "name": "premium-enforcement",
+    "objective": "Audit how model override is applied to child launches - verify no fallback to banned",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-019",
+    "name": "premium-rotation",
+    "objective": "Verify model rotation logic distributes across the premium pool evenly",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-020",
+    "name": "premium-violation",
+    "objective": "Audit what happens when a child falls back to banned model - verify partial status",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-021",
+    "name": "launch-proof-success",
+    "objective": "Verify success criteria: squad_leads_launched==50 and workers_launched==250",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-022",
+    "name": "launch-proof-partial",
+    "objective": "Verify partial status when circuit breaker prevents full launch",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-023",
+    "name": "launch-proof-failed",
+    "objective": "Verify failed status when no squad leads launched",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-024",
+    "name": "launch-proof-monitor",
+    "objective": "Verify monitor can read and display launch proof from swarm-state.json",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-025",
+    "name": "launch-proof-timing",
+    "objective": "Audit first_child_started_at and last_child_started_at timestamp requirements",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-026",
+    "name": "launcher-metaswarm-flag",
+    "objective": "Audit --metaswarm flag handling in stampede.sh: commander pane creation",
+    "files": [
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-027",
+    "name": "launcher-commander-limit",
+    "objective": "Verify --metaswarm caps at 5 commanders (line 493-496 in stampede.sh)",
+    "files": [
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-028",
+    "name": "launcher-model-rotation",
+    "objective": "Audit --models flag handling for multi-model rotation in metaswarm mode",
+    "files": [
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-029",
+    "name": "launcher-fleet-json",
+    "objective": "Verify fleet.json includes role=commander and progress_dir for monitor",
+    "files": [
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-030",
+    "name": "launcher-agent-selection",
+    "objective": "Verify launcher uses stampede-commander agent (not stampede-agent) in metaswarm",
+    "files": [
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-031",
+    "name": "depth-guard-agent-md",
+    "objective": "Audit stampede-commander.agent.md Depth Guard rules: workers must be leaf nodes",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-032",
+    "name": "depth-guard-worker-lock",
+    "objective": "Verify Worker Depth Lock block is documented and required in worker prompts",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-033",
+    "name": "depth-guard-tools",
+    "objective": "Verify stampede-agent tools list excludes 'task' tool (leaf enforcement)",
+    "files": [
+      "agents/stampede-agent.agent.md"
+    ]
+  },
+  {
+    "id": "sq-034",
+    "name": "depth-guard-max-depth",
+    "objective": "Audit max_depth=3 enforcement: commander=1, squad_lead=2, worker=3",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-035",
+    "name": "depth-guard-can-launch",
+    "objective": "Verify can_launch=false is set for all workers in child-agents.jsonl",
+    "files": [
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-036",
+    "name": "recovery-orphan",
+    "objective": "Audit orphan recovery logic in monitor: claimed tasks returned to queue when agents die",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-037",
+    "name": "recovery-heartbeat-stale",
+    "objective": "Verify commander_active check uses heartbeat age vs ORPHAN_RECOVERY_AFTER threshold",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-038",
+    "name": "recovery-dead-pane",
+    "objective": "Audit dead pane detection via tmux pane_dead flag",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-039",
+    "name": "recovery-all-dead",
+    "objective": "Verify ALL_DEAD_SINCE grace period (15s) before declaring partial completion",
+    "files": [
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-040",
+    "name": "recovery-teardown",
+    "objective": "Audit teardown command: PID cleanup, session kill, state update",
+    "files": [
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-041",
+    "name": "terminology-sub-agent",
+    "objective": "Audit user-facing terminology: 'sub-agent' vs 'child agent' vs 'worker' consistency",
+    "files": [
+      "README.md",
+      "agents/stampede-commander.agent.md",
+      "bin/stampede-monitor.sh"
+    ]
+  },
+  {
+    "id": "sq-042",
+    "name": "terminology-squad-lead",
+    "objective": "Verify 'Squad Lead' capitalization and usage across all docs",
+    "files": [
+      "README.md",
+      "agents/stampede-commander.agent.md",
+      "skills/SKILL.md"
+    ]
+  },
+  {
+    "id": "sq-043",
+    "name": "terminology-commander",
+    "objective": "Verify 'commander' role naming in fleet.json, monitor output, and docs",
+    "files": [
+      "bin/stampede-monitor.sh",
+      "bin/stampede.sh",
+      "README.md"
+    ]
+  },
+  {
+    "id": "sq-044",
+    "name": "terminology-metaswarm",
+    "objective": "Verify 'metaswarm' profile naming consistency across components",
+    "files": [
+      "agents/stampede-commander.agent.md",
+      "bin/stampede.sh",
+      "skills/SKILL.md",
+      "README.md"
+    ]
+  },
+  {
+    "id": "sq-045",
+    "name": "terminology-agent-pulse",
+    "objective": "Audit 'Agent Pulse' naming in monitor UI and documentation references",
+    "files": [
+      "bin/stampede-monitor.sh",
+      "README.md"
+    ]
+  },
+  {
+    "id": "sq-046",
+    "name": "collab-bus-creation",
+    "objective": "Verify collaboration bus directory creation in stampede.sh for metaswarm runs",
+    "files": [
+      "bin/stampede.sh"
+    ]
+  },
+  {
+    "id": "sq-047",
+    "name": "collab-protocol",
+    "objective": "Audit collab/protocol.json schema and required fields",
+    "files": [
+      "skills/SKILL.md"
+    ]
+  },
+  {
+    "id": "sq-048",
+    "name": "collab-proposals",
+    "objective": "Verify proposals.jsonl required fields: ts, run_id, commander_id, event, item_id, summary",
+    "files": [
+      "skills/SKILL.md",
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-049",
+    "name": "collab-reviews",
+    "objective": "Audit peer review workflow: review other commanders' proposals in reviews.jsonl",
+    "files": [
+      "skills/SKILL.md",
+      "agents/stampede-commander.agent.md"
+    ]
+  },
+  {
+    "id": "sq-050",
+    "name": "collab-consensus",
+    "objective": "Verify consensus promotion and broadcast adoption flow across commanders",
+    "files": [
+      "skills/SKILL.md",
+      "agents/stampede-commander.agent.md"
+    ]
+  }
+]

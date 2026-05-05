@@ -1,0 +1,67 @@
+{
+  "squad_id": "sq-006",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "premium-model-policy",
+  "status": "partial",
+  "blockers": [
+    "Leaf worker launches via functions.task returned synchronously and did not provide a background agent id; launch_started events were recorded with agent-id=\"unknown\"."
+  ],
+  "worker_atoms": [
+    {
+      "worker_id": "wkr-006-001",
+      "atom_id": "atm-006-001",
+      "focus": "model-rotation",
+      "confidence": 0.9,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-006-002",
+      "atom_id": "atm-006-002",
+      "focus": "banned-model-guardrails",
+      "confidence": 0.93,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-006-003",
+      "atom_id": "atm-006-003",
+      "focus": "docs-vs-runtime",
+      "confidence": 0.9,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-006-004",
+      "atom_id": "atm-006-004",
+      "focus": "child-override-propagation",
+      "confidence": 0.85,
+      "status": "success"
+    },
+    {
+      "worker_id": "wkr-006-005",
+      "atom_id": "atm-006-005",
+      "focus": "fallback-violation-handling",
+      "confidence": 0.63,
+      "status": "success"
+    }
+  ],
+  "consensus": {
+    "high_risk_items": [
+      "bin/stampede.sh default MODEL is claude-haiku-4.5 while SKILL.md states default model claude-sonnet-4.5; cheap-model usage is likely if users follow different docs.",
+      "Commander/child banned-model enforcement is mostly instructional; no clear mechanical pre-flight block for commander -> child task launches.",
+      "tests/depth-guard-lint.sh does not assert banned-model strings; it can pass even if banned-model guardrails are removed from commander docs."
+    ],
+    "notes": [
+      "Metaswarm launcher path does reject banned models supplied to --model/--models (bin/stampede.sh:516-530). The larger remaining risk is child launches from commanders omitting/violating model overrides."
+    ],
+    "conflicts": []
+  },
+  "overall_confidence": 0.86,
+  "key_source_refs": [
+    "bin/stampede.sh:15-20 (default model + banned/premium lists)",
+    "bin/stampede.sh:516-530 (metaswarm banned model rejection)",
+    "skills/SKILL.md:39-40 (docs default model)",
+    "agents/stampede-commander.agent.md:148-168 (Premium Model Policy + banned list)",
+    "tests/depth-guard-lint.sh:35-53 (required commander phrases excludes banned list)",
+    "README.md:114-116,130-134 (haiku example + metaswarm premium statement)"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-030-005",
+  "model": "gpt-5.2-codex",
+  "assignment": "consensus inclusion",
+  "status": "completed",
+  "consensus_inclusion": {
+    "consensus_entries_for_commander": 0,
+    "consensus_entries_total": 5,
+    "consensus_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+    "result_consensus_present": false,
+    "bundle_consensus_present": false
+  },
+  "evidence": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/results/commander-001.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/results/commander-003.json"
+  ]
+}

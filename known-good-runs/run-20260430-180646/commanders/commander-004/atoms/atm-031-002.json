@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-031-002",
+  "theme": "partial-failure-bundles",
+  "focus": "partial-trigger-paths",
+  "findings": [
+    "Docs explicitly require partial or failed when a commander cannot launch the full SS-250 (50 squad leads x 5 workers) and forbid silent downgrade to success.",
+    "Launch-proof artifacts swarm-state.json and child-agents.jsonl are required evidence.",
+    "Gap: docs do not clearly say degraded or missing proof files alone must force partial instead of success.",
+    "Gap: incomplete bundle evidence is not explicitly defined as a no-false-success trigger in the reviewed docs."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:407",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

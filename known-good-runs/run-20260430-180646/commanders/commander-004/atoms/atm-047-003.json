@@ -1,0 +1,27 @@
+{
+  "atom_id": "atm-047-003",
+  "worker_id": "wkr-047-003",
+  "theme": "docs-ci-readiness",
+  "focus": "depth-lint-gap-analysis",
+  "findings": [
+    "Lint does NOT check banned-model list presence in commander (no checks for claude-haiku-4.5, gpt-5.4-mini, gpt-5-mini, gpt-4.1) \u2014 HIGH severity",
+    "Only 1 of 10 premium models (gpt-5.5) checked; remaining 9 unvalidated \u2014 HIGH severity",
+    "No partial/failure status language checked (status: partial, status: failed phrases not asserted) \u2014 HIGH severity",
+    "Worker Depth Lock lint checks only 2 of 4 block lines; missing delegation prohibition phrases \u2014 MEDIUM severity",
+    "constraints.max_workers checked as substring only, value =250 not asserted (lint:38)",
+    "swarm_scale and per_commander_full_swarm value correctness unverified",
+    "Tool-ban match is 2-space indentation sensitive; 4-space/tab YAML would bypass (lint:17)",
+    "Current files would PASS lint today \u2014 all checked strings present"
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:35-53",
+    "tests/depth-guard-lint.sh:16-19",
+    "tests/depth-guard-lint.sh:55-61",
+    "tests/depth-guard-lint.sh:38",
+    "agents/stampede-commander.agent.md:107-111",
+    "agents/stampede-agent.agent.md:7-14"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "ts": "2026-05-01T01:29:05Z"
+}

@@ -1,0 +1,26 @@
+{
+  "worker_id": "wkr-001-001",
+  "theme": "commander-launch-profile",
+  "focus": "launcher-flags",
+  "findings": [
+    "Launcher does not fully hard-enforce premium/banned model policy outside metaswarm gating; default MODEL is claude-haiku-4.5 and --agent-cmd can bypass model templating.",
+    "Metaswarm max-5 commanders error message claims total cap 1600 even though 5 x 250 implies 1250 leaf workers.",
+    "Teardown/recovery UX is inconsistent: usage suggests --teardown --run-id alone, but repo-local cleanup depends on repo context.",
+    "Launch-proof files are seeded and prompted, but launcher success path does not verify proof counts before declaring completion."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:15",
+    "bin/stampede.sh:35-38",
+    "bin/stampede.sh:309-319",
+    "bin/stampede.sh:502-505",
+    "bin/stampede.sh:605-606",
+    "bin/stampede.sh:739-756",
+    "bin/stampede.sh:782-788",
+    "bin/stampede.sh:886",
+    "bin/stampede.sh:922-958",
+    "bin/stampede.sh:962-1023",
+    "bin/stampede.sh:1221-1222"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

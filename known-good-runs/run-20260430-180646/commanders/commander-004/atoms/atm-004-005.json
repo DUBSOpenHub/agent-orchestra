@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-004-005",
+  "theme": "commander-launch-profile",
+  "focus": "negative-downgrade-cases",
+  "findings": [
+    "Metaswarm rejects banned/cheap models at launch with a hard error rather than silently downgrading.",
+    "Fleet/state metadata includes model_policy=premium plus an explicit premium_model_pool and banned_child_models list for sub-agent enforcement.",
+    "Commander prompt allows partial only if a circuit breaker triggers and requires explicit success/partial/failed bundle status.",
+    "Operator override forbids local time/cost downgrades and requires logging external platform launch blockers instead of silently scaling down.",
+    "Smoke tests assert the premium model pool and banned_child_models contract to catch downgrade regressions."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:514-528",
+    "bin/stampede.sh:750-831",
+    "bin/stampede.sh:908-913",
+    "tests/smoke-test.sh:124-141"
+  ],
+  "confidence": 0.63,
+  "status": "success"
+}

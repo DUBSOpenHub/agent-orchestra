@@ -1,0 +1,58 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "task_id": "commander-005",
+  "role": "commander",
+  "profile": "metaswarm",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "phase": "complete",
+  "status": "success",
+  "launch_proof_required": true,
+  "launch_proof": {
+    "squad_leads_started": 50,
+    "workers_started": 250,
+    "first_child_started_at": "2026-05-01T01:10:45Z",
+    "last_child_started_at": "2026-05-01T01:19:58Z"
+  },
+  "depth_budget": {
+    "squads_allocated": 50,
+    "squads_max": 50
+  },
+  "model_policy": "premium",
+  "premium_model_pool": [
+    "claude-opus-4.7",
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5",
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex",
+    "claude-sonnet-4.5",
+    "gpt-5.2-codex"
+  ],
+  "banned_child_models": [
+    "claude-haiku-4.5",
+    "gpt-5.4-mini",
+    "gpt-5-mini",
+    "gpt-4.1"
+  ],
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 50,
+    "squad_leads_running": 0,
+    "squad_leads_completed": 50,
+    "squad_leads_failed": 0,
+    "workers_per_squad_lead": 5,
+    "workers_target": 250,
+    "workers_launched": 250,
+    "workers_running": 0,
+    "workers_completed": 250,
+    "workers_failed": 0,
+    "atoms_received": 50,
+    "children_failed": 0
+  },
+  "updated_at": "2026-05-01T01:20:14Z",
+  "last_heartbeat_at": "2026-05-01T01:20:14Z"
+}

@@ -1,0 +1,128 @@
+{
+  "squad_lead": "sq-030",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "timestamp": "2026-05-01T01:22:44.582825Z",
+  "assignment": "Review-only collaboration-bus QA: final bundle status, exact launch counts, result JSON shape, claimed cleanup, consensus inclusion",
+  "workers": [
+    {
+      "id": "wkr-030-001",
+      "model": "gpt-5.2",
+      "assignment": "Final bundle status check",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-030-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "Exact launch counts verification",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-030-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "Result JSON shape audit",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-030-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "Claimed cleanup verification",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-030-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "Consensus inclusion check",
+      "status": "completed"
+    }
+  ],
+  "findings": {
+    "bundle_status": {
+      "bundle_present": false,
+      "result_present": false,
+      "swarm_state_status": "partial",
+      "swarm_phase": "launching_squad_leads",
+      "expected_status": "partial",
+      "partial_reason": "telemetry_integrity_warning: child-agents.jsonl was truncated/restarted by concurrent child writes; recovered launched squad lead records appended, but launch-proof can no longer prove a clean 50x5 run."
+    },
+    "launch_counts": {
+      "squad_leads_target": 50,
+      "squad_leads_launched": 31,
+      "workers_target": 250,
+      "workers_launched": 39,
+      "workers_running": 32,
+      "workers_completed": 7,
+      "launch_proof": {
+        "squad_leads_started": 30,
+        "workers_started": 34,
+        "first_child_started_at": "1777598304.148853",
+        "last_child_started_at": "2026-05-01T01:19:39.928043Z"
+      }
+    },
+    "result_json_shape": {
+      "spec_required_fields": [
+        "task_id",
+        "run_id",
+        "commander_id",
+        "status",
+        "role",
+        "profile",
+        "swarm_scale",
+        "per_commander_full_swarm",
+        "branch",
+        "files_changed",
+        "summary",
+        "confidence",
+        "consensus",
+        "telemetry"
+      ],
+      "commander_001_missing": [],
+      "commander_003_missing": [],
+      "commander_001_extra": [
+        "adopted_consensus_item_ids",
+        "atoms",
+        "blockers_total",
+        "broadcasts",
+        "completed_at",
+        "launch_proof",
+        "majors_total",
+        "minors_total",
+        "no_source_modifications",
+        "review_only",
+        "ship_recommendation",
+        "source_refs"
+      ],
+      "commander_003_extra": [
+        "adopted_consensus",
+        "completed_at",
+        "source_refs"
+      ],
+      "adoption_field_mismatch": {
+        "commander_001": "adopted_consensus_item_ids",
+        "commander_003": "adopted_consensus"
+      },
+      "commander_002_result_present": false
+    },
+    "claimed_cleanup": {
+      "claimed_file_present": true,
+      "claimed_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/claimed/commander-002.json",
+      "cleanup_expected": "remove after bundle/results write"
+    },
+    "consensus_inclusion": {
+      "consensus_entries_for_commander": 0,
+      "consensus_entries_total": 5,
+      "consensus_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+      "result_consensus_present": false,
+      "bundle_consensus_present": false
+    }
+  },
+  "evidence": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/swarm-state.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/results/commander-001.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/results/commander-003.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/consensus.jsonl",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/claimed/commander-002.json"
+  ],
+  "status": "completed"
+}

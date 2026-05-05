@@ -1,0 +1,43 @@
+{
+  "squad_lead": "sq-029",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "status": "workers_launched",
+  "timestamp": "2026-05-01T01:20:04.315929Z",
+  "workers_launched": 5,
+  "expected_outputs": [
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-029/wkr-029-001-gaps.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-029/wkr-029-002-consensus.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-029/wkr-029-003-proof.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-029/wkr-029-004-fields.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-029/wkr-029-005-docs.json"
+  ],
+  "workers": [
+    {
+      "id": "wkr-029-001",
+      "model": "claude-opus-4.7",
+      "status": "launched"
+    },
+    {
+      "id": "wkr-029-002",
+      "model": "gpt-5.5",
+      "status": "launched"
+    },
+    {
+      "id": "wkr-029-003",
+      "model": "claude-opus-4.6",
+      "status": "launched"
+    },
+    {
+      "id": "wkr-029-004",
+      "model": "gpt-5.4",
+      "status": "launched"
+    },
+    {
+      "id": "wkr-029-005",
+      "model": "claude-opus-4.5",
+      "status": "launched"
+    }
+  ]
+}

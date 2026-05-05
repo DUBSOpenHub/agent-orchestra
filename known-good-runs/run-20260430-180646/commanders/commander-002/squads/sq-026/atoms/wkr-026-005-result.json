@@ -1,0 +1,53 @@
+{
+  "worker_id": "wkr-026-005",
+  "model": "unknown",
+  "assignment": "QA gate: collab-bus readiness + launch-proof integrity",
+  "status": "completed",
+  "severity": "blocker",
+  "gates": {
+    "collab_bus_readiness": {
+      "pass_criteria": [
+        "collab/protocol.json exists and lists required_fields + ledger paths",
+        "all five ledgers (proposals/reviews/improvements/consensus/broadcasts) exist and contain at least one record",
+        "every ledger record contains required_fields (ts, run_id, commander_id, event, item_id, summary, evidence, confidence, source_refs) and event matches ledger type",
+        "JSONL append-only integrity: no truncation/restart warnings and writers use append-only semantics",
+        "adoption traceability: broadcasts reference consensus item_id and bundle/results persist adopted_consensus_item_ids + source_refs"
+      ],
+      "fail_conditions": [
+        "any ledger missing or empty",
+        "any record missing required_fields or wrong event type",
+        "telemetry_integrity_warning or evidence of JSONL truncation/restart",
+        "broadcast/adoption references not traceable into bundle/results"
+      ],
+      "current_status": "FAIL/HOLD",
+      "evidence": [
+        "collab/protocol.json required_fields list (lines 48-58)",
+        "collab/broadcasts.jsonl bcast-003-findings lacks evidence field",
+        "collab/consensus.jsonl cons-c002-collab-bus-hold: HOLD until append integrity + schema validation + adoption semantics",
+        "collab/improvements.jsonl imp-c002-collab-schema-validator and imp-c002-adoption-ledger-proof"
+      ]
+    },
+    "launch_proof_integrity": {
+      "pass_criteria": [
+        "child-agents.jsonl append-only with no telemetry_integrity_warning",
+        "swarm-state launch_proof.valid_for_success == true and no partial_reason",
+        "ledger counts reconcile: squad_leads_started==50 and workers_started==250 (ss-250)",
+        "child-agents.jsonl and swarm-state counts are consistent"
+      ],
+      "fail_conditions": [
+        "telemetry_integrity_warning or ledger truncation/restart",
+        "swarm-state status != success or valid_for_success == false",
+        "counts below 50 squad leads / 250 workers or mismatch between ledger and swarm-state"
+      ],
+      "current_status": "FAIL/PARTIAL",
+      "evidence": [
+        "commanders/commander-002/swarm-state.json: status=partial, valid_for_success=false, squad_leads_started=30, workers_started=72, partial_reason=truncation/restart",
+        "commanders/commander-002/child-agents.jsonl line 99 telemetry_integrity_warning for truncation/restart"
+      ]
+    }
+  },
+  "notes": [
+    "Gate definitions are review-only; no source modifications performed.",
+    "Launch-proof failure here implies collab-bus adoption should remain partial until ledger integrity is enforced."
+  ]
+}

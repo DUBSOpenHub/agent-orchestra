@@ -1,0 +1,22 @@
+{
+  "wkr-030-001": {
+    "model": "gpt-5.2",
+    "prompt": "You are worker wkr-030-001 for Squad Lead sq-030, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Final bundle status check.\n\nCONTEXT: Review-only collaboration-bus QA for commander-002. Use existing run artifacts to evaluate your assignment. Do not modify source files.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-001-bundle-status.json\n"
+  },
+  "wkr-030-002": {
+    "model": "claude-sonnet-4.6",
+    "prompt": "You are worker wkr-030-002 for Squad Lead sq-030, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Exact launch counts verification.\n\nCONTEXT: Review-only collaboration-bus QA for commander-002. Use existing run artifacts to evaluate your assignment. Do not modify source files.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-002-launch-counts.json\n"
+  },
+  "wkr-030-003": {
+    "model": "gpt-5.3-codex",
+    "prompt": "You are worker wkr-030-003 for Squad Lead sq-030, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Result JSON shape audit.\n\nCONTEXT: Review-only collaboration-bus QA for commander-002. Use existing run artifacts to evaluate your assignment. Do not modify source files.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-003-result-shape.json\n"
+  },
+  "wkr-030-004": {
+    "model": "claude-sonnet-4.5",
+    "prompt": "You are worker wkr-030-004 for Squad Lead sq-030, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Claimed cleanup verification.\n\nCONTEXT: Review-only collaboration-bus QA for commander-002. Use existing run artifacts to evaluate your assignment. Do not modify source files.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-004-claimed-cleanup.json\n"
+  },
+  "wkr-030-005": {
+    "model": "gpt-5.2-codex",
+    "prompt": "You are worker wkr-030-005 for Squad Lead sq-030, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Consensus inclusion check.\n\nCONTEXT: Review-only collaboration-bus QA for commander-002. Use existing run artifacts to evaluate your assignment. Do not modify source files.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-005-consensus-inclusion.json\n"
+  }
+}

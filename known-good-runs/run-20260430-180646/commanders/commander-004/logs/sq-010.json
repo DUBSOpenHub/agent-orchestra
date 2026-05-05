@@ -1,0 +1,102 @@
+{
+  "squad_id": "sq-010",
+  "status": "success",
+  "theme": "premium-model-policy",
+  "objective": "Audit premium model policy, banned-model enforcement, Depth Guard, bounded spawning, and fallback handling for metaswarm readiness.",
+  "worker_results": [
+    {
+      "worker_id": "wkr-010-001",
+      "focus": "model-rotation",
+      "status": "success",
+      "key_findings": [
+        "Launcher supports --models rotation but only sets --model for commander pane; child enforcement is prompt/metadata-driven.",
+        "Default model mismatch between skill (Sonnet) and script (Haiku) can cause silent downgrade if script used directly.",
+        "Preflight only checks first model; CLI fallback to gh copilot is warning-only."
+      ],
+      "source_refs": [
+        "bin/stampede.sh:545-574",
+        "bin/stampede.sh:739-757",
+        "bin/stampede.sh:942-956",
+        "bin/stampede.sh:15",
+        "skills/SKILL.md:39-40"
+      ],
+      "confidence": 0.86
+    },
+    {
+      "worker_id": "wkr-010-002",
+      "focus": "banned-model-guardrails",
+      "status": "success",
+      "key_findings": [
+        "Banned model lists are consistent across commander schema/prose/capsule.",
+        "Enforcement is reactive (mark partial after fallback) with no pre-launch validation or retry guidance.",
+        "Depth-guard lint has no banned-model checks, allowing drift or overlap."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:106-111",
+        "agents/stampede-commander.agent.md:168-169",
+        "tests/depth-guard-lint.sh:17-61"
+      ],
+      "confidence": 0.94
+    },
+    {
+      "worker_id": "wkr-010-003",
+      "focus": "docs-vs-runtime",
+      "status": "success",
+      "key_findings": [
+        "Docs align on no-silent-downgrade for full swarm failures.",
+        "Premium default is stated in README only; AGENTS lacks it.",
+        "Model default ambiguity between README and AGENTS."
+      ],
+      "source_refs": [
+        "README.md:35",
+        "README.md:130",
+        "README.md:307",
+        "AGENTS.md:17",
+        "AGENTS.md:29"
+      ],
+      "confidence": 0.82
+    },
+    {
+      "worker_id": "wkr-010-004",
+      "focus": "child-override-propagation",
+      "status": "success",
+      "key_findings": [
+        "Premium policy propagated via commander state/capsule and launcher metadata + prompt.",
+        "No env var export for policy; enforcement relies on prompt/state parsing.",
+        "Operator override language allows platform-refusal caveat."
+      ],
+      "source_refs": [
+        "agents/stampede-commander.agent.md:176-224",
+        "bin/stampede.sh:750-791",
+        "bin/stampede.sh:906-909",
+        "bin/stampede.sh:912-913",
+        "bin/stampede.sh:921-936"
+      ],
+      "confidence": 0.78
+    },
+    {
+      "worker_id": "wkr-010-005",
+      "focus": "fallback-violation-handling",
+      "status": "success",
+      "key_findings": [
+        "Docs require partial when full swarm cannot launch; no silent downgrade.",
+        "No explicit handling for premium-model policy violations beyond swarm-size failure."
+      ],
+      "source_refs": [
+        "README.md:130-134",
+        "skills/SKILL.md:407-408"
+      ],
+      "confidence": 0.7
+    }
+  ],
+  "consensus_notes": [
+    "All workers observed premium policy is largely instruction/metadata-driven with limited hard enforcement.",
+    "Multiple docs highlight no-silent-downgrade for swarm size but do not define premium-policy failure handling.",
+    "Lint coverage does not include banned-model or premium-policy consistency checks."
+  ],
+  "conflicts": [],
+  "blockers": [
+    "Task tool did not return explicit background agent IDs; launch_started events used child_id as agent-id surrogate."
+  ],
+  "overall_confidence": 0.82
+}

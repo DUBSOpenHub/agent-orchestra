@@ -1,0 +1,27 @@
+{
+  "worker_id": "wkr-027-003",
+  "theme": "agent-pulse-monitoring",
+  "focus": "launcher-monitor-handoff",
+  "findings": [
+    "No current-run pointer file; monitor receives run_id and base_dir as CLI args. stampede.sh:1060",
+    "Monitor cannot auto-discover runs; must be co-launched by the launcher. stampede.sh:1059-1061",
+    "Metaswarm commanders/ structure (swarm-state.json, child-agents.jsonl, atoms/, logs/) fully written before tmux session created. stampede.sh:612-614,747-860",
+    "fleet.json, state.json, collab/protocol.json all written before monitor starts \u2014 metadata available immediately. stampede.sh:656-865",
+    "PID capture has sleep 5 after pane creation (stampede.sh:1165) plus find_leaf_pid tree walk. PID files unavailable for ~5-15s after monitor starts. stampede.sh:1165-1192",
+    "Race limited to PID liveness data; task/fleet/state metadata is race-free at monitor start.",
+    "Fallback: if stampede-monitor.sh missing, launcher uses watch-based fallback reading pids dir. stampede.sh:1063-1101"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:534-537",
+    "bin/stampede.sh:612-614",
+    "bin/stampede.sh:656-865",
+    "bin/stampede.sh:851-860",
+    "bin/stampede.sh:863",
+    "bin/stampede.sh:1059-1061",
+    "bin/stampede.sh:1115-1120",
+    "bin/stampede.sh:1165-1192",
+    "bin/stampede.sh:1186"
+  ],
+  "confidence": 0.95,
+  "status": "complete"
+}

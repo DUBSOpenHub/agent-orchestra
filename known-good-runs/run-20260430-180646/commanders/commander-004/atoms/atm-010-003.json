@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-010-003",
+  "theme": "premium-model-policy",
+  "focus": "docs-vs-runtime",
+  "findings": [
+    "Docs align on no-silent-downgrade/partial requirement for full-swarm failures (README.md:35, 130; AGENTS.md:29).",
+    "README documents premium child-model overrides by default, but AGENTS.md lacks the same premium-default statement (README.md:130; AGENTS.md:17, 38).",
+    "Default model ambiguity: README specifies claude-haiku-4.5 default, while AGENTS.md says default is whatever Copilot CLI session uses (README.md:307; AGENTS.md:17, 38).",
+    "Fallback guidance only covers swarm-size failure, not premium-policy violation cases (README.md:130; AGENTS.md:29)."
+  ],
+  "source_refs": [
+    "README.md:35",
+    "README.md:130",
+    "README.md:307",
+    "AGENTS.md:17",
+    "AGENTS.md:29",
+    "AGENTS.md:38"
+  ],
+  "confidence": 0.82,
+  "status": "success"
+}

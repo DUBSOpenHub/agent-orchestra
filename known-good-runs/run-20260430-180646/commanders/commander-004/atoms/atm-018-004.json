@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-018-004",
+  "theme": "telemetry-contract",
+  "focus": "launch-proof-counters",
+  "findings": [
+    "Monitor renders launch-proof counters and warning states, but README does not document counter schema or warning semantics.",
+    "Fallback counter mappings in monitor are implemented but undocumented for operators, weakening telemetry contract clarity.",
+    "README references swarm-state and child-agent telemetry paths without defining expected fields/display contract."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:156-189",
+    "bin/stampede-monitor.sh:176-180",
+    "README.md:83",
+    "README.md:130",
+    "README.md:136"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

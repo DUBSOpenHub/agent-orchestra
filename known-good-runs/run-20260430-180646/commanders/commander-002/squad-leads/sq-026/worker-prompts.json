@@ -1,0 +1,22 @@
+{
+  "wkr-026-001": {
+    "model": "gpt-5.2",
+    "prompt": "You are worker wkr-026-001 for Squad Lead sq-026, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Initialization idempotency: verify collab bus and state init does not truncate ledgers; identify restart risks.\n\nCONTEXT: Review-only collaboration-bus QA. Do not modify source files. Use existing run artifacts under .stampede/.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-001-result.json\n"
+  },
+  "wkr-026-002": {
+    "model": "claude-sonnet-4.6",
+    "prompt": "You are worker wkr-026-002 for Squad Lead sq-026, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Ledger paths: verify collab protocol paths, env vars, and monitor consumption match on-disk layout; identify drift.\n\nCONTEXT: Review-only collaboration-bus QA. Do not modify source files. Use existing run artifacts under .stampede/.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-002-result.json\n"
+  },
+  "wkr-026-003": {
+    "model": "gpt-5.3-codex",
+    "prompt": "You are worker wkr-026-003 for Squad Lead sq-026, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Append safety: assess JSONL append-only safety for collab ledgers + child-agents.jsonl under concurrency; propose fixes.\n\nCONTEXT: Review-only collaboration-bus QA. Do not modify source files. Use existing run artifacts under .stampede/.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-003-result.json\n"
+  },
+  "wkr-026-004": {
+    "model": "claude-sonnet-4.5",
+    "prompt": "You are worker wkr-026-004 for Squad Lead sq-026, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: Bundle schema: validate commander bundle.json and swarm-state.json against documented schema; identify missing fields/drift.\n\nCONTEXT: Review-only collaboration-bus QA. Do not modify source files. Use existing run artifacts under .stampede/.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-004-result.json\n"
+  },
+  "wkr-026-005": {
+    "model": "gpt-5.2-codex",
+    "prompt": "You are worker wkr-026-005 for Squad Lead sq-026, commander-002, run run-20260430-180646, depth=2.\n\nASSIGNMENT: QA gate: define a concrete pass/fail gate for collab-bus readiness and launch-proof integrity (review-only).\n\nCONTEXT: Review-only collaboration-bus QA. Do not modify source files. Use existing run artifacts under .stampede/.\n\nDO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.\n\nWrite your findings to: /Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-005-result.json\n"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-030-001",
+  "theme": "agent-pulse-monitoring",
+  "focus": "pulse-count-sources",
+  "findings": [
+    "Live counts come from queue/claimed/results file counts, not agent heartbeats.",
+    "Agent live/dead status inferred from tmux pane_current_command; sleep treated as done, risking misreport.",
+    "Orphan recovery requeues claimed tasks if tmux list empty, risking false recovery.",
+    "Nested pulse uses swarm-state.json aggregates only; no per-child telemetry.",
+    "Monitor mutates state (requeues orphans, writes runtime-stats.json)."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:87-115",
+    "bin/stampede-monitor.sh:126-141",
+    "bin/stampede-monitor.sh:237-277",
+    "bin/stampede-monitor.sh:145-193",
+    "bin/stampede-monitor.sh:309-326"
+  ],
+  "confidence": 0.86,
+  "status": "success"
+}

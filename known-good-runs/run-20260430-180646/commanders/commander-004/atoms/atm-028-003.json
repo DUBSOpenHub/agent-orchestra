@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-028-003",
+  "theme": "agent-pulse-monitoring",
+  "focus": "launcher-monitor-handoff",
+  "findings": [
+    "Non-atomic monitor handoff artifact: launcher comments that fleet.json is for monitor consumption, but writes it with direct open(..., 'w') instead of temp+replace, so monitor can observe partial/truncated JSON during write windows.",
+    "Fallback monitor command uses unquoted glob patterns in find (-name *.json), allowing shell expansion before find evaluation; this can break queue/claimed/results counts and weaken launcher\u2192monitor state visibility.",
+    "Monitor startup command passes RUN_ID and BASE_DIR as an unescaped command string to tmux; paths containing spaces would split arguments and can break monitor handoff startup."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:653",
+    "bin/stampede.sh:863",
+    "bin/stampede.sh:1071",
+    "bin/stampede.sh:1072",
+    "bin/stampede.sh:1073",
+    "bin/stampede.sh:1060",
+    "bin/stampede.sh:1061"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

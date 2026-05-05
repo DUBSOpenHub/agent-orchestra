@@ -1,0 +1,19 @@
+{
+  "atom_id": "atm-026-003",
+  "worker_id": "wkr-026-003",
+  "theme": "agent-pulse-monitoring",
+  "focus": "launcher-monitor-handoff",
+  "status": "success",
+  "confidence": 0.89,
+  "findings": [
+    "Launcher seeds metaswarm handoff artifacts needed by the monitor: fleet.json with per-commander progress_dir and telemetry contract, initial swarm-state.json, and child-agents.jsonl scaffold.",
+    "If ~/bin/stampede-monitor.sh is missing, fallback monitoring is a reduced watch view that does not surface commander nested telemetry/live counts.",
+    "Live count accuracy in metaswarm depends on commander updating swarm-state.json telemetry fields; launcher does not verify counters/heartbeat progress.",
+    "Atomicity is mixed: some JSON writes use temp+replace, but other key files (fleet.json / initial swarm-state.json) may be written non-atomically, which can transiently break readers."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:751-967",
+    "bin/stampede.sh:827-864",
+    "bin/stampede.sh:1172-1213"
+  ]
+}

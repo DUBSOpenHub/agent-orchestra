@@ -1,0 +1,105 @@
+{
+  "atom_id": "atm-008",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_id": "sq-008",
+  "ts": "2026-05-01T01:26:48.193789+00:00",
+  "depth": 2,
+  "role": "squad_lead",
+  "status": "completed",
+  "ship_recommendation": "HOLD",
+  "workers_completed": 5,
+  "worker_ids": [
+    "wkr-008-001",
+    "wkr-008-002",
+    "wkr-008-003",
+    "wkr-008-004",
+    "wkr-008-005"
+  ],
+  "model_overrides": {
+    "wkr-008-001": "gpt-5.2",
+    "wkr-008-002": "claude-sonnet-4.6",
+    "wkr-008-003": "gpt-5.3-codex",
+    "wkr-008-004": "claude-sonnet-4.5",
+    "wkr-008-005": "gpt-5.2-codex"
+  },
+  "summary": "QA collaboration-bus audit found schema drift, missing required fields, consensus/adoption contract gaps, and evidence/source_refs traceability issues.",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "title": "Ledger required fields missing/inconsistent",
+      "evidence": [
+        "wkr-008-001-result.json"
+      ],
+      "source_refs": [
+        "child-agents.jsonl",
+        "swarm-state.json",
+        "atoms/atm-001.json",
+        "atoms/atm-005.json"
+      ]
+    },
+    {
+      "id": "F2",
+      "severity": "high",
+      "title": "Proposal/review consistency and protocol violations",
+      "evidence": [
+        "wkr-008-002-result.json"
+      ],
+      "source_refs": [
+        "collab/reviews.jsonl",
+        "collab/protocol.json",
+        "atoms/atm-004.json",
+        "atoms/atm-005.json"
+      ]
+    },
+    {
+      "id": "F3",
+      "severity": "high",
+      "title": "Consensus promotion requirements not met",
+      "evidence": [
+        "wkr-008-003-result.json"
+      ],
+      "source_refs": [
+        "atoms/atm-001.json",
+        "atoms/atm-004.json",
+        "atoms/atm-005.json",
+        "swarm-state.json"
+      ]
+    },
+    {
+      "id": "F4",
+      "severity": "high",
+      "title": "Broadcast/adoption semantics inconsistent and weakly enforced",
+      "evidence": [
+        "wkr-008-004-result.json"
+      ],
+      "source_refs": [
+        "collab/broadcasts.jsonl",
+        "collab/consensus.jsonl",
+        "bin/stampede.sh",
+        "bin/stampede-monitor.sh"
+      ]
+    },
+    {
+      "id": "F5",
+      "severity": "high",
+      "title": "Evidence/source_refs quality gaps",
+      "evidence": [
+        "wkr-008-005-result.json"
+      ],
+      "source_refs": [
+        "bundle.json",
+        "atoms/atm-001.json",
+        "atoms/atm-005.json",
+        "wkr-021-001-result.json"
+      ]
+    }
+  ],
+  "next_actions": [
+    "Normalize collaboration bus schemas and enforce required fields",
+    "Add dedicated adopt ledger and validation",
+    "Enforce source_refs/evidence presence in worker and bundle outputs",
+    "Add monitor validation beyond line counts"
+  ]
+}

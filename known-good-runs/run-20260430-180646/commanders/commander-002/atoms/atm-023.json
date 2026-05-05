@@ -1,0 +1,61 @@
+{
+  "atom_id": "atm-023",
+  "squad_id": "sq-023",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "domain": "collaboration-bus",
+  "assignment": "collaboration-bus QA review (docs drift, commander prompt, launcher block, monitor summary, tests)",
+  "depth": 2,
+  "workers": [
+    {
+      "id": "wkr-023-001",
+      "model": "claude-opus-4.7",
+      "assignment": "docs/runtime drift",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-023-002",
+      "model": "gpt-5.5",
+      "assignment": "commander prompt obligations",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-023-003",
+      "model": "claude-opus-4.6",
+      "assignment": "launcher collab block",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-023-004",
+      "model": "gpt-5.4",
+      "assignment": "monitor collab summary",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-023-005",
+      "model": "claude-opus-4.5",
+      "assignment": "tests",
+      "status": "completed"
+    }
+  ],
+  "findings_summary": {
+    "total_findings": 20,
+    "high": 5,
+    "medium": 4,
+    "low": 8,
+    "info": 3,
+    "top_findings": [
+      "Collab bus is entirely undocumented in README, AGENTS.md, or any user-facing doc (high)",
+      "Commander agent spec has no baked-in collab bus instructions; relies solely on runtime prompt injection (high)",
+      "Zero automated test coverage for collaboration bus (high)",
+      "protocol.json generation and ledger creation are untested (high)",
+      "Atomic append semantics not conveyed in commander prompt (medium)",
+      "adopt workflow step has no dedicated ledger \u2014 implicit mapping undocumented (medium)",
+      "Monitor JSONL counting not truly malformed-line-tolerant (medium)"
+    ]
+  },
+  "status": "success",
+  "confidence": 0.9,
+  "ts": "2026-05-01T01:21:40.400437+00:00",
+  "duration_concept": "review-only; no source edits"
+}

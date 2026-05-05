@@ -1,0 +1,205 @@
+{
+  "squad_lead": "sq-029",
+  "commander": "commander-005",
+  "focus_area": "CI Validation Coverage - Part 1",
+  "workers_launched": 5,
+  "workers": [
+    {
+      "id": "wkr-029-001",
+      "model": "gpt-5.2-codex",
+      "task": "Check CI job definitions",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-029-002",
+      "model": "claude-opus-4.7",
+      "task": "Verify shell syntax checks",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-029-003",
+      "model": "gpt-5.5",
+      "task": "Check ShellCheck integration",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-029-004",
+      "model": "claude-opus-4.6",
+      "task": "Verify frontmatter validation",
+      "status": "complete"
+    },
+    {
+      "id": "wkr-029-005",
+      "model": "gpt-5.4",
+      "task": "Check install/help tests",
+      "status": "complete"
+    }
+  ],
+  "findings": {
+    "ci_structure": {
+      "total_jobs": 1,
+      "job_name": "lint-and-test",
+      "runner": "ubuntu-latest",
+      "dependencies": "none",
+      "coverage_areas": [
+        "shell_syntax_validation",
+        "shellcheck",
+        "frontmatter_validation",
+        "install_smoke_test",
+        "help_command_test",
+        "changelog_order"
+      ]
+    },
+    "shell_validation_coverage": {
+      "method": "bash -n (syntax parse)",
+      "files_covered": [
+        "bin/stampede.sh",
+        "bin/stampede-demo.sh",
+        "bin/stampede-monitor.sh",
+        "bin/stampede-merge.sh",
+        "install.sh"
+      ],
+      "files_missed": [
+        "quickstart.sh",
+        "record-demo.sh",
+        "tests/smoke-test.sh",
+        "tests/depth-guard-lint.sh"
+      ],
+      "coverage_rate": "56% (5 of 9 shell scripts)",
+      "severity": "medium"
+    },
+    "shellcheck_coverage": {
+      "integration": "ludeeus/action-shellcheck (pinned by SHA)",
+      "scan_directories": ["bin"],
+      "additional_files": ["install.sh"],
+      "version": "not pinned/specified",
+      "config_file": "none (.shellcheckrc not found)",
+      "exclusions": "none",
+      "severity_config": "none",
+      "files_covered": [
+        "bin/stampede.sh",
+        "bin/stampede-monitor.sh",
+        "bin/stampede-demo.sh",
+        "bin/stampede-merge.sh",
+        "install.sh"
+      ],
+      "files_missed": [
+        "quickstart.sh",
+        "record-demo.sh",
+        "tests/smoke-test.sh",
+        "tests/depth-guard-lint.sh"
+      ],
+      "coverage_rate": "56% (5 of 9 shell scripts)",
+      "inline_directives": "present in covered scripts (# shellcheck shell=bash)",
+      "severity": "medium"
+    },
+    "frontmatter_validation": {
+      "files_targeted": ["skills/SKILL.md", "agents/*.md"],
+      "method": "shell script (grep for opening ---)",
+      "validation_depth": "superficial (first line only)",
+      "yaml_parsing": false,
+      "field_validation": false,
+      "closing_delimiter_check": false,
+      "files_covered": [
+        "skills/SKILL.md",
+        "agents/stampede-agent.agent.md",
+        "agents/stampede-commander.agent.md",
+        "agents/stampede-merger.agent.md"
+      ],
+      "pattern_limitation": "skills/SKILL.md is literal path (won't catch additional skill files)",
+      "convention_enforcement": "none (tools: field, required fields not validated)",
+      "severity": "medium"
+    },
+    "install_and_help_tests": {
+      "install_test": {
+        "present": true,
+        "method": "modified install.sh execution (demo launch disabled)",
+        "verifies": "script runs without error",
+        "artifact_assertions": false,
+        "edge_cases_tested": {
+          "reinstall": false,
+          "missing_dependencies": false,
+          "file_permissions": false,
+          "path_configuration": false
+        },
+        "severity": "medium"
+      },
+      "help_test": {
+        "present": true,
+        "command": "stampede.sh --help",
+        "validation": "smoke test (exit 0 only)",
+        "content_validation": false,
+        "severity": "low"
+      }
+    }
+  },
+  "critical_gaps": [
+    {
+      "gap": "Shell script coverage incomplete",
+      "impact": "4 of 9 shell scripts (44%) not validated by bash -n or ShellCheck",
+      "affected_files": [
+        "quickstart.sh",
+        "record-demo.sh",
+        "tests/smoke-test.sh",
+        "tests/depth-guard-lint.sh"
+      ],
+      "recommendation": "Extend CI patterns to include root-level .sh files and tests/ directory"
+    },
+    {
+      "gap": "Frontmatter validation is superficial",
+      "impact": "Cannot catch malformed YAML, missing required fields (tools:), or structural errors",
+      "recommendation": "Add YAML parser (yq/python) to validate structure and required fields per copilot-instructions.md"
+    },
+    {
+      "gap": "Install test lacks assertions",
+      "impact": "CI verifies install script runs but not that files are correctly placed, permissions set, or PATH configured",
+      "recommendation": "Add post-install assertions: check ~/.copilot/agents/, ~/bin/, file permissions, PATH"
+    },
+    {
+      "gap": "No edge case coverage for install",
+      "impact": "Reinstall behavior, missing dependencies, and failure modes untested",
+      "recommendation": "Add tests for: second install run, missing tmux/python3/jq, permission failures"
+    },
+    {
+      "gap": "Help test is smoke-only",
+      "impact": "Does not verify help text completeness or accuracy",
+      "recommendation": "Add content assertions: check for --count, --repo, --metaswarm options in output"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "action": "Extend shell validation coverage",
+      "implementation": "Update CI to include: bin/*.sh install.sh quickstart.sh record-demo.sh tests/*.sh"
+    },
+    {
+      "priority": "high",
+      "action": "Add structured YAML frontmatter validation",
+      "implementation": "Use yq or python yaml parser to validate required fields (name, tools, etc.)"
+    },
+    {
+      "priority": "medium",
+      "action": "Add install artifact assertions",
+      "implementation": "After install.sh, verify: [ -d ~/.copilot/agents ] && [ -x ~/bin/stampede.sh ] && [ -f ~/bin/stampede-monitor.sh ]"
+    },
+    {
+      "priority": "medium",
+      "action": "Test install edge cases",
+      "implementation": "Run installer twice, test with missing dependencies (via docker or temporary PATH manipulation)"
+    },
+    {
+      "priority": "low",
+      "action": "Validate help command content",
+      "implementation": "Check that --help output contains expected option descriptions"
+    },
+    {
+      "priority": "low",
+      "action": "Pin ShellCheck version",
+      "implementation": "Specify shellcheck version in CI for reproducible builds"
+    }
+  ],
+  "summary": "CI validation covers the core happy path (shell syntax, ShellCheck, basic frontmatter, install execution, help smoke test) but has significant coverage gaps: 44% of shell scripts are not validated, frontmatter validation is superficial (first-line check only), install tests lack assertions about actual file placement and permissions, and edge cases (reinstall, missing deps) are untested. Recommendations prioritize extending shell coverage and adding structured YAML validation.",
+  "timestamp": "2026-04-30T18:06:46Z",
+  "depth": 2,
+  "depth_lock_enforced": true
+}

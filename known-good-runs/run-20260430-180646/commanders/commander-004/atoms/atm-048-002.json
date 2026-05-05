@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-048-002",
+  "theme": "docs-ci-readiness",
+  "focus": "smoke-gap-analysis",
+  "status": "success",
+  "confidence": 0.97,
+  "findings": [
+    "Smoke script asserts metaswarm structure (50x5=250), premium policy field presence, banned list presence, and launch proof artifacts.",
+    "Gaps: no runtime rejection test for banned/non-premium models, no live Agent Pulse count validation, no recovery/partial path simulation.",
+    "Polling marks pass on first result file and does not gate on status==done/success."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:114-148",
+    "tests/smoke-test.sh:127-131",
+    "tests/smoke-test.sh:152-162"
+  ]
+}

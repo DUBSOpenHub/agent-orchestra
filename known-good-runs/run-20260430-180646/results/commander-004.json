@@ -1,0 +1,65 @@
+{
+  "task_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-004",
+  "status": "partial",
+  "role": "commander",
+  "profile": "metaswarm",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "branch": "havoc-swarm/run-20260430-180646/commander-004",
+  "files_changed": [],
+  "summary": "Commander-004 launched all 50 squad leads on branch havoc-swarm/run-20260430-180646/commander-004, but this bundle is partial because the proof layer never reached a clean 250/250 success trail. The reconciled ledger shows 50/50 squad-lead launches and evidence for all 250 workers across launch_started, completed, and atom files, yet only 247 worker atom files exist, one squad completion event (sq-045) had to be reconciled after the fact, and concurrent child writes clobbered swarm-state counters. Across 50 squad reports (37 success, 13 partial), the dominant findings were: premium/banned-model and SS-250 success conditions are still mostly prompt/metadata enforced; monitor validation ignores child-agents.jsonl and mutable swarm-state can drift; collaboration-bus schema/adoption docs are weak; and stop/recovery/CI coverage remains incomplete, including false-positive metaswarm smoke coverage. Adopted consensus aligns with commander-001 blockers, commander-002 collaboration hold, commander-005 synthesis-readiness gaps, and commander-004 telemetry/runtime-gate findings.",
+  "confidence": 0.94,
+  "consensus": {
+    "tier": "MAJORITY",
+    "notes": [
+      "Telemetry proof is not success-grade until child-agents.jsonl is validated and swarm-state is reducer- or lock-backed.",
+      "Premium-model compliance and SS-250 success conditions still need hard runtime gates, not prompt-only enforcement.",
+      "Collaboration-bus, stop/recovery, and CI readiness gaps keep the pre-build QA verdict at partial."
+    ]
+  },
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 50,
+    "workers_target": 250,
+    "workers_launched": 250,
+    "atoms_received": 247,
+    "children_failed": 16
+  },
+  "adopted_consensus_item_ids": [
+    "cons-c001-pre-build-blockers",
+    "cons-c002-collab-bus-hold",
+    "cons-005-synthesis-readiness",
+    "consensus-c004-telemetry-proof-001",
+    "consensus-c004-runtime-gates-002"
+  ],
+  "adopted_source_refs": [
+    "bin/stampede.sh",
+    "bin/stampede-monitor.sh",
+    "agents/stampede-commander.agent.md",
+    ".stampede/run-20260430-180646/collab/consensus.jsonl",
+    ".stampede/run-20260430-180646/collab/broadcasts.jsonl",
+    ".stampede/run-20260430-180646/commanders/commander-004/child-agents.jsonl",
+    ".stampede/run-20260430-180646/commanders/commander-004/logs/"
+  ],
+  "proof_reconciliation": {
+    "worker_requests": 249,
+    "worker_launch_started_events": 218,
+    "worker_completed_events": 232,
+    "worker_failed_events": 9,
+    "atom_files": 247,
+    "missing_atom_workers": [
+      "wkr-039-001",
+      "wkr-039-002",
+      "wkr-039-004"
+    ],
+    "missing_squad_completion_events_fixed": [
+      "sq-045"
+    ],
+    "squad_status_counts": {
+      "success": 37,
+      "partial": 13
+    }
+  }
+}

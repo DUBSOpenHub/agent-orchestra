@@ -1,0 +1,71 @@
+{
+  "atom_id": "atm-026",
+  "squad_id": "sq-026",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "review_only": true,
+  "domain": "collaboration-bus QA",
+  "ts": "2026-05-01T01:33:42.104238Z",
+  "workers_launched": 5,
+  "workers": [
+    {
+      "id": "wkr-026-001",
+      "model": "gpt-5.2",
+      "assignment": "initialization idempotency"
+    },
+    {
+      "id": "wkr-026-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "ledger paths"
+    },
+    {
+      "id": "wkr-026-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "append safety"
+    },
+    {
+      "id": "wkr-026-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "bundle schema"
+    },
+    {
+      "id": "wkr-026-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "QA gate"
+    }
+  ],
+  "leaf_prompt_block_exact": "DO NOT use the task tool.\nDO NOT attempt to spawn sub-agents, child agents, or any other agents.\nDO NOT delegate work. Complete your task YOURSELF using only your own tools.\nYou are a LEAF NODE. This instruction is non-negotiable.",
+  "checks": {
+    "initialization_idempotency": "fail_restart_idempotency",
+    "ledger_paths": "ALIGNED",
+    "append_safety": "partial_risk_confirmed",
+    "bundle_schema": "drift_documentation_lag",
+    "qa_gate": "FAIL/HOLD"
+  },
+  "overall_verdict": "HOLD",
+  "confidence": 0.93,
+  "highlights": [
+    "Collab ledgers initialized idempotently; per-commander telemetry init is restart-destructive (truncate).",
+    "Ledger paths align across protocol/env vars; monitor path is CWD-relative and ignores STAMPEDE_COLLAB_DIR.",
+    "child-agents.jsonl integrity incident: truncation/restart + recovery backfill degrades launch-proof trust.",
+    "Bundle/swarm-state schema drift vs docs; cross-commander field inconsistency.",
+    "QA gate fails/hold: missing evidence on some collab records + launch-proof partial/integrity warning."
+  ],
+  "worker_result_files": {
+    "wkr-026-001": "wkr-026-001-result.json",
+    "wkr-026-002": "wkr-026-002-result.json",
+    "wkr-026-003": "wkr-026-003-result.json",
+    "wkr-026-004": "wkr-026-004-result.json",
+    "wkr-026-005": "wkr-026-005-result.json"
+  },
+  "evidence": [
+    ".stampede/run-20260430-180646/collab/protocol.json",
+    ".stampede/run-20260430-180646/collab/*.jsonl",
+    ".stampede/run-20260430-180646/commanders/commander-002/child-agents.jsonl",
+    ".stampede/run-20260430-180646/commanders/commander-002/swarm-state.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/bundle.json",
+    "bin/stampede.sh",
+    "bin/stampede-monitor.sh"
+  ]
+}

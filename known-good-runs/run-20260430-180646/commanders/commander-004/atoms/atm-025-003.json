@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-025-003",
+  "theme": "collaboration-bus",
+  "focus": "commander-ledger-usage",
+  "findings": [
+    "Commander writes to child-agents.jsonl via append-only JSONL pattern per line 35",
+    "Two-phase ledger write: launch_requested BEFORE, launch_started AFTER with child_id/model/depth",
+    "swarm-state.json initialized in step 5, updated after every child launch with phase/status/telemetry",
+    "Squad lead tracking via telemetry counters: target/launched/running/completed/failed",
+    "Worker tracking parallel counters",
+    "Launch proof validation: success requires 50 squad leads AND 250 workers launched",
+    "Gap: no explicit .tmp-prefix atomic write for swarm-state.json mid-run updates",
+    "Gap: no file locking for child-agents.jsonl despite concurrent append races"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:35",
+    "agents/stampede-commander.agent.md:47",
+    "agents/stampede-commander.agent.md:57",
+    "agents/stampede-commander.agent.md:69-129",
+    "agents/stampede-commander.agent.md:141-147"
+  ],
+  "confidence": 92,
+  "status": "success"
+}

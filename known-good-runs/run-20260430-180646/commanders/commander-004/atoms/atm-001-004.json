@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-001-004",
+  "theme": "commander-launch-profile",
+  "focus": "docs-claim-branch-alignment",
+  "findings": [
+    "README and AGENTS disagree on worker branch naming: README uses stampede/task-001 style while AGENTS documents stampede/<agent-id>/<task-id>.",
+    "README documents runtime proof files and premium child-model defaults for metaswarm more explicitly than AGENTS.",
+    "Neither README nor AGENTS documents banned-model enforcement in depth.",
+    "README documents teardown, while AGENTS lacks parallel stop/teardown/recovery guidance."
+  ],
+  "source_refs": [
+    "README.md:130-136",
+    "README.md:202-225",
+    "README.md:300-310",
+    "AGENTS.md:22-29",
+    "AGENTS.md:69-72"
+  ],
+  "confidence": "high",
+  "status": "fail"
+}

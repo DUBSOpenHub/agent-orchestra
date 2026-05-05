@@ -1,0 +1,131 @@
+{
+  "ts": "2026-05-01T01:18:37Z",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead_id": "sq-036",
+  "focus": "Consensus Flow Verification - Part 2: collab bus workflow implementation",
+  "summary": "Collab bus is implemented as a protocol scaffold: stampede.sh bootstraps a collab/ directory, writes protocol.json, touch-creates 5 append-only JSONL ledgers, and exports their paths to commanders. Actual workflow semantics (propose/peer_review/improve/consensus/broadcast/adopt) are not enforced by code; they are delegated to LLM commanders via prompt instructions. Monitoring only counts ledger line totals.",
+  "implementation": {
+    "bootstrap": {
+      "file": "bin/stampede.sh",
+      "lines": "656-741 (inline python), 895-916 (commander prompt + env vars)",
+      "behavior": [
+        "If --metaswarm: create BASE_DIR/collab, touch-create ledgers proposals/reviews/improvements/consensus/broadcasts.",
+        "Write collab/protocol.json atomically with workflow sequence + required_fields + append guidance.",
+        "Export STAMPEDE_COLLAB_* env vars for commander processes pointing to the ledger paths.",
+        "Inject natural-language instructions in the commander prompt to follow propose->peer_review->improve->consensus->broadcast->adopt."
+      ]
+    },
+    "monitoring": {
+      "file": "bin/stampede-monitor.sh",
+      "lines": "57-67",
+      "behavior": [
+        "print_collab_summary() shows counts only: wc -l of each ledger; missing file => 0 lines.",
+        "No semantic validation or workflow completeness checks."
+      ]
+    },
+    "commander_bundle_contract": {
+      "file": "agents/stampede-commander.agent.md",
+      "lines": "238-267",
+      "behavior": [
+        "Bundle must include consensus.tier = CONSENSUS|MAJORITY|CONFLICT|UNIQUE, but no code computes it."
+      ]
+    }
+  },
+  "workflow_verification": {
+    "propose": {
+      "implemented_as": "prompt + protocol documentation (no code enforcement)",
+      "ledger": "collab/proposals.jsonl (event: proposal)",
+      "notes": [
+        "Protocol requires fields ts, run_id, commander_id, event, item_id, summary, evidence, confidence, source_refs; not validated.",
+        "No helper to perform atomic single-line append; relies on commander tool usage."
+      ]
+    },
+    "peer_review": {
+      "implemented_as": "prompt + protocol documentation (no assignment/selection)",
+      "ledger": "collab/reviews.jsonl (event: peer_review)",
+      "notes": [
+        "No peer selection/balancing or anti-self-review enforcement.",
+        "No aggregation/approval logic; reviews are informational only unless agents act on them."
+      ]
+    },
+    "improve": {
+      "implemented_as": "prompt + protocol documentation (single-pass)",
+      "ledger": "collab/improvements.jsonl (event: improvement)",
+      "notes": [
+        "No iterative revision loop enforced; no \u201cchanges requested\u201d state machine.",
+        "No guard ensuring every review/proposal is addressed by an improvement."
+      ]
+    },
+    "consensus": {
+      "implemented_as": "prompt + bundle contract tier field (no computation)",
+      "ledger": "collab/consensus.jsonl (event: consensus)",
+      "notes": [
+        "No quorum/threshold definitions; MAJORITY vs CONSENSUS boundary undefined.",
+        "No conflict resolution workflow beyond allowing tier=CONFLICT in bundle."
+      ]
+    },
+    "broadcast": {
+      "implemented_as": "prompt instruction to append broadcasts when consensus should be adopted",
+      "ledger": "collab/broadcasts.jsonl (event: broadcast)",
+      "notes": [
+        "No code consumer/dispatcher; downstream adoption is manual by commanders reading broadcasts."
+      ]
+    },
+    "adopt": {
+      "implemented_as": "prompt instruction + inclusion in bundle.json/final result",
+      "ledger": null,
+      "notes": [
+        "Workflow sequence includes adopt, but there is no adopt.jsonl ledger; adoption is not auditable as a first-class event."
+      ]
+    }
+  },
+  "risks_gaps": [
+    {
+      "severity": "critical",
+      "issue": "No enforcement/validation of protocol required_fields or event schema; malformed/partial JSON lines can silently break collaboration."
+    },
+    {
+      "severity": "critical",
+      "issue": "No guaranteed atomic JSONL append implementation; protocol says O_APPEND semantics but provides no shared writer; concurrent writes risk interleaving/corruption."
+    },
+    {
+      "severity": "major",
+      "issue": "No consensus algorithm (thresholds/quorum/voting). Consensus tier is subjective agent output only."
+    },
+    {
+      "severity": "major",
+      "issue": "No adopt ledger despite workflow listing adopt; adoption state only appears in bundles if agents comply."
+    },
+    {
+      "severity": "minor",
+      "issue": "collab.counts in state.json is initialized to zeros and never updated (not useful telemetry)."
+    },
+    {
+      "severity": "minor",
+      "issue": "state.json update in stampede.sh is a read-modify-write without lock; errors are swallowed (possible lost updates)."
+    }
+  ],
+  "test_coverage": {
+    "status": "none_specific",
+    "evidence": [
+      "tests/smoke-test.sh validates metaswarm structured contract (fleet.json, swarm-state.json, child-agents.jsonl) but does not validate collab ledgers.",
+      "No tests found for collab/protocol.json schema, JSONL writer safety, or end-to-end propose->adopt flow."
+    ]
+  },
+  "actionable_recommendations": [
+    "Add a small, shared \u201cjsonl_append_atomic\u201d helper (python3) used by commanders/workers to guarantee single-line append + newline + fsync when needed.",
+    "Add a tolerant JSONL reader helper that ignores malformed trailing lines, and use it in any automated consumers/monitors.",
+    "Add minimal schema validation (required fields + event type) in monitor and/or in a validator script run at end-of-run.",
+    "Either add adopt.jsonl ledger or remove adopt from declared workflow to match implementation.",
+    "Define consensus thresholds/quorum rules in protocol.json (even if still agent-executed) to reduce ambiguity."
+  ],
+  "citations": {
+    "collab_bootstrap_protocol": "bin/stampede.sh:656-740",
+    "workflow_sequence_required_fields": "bin/stampede.sh:684-719",
+    "commander_prompt_collab_instructions": "bin/stampede.sh:904-911",
+    "env_var_exports": "bin/stampede.sh:926-936",
+    "monitor_collab_counts": "bin/stampede-monitor.sh:57-67",
+    "bundle_consensus_tier": "agents/stampede-commander.agent.md:238-267"
+  }
+}

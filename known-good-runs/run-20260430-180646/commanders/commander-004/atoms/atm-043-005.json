@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-043-005",
+  "theme": "recovery-stuck-detection",
+  "focus": "failure-containment",
+  "findings": [
+    "Commander has explicit partial/failed status rules; success requires 50 SLs + 250 workers",
+    "Enforcement is instruction-based (prompt), not programmatically validated",
+    "Dead panes: remain-on-exit + orphan recovery, but no restart mechanism",
+    "Blast radius: shared repo checkout; branches isolate commits but not working dir",
+    "No fleet-level exit code aggregation; status per-agent JSON only",
+    "Depth Guard: prompt + toolset convention only; no server-side hard lock"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:81,141-146,168,179",
+    "bin/stampede.sh:996,588,1096-1149,605-609",
+    "bin/stampede.sh:1167"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,113 @@
+{
+  "worker_id": "wkr-013-004",
+  "task": "monitor-collab-summary",
+  "capabilities": [
+    {
+      "feature": "Metaswarm/collaboration mode detection",
+      "reads_from": ".stampede/<run>/collab/ and fleet.json",
+      "status": "active",
+      "details": "The monitor treats a run as metaswarm if BASE/collab exists or fleet.json contains a commander/metaswarm profile, which gates collaboration summaries and commander nested telemetry display."
+    },
+    {
+      "feature": "Collaboration bus headline counts",
+      "reads_from": ".stampede/<run>/collab/{proposals,reviews,improvements,consensus,broadcasts}.jsonl",
+      "status": "active",
+      "details": "print_collab_summary() counts JSONL lines and prints a single aggregate row showing proposals, reviews, improvements, consensus items, and broadcasts. It does not parse record content."
+    },
+    {
+      "feature": "Commander nested progress summary",
+      "reads_from": "fleet.json progress_dir -> commanders/<commander_id>/swarm-state.json",
+      "status": "active",
+      "details": "For commander panes, the monitor parses swarm-state.json telemetry and launch_proof to show squads launched, workers launched, running/completed/failed counts, atoms received, heartbeat age, phase, and proof warnings such as no sub-agent proof or incomplete proof."
+    },
+    {
+      "feature": "Child agent ledger ingestion",
+      "reads_from": "commanders/<commander_id>/child-agents.jsonl",
+      "status": "missing",
+      "details": "Despite the commander contract saying swarm-state.json and child-agents.jsonl are the parent monitor source of truth, stampede-monitor.sh never opens or parses child-agents.jsonl."
+    },
+    {
+      "feature": "Stuck task detection",
+      "reads_from": "claimed/*.json file mtimes",
+      "status": "active",
+      "details": "Any claimed task older than 120 seconds is flagged as stuck and rings the terminal bell once per task id. This is age-based only and is independent of collaboration or heartbeat telemetry."
+    },
+    {
+      "feature": "Dead-pane/orphan recovery",
+      "reads_from": "tmux pane state, claimed/*.json, results/*.json, commanders/*/swarm-state.json",
+      "status": "partial",
+      "details": "When tmux reports zero live agents, stale claimed tasks older than 180 seconds can be requeued if no corresponding result exists and commander activity is not detected from swarm-state.json heartbeat. The commander heartbeat check keys by task id rather than commander id, which can miss active commanders when those identifiers differ."
+    },
+    {
+      "feature": "Run progress display",
+      "reads_from": "state.json total_tasks plus queue/, claimed/, and results/ counts",
+      "status": "active",
+      "details": "The monitor computes done_count/claimed/queued totals, derives a percentage complete, renders a progress bar, and shows overall RUNNING/WAITING/COMPLETE status with elapsed time."
+    },
+    {
+      "feature": "Task completion rate tracking",
+      "reads_from": "state.json and results/*.json",
+      "status": "partial",
+      "details": "The script tracks completion percentage as done_count divided by TOTAL_TASKS and later writes end_time/task_id/files_changed into runtime-stats.json. It does not calculate throughput over time, ETA, per-agent completion rate, or commander child completion velocity."
+    }
+  ],
+  "collaboration_surface": [
+    {
+      "surface": "collab append-only ledgers",
+      "path": ".stampede/<run>/collab/*.jsonl",
+      "usage": "Read-only line counts for proposals, reviews, improvements, consensus, and broadcasts; displayed as one summary row."
+    },
+    {
+      "surface": "commander progress state",
+      "path": ".stampede/<run>/commanders/<commander_id>/swarm-state.json",
+      "usage": "Parsed for nested metaswarm launch proof, telemetry counters, heartbeat freshness, phase, and warning annotations in the commander roster."
+    },
+    {
+      "surface": "fleet registry",
+      "path": ".stampede/<run>/fleet.json",
+      "usage": "Maps worker/commander ids to roles, models, and progress_dir so the monitor knows which panes are commanders and where to find swarm-state.json."
+    },
+    {
+      "surface": "queue state",
+      "path": ".stampede/<run>/{queue,claimed,results}/*.json",
+      "usage": "Provides global progress counts, stuck-task age checks, missing-task detection, and final result listing."
+    },
+    {
+      "surface": "tmux pane census",
+      "path": "tmux session stampede-<run_id>",
+      "usage": "Used as the primary liveness signal for active/done/dead panes and as a prerequisite for orphan recovery logic."
+    },
+    {
+      "surface": "runtime stats finalization",
+      "path": ".stampede/<run>/runtime-stats.json",
+      "usage": "Updated at completion with task_id, completed_at, and files_changed derived from results, but not from collaboration ledgers."
+    }
+  ],
+  "gaps": [
+    {
+      "gap": "No child-agents.jsonl consumption",
+      "impact": "The monitor cannot prove launch_requested/launch_started/completed events, child model selection, depth, parent-child topology, or per-child failures even though the commander contract requires that ledger."
+    },
+    {
+      "gap": "Collaboration summary is counts-only",
+      "impact": "Operators see ledger volume but not freshness, per-commander participation, adopted consensus item_ids, unresolved conflicts, or whether broadcasts were consumed."
+    },
+    {
+      "gap": "Stuck detection ignores collaboration heartbeats",
+      "impact": "A task can be marked stuck purely from claimed file age even if the commander is actively launching children or writing collaboration events, creating false positives."
+    },
+    {
+      "gap": "Orphan recovery commander lookup is fragile",
+      "impact": "The requeue safeguard checks commanders/<task_id>/swarm-state.json, but commander state is stored under commanders/<commander_id>/; if those differ, active commanders may be treated as inactive."
+    },
+    {
+      "gap": "swarm-state.json parsing is shallow",
+      "impact": "The monitor ignores useful fields such as depth_budget, premium_model_pool, banned_child_models, explicit error blockers, and launch timestamps that could explain degraded or partial metaswarm runs."
+    },
+    {
+      "gap": "Completion metrics are coarse",
+      "impact": "The monitor exposes percent complete but not tasks/minute, atoms/minute, ETA, per-commander throughput, or consensus adoption rate, limiting operational insight."
+    }
+  ],
+  "summary": "stampede-monitor.sh has an active but narrow collaboration view: it counts top-level collab ledgers, parses commander swarm-state.json for nested metaswarm telemetry, and combines that with queue/results counts plus tmux pane liveness. Its biggest blind spot is that it never reads child-agents.jsonl, so the monitor cannot validate detailed child-launch proof or richer collaboration behavior beyond aggregate counts."
+}

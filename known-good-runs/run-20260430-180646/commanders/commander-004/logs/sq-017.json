@@ -1,0 +1,65 @@
+{
+  "squad_id": "sq-017",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "telemetry-contract",
+  "variant": 2,
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": 0.94,
+  "worker_results": [
+    {
+      "worker_id": "wkr-017-001",
+      "focus": "state-shape",
+      "status": "success",
+      "confidence": 0.96,
+      "atom": "atm-017-001"
+    },
+    {
+      "worker_id": "wkr-017-002",
+      "focus": "monitor-consumption",
+      "status": "success",
+      "confidence": 0.96,
+      "atom": "atm-017-002"
+    },
+    {
+      "worker_id": "wkr-017-003",
+      "focus": "atomic-write-patterns",
+      "status": "success",
+      "confidence": 0.92,
+      "atom": "atm-017-003"
+    },
+    {
+      "worker_id": "wkr-017-004",
+      "focus": "launch-proof-counters",
+      "status": "success",
+      "confidence": 0.94,
+      "atom": "atm-017-004"
+    },
+    {
+      "worker_id": "wkr-017-005",
+      "focus": "result-bundle-paths",
+      "status": "success",
+      "confidence": 0.92,
+      "atom": "atm-017-005"
+    }
+  ],
+  "blockers": [],
+  "consensus_notes": [
+    "CONSENSUS: state.json teardown and swarm-state.json initial writes are non-atomic (3 of 5 workers flagged independently)",
+    "CONSENSUS: monitor only reads swarm-state.json, not child-agents.jsonl; proof file not directly verified",
+    "CONSENSUS: incomplete-proof warning only fires on status==success, not partial",
+    "CONSENSUS: 50 squads / 0 workers generates no warning \u2014 workers check requires truthy workers_launched",
+    "UNIQUE (wkr-017-001): task_id=None at init conflicts with spec requirement to record task_id after claiming",
+    "UNIQUE (wkr-017-005): launcher prompt missing claimed-task-file cleanup instruction"
+  ],
+  "conflict_notes": [],
+  "key_gaps": [
+    "Non-atomic writes: swarm-state.json init (stampede.sh:832), fleet.json (stampede.sh:844), state.json teardown (stampede.sh:355)",
+    "Monitor warning blind spot: launch_proof_required defaults False; workers=0/squads=50 passes silently",
+    "Cleanup gap: commander not instructed to remove claimed task file after bundle write",
+    "task_id=None at init; must be updated after claiming \u2014 spec says 'record the claimed task_id'"
+  ]
+}

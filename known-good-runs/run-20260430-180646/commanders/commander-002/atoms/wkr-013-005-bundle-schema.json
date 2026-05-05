@@ -1,0 +1,368 @@
+{
+  "worker_id": "wkr-013-005",
+  "task": "bundle-schema-audit",
+  "schemas": {
+    "task_manifest_queue": {
+      "description": "Task files in queue/ before claiming",
+      "required_fields": [
+        "task_id",
+        "run_id",
+        "title",
+        "objective",
+        "repo_path"
+      ],
+      "optional_fields": [
+        "generation",
+        "files",
+        "branch",
+        "repo_context",
+        "constraints",
+        "context"
+      ],
+      "file_location": "{RUN_DIR}/queue/{task_id}.json",
+      "example": {
+        "task_id": "task-001",
+        "run_id": "run-YYYYMMDD-HHMMSS",
+        "title": "Process group 1",
+        "objective": "...",
+        "generation": 0,
+        "files": [
+          "src/file1.js"
+        ],
+        "repo_path": "/abs/path",
+        "branch": "stampede/{task_id}",
+        "repo_context": {
+          "readme_excerpt": "...",
+          "tree": "...",
+          "test_command": "npm test"
+        },
+        "constraints": {
+          "max_result_words": 500,
+          "branch_prefix": "stampede",
+          "no_main_commits": true
+        },
+        "context": {
+          "total_tasks": 5,
+          "task_index": 0,
+          "related_tasks": [
+            "task-002"
+          ]
+        }
+      }
+    },
+    "claimed_manifest": {
+      "description": "Task file after claiming (moved to claimed/)",
+      "extends": "task_manifest_queue",
+      "added_fields": [
+        "claimed_by",
+        "claimed_at"
+      ],
+      "file_location": "{RUN_DIR}/claimed/{task_id}.json",
+      "added_example": {
+        "claimed_by": "agent-abc123",
+        "claimed_at": "ISO-8601 timestamp"
+      }
+    },
+    "worker_result": {
+      "description": "Result written by stampede-agent",
+      "required_fields": [
+        "task_id",
+        "run_id",
+        "agent_id",
+        "status",
+        "generation",
+        "branch",
+        "files_changed",
+        "summary",
+        "word_count",
+        "completed_at"
+      ],
+      "status_values": [
+        "done",
+        "error"
+      ],
+      "file_location": "{RUN_DIR}/results/{task_id}.json",
+      "example": {
+        "task_id": "task-001",
+        "run_id": "run-YYYYMMDD-HHMMSS",
+        "agent_id": "agent-abc123",
+        "status": "done",
+        "generation": 0,
+        "branch": "stampede/task-001",
+        "files_changed": [
+          "src/file.js"
+        ],
+        "summary": "Under 500 words",
+        "word_count": 150,
+        "completed_at": "ISO-8601"
+      },
+      "error_variant": {
+        "additional_fields": [
+          "error",
+          "error_type"
+        ],
+        "example": {
+          "status": "error",
+          "error": "ERROR_MESSAGE",
+          "error_type": "TYPE"
+        }
+      }
+    },
+    "commander_bundle": {
+      "description": "Bundle written by stampede-commander for metaswarm runs",
+      "required_fields": [
+        "task_id",
+        "run_id",
+        "commander_id",
+        "status",
+        "role",
+        "profile",
+        "swarm_scale",
+        "per_commander_full_swarm",
+        "branch",
+        "files_changed",
+        "summary",
+        "confidence",
+        "consensus",
+        "telemetry"
+      ],
+      "status_values": [
+        "success",
+        "partial",
+        "failed"
+      ],
+      "file_locations": [
+        "{RUN_DIR}/commanders/{commander_id}/bundle.json",
+        "{RUN_DIR}/results/{task_id}.json"
+      ],
+      "example": {
+        "task_id": "contestant-001",
+        "run_id": "run-YYYYMMDD-HHMMSS",
+        "commander_id": "commander-001",
+        "status": "success",
+        "role": "commander",
+        "profile": "metaswarm",
+        "swarm_scale": "ss-250",
+        "per_commander_full_swarm": true,
+        "branch": "havoc-swarm/run-YYYYMMDD-HHMMSS/contestant-001",
+        "files_changed": [],
+        "summary": "Under 500 words",
+        "confidence": 0.0,
+        "consensus": {
+          "tier": "CONSENSUS | MAJORITY | CONFLICT | UNIQUE",
+          "notes": []
+        },
+        "telemetry": {
+          "squad_leads_target": 50,
+          "squad_leads_launched": 50,
+          "workers_target": 250,
+          "workers_launched": 250,
+          "atoms_received": 0,
+          "children_failed": 0
+        }
+      }
+    },
+    "commander_swarm_state": {
+      "description": "Live proof file for nested swarm activity",
+      "file_location": "{RUN_DIR}/commanders/{commander_id}/swarm-state.json",
+      "required_fields": [
+        "run_id",
+        "commander_id",
+        "task_id",
+        "role",
+        "profile",
+        "swarm_scale",
+        "per_commander_full_swarm",
+        "phase",
+        "status",
+        "launch_proof_required",
+        "launch_proof",
+        "depth_budget",
+        "model_policy",
+        "premium_model_pool",
+        "banned_child_models",
+        "telemetry",
+        "updated_at",
+        "last_heartbeat_at"
+      ],
+      "phase_values": [
+        "claiming",
+        "decomposing",
+        "launching_squad_leads",
+        "launching_workers",
+        "collecting",
+        "complete"
+      ],
+      "status_values": [
+        "running",
+        "success",
+        "partial",
+        "failed"
+      ]
+    },
+    "child_agents_jsonl": {
+      "description": "Append-only JSONL for tracking child agent launches",
+      "file_location": "{RUN_DIR}/commanders/{commander_id}/child-agents.jsonl",
+      "event_types": [
+        "launch_requested",
+        "launch_started",
+        "completed"
+      ],
+      "launch_started_example": {
+        "ts": "ISO-8601",
+        "event": "launch_started",
+        "commander_id": "commander-001",
+        "child_id": "sq-001",
+        "role": "squad_lead | worker",
+        "depth": 2,
+        "agent_type": "general-purpose | explore",
+        "model": "claude-opus-4.7",
+        "workers_target": 5
+      }
+    },
+    "merge_report": {
+      "description": "Final report produced by stampede-merger",
+      "file_location": "{RUN_DIR}/merge-report.json",
+      "required_fields": [
+        "run_id",
+        "merged_branch",
+        "timestamp",
+        "branches",
+        "summary",
+        "model_scores"
+      ],
+      "summary_fields": [
+        "total_branches",
+        "clean_merges",
+        "conflicts_resolved",
+        "skipped",
+        "tests_pass",
+        "avg_score",
+        "best_agent",
+        "worst_agent"
+      ]
+    },
+    "state_json": {
+      "description": "Run state file for crash recovery",
+      "file_location": "{RUN_DIR}/state.json",
+      "required_fields": [
+        "run_id",
+        "base",
+        "objective",
+        "repo_path",
+        "model",
+        "worker_count",
+        "total_tasks",
+        "phase",
+        "tasks",
+        "workers",
+        "updated_at"
+      ],
+      "optional_fields": [
+        "profile",
+        "swarm_scale",
+        "per_commander_full_swarm"
+      ],
+      "phase_values": [
+        "stampedeing",
+        "running",
+        "synthesizing",
+        "completed"
+      ]
+    }
+  },
+  "naming_conventions": {
+    "run_id": "run-YYYYMMDD-HHMMSS",
+    "task_id": "task-NNN (3-digit zero-padded) or commander-NNN",
+    "agent_id": "agent-{6-hex-chars}",
+    "commander_id": "commander-NNN",
+    "worker_branch": "stampede/{task_id}",
+    "commander_branch": "havoc-swarm/{run_id}/{task_id}",
+    "merged_branch": "stampede/merged-{RUN_ID}",
+    "result_file": "{task_id}.json",
+    "tmp_file_prefix": ".tmp-{task_id}.json",
+    "log_file": "{agent_id}.jsonl or orchestrator.jsonl"
+  },
+  "atomic_protocol": {
+    "description": "Race-safe filesystem IPC using POSIX atomic rename",
+    "steps": [
+      "1. Write to temp file with .tmp- prefix",
+      "2. Use os.rename() (atomic on POSIX) to move to final location",
+      "3. Never echo/printf JSON - always use python3 json.dump"
+    ],
+    "task_claiming": {
+      "description": "Atomic task claiming via mv",
+      "steps": [
+        "1. Find task file in queue/",
+        "2. Use os.rename() to move to claimed/",
+        "3. If rename fails (FileNotFoundError), another agent won - try next task",
+        "4. After move succeeds, update claimed file with claimed_by and claimed_at"
+      ]
+    },
+    "result_writing": {
+      "description": "Atomic result writing",
+      "steps": [
+        "1. Write result to {RUN_DIR}/results/.tmp-{task_id}.json",
+        "2. Use os.rename() to move to {RUN_DIR}/results/{task_id}.json",
+        "3. Delete claimed file from claimed/"
+      ]
+    },
+    "commander_bundle": {
+      "description": "Commanders write bundles to TWO locations",
+      "locations": [
+        "{RUN_DIR}/commanders/{commander_id}/bundle.json",
+        "{RUN_DIR}/results/{task_id}.json"
+      ]
+    }
+  },
+  "inconsistencies": [
+    {
+      "severity": "minor",
+      "description": "files_changed vs files_modified naming",
+      "details": "SKILL.md synthesis step checks both result.get(\"files_changed\", result.get(\"files_modified\", [])). Worker agent uses files_changed. This is defensive but suggests historical inconsistency.",
+      "affected_components": [
+        "skills/SKILL.md",
+        "agents/stampede-agent.agent.md"
+      ],
+      "recommendation": "Standardize on files_changed everywhere"
+    },
+    {
+      "severity": "minor",
+      "description": "Commander bundle written to two locations",
+      "details": "Commander bundles are written to both {RUN_DIR}/commanders/{commander_id}/bundle.json AND {RUN_DIR}/results/{task_id}.json. This is documented but creates redundancy.",
+      "affected_components": [
+        "agents/stampede-commander.agent.md"
+      ],
+      "recommendation": "This appears intentional for compatibility with standard result consumption"
+    },
+    {
+      "severity": "info",
+      "description": "Worker result vs Commander bundle schemas differ significantly",
+      "details": "Worker results have: task_id, run_id, agent_id, status, generation, branch, files_changed, summary, word_count, completed_at. Commander bundles add: commander_id, role, profile, swarm_scale, per_commander_full_swarm, confidence, consensus, telemetry. They share some fields but represent different granularities.",
+      "affected_components": [
+        "agents/stampede-agent.agent.md",
+        "agents/stampede-commander.agent.md"
+      ],
+      "recommendation": "This is by design - commanders aggregate swarm work into bundles"
+    },
+    {
+      "severity": "info",
+      "description": "No formal JSON schema definition file",
+      "details": "Schemas are implicitly defined in agent/skill markdown files. No JSON Schema or TypeScript interface file exists.",
+      "affected_components": [
+        "All"
+      ],
+      "recommendation": "Consider adding schemas/bundle.schema.json for validation"
+    },
+    {
+      "severity": "minor",
+      "description": "Merger expects fleet.json but workers do not create it",
+      "details": "stampede-merger.agent.md references fleet.json for worker_id \u2192 model mapping, but stampede-agent.agent.md does not create this file. It must be created by the launcher or orchestrator.",
+      "affected_components": [
+        "agents/stampede-merger.agent.md"
+      ],
+      "recommendation": "Document who creates fleet.json or have merger fall back gracefully"
+    }
+  ],
+  "summary": "Terminal Stampede uses an implicit schema system defined across 4 components. The collaboration-bus flows: task manifests (queue/) \u2192 claimed manifests (claimed/) \u2192 worker results OR commander bundles (results/). Atomic operations use .tmp- prefix then os.rename(). Worker results and commander bundles share a common core (task_id, run_id, status, branch, files_changed, summary) but commanders add metaswarm telemetry (squad leads, workers, consensus). The merger reads results/*.json and expects fleet.json for model attribution. Key invariant: all JSON via python3 json.dump, never echo/printf."
+}

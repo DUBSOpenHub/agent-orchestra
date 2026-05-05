@@ -1,0 +1,64 @@
+{
+  "worker_id": "wkr-021-004",
+  "model": "gpt-5.4",
+  "assignment": "adoption_workflow",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "6-phase flow defined only in bin/stampede.sh (protocol+prompt); not in SKILL.md, worker agent, or merger agent.",
+    "Only 5 collab ledgers; no adoptions.jsonl.",
+    "Adoption is bundle metadata only (bin/stampede.sh:910).",
+    "Monitor lists 5 ledgers; no adopt visibility.",
+    "Merger has no explicit adoption/collab handling."
+  ],
+  "evidence": [
+    {
+      "file": "bin/stampede.sh",
+      "lines": "674-707",
+      "note": "ledger creation + workflow propose\u2192peer_review\u2192improve\u2192consensus\u2192broadcast\u2192adopt."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "904-910",
+      "note": "commander prompt names per-phase actions."
+    },
+    {
+      "file": "skills/SKILL.md",
+      "lines": "407-417",
+      "note": "metaswarm launch only; no phase text."
+    },
+    {
+      "file": "agents/stampede-agent.agent.md",
+      "note": "no phase matches."
+    },
+    {
+      "file": "agents/stampede-merger.agent.md",
+      "lines": "49-53",
+      "note": "reads results/*.json; no collab consumption."
+    },
+    {
+      "file": "agents/stampede-commander.agent.md",
+      "lines": "240-267",
+      "note": "Bundle Shape lacks adoption/source_refs fields; consensus block at 254-257 only."
+    },
+    {
+      "file": "bin/stampede-monitor.sh",
+      "lines": "57-66",
+      "note": "counts 5 ledgers, no adopt."
+    }
+  ],
+  "gaps": [
+    "Phases are advisory; nothing prevents skipping.",
+    "No quorum/timeout for review/consensus/broadcast/adopt.",
+    "No requirement that broadcast references consensus item_id.",
+    "No adoptions.jsonl ledger; adoption is not append-only auditable.",
+    "Merger does not validate adoption decisions during synthesis."
+  ],
+  "recommendations": [
+    "Add adoptions.jsonl + monitor count + protocol entry.",
+    "Define machine-checkable transition rules: required predecessor IDs, min reviews, optional timeouts.",
+    "Require broadcasts to reference consensus item_id; adoptions to reference broadcast_id+consensus item_id.",
+    "Validate phase order in commander bundle generation and merger synthesis.",
+    "Have merger read and report adopted consensus + source_refs explicitly."
+  ]
+}

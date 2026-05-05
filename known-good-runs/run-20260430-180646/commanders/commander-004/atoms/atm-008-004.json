@@ -1,0 +1,60 @@
+{
+  "worker_id": "wkr-008-004",
+  "theme": "premium-model-policy",
+  "focus": "child-override-propagation",
+  "findings": [
+    {
+      "category": "launcher_to_commander",
+      "mechanism": "inline_prompt_embedding",
+      "source": "bin/stampede.sh:907",
+      "description": "Launcher embeds premium model pool directly into commander prompt string with explicit rotation list and banned models."
+    },
+    {
+      "category": "launcher_to_commander",
+      "mechanism": "fleet_metadata",
+      "source": "bin/stampede.sh:760-778, 814-832",
+      "description": "Launcher writes fleet.json and swarm-state.json with premium_model_pool and banned_child_models arrays."
+    },
+    {
+      "category": "launcher_validation",
+      "mechanism": "upfront_rejection",
+      "source": "bin/stampede.sh:515-530",
+      "description": "Launcher validates commander-level models before launch; rejects banned models and defaults to premium rotation in metaswarm."
+    },
+    {
+      "category": "commander_instruction",
+      "mechanism": "agent_markdown_spec",
+      "source": "agents/stampede-commander.agent.md:94-164",
+      "description": "Commander instructions define premium and banned model lists and mandate explicit premium overrides for Squad Lead/Worker launches."
+    },
+    {
+      "category": "commander_instruction",
+      "mechanism": "context_capsule",
+      "source": "agents/stampede-commander.agent.md:190-209",
+      "description": "Commander must build context capsule including model_policy=premium plus premium and banned model arrays before launching children."
+    },
+    {
+      "category": "enforcement_gap",
+      "mechanism": "telemetry_only",
+      "source": "agents/stampede-commander.agent.md:137,166",
+      "description": "Guidance requires recording launched model and marking partial on banned fallback, but no hard pre-launch blocking hook is shown in this file."
+    },
+    {
+      "category": "propagation_chain",
+      "mechanism": "instruction_cascade",
+      "description": "Propagation relies on instruction cascade from launcher to commander to squad leads/workers; enforcement beyond launcher appears policy-driven rather than code-enforced in this scope."
+    }
+  ],
+  "source_refs": [
+    "bin/stampede.sh:515-530",
+    "bin/stampede.sh:760-778",
+    "bin/stampede.sh:814-832",
+    "bin/stampede.sh:907",
+    "agents/stampede-commander.agent.md:94-111",
+    "agents/stampede-commander.agent.md:150-164",
+    "agents/stampede-commander.agent.md:166",
+    "agents/stampede-commander.agent.md:190-209"
+  ],
+  "confidence": 0.85,
+  "status": "success"
+}

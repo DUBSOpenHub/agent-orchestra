@@ -1,0 +1,121 @@
+{
+  "ts": "2026-05-01T01:29:09Z",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_id": "sq-026",
+  "worker_id": "wkr-026-001",
+  "assignment": "Initialization idempotency: verify collab bus + state init do not truncate ledgers; identify restart risks.",
+  "status": "success",
+  "summary": "Collab bus ledgers are created idempotently with append-mode touch (no truncation). Run-level state.json is written via atomic tmp+replace. However, per-commander telemetry ledgers (child-agents.jsonl and swarm-state.json) are initialized with write/truncate, so re-running the launcher on an existing run_id (or reinitializing commander progress dirs) can destroy launch-proof history.",
+  "findings": [
+    {
+      "id": "collab-ledgers-no-truncate",
+      "claim": "Metaswarm collab ledgers are created/initialized without truncation.",
+      "evidence": [
+        {
+          "path": "bin/stampede.sh",
+          "lines": "779-782 (python3 block within launcher)",
+          "snippet": "for ledger_path in ledgers.values(): open(ledger_path, 'a').close()",
+          "why_it_matters": "open(..., \"a\") creates the file if missing and preserves any existing content."
+        },
+        {
+          "path": ".stampede/run-20260430-180646/collab/*.jsonl",
+          "lines": "file stats",
+          "snippet": "Ledgers are non-empty in this run (e.g., reviews.jsonl has 18 lines; consensus.jsonl 8; broadcasts.jsonl 7).",
+          "why_it_matters": "Run artifacts show append-only JSONL content with no header, consistent with protocol guidance."
+        },
+        {
+          "path": ".stampede/run-20260430-180646/collab/protocol.json",
+          "lines": "27-35",
+          "snippet": "Protocol requires append-only JSONL and explicitly forbids truncation during a run.",
+          "why_it_matters": "Documents intended invariants for writers/readers."
+        }
+      ],
+      "verdict": "pass"
+    },
+    {
+      "id": "state-json-atomic",
+      "claim": "Run-level state.json updates are atomic (tmp file then replace), but may overwrite specific fields on restart.",
+      "evidence": [
+        {
+          "path": "bin/stampede.sh",
+          "lines": "762-767 & 827-841",
+          "snippet": "write_json_atomic() writes to <path>.tmp then os.replace(); run_state loaded if present then written atomically.",
+          "why_it_matters": "Avoids partial writes/corruption if process crashes mid-write."
+        },
+        {
+          "path": "bin/stampede.sh",
+          "lines": "835-840",
+          "snippet": "run_state.setdefault('phase','launching'); run_state['profile']='metaswarm'; run_state['collab']=collab",
+          "why_it_matters": "On restart with same run_id, state.json is rewritten (atomic) and will force these fields regardless of previous values."
+        }
+      ],
+      "verdict": "pass_with_restart_notes"
+    },
+    {
+      "id": "telemetry-ledgers-truncated-on-init",
+      "claim": "Per-commander telemetry files are initialized with truncate semantics, which is not restart-idempotent.",
+      "evidence": [
+        {
+          "path": "bin/stampede.sh",
+          "lines": "954-957",
+          "snippet": "with open(f'{progress_dir}/swarm-state.json', 'w') ...; with open(f'{progress_dir}/child-agents.jsonl', 'w') ...",
+          "why_it_matters": "If stampede.sh is re-run for the same RUN_ID (or progress_dir reused), existing launch-proof history is wiped."
+        },
+        {
+          "path": ".stampede/run-20260430-180646/commanders/commander-002/swarm-state.json",
+          "lines": "18-19",
+          "snippet": "partial_reason explicitly cites: child-agents.jsonl was truncated/restarted during concurrent child writes.",
+          "why_it_matters": "Run artifacts already observed/recorded this as a real failure mode impacting success/partial gating."
+        }
+      ],
+      "verdict": "fail_restart_idempotency"
+    }
+  ],
+  "restart_risks": [
+    {
+      "risk": "Duplicate run_id reuse",
+      "impact": "Mixes old collab history with new protocol/state; and can wipe per-commander telemetry while preserving collab ledgers, yielding inconsistent proof.",
+      "evidence": [
+        {
+          "path": "bin/stampede.sh",
+          "lines": "715-720",
+          "snippet": "If tmux session exists, it is killed for fresh launch."
+        },
+        {
+          "path": "bin/stampede.sh",
+          "lines": "954-957",
+          "snippet": "telemetry files opened with 'w' (truncate)"
+        }
+      ]
+    },
+    {
+      "risk": "Concurrent JSONL writers without locking",
+      "impact": "Even with O_APPEND, multi-process text writes can interleave if a record is split across syscalls/buffers; readers must tolerate malformed trailing lines per protocol.",
+      "evidence": [
+        {
+          "path": ".stampede/run-20260430-180646/collab/protocol.json",
+          "lines": "29-35",
+          "snippet": "Readers must tolerate malformed trailing lines; open ledgers in append mode."
+        }
+      ]
+    },
+    {
+      "risk": "Teardown updates state.json non-atomically",
+      "impact": "Low; only impacts state.json on teardown, but could corrupt if interrupted mid-write.",
+      "evidence": [
+        {
+          "path": "bin/stampede.sh",
+          "lines": "350-358",
+          "snippet": "with open(p,'w') as f: json.dump(state,...)"
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    "Keep collab ledgers append-only (current behavior OK).",
+    "Make per-commander telemetry init idempotent: create-if-missing (append-mode touch) rather than truncate when RUN_ID already exists.",
+    "Default to refusing duplicate RUN_ID unless an explicit --force or --archive-old is provided; otherwise restart behavior can destroy/merge evidence.",
+    "If collab ledgers must be fresh per launch, archive/rename old ledgers rather than truncating in place (preserves audit trail)."
+  ]
+}

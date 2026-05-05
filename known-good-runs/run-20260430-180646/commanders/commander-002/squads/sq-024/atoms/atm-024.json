@@ -1,0 +1,114 @@
+{
+  "squad": "sq-024",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "task": "QA collaboration-bus review-only audit",
+  "review_only": true,
+  "workers_launched": 5,
+  "models_used": [
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex",
+    "claude-sonnet-4.5",
+    "gpt-5.2-codex"
+  ],
+  "worker_results": {
+    "wkr-024-001": {
+      "task": "proposal_semantics",
+      "findings_count": 4,
+      "overall_verdict": "partial_consistency",
+      "confidence": 0.86,
+      "status": "completed",
+      "key_findings": [
+        "protocol required_fields are not uniformly enforced across ledgers",
+        "proposal item_id references resolve, but naming conventions are not normalized"
+      ],
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/protocol.json",
+        ".stampede/run-20260430-180646/collab/proposals.jsonl",
+        "bin/stampede.sh"
+      ]
+    },
+    "wkr-024-002": {
+      "task": "review_semantics",
+      "findings_count": 5,
+      "overall_verdict": "conditional_pass",
+      "confidence": 0.91,
+      "status": "completed",
+      "key_findings": [
+        "peer_review entries omit required evidence field across all observed records",
+        "review verdict vocabulary is unstandardized across commanders"
+      ],
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/protocol.json",
+        ".stampede/run-20260430-180646/collab/reviews.jsonl",
+        "agents/stampede-commander.agent.md"
+      ]
+    },
+    "wkr-024-003": {
+      "task": "improvement_semantics",
+      "findings_count": 4,
+      "overall_verdict": "partial_traceability",
+      "confidence": 0.9,
+      "status": "completed",
+      "key_findings": [
+        "improvement lineage fields are schema-inconsistent across records",
+        "protocol required_fields omit improvement-specific lineage keys"
+      ],
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/improvements.jsonl",
+        ".stampede/run-20260430-180646/collab/protocol.json",
+        "bin/stampede-monitor.sh"
+      ]
+    },
+    "wkr-024-004": {
+      "task": "consensus_semantics",
+      "findings_count": 5,
+      "overall_verdict": "partial",
+      "confidence": 0.89,
+      "status": "completed",
+      "key_findings": [
+        "consensus ledger has schema compliance violations in evidence and based_on fields",
+        "consensus verdict and status vocabularies are semantically ambiguous"
+      ],
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/consensus.jsonl",
+        ".stampede/run-20260430-180646/collab/protocol.json"
+      ]
+    },
+    "wkr-024-005": {
+      "task": "broadcast_semantics",
+      "findings_count": 4,
+      "overall_verdict": "partial",
+      "confidence": 0.64,
+      "status": "completed",
+      "key_findings": [
+        "broadcast linkage fields are inconsistent between consensus_item_id and adopted_items",
+        "broadcast source_refs and adopt wording are not normalized"
+      ],
+      "source_refs": [
+        ".stampede/run-20260430-180646/collab/broadcasts.jsonl",
+        ".stampede/run-20260430-180646/collab/protocol.json",
+        "bin/stampede.sh"
+      ]
+    }
+  },
+  "synthesis": {
+    "overall_verdict": "partial",
+    "workers_completed": 5,
+    "major_or_higher_findings": 8,
+    "top_themes": [
+      "protocol required_fields are not enforced consistently across ledger event types",
+      "event-specific linkage and verdict vocabularies are underspecified and inconsistent",
+      "evidence and source_refs typing/precision drift weakens automation and traceability",
+      "adoption path semantics are blurred by inconsistent consensus and broadcast linkage fields"
+    ],
+    "recommended_followups": [
+      "define per-event schemas for proposal/review/improvement/consensus/broadcast records",
+      "standardize verdict and linkage field vocabularies before synthesis/adoption consumers depend on them",
+      "validate required evidence/source_refs fields at write time or in a ledger QA pass"
+    ]
+  },
+  "completed_at": "2026-05-01T01:23:38.865692Z"
+}

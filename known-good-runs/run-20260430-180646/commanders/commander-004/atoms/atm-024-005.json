@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-024-005",
+  "theme": "collaboration-bus",
+  "focus": "malformed-ledger-tolerance",
+  "findings": [
+    "Collab summary counts JSONL files with wc -l and returns 0 when files are missing; malformed or partial JSON lines will still be counted, so summaries can look healthy even when ledgers are corrupt.",
+    "Commander nested telemetry parsing lacks visible error handling around json.load; malformed or partial swarm-state.json causes telemetry omission rather than an explicit warning.",
+    "Orphan recovery treats exceptions reading commander swarm-state.json as inactive, so malformed telemetry can contribute to claimed-task requeue behavior."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:32-67",
+    "bin/stampede-monitor.sh:145-190",
+    "bin/stampede-monitor.sh:247-275"
+  ],
+  "confidence": "medium",
+  "status": "success"
+}

@@ -1,0 +1,110 @@
+{
+  "atom_id": "atm-021",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_id": "sq-021",
+  "ts": "2026-05-01T01:23:26.312721+00:00",
+  "status": "ok",
+  "task_focus": "Collaboration-bus QA: protocol, ledgers, append semantics, adoption workflow, bundle source_refs (review-only)",
+  "domain": "collaboration-bus",
+  "depth": 2,
+  "workers": [
+    {
+      "worker_id": "wkr-021-001",
+      "model": "claude-opus-4.7",
+      "assignment": "protocol",
+      "severity": "high",
+      "result_file": "wkr-021-001-result.json"
+    },
+    {
+      "worker_id": "wkr-021-002",
+      "model": "gpt-5.5",
+      "assignment": "ledgers",
+      "severity": "medium",
+      "result_file": "wkr-021-002-result.json"
+    },
+    {
+      "worker_id": "wkr-021-003",
+      "model": "claude-opus-4.6",
+      "assignment": "append_semantics",
+      "severity": "medium",
+      "result_file": "wkr-021-003-result.json"
+    },
+    {
+      "worker_id": "wkr-021-004",
+      "model": "gpt-5.4",
+      "assignment": "adoption_workflow",
+      "severity": "high",
+      "result_file": "wkr-021-004-result.json"
+    },
+    {
+      "worker_id": "wkr-021-005",
+      "model": "claude-opus-4.5",
+      "assignment": "bundle_source_refs",
+      "severity": "high",
+      "result_file": "wkr-021-005-result.json"
+    }
+  ],
+  "consensus_findings": {
+    "protocol_required_fields": [
+      "ts",
+      "run_id",
+      "commander_id",
+      "event",
+      "item_id",
+      "summary",
+      "evidence",
+      "confidence",
+      "source_refs"
+    ],
+    "schema_versioning": "Field is named 'version':'1.0' (bin/stampede.sh:685), not 'schema_version'; no semver/migration policy.",
+    "missing_event_kind_adoption": "Workflow lists 'adopt' (bin/stampede.sh:705-707) but ledger_events defines only proposal/peer_review/improvement/consensus/broadcast (bin/stampede.sh:671-683). No adoptions.jsonl exists.",
+    "no_envelope_fields": "No msg_id, parent_msg_id, seq, from, to, kind, payload, signature in protocol; no per-event payload schemas.",
+    "single_source_of_truth_absent": "No docs/protocol.md or docs/collaboration-bus.md; protocol exists only as runtime-generated JSON + injected prompt at bin/stampede.sh:910.",
+    "commander_agent_lacks_bus_docs": "agents/stampede-commander.agent.md has no mention of collaboration-bus, the 6 phases, or ledger files; relies on runtime prompt injection.",
+    "ledger_creation": "bin/stampede.sh:671-683 mkdirs collab/ and touches 5 ledgers via open(path,'a').close(); robust to repeat launches when run dir exists.",
+    "monitor_visibility": "bin/stampede-monitor.sh:32-39 + 57-66 use wc -l on the 5 ledgers; no JSON parse, no adopt count, malformed lines silently inflate counts.",
+    "append_only_enforcement": "protocol.json (bin/stampede.sh:695-703) documents append-only/never-truncate. Records consistently end with '\\n'. Truncation HAZARD: child-agents.jsonl opened with 'w' at bin/stampede.sh:853 during fleet seed (subsequent writes at :1023-1024 are 'a').",
+    "atomic_writes": "Atomic rename (.tmp + os.replace) used consistently for non-JSONL artifacts (bin/stampede.sh:155-157, 664-668, 1016-1018; agents/stampede-agent.agent.md:238-242; agents/stampede-merger.agent.md:300-304).",
+    "no_locking": "No flock/umask/chmod policy for collab ledgers; concurrency relies on O_APPEND atomicity (safe given small record sizes < PIPE_BUF) and prompt-level guidance.",
+    "phase_enforcement": "All 6 phases are advisory; no quorum, timeout, or required predecessor IDs; nothing prevents skipping consensus before broadcast or adoption without broadcast.",
+    "merger_blind_to_collab": "agents/stampede-merger.agent.md (esp. :49-53) reads only {RUN_DIR}/results/*.json; zero collab/ledger consumption; no provenance chain from bundle items to ledger entries.",
+    "bundle_shape_gaps": "agents/stampede-commander.agent.md:240-267 Bundle Shape required_fields = [task_id, run_id, commander_id, status, role, profile, swarm_scale, per_commander_full_swarm, branch, files_changed, summary, confidence, consensus, telemetry]. MISSING: source_refs, adopted_consensus, proposal_ids, review_ids, improvement_ids, broadcast_ids.",
+    "source_refs_runtime_only": "source_refs requirement appears only in protocol required_fields list and prose at bin/stampede.sh:910; not in agent contract; no validator.",
+    "atom_evidence_inconsistency": "Existing atoms in this run mix prose 'file:line' strings (atm-001.json) with structured {path,lines,note} objects (wkr-006-001.json); no uniform schema."
+  },
+  "consensus_gaps": [
+    "Schema field named 'version' instead of 'schema_version'; no semver/migration policy.",
+    "No envelope fields (msg_id, parent_msg_id, seq, from, to, kind, payload, signature) and no per-event payload schemas.",
+    "Adoption phase has no event kind, no adoptions.jsonl ledger, and no monitor count; recorded only inline in bundle.json.",
+    "No docs/collaboration-bus.md or docs/protocol.md as single source of truth.",
+    "stampede-commander.agent.md does not document the bus, 6 phases, or ledgers; survival depends on runtime prompt injection at bin/stampede.sh:910.",
+    "child-agents.jsonl opened with mode 'w' at bin/stampede.sh:853 during fleet seed \u2014 truncation hazard on relaunch.",
+    "Monitor uses wc -l only; no JSON validation, no truncation canary, no per-kind validity checks.",
+    "No flock/umask/chmod for collab ledgers; correctness depends on O_APPEND + agent compliance.",
+    "Phase ordering is advisory; no quorum/timeout/required-predecessor enforcement.",
+    "Merger does not consume collab ledgers; no link from bundle items back to ledger msg_ids.",
+    "Bundle Shape lacks source_refs/adopted_consensus/proposal_ids/review_ids/improvement_ids/broadcast_ids.",
+    "No JSON Schema for bundle or ledger lines and no runtime validator.",
+    "Worker atom evidence format not standardized."
+  ],
+  "consensus_recommendations": [
+    "Author docs/collaboration-bus.md as canonical SoT covering envelope, per-event payloads, phase semantics, and append-only contract.",
+    "Rename protocol field 'version' \u2192 'schema_version'; adopt semver and bump on envelope change.",
+    "Add envelope: {schema_version, msg_id, parent_msg_id, seq, ts, from, to, kind, payload, signature?}; ship per-kind JSON Schemas under schemas/.",
+    "Introduce 'adoption' event kind and adoptions.jsonl ledger; surface count in stampede-monitor.sh; require adoptions to reference broadcast_id and consensus item_id.",
+    "Embed bus protocol summary directly in agents/stampede-commander.agent.md (do not rely on runtime prompt injection only).",
+    "Change bin/stampede.sh:853 child-agents.jsonl init from 'w' to 'a' (or rotate before re-init) to honor append-only contract.",
+    "Add lightweight JSONL validator + truncation canary in bin/stampede-monitor.sh (read-only).",
+    "Add Bundle Shape fields source_refs, adopted_consensus, proposal_ids, review_ids, improvement_ids, broadcast_ids to agents/stampede-commander.agent.md:240-267; ship schemas/bundle.schema.json.",
+    "Extend agents/stampede-merger.agent.md to consume collab/*.jsonl ledgers, validate bundle source_refs against ledger msg_ids, and report adopted consensus explicitly.",
+    "Standardize worker atom evidence format as {file, line_start, line_end, excerpt} to enforce traceable provenance."
+  ],
+  "severity_summary": {
+    "high": 3,
+    "medium": 2,
+    "low": 0
+  },
+  "review_only": true,
+  "no_source_edits": true
+}

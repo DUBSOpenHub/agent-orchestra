@@ -1,0 +1,10 @@
+{
+  "atom_id": "atm-004-001",
+  "area": "collab-bus-and-telemetry",
+  "blockers": 0,
+  "highlights": [
+    "protocol.json written before panes; ledgers created empty (append-only correct)",
+    "Required fields ts/run_id/commander_id/event/item_id/summary/evidence/confidence/source_refs match",
+    "MINOR: heartbeat refresh not explicitly required of commanders in agent doc"
+  ]
+}

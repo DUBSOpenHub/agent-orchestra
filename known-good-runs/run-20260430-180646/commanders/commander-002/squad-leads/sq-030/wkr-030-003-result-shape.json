@@ -1,0 +1,55 @@
+{
+  "worker_id": "wkr-030-003",
+  "model": "gpt-5.3-codex",
+  "assignment": "result JSON shape",
+  "status": "completed",
+  "result_shape": {
+    "spec_required_fields": [
+      "task_id",
+      "run_id",
+      "commander_id",
+      "status",
+      "role",
+      "profile",
+      "swarm_scale",
+      "per_commander_full_swarm",
+      "branch",
+      "files_changed",
+      "summary",
+      "confidence",
+      "consensus",
+      "telemetry"
+    ],
+    "commander_001_missing": [],
+    "commander_003_missing": [],
+    "commander_001_extra": [
+      "adopted_consensus_item_ids",
+      "atoms",
+      "blockers_total",
+      "broadcasts",
+      "completed_at",
+      "launch_proof",
+      "majors_total",
+      "minors_total",
+      "no_source_modifications",
+      "review_only",
+      "ship_recommendation",
+      "source_refs"
+    ],
+    "commander_003_extra": [
+      "adopted_consensus",
+      "completed_at",
+      "source_refs"
+    ],
+    "adoption_field_mismatch": {
+      "commander_001": "adopted_consensus_item_ids",
+      "commander_003": "adopted_consensus"
+    },
+    "commander_002_result_present": false
+  },
+  "evidence": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/results/commander-001.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/results/commander-003.json",
+    "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md"
+  ]
+}

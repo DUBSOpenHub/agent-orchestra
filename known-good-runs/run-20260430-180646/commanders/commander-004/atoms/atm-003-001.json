@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-003-001",
+  "theme": "commander-launch-profile",
+  "focus": "launcher-flags",
+  "findings": [
+    "Metaswarm flags (--metaswarm, --count, --model, --models) properly gate commander mode",
+    "--metaswarm switches from stampede-agent to stampede-commander with full env vars",
+    "Task claiming is delegated to agent behavior (instructed atomic mv), not enforced in launcher code",
+    "Branch naming not enforced or created in stampede.sh - delegated to agents",
+    "No silent count downgrade: metaswarm over 5 hard-fails; but failed pane starts only print counts without marking partial",
+    "Autonomous execution uses --autopilot with -p and --no-ask-user correctly; no -i usage"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:15-24,31-58,605-628,850-853",
+    "bin/stampede.sh:502-505,538-543,592-594,633-640,724-839",
+    "bin/stampede.sh:643-647,674-682,872-883",
+    "bin/stampede.sh:389-392,872,883-890",
+    "bin/stampede.sh:502-505,735-766,780-788,887-892,1184-1209",
+    "bin/stampede.sh:412-428,941-959,1138-1139"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

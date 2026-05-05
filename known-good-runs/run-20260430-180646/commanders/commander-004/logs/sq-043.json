@@ -1,0 +1,41 @@
+{
+  "squad_id": "sq-043",
+  "theme": "recovery-stuck-detection",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": "high",
+  "consensus": [
+    "Stuck detection is purely time-based (120s claim-file mtime); no heartbeat or output-progress check",
+    "Recovery (orphan requeue) only triggers when ALL agents are dead AND claim stale >180s; single-dead-worker case is unrecovered",
+    "No automatic restart mechanism exists anywhere in the codebase",
+    "Zero test coverage for any recovery/resilience scenario",
+    "README overstates recovery capability (claims PID-based detection; reality is tmux pane status)",
+    "Depth Guard and partial-status enforcement are prompt-convention-only, not platform-enforced"
+  ],
+  "conflicts": [],
+  "blockers": [],
+  "key_gaps": [
+    "Single-dead-worker orphan: task stays claimed forever if other agents still alive",
+    "No trap-based cleanup on launcher abnormal exit",
+    "Shared working directory across agents creates blast radius risk",
+    "No fleet-level exit code or programmatic success validation",
+    "Stuck detection cannot distinguish slow-but-working from truly hung"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:200-215 (stuck threshold)",
+    "bin/stampede-monitor.sh:237-276 (orphan recovery)",
+    "bin/stampede.sh:1164-1167 (remain-on-exit, no restart)",
+    "bin/stampede.sh:306-340 (teardown only cleanup)",
+    "tests/smoke-test.sh (zero recovery coverage)",
+    "README.md:235 (PID claim vs tmux reality)"
+  ],
+  "worker_atoms": [
+    "atm-043-001",
+    "atm-043-002",
+    "atm-043-003",
+    "atm-043-004",
+    "atm-043-005"
+  ]
+}

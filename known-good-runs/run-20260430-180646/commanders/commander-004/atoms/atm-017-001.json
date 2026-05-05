@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-017-001",
+  "theme": "telemetry-contract",
+  "focus": "state-shape",
+  "findings": [
+    "swarm-state.json init (stampede.sh:832) sets task_id=None; spec requires recorded task_id after claiming",
+    "collab field present in init but absent from spec shape in commander agent doc",
+    "phase 'commander_pane_starting' and status 'starting' not in spec enum list",
+    "depth_config present in capsule but absent from state shape; depth_budget missing complexity_tier/rationale in state",
+    "premium_model_pool and banned_child_models consistent between spec and init",
+    "telemetry counter fields match between spec and init"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:69-129",
+    "bin/stampede.sh:773-833"
+  ],
+  "confidence": 0.96,
+  "status": "success"
+}

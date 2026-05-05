@@ -1,0 +1,131 @@
+{
+  "squad_id": "sq-044",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Review-Only Mode Verification",
+  "task": "Verify review_only and no_source_modifications handling",
+  "status": "complete",
+  "depth": 2,
+  "workers_launched": 5,
+  "workers_succeeded": 5,
+  "models_used": [
+    "claude-opus-4.5",
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex",
+    "claude-sonnet-4.5"
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-044-001",
+      "model": "claude-opus-4.5",
+      "focus": "review_only constraint",
+      "verdict": "FAIL"
+    },
+    {
+      "worker_id": "wkr-044-002",
+      "model": "gpt-5.2",
+      "focus": "no_source_modifications",
+      "verdict": "FAIL"
+    },
+    {
+      "worker_id": "wkr-044-003",
+      "model": "claude-sonnet-4.6",
+      "focus": "write_findings_only_to_run_artifacts",
+      "verdict": "PARTIAL"
+    },
+    {
+      "worker_id": "wkr-044-004",
+      "model": "gpt-5.3-codex",
+      "focus": "artifact vs source distinction",
+      "verdict": "PARTIAL"
+    },
+    {
+      "worker_id": "wkr-044-005",
+      "model": "claude-sonnet-4.5",
+      "focus": "constraint propagation",
+      "verdict": "PARTIAL"
+    }
+  ],
+  "summary": "Overall verdict: FAIL. commander-005 manifests carry review_only=true, no_source_modifications=true, and constraints.write_findings_only_to_run_artifacts=true, but repository code does not programmatically parse or enforce those controls. Review behavior is mostly natural-language prompt discipline. Worker and commander agents still expose edit/create tools, worker flow still stages and commits changes, orchestrator manifest template omits these review-only fields, and artifact-vs-source handling relies on .stampede path convention rather than a hard allowlist/denylist. Evidence from commander-001 shows review-only runs can succeed with files_changed=[], but that is honor-system compliance, not a guaranteed guardrail.",
+  "synthesis": {
+    "overall_verdict": "FAIL",
+    "dimension_verdicts": {
+      "review_only": "FAIL",
+      "no_source_modifications": "FAIL",
+      "write_findings_only_to_run_artifacts": "PARTIAL",
+      "artifact_vs_source_distinction": "PARTIAL",
+      "constraint_propagation": "PARTIAL"
+    },
+    "confirmed_behavior": [
+      "Claimed commander manifest explicitly carries review_only, no_source_modifications, and write_findings_only_to_run_artifacts flags.",
+      "Worker depth-lock is explicitly propagated to leaf-worker prompts.",
+      "At least one review-only result (commander-001) recorded files_changed=[] together with review_only=true and no_source_modifications=true."
+    ],
+    "key_failures": [
+      "No repository source file outside run artifacts implements programmatic enforcement for review_only or no_source_modifications.",
+      "Worker and commander agents retain edit/create capabilities during review-only work.",
+      "Worker workflow includes git add -A and conditional commit, so source changes remain possible unless the model self-restricts.",
+      "skills/SKILL.md standard manifest template does not define review_only, no_source_modifications, or write_findings_only_to_run_artifacts.",
+      "Artifact-vs-source separation is convention-based (.stampede/) rather than an enforced write policy."
+    ],
+    "evidence": [
+      {
+        "file": ".stampede/run-20260430-180646/claimed/commander-005.json",
+        "lines": "11-12",
+        "finding": "Top-level review_only and no_source_modifications are set true."
+      },
+      {
+        "file": ".stampede/run-20260430-180646/claimed/commander-005.json",
+        "lines": "35-42",
+        "finding": "constraints includes review_only, no_source_modifications, and write_findings_only_to_run_artifacts."
+      },
+      {
+        "file": "agents/stampede-agent.agent.md",
+        "lines": "27-35",
+        "finding": "Leaf-worker rules do not mention review-only write restrictions."
+      },
+      {
+        "file": "agents/stampede-agent.agent.md",
+        "lines": "166-169",
+        "finding": "Review tasks are described behaviorally, but refactor/test/document tasks explicitly use edit/create."
+      },
+      {
+        "file": "agents/stampede-agent.agent.md",
+        "lines": "181-189",
+        "finding": "Worker flow still stages and commits changes with git add -A and git commit."
+      },
+      {
+        "file": "agents/stampede-commander.agent.md",
+        "lines": "229-236",
+        "finding": "Depth-lock block is propagated exactly to workers, but it constrains delegation only, not file writes."
+      },
+      {
+        "file": "skills/SKILL.md",
+        "lines": "229-243",
+        "finding": "Canonical orchestrator manifest template lacks review_only/no_source_modifications/write_findings_only_to_run_artifacts."
+      },
+      {
+        "file": ".stampede/run-20260430-180646/results/commander-001.json",
+        "lines": "11-13",
+        "finding": "Completed review-only result shows files_changed=[] plus review_only=true and no_source_modifications=true, demonstrating outcome but not enforcement."
+      }
+    ],
+    "risk_assessment": {
+      "severity": "high",
+      "risks": [
+        "Users may assume review-only mode is enforced when it is only advisory.",
+        "A non-compliant or mistaken agent can still modify source files during a review-only task.",
+        "Because .stampede lives inside the repo, any future no-source-write policy needs an explicit artifact allowlist to avoid blocking result emission.",
+        "Constraint fields appear in run manifests but not the baseline manifest schema, so propagation may drift across runs or launch paths."
+      ]
+    },
+    "recommended_fixes": [
+      "Add canonical manifest fields for review_only, no_source_modifications, and write_findings_only_to_run_artifacts to skills/SKILL.md and launcher-generated manifests.",
+      "Introduce explicit enforcement in worker/commander flows: disable edit/create, reject git add/git commit, or validate files_changed==[] when review_only/no_source_modifications is true.",
+      "Codify artifact-vs-source rules with an allowlist rooted at .stampede/{run_id}/ and block writes outside it for review-only work.",
+      "Add post-run validation in bundle/result synthesis to flag violations when review-only constraints are present."
+    ]
+  },
+  "timestamp": "2026-05-01T01:19:25Z"
+}

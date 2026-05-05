@@ -1,0 +1,104 @@
+{
+  "squad_id": "sq-045",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Task Manifest Schema",
+  "task": "Verify task manifest JSON schema completeness",
+  "workers_launched": 5,
+  "worker_results": [
+    {
+      "worker_id": "wkr-045-001",
+      "model": "gpt-5.2",
+      "task": "required_manifest_fields",
+      "status": "complete"
+    },
+    {
+      "worker_id": "wkr-045-002",
+      "model": "claude-sonnet-4.6",
+      "task": "optional_manifest_fields",
+      "status": "complete"
+    },
+    {
+      "worker_id": "wkr-045-003",
+      "model": "gpt-5.3-codex",
+      "task": "field_types",
+      "status": "complete"
+    },
+    {
+      "worker_id": "wkr-045-004",
+      "model": "claude-sonnet-4.5",
+      "task": "field_defaults",
+      "status": "complete"
+    },
+    {
+      "worker_id": "wkr-045-005",
+      "model": "gpt-5.2-codex",
+      "task": "manifest_validation",
+      "status": "complete"
+    }
+  ],
+  "synthesis": {
+    "schema_completeness_score": 0.65,
+    "findings": {
+      "required_fields": {
+        "worker_manifest": ["task_id", "repo_path"],
+        "commander_manifest": ["task_id", "run_id", "repo_path", "objective"],
+        "orchestrator_template": ["task_id", "run_id", "title", "objective", "generation", "files", "repo_path", "branch", "repo_context", "constraints", "context"],
+        "inconsistency": "Orchestrator writes 11 fields, but agents only validate 2-4 as required"
+      },
+      "optional_fields": {
+        "count": 23,
+        "categories": {
+          "standard_worker": ["branch", "generation", "files", "repo_context", "constraints", "context", "created_at"],
+          "metaswarm_only": ["kind", "profile", "swarm_scale", "per_commander_full_swarm", "model", "model_policy", "premium_model_pool", "banned_sub_agent_models", "depth_budget", "telemetry_contract", "qa_gate", "review_only", "no_source_modifications", "collaboration_required", "required_outputs", "domain"]
+        }
+      },
+      "field_types": {
+        "strings": ["task_id", "run_id", "title", "objective", "repo_path", "branch", "kind", "profile", "swarm_scale", "claimed_by", "claimed_at"],
+        "numbers": ["generation"],
+        "booleans": ["per_commander_full_swarm"],
+        "arrays": ["files"],
+        "objects": ["repo_context", "constraints", "context", "depth_budget"]
+      },
+      "defaults": {
+        "generation": 0,
+        "status": "queued",
+        "constraints.max_result_words": 500,
+        "constraints.branch_prefix": "stampede",
+        "constraints.no_main_commits": true,
+        "worker_count": 3,
+        "model": "claude-sonnet-4.5",
+        "max_generation": 2
+      },
+      "validation_status": {
+        "formal_schema_exists": false,
+        "type_validation_exists": false,
+        "validation_method": "agent-instruction-based presence checks only",
+        "centralized_validator": false
+      }
+    },
+    "gaps_identified": [
+      "NO formal JSON Schema file exists - schema is implied across multiple files",
+      "README example uses 'description/scope' but SKILL.md uses 'objective/files' - naming inconsistency",
+      "No type validation - all parsing uses json.load with defaults, no isinstance checks",
+      "No range/bounds validation (e.g., max_result_words limits, generation bounds)",
+      "Validation fragmented: worker agent checks 2 fields, commander checks 4, orchestrator writes 11",
+      "No centralized manifest validation function in launcher scripts",
+      "Commander manifest validation is instruction-only, no programmatic enforcement"
+    ],
+    "recommendations": [
+      "Create formal JSON Schema file at schemas/task-manifest.schema.json",
+      "Add validate_manifest() function to bin/stampede.sh",
+      "Harmonize README examples with actual SKILL.md field names",
+      "Add type validation for critical fields (generation as number, files as array)",
+      "Document all 23 optional fields in a single canonical location"
+    ]
+  },
+  "quality_assessment": {
+    "schema_documented": "partial",
+    "schema_enforced": "minimal",
+    "consistency_across_sources": "low",
+    "production_readiness": "needs improvement"
+  },
+  "timestamp": "2026-04-30T18:07:15Z"
+}

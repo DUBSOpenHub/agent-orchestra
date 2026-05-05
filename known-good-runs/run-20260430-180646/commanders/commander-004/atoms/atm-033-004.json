@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-033-004",
+  "theme": "partial-failure-bundles",
+  "focus": "bundle-shape",
+  "findings": [
+    "Bundle shape explicitly documented in commander.agent.md:254-282 with required fields",
+    "Required: task_id, run_id, commander_id, status, role, profile, swarm_scale, branch, summary, confidence, telemetry",
+    "Timing NOT in final bundle (only in swarm-state.json launch_proof)",
+    "Per-worker success/failure NOT in bundle\u2014only aggregate children_failed count",
+    "Validation is proof-based (launch counts) not full-schema validation before write",
+    "README.md does not document full bundle schema"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:254-282",
+    "agents/stampede-commander.agent.md:140-146",
+    "README.md:130"
+  ],
+  "confidence": 74,
+  "status": "success"
+}

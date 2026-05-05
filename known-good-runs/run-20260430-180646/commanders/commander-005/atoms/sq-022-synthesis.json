@@ -1,0 +1,114 @@
+{
+  "ts": "2026-05-01T01:13:15Z",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead_id": "sq-022",
+  "focus": "Premium Model Policy Verification - Part 2",
+  "sub_task": "Verify launcher model handling and rotation",
+  "depth": 2,
+  "leaf_workers_launched_exactly": 5,
+  "premium_models_requested": [
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5",
+    "gpt-5.2",
+    "claude-sonnet-4.6"
+  ],
+  "overall_status": "pass_with_risks",
+  "overall_summary": "bin/stampede.sh supports --model and comma-separated --models rotation for regular workers and metaswarm commanders; assigned models are passed to Copilot CLI/custom agent commands and recorded in fleet.json. The requested premium model names are preserved in metaswarm policy pools/prompts. Main risk: model strings are not normalized or allowlist-validated; whitespace or empty comma entries can create invalid model slots, and preflight validation checks only the single --model fallback path in one code path.",
+  "workers": [
+    {
+      "worker_id": "wkr-022-001",
+      "task": "Check bin/stampede.sh --model handling",
+      "agent_status": "launched_but_model_429_failed",
+      "result_status": "supplemented_by_squad_lead",
+      "conclusion": "PASS with caveat. --model is parsed into MODEL and defaults to claude-haiku-4.5; it is used as fallback when --models is absent. Runtime command generation passes the selected worker_model with --model to copilot/gh copilot, and custom --agent-cmd can substitute {model}. Preflight/access testing has a path that uses MODEL directly rather than rotated MODEL_LIST.",
+      "evidence": [
+        "bin/stampede.sh:15",
+        "bin/stampede.sh:35",
+        "bin/stampede.sh:50",
+        "bin/stampede.sh:605",
+        "bin/stampede.sh:850-853",
+        "bin/stampede.sh:922-936",
+        "bin/stampede.sh:940-958",
+        "bin/stampede.sh:411-455"
+      ]
+    },
+    {
+      "worker_id": "wkr-022-002",
+      "task": "Verify --models array parsing",
+      "agent_status": "completed",
+      "result_status": "pass_with_risk",
+      "conclusion": "--models is a comma-separated string parsed with IFS=, read -ra MODEL_LIST and Python split(,). It rotates round-robin and overrides --model via ${MODELS:-$MODEL}. Whitespace and empty entries are not trimmed/filtered, so invalid model values can propagate.",
+      "evidence": [
+        "bin/stampede.sh:16",
+        "bin/stampede.sh:36",
+        "bin/stampede.sh:51",
+        "bin/stampede.sh:545-550",
+        "bin/stampede.sh:603-606",
+        "bin/stampede.sh:637",
+        "bin/stampede.sh:850-853"
+      ]
+    },
+    {
+      "worker_id": "wkr-022-003",
+      "task": "Check model assignment to commanders",
+      "agent_status": "completed",
+      "result_status": "pass",
+      "conclusion": "Metaswarm commanders use 1-based round-robin assignment m=models[(i-1)%len(models)] / MODEL_LIST[(worker_num-1)%MODEL_COUNT]. Commander panes use stampede-commander and pass --model worker_model to Copilot CLI. No off-by-one issue found.",
+      "evidence": [
+        "bin/stampede.sh:721-730",
+        "bin/stampede.sh:850-853",
+        "bin/stampede.sh:874-890",
+        "bin/stampede.sh:940-958",
+        "bin/stampede.sh:1123-1129"
+      ]
+    },
+    {
+      "worker_id": "wkr-022-004",
+      "task": "Verify model in fleet.json",
+      "agent_status": "completed",
+      "result_status": "pass",
+      "conclusion": "fleet.json is written with per-worker/per-commander model fields. Regular workers get {model, slot, role}; metaswarm commanders get model plus profile, premium model policy, progress_dir, telemetry contract, and premium_model_pool containing the requested premium models exactly.",
+      "evidence": [
+        "bin/stampede.sh:632-643",
+        "bin/stampede.sh:721-770",
+        "bin/stampede.sh:793-805",
+        "bin/stampede.sh:840-843"
+      ]
+    },
+    {
+      "worker_id": "wkr-022-005",
+      "task": "Check model validation",
+      "agent_status": "launched_but_model_429_failed",
+      "result_status": "supplemented_by_squad_lead",
+      "conclusion": "RISK. No static allowlist validation for --model/--models was found in the launcher. Model availability is inferred from Copilot output during preflight/access checks by grepping for invalid/not found/not available, and only reports MODEL in that check. The launcher otherwise passes arbitrary model strings through.",
+      "evidence": [
+        "bin/stampede.sh:35-36",
+        "bin/stampede.sh:448-455",
+        "bin/stampede.sh:605-606",
+        "bin/stampede.sh:922-958",
+        "README.md:133",
+        "agents/stampede-commander.agent.md:94-108"
+      ]
+    }
+  ],
+  "specific_checks": {
+    "--model_handling": "Parsed at bin/stampede.sh:35 into MODEL with default at line 15; used as fallback for MODEL_LIST at line 605 and Python fleet models at line 637; selected worker_model is passed to --model in generated Copilot commands at lines 940-958.",
+    "--models_array_parsing": "Comma-separated only, via IFS=, read -ra at line 605 and .split(,) at line 637; no trimming/filtering; --models takes precedence over --model through ${MODELS:-$MODEL}.",
+    "commander_assignment": "Metaswarm uses commander ids commander-%03d and assigns model m = models[(i - 1) % len(models)] at lines 721-730; generated panes call stampede-commander with --model worker_model.",
+    "fleet_json": "Written at lines 842-843; model field included for both workers and commanders; requested premium models appear exactly in premium_model_pool at lines 743-747 and 797-801.",
+    "model_validation": "No allowlist/normalization found. Only preflight output heuristic at lines 448-455; custom agent commands skip automated access/model validation path."
+  },
+  "risks": [
+    "Whitespace in --models entries is preserved (for example \"a, b\" yields \" b\").",
+    "Empty --models entries are not rejected before rotation/fleet writing.",
+    "No launcher allowlist guarantees that only supported premium models are used; unsupported values are delegated to Copilot CLI failure handling.",
+    "One preflight model-availability path reports/checks MODEL rather than every rotated model in MODELS."
+  ],
+  "recommendations": [
+    "Normalize --models by trimming whitespace and rejecting empty entries before MODEL_COUNT is used.",
+    "Consider validating every requested model against an explicit supported/premium allowlist or perform per-model Copilot preflight checks.",
+    "Align preflight model availability messages/checks with rotated MODEL_LIST rather than only MODEL."
+  ]
+}

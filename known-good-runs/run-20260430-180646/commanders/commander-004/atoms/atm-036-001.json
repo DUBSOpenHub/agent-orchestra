@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-036-001",
+  "theme": "stop-teardown-behavior",
+  "focus": "pid-tracking",
+  "status": "success",
+  "confidence": "high",
+  "findings": [
+    "PIDs are recorded per run under repo/.stampede/{RUN_ID}/pids (PIDS_DIR set/created; leaf PID discovered via process-tree walk from tmux pane PID).",
+    "In metaswarm mode, pidfiles are commander-###.pid; no separate squad PID tracking at launcher level.",
+    "Teardown only runs when explicitly invoked with --teardown; no global EXIT/INT trap in launcher, so interruption can leave sessions/pidfiles.",
+    "Teardown sends SIGTERM to PID from pidfile and removes pidfiles, then ends the tmux session; stale pidfile/PID reuse could terminate an unrelated process.",
+    "Duplicate-session cleanup ends tmux session without running teardown; if any agent process escapes tmux (or pidfiles persist), cleanup can be incomplete.",
+    "find_leaf_pid only recognizes copilot/gh copilot/claude/aider; custom --agent-cmd may lead to incorrect PID capture and ineffective teardown."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:70-90",
+    "bin/stampede.sh:627-631",
+    "bin/stampede.sh:710",
+    "bin/stampede.sh:1277-1305",
+    "bin/stampede.sh:304-345",
+    "bin/stampede.sh:716-719"
+  ]
+}

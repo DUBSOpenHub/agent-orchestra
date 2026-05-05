@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-014-002",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "commander-depth-budget",
+  "findings": [
+    "PASS: commander embeds the required leaf-worker block verbatim (agents/stampede-commander.agent.md:245-252).",
+    "GAP: the context capsule documents max_depth=3 and can_launch=true, but this file does not define a runtime stop when current_depth reaches max_depth or when can_launch should flip false for children (agents/stampede-commander.agent.md:228-239).",
+    "GAP: success/partial rules require 50 squad leads and 250 workers, but no circuit-breaker is specified for exhausted squad budgets or partial mid-run squad failures beyond reporting counts (agents/stampede-commander.agent.md:80-91,140-146).",
+    "GAP: squad leads are launched as general-purpose agents while only workers get an explicit leaf lock, leaving the middle tier without a matching anti-recursion lock (agents/stampede-commander.agent.md:15,32,135,245-252).",
+    "GAP: retry_budget and timeout_s are documented in the capsule, but the commander launch loop is not instructed to enforce them directly (agents/stampede-commander.agent.md:186-226)."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:15",
+    "agents/stampede-commander.agent.md:32",
+    "agents/stampede-commander.agent.md:80-91",
+    "agents/stampede-commander.agent.md:135-146",
+    "agents/stampede-commander.agent.md:186-239",
+    "agents/stampede-commander.agent.md:245-252"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

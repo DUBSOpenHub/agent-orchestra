@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-018-003",
+  "theme": "telemetry-contract",
+  "focus": "atomic-write-patterns",
+  "findings": [
+    "Commander contract explicitly requires atomic telemetry/result writes and Python json operations.",
+    "Launcher includes .tmp+replace atomic helpers and uses them in several telemetry paths.",
+    "Some launcher state writes still use direct json.dump without temp+rename, so atomicity is not fully uniform."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:34-38",
+    "agents/stampede-commander.agent.md:57",
+    "bin/stampede.sh:153-157",
+    "bin/stampede.sh:664-668",
+    "bin/stampede.sh:893-911",
+    "bin/stampede.sh:1016-1018"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

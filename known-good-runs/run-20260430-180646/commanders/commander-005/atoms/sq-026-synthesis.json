@@ -1,0 +1,161 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_id": "sq-026",
+  "focus": "Depth Guard Enforcement - Part 2: Verify depth-guard-lint.sh test coverage",
+  "artifacts": {
+    "lint_script": "tests/depth-guard-lint.sh",
+    "ci_workflow": ".github/workflows/ci.yml",
+    "worker_agent": "agents/stampede-agent.agent.md",
+    "commander_agent": "agents/stampede-commander.agent.md",
+    "smoke_test": "tests/smoke-test.sh"
+  },
+  "executive_summary": [
+    "tests/depth-guard-lint.sh exists but is not invoked by CI; there are no automated fixtures asserting pass/fail behavior.",
+    "Lint enforces leaf/commander invariants via brittle substring checks (format/casing/spacing sensitive) and all explicit failures exit 1 (no per-check exit codes).",
+    "Depth enforcement is mostly static (phrase presence + frontmatter tool bans). There is no explicit depth=2 (Squad Lead) prompt enforcement test; runtime depth_config fields are not validated."
+  ],
+  "worker_reports": [
+    {
+      "worker_id": "wkr-026-001",
+      "topic": "Lint test patterns",
+      "key_findings": [
+        "Current lint checks: worker frontmatter forbids task/ask_user; worker required phrases; worker forbids can_launch=true; commander required phrases; commander includes worker prompt lock phrases.",
+        "CI does not invoke depth-guard-lint.sh; smoke-test.sh does not invoke it.",
+        "Brittleness: forbidden-tools check is literal substring ('  - task'); commander checks include fragile prose tokens (e.g., gpt-5.5, Premium Model Policy)."
+      ],
+      "gaps": [
+        "No automated negative/positive fixtures (forbidden tool, missing invariant, can_launch=true).",
+        "stampede-merger.agent.md is not linted though listed as a core agent.",
+        "Leaf tools read_agent/list_agents are not explicitly forbidden in worker tools."
+      ],
+      "recommended_changes": [
+        "Add CI step: `bash tests/depth-guard-lint.sh`.",
+        "Use regex/YAML parsing for frontmatter tools to avoid indentation sensitivity.",
+        "Add worker invariant 'DO NOT use the task tool' to required_worker_phrases (align with commander Worker Depth Lock block)."
+      ]
+    },
+    {
+      "worker_id": "wkr-026-002",
+      "topic": "Depth lock detection",
+      "key_findings": [
+        "No numeric depth-level parsing exists in depth-guard-lint.sh; it validates static phrases and tool bans.",
+        "Runtime depth_budget JSON is partially validated by smoke-test.sh, not by lint.",
+        "Commander Worker Depth Lock enforcement is only validated by phrase presence inside commander markdown, not by verifying real prompt injection into generated child prompts."
+      ],
+      "gaps": [
+        "No depth=2 (Squad Lead) prompt enforcement test.",
+        "No tests validate depth_config.current_depth/max_depth/can_launch Context Capsule fields.",
+        "can_launch detection misses variants (no-space, single quotes, case variants)."
+      ],
+      "recommended_changes": [
+        "Add fixture tests for malformed frontmatter and missing files with clear lint errors (no tracebacks).",
+        "Add checks for stable JSON-shape tokens (e.g., '\"model_policy\": \"premium\"') rather than prose-only tokens."
+      ]
+    },
+    {
+      "worker_id": "wkr-026-003",
+      "topic": "Banned tool detection",
+      "key_findings": [
+        "Banned tools enforced: task/ask_user in worker frontmatter; can_launch=true in worker body.",
+        "No unit tests assert banned-tool detection; CI does not run lint.",
+        "Edge cases: case/format variants can bypass substring checks; single-quote can_launch not covered."
+      ],
+      "gaps": [
+        "Leaf tools read_agent/list_agents not forbidden.",
+        "No tests asserting that task-like strings in markdown body are ignored (current behavior only scans frontmatter)."
+      ],
+      "recommended_changes": [
+        "Extend forbidden worker tools list to include read_agent/list_agents.",
+        "Use anchored multiline regexes to match YAML list items precisely; optionally case-normalize."
+      ]
+    },
+    {
+      "worker_id": "wkr-026-004",
+      "topic": "Exit code handling",
+      "key_findings": [
+        "All explicit failures raise SystemExit -> exit code 1 (no per-check codes).",
+        "Unhandled parsing errors (missing --- separators) or missing files cause tracebacks with non-zero exit but poor diagnostics."
+      ],
+      "gaps": [
+        "No tests assert exit codes for failure cases.",
+        "No per-category exit codes for easier CI diagnosis."
+      ],
+      "recommended_changes": [
+        "Add fixture tests that assert non-zero exit per failure type.",
+        "Optionally add distinct exit codes per category.",
+        "Wrap parsing/file reads with explicit error messages to avoid tracebacks."
+      ]
+    },
+    {
+      "worker_id": "wkr-026-005",
+      "topic": "Lint error messages",
+      "key_findings": [
+        "Messages identify invariant/tool but do not include file path/line numbers.",
+        "No tests assert message content/patterns."
+      ],
+      "gaps": [
+        "No file attribution in errors.",
+        "No stable message contract for tests."
+      ],
+      "recommended_changes": [
+        "Include file name in every failure message.",
+        "Optionally add line numbers/context excerpts; standardize format (e.g., 'ERROR: file: detail').",
+        "Add message-pattern tests (assert substrings, not full lines)."
+      ]
+    }
+  ],
+  "high_priority_actions": [
+    {
+      "id": "ci-run-lint",
+      "severity": "critical",
+      "action": "Run Depth Guard lint in CI",
+      "details": "Update .github/workflows/ci.yml to run: bash tests/depth-guard-lint.sh",
+      "rationale": "Without CI invocation, regressions in Depth Guard invariants can merge silently."
+    },
+    {
+      "id": "fixture-tests",
+      "severity": "high",
+      "action": "Add fixture-based lint tests",
+      "details": "Create minimal fixtures that intentionally violate each rule and assert non-zero exit + message contains key token.",
+      "rationale": "Ensures each lint rule is reachable and prevents accidental weakening."
+    },
+    {
+      "id": "robust-frontmatter",
+      "severity": "high",
+      "action": "Harden frontmatter parsing/tool detection",
+      "details": "Replace split/substrings with YAML parsing or anchored multiline regex; emit clear errors for malformed frontmatter.",
+      "rationale": "Current approach is brittle and can produce false negatives or tracebacks."
+    }
+  ],
+  "notes": {
+    "observed_current_checks": {
+      "forbidden_worker_tools": [
+        "task",
+        "ask_user"
+      ],
+      "forbidden_worker_launch": [
+        "\"can_launch\": true",
+        "can_launch: true",
+        "can_launch = true"
+      ],
+      "required_worker_phrases": [
+        "NEVER ask the user questions",
+        "You MUST fully complete one task before claiming the next",
+        "DO NOT attempt to spawn sub-agents",
+        "You are a LEAF NODE"
+      ],
+      "required_commander_phrases_examples": [
+        "depth_budget.squads_allocated=50",
+        "model_policy=premium",
+        "launch_proof_required",
+        "Do not satisfy metaswarm by launching a single wrapped `swarm-command` agent"
+      ]
+    },
+    "recommended_additional_invariants": [
+      "Worker: add 'DO NOT use the task tool'",
+      "Commander: add stable JSON-shape tokens like '\"status\": \"partial\"', '\"banned_child_models\"', '\"premium_model_pool\"'",
+      "Worker tools: forbid read_agent/list_agents (leaf-only)"
+    ]
+  }
+}

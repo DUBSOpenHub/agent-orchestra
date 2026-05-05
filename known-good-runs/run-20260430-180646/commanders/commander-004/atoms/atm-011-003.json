@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-011-003",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "skill-depth-rules",
+  "findings": [
+    "SKILL.md applies bounded spawning caps but does not implement an explicit depth counter or Depth Guard algorithm.",
+    "The skill includes the task tool and relies on stampede-commander for downstream depth enforcement.",
+    "Anti-runaway landmines cover requeue/autopilot liveness more than recursion depth."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:16",
+    "skills/SKILL.md:39",
+    "skills/SKILL.md:108",
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:853",
+    "skills/SKILL.md:861",
+    "skills/SKILL.md:864"
+  ],
+  "confidence": 0.88,
+  "status": "complete"
+}

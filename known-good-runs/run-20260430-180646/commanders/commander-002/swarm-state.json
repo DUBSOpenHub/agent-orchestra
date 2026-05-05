@@ -1,0 +1,61 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "task_id": "commander-002",
+  "role": "commander",
+  "profile": "metaswarm",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "phase": "complete",
+  "status": "partial",
+  "launch_proof_required": true,
+  "launch_proof": {
+    "squad_leads_started": 30,
+    "workers_started": 72,
+    "first_child_started_at": "1777598304.148853",
+    "last_child_started_at": "2026-05-01T01:24:29.138825Z",
+    "valid_for_success": false,
+    "partial_reason": "child-agents.jsonl was truncated/restarted during concurrent child writes; circuit breaker stopped further expansion at 30/50 Squad Leads."
+  },
+  "depth_budget": {
+    "squads_allocated": 50,
+    "squads_max": 50
+  },
+  "model_policy": "premium",
+  "premium_model_pool": [
+    "claude-opus-4.7",
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5",
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex",
+    "claude-sonnet-4.5",
+    "gpt-5.2-codex"
+  ],
+  "banned_child_models": [
+    "claude-haiku-4.5",
+    "gpt-5.4-mini",
+    "gpt-5-mini",
+    "gpt-4.1"
+  ],
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 30,
+    "squad_leads_running": 23,
+    "squad_leads_completed": 7,
+    "squad_leads_failed": 0,
+    "workers_per_squad_lead": 5,
+    "workers_target": 250,
+    "workers_launched": 72,
+    "workers_running": 5,
+    "workers_completed": 67,
+    "workers_failed": 0,
+    "atoms_received": 39,
+    "children_failed": 0
+  },
+  "updated_at": "2026-05-01T01:24:31.251506Z",
+  "last_heartbeat_at": "2026-05-01T01:24:31.251506Z",
+  "partial_reason": "child-agents.jsonl was truncated/restarted during concurrent child writes; circuit breaker stopped further expansion at 30/50 Squad Leads."
+}

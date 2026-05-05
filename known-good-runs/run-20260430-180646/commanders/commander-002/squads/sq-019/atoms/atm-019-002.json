@@ -1,0 +1,62 @@
+{
+  "worker_id": "wkr-019-002",
+  "model": "gpt-5.5",
+  "focus": "proposal events",
+  "findings": {
+    "schema": {
+      "storage": ".stampede/{run_id}/collab/proposals.jsonl, one JSON object per line",
+      "declared_event": "proposal",
+      "declared_required_fields": [
+        "ts",
+        "run_id",
+        "commander_id",
+        "event",
+        "item_id",
+        "summary",
+        "evidence",
+        "confidence",
+        "source_refs"
+      ],
+      "observed_field_types": {
+        "ts": "string timestamp; ISO-8601/Z used in current run, but format is not enforced",
+        "run_id": "string; should match protocol.run_id/current run",
+        "commander_id": "string; commander-NNN in current run",
+        "event": "string; expected 'proposal' for proposals ledger",
+        "item_id": "string stable cross-ledger reference key",
+        "summary": "string free text",
+        "evidence": "not constrained: current proposals use both array<string> and string",
+        "confidence": "number/float in examples; no coded range check despite task convention 0.0-1.0",
+        "source_refs": "array<string> in examples; intended file/path references"
+      },
+      "protocol_source": "bin/stampede.sh creates protocol.json with ledgers, required_fields, and append-only rules; current run protocol mirrors this exactly.",
+      "missing_schema_constraints": [
+        "No JSON Schema or validator exists for proposals.",
+        "No coded type checks for required fields.",
+        "No uniqueness check for item_id.",
+        "No check that event == 'proposal' or run_id matches the run.",
+        "No normalization of evidence/source_refs."
+      ]
+    },
+    "validation": "Proposal creation is instruction-driven, not enforcement-driven. In metaswarm mode stampede.sh creates collab/proposals.jsonl and tells each stampede-commander to publish a proposal early using the required fields; scripts also export STAMPEDE_COLLAB_PROPOSALS. Practically, any commander process or any filesystem writer with access to the run directory can append a proposal. The launcher initializes files and protocol, but no code validates proposal records on write or read; existing run data already shows evidence is accepted as either string or list.",
+    "tracking": "Proposals are tracked as append-only JSONL records under collab/proposals.jsonl. protocol.json records the ledger path/event mapping, state.json embeds the collab paths/workflow/counts, and fleet.json embeds the same collab block per commander. The monitor only reports wc -l counts for proposals/reviews/improvements/consensus/broadcasts; it does not parse or validate proposal content. Cross-ledger tracking depends on stable item_id values referenced later by peer reviews, improvements, consensus, broadcasts, and final bundle source_refs/adopted items.",
+    "error_handling": "The protocol explicitly tells readers to tolerate absent files and malformed trailing lines, and the monitor tolerates missing ledgers by counting them as zero. However, malformed proposal lines are not quarantined and still inflate wc -l counts. stampede.sh ignores failures when updating existing state.json with collab metadata. There is no recovery for partial/non-atomic appends beyond advisory O_APPEND guidance, no duplicate detection, no stale proposal lifecycle, no ACL/authorship proof, and no semantic validation of confidence, timestamps, commander IDs, or source references.",
+    "integration_points": [
+      "bin/stampede.sh creates collab/ only for --metaswarm and initializes proposals/reviews/improvements/consensus/broadcasts ledgers plus protocol.json.",
+      "Commander launch prompt requires workflow propose -> peer_review -> improve -> consensus -> broadcast -> adopt and explicitly names required proposal fields.",
+      "Generated commander scripts export STAMPEDE_COLLAB_DIR, STAMPEDE_COLLAB_PROTOCOL, and STAMPEDE_COLLAB_PROPOSALS for writers.",
+      "state.json and fleet.json expose collab path/ledger/workflow metadata to monitors and agents.",
+      "bin/stampede-monitor.sh displays proposal counts in the Collab summary.",
+      "Peer reviews target proposal item_id values; consensus/broadcast records later cite source_refs/based_on/adopted items."
+    ],
+    "adoption_blockers": [
+      "Schema is prose-only; add a JSON Schema or shared Python validator before relying on proposals for automated synthesis.",
+      "Write path lacks an atomic append helper; relying on individual agents to open with O_APPEND risks malformed/interleaved lines under concurrent writes.",
+      "No item_id uniqueness or run_id/event/commander_id validation, so cross-ledger references can silently point to wrong or duplicate proposals.",
+      "evidence type is already inconsistent across current proposals, making downstream parsing brittle.",
+      "Monitor and likely synthesis can count malformed rows as valid activity because they do not parse proposals.",
+      "No authorization boundary: any local process with filesystem access can create or spoof proposal records.",
+      "SKILL.md/agent docs do not contain a dedicated proposal field table; canonical schema lives mainly in launcher prompt/protocol output."
+    ]
+  },
+  "confidence": 0.93
+}

@@ -1,0 +1,95 @@
+{
+  "squad_id": "sq-044",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "recovery-stuck-detection",
+  "status": "success",
+  "summary": [
+    "Monitor detects stale work but primarily alerts/requeues; it does not restart live agents or recover partial failures automatically.",
+    "Launcher teardown/restart paths can strand claimed tasks and do not provide a true resume workflow for interrupted runs.",
+    "Smoke tests and README do not adequately cover or document actual recovery thresholds and failure-handling behavior."
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-044-001",
+      "focus": "stuck-heuristics",
+      "status": "success",
+      "confidence": "high",
+      "headline": "Stuck detection is mtime-based and conservative, but partial failures are not actively recovered.",
+      "source_refs": [
+        "bin/stampede-monitor.sh:25-26",
+        "bin/stampede-monitor.sh:200-216",
+        "bin/stampede-monitor.sh:218-279"
+      ]
+    },
+    {
+      "worker_id": "wkr-044-002",
+      "focus": "recovery-paths",
+      "status": "success",
+      "confidence": "high",
+      "headline": "Teardown and duplicate-session restart can leave claimed tasks stranded; no resume path exists.",
+      "source_refs": [
+        "bin/stampede.sh:304-364",
+        "bin/stampede.sh:716-720",
+        "bin/stampede.sh:1096-1150"
+      ]
+    },
+    {
+      "worker_id": "wkr-044-003",
+      "focus": "smoke-recovery-coverage",
+      "status": "success",
+      "confidence": "high",
+      "headline": "Smoke tests do not exercise crashed/stuck worker recovery, restart, or mixed-failure containment.",
+      "source_refs": [
+        "tests/smoke-test.sh:14-21",
+        "tests/smoke-test.sh:73-148",
+        "tests/smoke-test.sh:151-162"
+      ]
+    },
+    {
+      "worker_id": "wkr-044-004",
+      "focus": "docs-vs-runtime-recovery",
+      "status": "success",
+      "confidence": "high",
+      "headline": "README recovery docs drift from runtime behavior, especially thresholds and detection mechanism.",
+      "source_refs": [
+        "README.md:86",
+        "README.md:235",
+        "bin/stampede-monitor.sh:25",
+        "bin/stampede-monitor.sh:208"
+      ]
+    },
+    {
+      "worker_id": "wkr-044-005",
+      "focus": "failure-containment",
+      "status": "success",
+      "confidence": "medium-high",
+      "headline": "Depth/bounding controls exist, but some launch-start failures may not propagate full containment telemetry.",
+      "source_refs": [
+        "agents/stampede-commander.agent.md:32-33",
+        "bin/stampede.sh:141-190",
+        "bin/stampede.sh:1318-1333"
+      ]
+    }
+  ],
+  "consensus_notes": [
+    "All five workers found recovery gaps stronger in detection/observability than in automated restart/remediation.",
+    "Three workers independently pointed to missing or incomplete handling for interrupted claimed tasks.",
+    "Test and documentation coverage both lag the implemented recovery behavior, increasing operational ambiguity."
+  ],
+  "conflict_notes": [
+    "No material disagreement on runtime behavior; differences were mainly scope (monitor vs launcher vs docs vs tests)."
+  ],
+  "blockers": [
+    "No execution blocker. Note: task tool returned inline results without background agent ids, so launch_started telemetry was recorded without agent_id fields."
+  ],
+  "overall_confidence": "high",
+  "key_source_refs": [
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede-monitor.sh:218-279",
+    "bin/stampede.sh:304-364",
+    "bin/stampede.sh:716-720",
+    "tests/smoke-test.sh:73-148",
+    "README.md:235"
+  ]
+}

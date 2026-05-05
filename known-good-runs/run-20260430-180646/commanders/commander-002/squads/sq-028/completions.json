@@ -1,0 +1,43 @@
+{
+  "squad_id": "sq-028",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "workers": [
+    {
+      "worker_id": "wkr-028-001",
+      "model": "gpt-5.2",
+      "assignment": "malformed line tolerance",
+      "status": "completed",
+      "result": "pass_with_caveat: tolerance is documented and operational, but malformed lines are not surfaced as warnings."
+    },
+    {
+      "worker_id": "wkr-028-002",
+      "model": "claude-sonnet-4.6",
+      "assignment": "empty ledger behavior",
+      "status": "completed",
+      "result": "pass"
+    },
+    {
+      "worker_id": "wkr-028-003",
+      "model": "gpt-5.3-codex",
+      "assignment": "required fields",
+      "status": "completed",
+      "result": "fail"
+    },
+    {
+      "worker_id": "wkr-028-004",
+      "model": "claude-sonnet-4.5",
+      "assignment": "source refs",
+      "status": "completed",
+      "result": "pass"
+    },
+    {
+      "worker_id": "wkr-028-005",
+      "model": "gpt-5.2-codex",
+      "assignment": "final result linkage",
+      "status": "completed",
+      "result": "fail"
+    }
+  ],
+  "completed_at": "2026-05-01T01:20:40.242419Z"
+}

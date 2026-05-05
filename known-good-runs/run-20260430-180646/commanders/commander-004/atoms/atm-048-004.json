@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-048-004",
+  "theme": "docs-ci-readiness",
+  "focus": "install-doc-alignment",
+  "status": "partial",
+  "confidence": 0.85,
+  "findings": [
+    "Install paths and component mapping in README align with install.sh outputs.",
+    "Critical metaswarm controls (Depth Guard, banned-model enforcement details) are under-documented in README relative to implementation detail.",
+    "Stop/recovery and bounded-spawn enforcement behavior are only partially documented."
+  ],
+  "source_refs": [
+    "install.sh:23-51",
+    "README.md:78-87",
+    "README.md:130",
+    "agents/stampede-commander.agent.md:106-111"
+  ]
+}

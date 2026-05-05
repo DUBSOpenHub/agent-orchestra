@@ -1,0 +1,14 @@
+{
+  "worker_id": "wkr-039-003",
+  "theme": "stop-teardown-behavior",
+  "focus": "smoke-stop-coverage",
+  "findings": "The smoke test has a basic cleanup() trap (line 14-20) that kills tmux sessions and removes the temp repo on EXIT, but does NOT test stop/teardown behavior as a feature. Gaps: (1) No test verifies PID cleanup — the .stampede/{run_id}/pids/ directory is created (line 22) but never checked for leftover PIDs after completion or forced stop. (2) No test for graceful vs forced termination — cleanup() uses tmux kill-session which is immediate/forced; no test validates SIGTERM→SIGKILL escalation or agent graceful shutdown. (3) No test verifies that workers respond to stop signals or clean up their claimed tasks on interruption. (4) Line 149 kills the metaswarm session manually but doesn't verify process state afterward. (5) No test simulates a stuck agent and verifies the stop path. The cleanup trap is purely test-infrastructure housekeeping, not a test of the product's stop behavior.",
+  "source_refs": [
+    "tests/smoke-test.sh:14-20",
+    "tests/smoke-test.sh:21",
+    "tests/smoke-test.sh:22",
+    "tests/smoke-test.sh:149"
+  ],
+  "confidence": 92,
+  "status": "success"
+}

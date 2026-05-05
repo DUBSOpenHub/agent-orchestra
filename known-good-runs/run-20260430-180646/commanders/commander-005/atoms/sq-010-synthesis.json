@@ -1,0 +1,32 @@
+{
+  "squad": "sq-010",
+  "commander": "commander-005",
+  "focus": "Test Coverage Gaps - Part 2",
+  "target_file": "tests/depth-guard-lint.sh",
+  "summary": "Depth-guard lint covers key invariants but relies on substring checks and omits several required prompt/tool validations. Exit handling is implicit and lacks negative test cases.",
+  "covered": [
+    "Worker frontmatter bans task and ask_user",
+    "Worker invariants: NEVER ask user questions, complete one task before next, DO NOT attempt to spawn sub-agents, You are a LEAF NODE",
+    "Worker launch permission bans: can_launch true variants",
+    "Commander metaswarm invariants: per_commander_full_swarm, swarm_scale, max_workers, 50x5x250 sizing, premium model policy incl gpt-5.5, child-agents.jsonl, launch_proof_required",
+    "Commander includes worker prompt fragments: DO NOT use the task tool, You are a LEAF NODE"
+  ],
+  "gaps": [
+    "Commander worker-prompt validation only checks 2 phrases; missing full 4-line depth-lock block (no checks for 'DO NOT attempt to spawn sub-agents, child agents, or any other agents.' and 'DO NOT delegate work. Complete your task YOURSELF using only your own tools.' and 'This instruction is non-negotiable.')",
+    "No exact/block/ordering enforcement for the required depth-lock prompt; substring checks allow scattered or paraphrased text",
+    "Worker banned-tool detection is whitespace-sensitive and frontmatter-only; no body-level scan and no commander prompt check for ask_user",
+    "Launch permission detection limited to three can_launch spellings; no validation commander explicitly sets can_launch true",
+    "Exit handling relies on implicit success and SystemExit string messages; no explicit exit-code assertions or negative test harness",
+    "No checks for additional depth-guard phrases like placeholder bans or 500-word limit (if required elsewhere)"
+  ],
+  "exit_code_notes": [
+    "Script uses set -euo pipefail and SystemExit for failures; implicit success via end of script",
+    "No explicit numeric exit codes or success assertions",
+    "No negative test cases that inject bad data to validate failures"
+  ],
+  "recommendations": [
+    "Add exact, contiguous block verification for the full worker depth-lock prompt in commander and worker contexts",
+    "Harden tool detection with regex/robust YAML parsing and include ask_user checks in commander worker prompt",
+    "Add explicit positive/negative tests or fixtures to validate failure paths and exit codes"
+  ]
+}

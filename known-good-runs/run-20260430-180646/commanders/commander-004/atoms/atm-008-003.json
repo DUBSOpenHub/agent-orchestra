@@ -1,0 +1,37 @@
+{
+  "worker_id": "wkr-008-003",
+  "theme": "premium-model-policy",
+  "focus": "docs-vs-runtime",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "medium",
+      "summary": "README declares metaswarm premium defaults, but AGENTS omits that default and only describes configurability.",
+      "details": "README states metaswarm 'uses premium child-model overrides by default,' while AGENTS only says commander model is configurable via --model/--models. This leaves default premium policy under-specified across docs.",
+      "source_refs": [
+        "README.md:130",
+        "AGENTS.md:27"
+      ]
+    },
+    {
+      "id": "F2",
+      "severity": "low",
+      "summary": "Baseline model-default wording is inconsistent between docs.",
+      "details": "README documents a concrete default --model value (claude-haiku-4.5) for stampede.sh usage, while AGENTS describes worker/merger model defaults as 'default model in your Copilot CLI session.' These can both be true but are not harmonized and may confuse expected runtime defaults.",
+      "source_refs": [
+        "README.md:300-309",
+        "AGENTS.md:17",
+        "AGENTS.md:38"
+      ]
+    }
+  ],
+  "source_refs": [
+    "README.md:130",
+    "README.md:300-309",
+    "AGENTS.md:17",
+    "AGENTS.md:27",
+    "AGENTS.md:38"
+  ],
+  "confidence": 0.92,
+  "status": "success"
+}

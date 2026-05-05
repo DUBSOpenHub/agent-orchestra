@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-038-002",
+  "theme": "stop-teardown-behavior",
+  "focus": "monitor-stop-flows",
+  "status": "success",
+  "confidence": 0.93,
+  "findings": [
+    "Monitor has no signal traps; Ctrl-C/TERM exits without structured cleanup/teardown event.",
+    "Partial and full completion both exit 0, so wrappers cannot distinguish degraded stop outcomes.",
+    "Orphan recovery only runs when live_agents==0; one stale live pane can block recovery indefinitely.",
+    "read -t timeout defaults to yes for merge prompt; potentially destructive default behavior.",
+    "Multiple silent-failure paths (tmux stderr suppression, stats write except:pass) reduce teardown observability."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:237-279",
+    "bin/stampede-monitor.sh:296-305",
+    "bin/stampede-monitor.sh:309-326",
+    "bin/stampede-monitor.sh:380",
+    "bin/stampede-monitor.sh:394-397"
+  ]
+}

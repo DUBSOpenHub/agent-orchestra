@@ -1,0 +1,31 @@
+{
+  "worker_id": "wkr-027-002",
+  "model": "gpt-5.5",
+  "squad_lead": "sq-027",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "focus": "monitor collab display",
+  "status": "completed",
+  "verdict": "accept_with_major_additions",
+  "highlights": [
+    "Collab display is gated by is_metaswarm_run(): present BASE/collab returns true, otherwise fleet.json is parsed for profile=metaswarm or role=commander.",
+    "Live collab state exists and all five JSONL ledgers currently parse cleanly: proposals=5, reviews=11, improvements=7, consensus=5, broadcasts=4.",
+    "If collab/ is absent, metaswarm runs still show a zero-count Collab row when fleet.json identifies commanders; non-metaswarm/missing or invalid fleet suppresses it gracefully."
+  ],
+  "gaps": [
+    "count_jsonl_lines uses wc -l, so it counts newline characters, not valid JSONL records: empty files count 0, trailing newlines are fine, but a final record without newline is undercounted and malformed partial lines ending in newline are overcounted.",
+    "Monitor never JSON-parses collab ledger contents; it cannot detect invalid schema, malformed records, duplicate events, wrong run/commander IDs, stale phases, quorum/consensus quality, or failed adoption.",
+    "No adopt phase is displayed; protocol exposes only proposals/reviews/improvements/consensus/broadcasts ledgers, so propose->peer_review->improve->consensus->broadcast is visible but adopt is absent.",
+    "Commander nested progress shows squads/workers/run/done/fail/atoms/heartbeat/phase from per-commander swarm-state.json, but no per-commander collab ledger counts or collab health. Collab counts are global only."
+  ],
+  "evidence": [
+    "bin/stampede-monitor.sh:32-39 wc -l based count_jsonl_lines",
+    "bin/stampede-monitor.sh:41-55 is_metaswarm_run collab-dir/fleet fallback",
+    "bin/stampede-monitor.sh:57-66 print_collab_summary counts five ledgers only",
+    "bin/stampede-monitor.sh:143-193 commander nested display excludes collab counts",
+    "live collab/: proposals=5 reviews=11 improvements=7 consensus=5 broadcasts=4; parsed_records match and bad=0",
+    "collab/protocol.json ledgers list five events: proposal, peer_review, improvement, consensus, broadcast"
+  ],
+  "confidence": 0.94,
+  "ts": "2026-05-01T01:21:22.895366Z"
+}

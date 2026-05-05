@@ -1,0 +1,54 @@
+{
+  "worker_id": "wkr-019-004",
+  "model": "gpt-5.4",
+  "focus": "consensus and broadcast events",
+  "findings": {
+    "consensus_schema": {
+      "required_fields": {
+        "ts": "string (ISO-8601 timestamp)",
+        "run_id": "string",
+        "commander_id": "string",
+        "event": "string literal 'consensus'",
+        "item_id": "string (stable cross-ledger identifier)",
+        "summary": "string",
+        "evidence": "present but not strongly typed in protocol; observed as string[] in some records and string in others across ledgers",
+        "confidence": "number",
+        "source_refs": "array"
+      },
+      "observed_optional_fields": {
+        "verdict": "string",
+        "based_on": "array of upstream item_ids"
+      },
+      "validation": "Only protocol.json and the launcher prompt define the contract. I found no code that validates consensus ledger rows for required fields, types, or allowed enum values before or after append."
+    },
+    "broadcast_schema": {
+      "required_fields": {
+        "ts": "string (ISO-8601 timestamp)",
+        "run_id": "string",
+        "commander_id": "string",
+        "event": "string literal 'broadcast'",
+        "item_id": "string (stable cross-ledger identifier)",
+        "summary": "string",
+        "evidence": "present but not strongly typed in protocol; observed as array in some rows and omitted/inconsistent elsewhere",
+        "confidence": "number",
+        "source_refs": "array"
+      },
+      "observed_optional_fields": {
+        "consensus_item_id": "string link to a single consensus record",
+        "adopted_items": "array of adopted consensus item_ids"
+      },
+      "validation": "Same as consensus: append-only ledger exists, but there is no runtime schema/type checker, routing validator, or adoption receipt validator."
+    },
+    "consensus_logic": "The intended workflow is propose -> peer_review -> improve -> consensus -> broadcast -> adopt. In practice, consensus is not computed by code. I found peer_review rows with verdicts like approve/endorse and improvement rows with based_on links, but no vote counter, quorum, threshold, or tie-break algorithm. A commander promotes an item to consensus by writing a new consensus row that references prior items (for example via based_on) and adds its own verdict/tier language.",
+    "distribution": "Broadcasts are distributed through one shared append-only file: .stampede/{run_id}/collab/broadcasts.jsonl. The launcher exports the same collab paths to every commander, and the prompt tells commanders to consume broadcasts.jsonl in real time. Distribution is therefore fan-out by shared ledger visibility, not targeted delivery: any commander with access to the run directory can read every broadcast. I found no recipient list, subscription model, ack tracking, or per-commander delivery confirmation.",
+    "adoption_blockers": [
+      "Contract is underspecified: protocol.json names only common required fields, not per-event optional fields, types, or enums.",
+      "Observed schema drift: evidence is not strongly typed, consensus uses based_on while broadcasts vary between consensus_item_id and adopted_items.",
+      "Consensus rules are social/manual, not executable; no quorum or threshold makes outcomes subjective and harder to automate.",
+      "Broadcast delivery is passive shared-file reading; there is no recipient targeting, acknowledgement, or adoption receipt ledger.",
+      "The launcher prompt is effectively the canonical spec; project docs outside runtime artifacts do not fully document the collaboration bus contract."
+    ],
+    "evidence_quality": "Moderate. The bus has good traceability primitives: append-only JSONL ledgers, stable item_id guidance, source_refs, target_item_id/based_on links, and monitor line counts for proposals/reviews/improvements/consensus/broadcasts. But observability is shallow: the monitor only counts rows, not validity or adoption; I found no parser that enforces malformed-line tolerance for collab ledgers despite protocol guidance, and no system record showing which commanders actually consumed or adopted a broadcast beyond optional bundle references."
+  },
+  "confidence": 0.92
+}

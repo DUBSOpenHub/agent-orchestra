@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-042-001",
+  "theme": "recovery-stuck-detection",
+  "focus": "stuck-heuristics",
+  "findings": [
+    "Stuck alerts fire when a claimed task file is older than 120s, but claim mtimes do not advance during normal execution, so long tasks can false-positive as stuck.",
+    "Alert dedupe uses substring matching in ALERTED, so task IDs with overlapping substrings can suppress or misroute alerts.",
+    "Recovery is notification-only for stuck work; requeue only happens in orphan recovery when pane census shows no live agents and claim age exceeds 180s.",
+    "If tmux pane census is wrong, orphan recovery can requeue claimed work even while agents are still active, creating duplicate-work risk.",
+    "All-agents-dead partial completion can trigger after a short grace period if pane detection is wrong or total task counting is off."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:25-26",
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede-monitor.sh:218-280",
+    "bin/stampede-monitor.sh:281-305"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

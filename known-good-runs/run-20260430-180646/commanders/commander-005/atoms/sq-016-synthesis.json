@@ -1,0 +1,104 @@
+{
+  "squad_lead_id": "sq-016",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Agent Pulse Live Counts - Part 2",
+  "subtask": "Verify swarm-state.json real-time telemetry updates",
+  "worker_launches": {
+    "requested": 5,
+    "launched": 5,
+    "notes": [
+      "wkr-016-003 and wkr-016-004 returned platform 429 (too many requests); analysis completed manually from repo + run artifacts."
+    ]
+  },
+  "status": "success",
+  "confidence": 0.82,
+  "findings": {
+    "update_mechanism": {
+      "summary": "swarm-state.json updates are event-driven and primarily written by the commander agent; the monitor never writes it and does not compute counters from filesystem state.",
+      "evidence": [
+        "bin/stampede-monitor.sh:155-189 reads telemetry fields to display counts; no writes",
+        "agents/stampede-commander.agent.md:57 requires commander to update swarm-state.json after child launches",
+        "bin/stampede.sh:830 seeds swarm-state.json once at commander registration; other launcher writes only on blocked/launch-failed paths"
+      ]
+    },
+    "atomicity": {
+      "summary": "Launcher uses atomic tmp->replace in some paths, but initial seed write is non-atomic; commander live-update atomicity is unspecified by contract.",
+      "evidence": [
+        "bin/stampede.sh:151-155 write_json() uses tmp + replace (atomic)",
+        "bin/stampede.sh:830-831 initial seed uses open(...,'w') + json.dump (non-atomic)",
+        "agents/stampede-commander.agent.md:38 only mandates python json.dump; does not mandate tmp+rename for swarm-state.json updates"
+      ]
+    },
+    "heartbeat_tracking": {
+      "summary": "Heartbeat is derived from last_heartbeat_at (fallback updated_at). Missing periodic writer means heartbeats only advance when the commander writes state. Monitor considers commander inactive if heartbeat age >= 180s.",
+      "evidence": [
+        "bin/stampede-monitor.sh:167-173 parses last_heartbeat_at/updated_at and displays hb age",
+        "bin/stampede-monitor.sh:25 sets ORPHAN_RECOVERY_AFTER=180; lines 247-276 requeue on stale heartbeat + no live panes",
+        "Current commander-005 swarm-state.json has updated_at == last_heartbeat_at == 2026-05-01T01:13:18Z"
+      ]
+    },
+    "running_completed_counters": {
+      "summary": "Squad-lead counters in swarm-state.json are internally consistent and match the child-agents ledger, but worker counters are not being updated at all in this run.",
+      "observed": {
+        "swarm_state": {
+          "squad_leads_launched": 38,
+          "squad_leads_completed": 7,
+          "squad_leads_running": 31,
+          "workers_launched": 0,
+          "workers_completed": 0,
+          "workers_running": 0
+        },
+        "child_agents_jsonl": {
+          "launch_started_events": 38,
+          "completed_events": 7
+        }
+      },
+      "evidence": [
+        ".stampede/run-20260430-180646/commanders/commander-005/swarm-state.json telemetry section",
+        ".stampede/run-20260430-180646/commanders/commander-005/child-agents.jsonl contains only squad_lead launch_started + completed; no worker events"
+      ]
+    },
+    "failed_counter_handling": {
+      "summary": "Monitor displays failed = workers_failed (fallback children_failed). Neither is computed from ledger/filesystem; failures must be explicitly written by commander. Launcher only marks failed if commander CLI launch fails.",
+      "evidence": [
+        "bin/stampede-monitor.sh:164 uses workers_failed fallback children_failed",
+        "bin/stampede.sh:985-1011 updates swarm-state.json on commander launch failure (copilot_launch_failed); no per-child failure aggregation"
+      ],
+      "risk": "If workers/squad-leads fail but commander doesn’t increment workers_failed/children_failed, monitor will show 0 failures and may misreport run health."
+    },
+    "atoms_received_tracking": {
+      "summary": "atoms_received is currently not tracking reality. Monitor trusts telemetry.atoms_received and will not count atoms/ directory contents.",
+      "observed": {
+        "telemetry_atoms_received": 0,
+        "atoms_dir_json_files": 19,
+        "atoms_example_files": [
+          "sq-001-synthesis.json",
+          "sq-002-synthesis.json",
+          "sq-030-synthesis.json"
+        ]
+      },
+      "evidence": [
+        "bin/stampede-monitor.sh:163-166 sets completed from workers_completed fallback atoms_received and prints atoms count",
+        "bin/stampede-monitor.sh:27-30 has count_json_files() but is not used to derive atoms_received",
+        "commander-005 swarm-state.json has telemetry.atoms_received=0 while commander-005/atoms has 19 json files"
+      ],
+      "impact": "Nested progress line will under-report completion/atoms and can trigger '⚠ incomplete proof' warnings even when atoms exist."
+    }
+  },
+  "recommendations": [
+    "Commander: whenever writing an atom file into atoms/, increment telemetry.atoms_received and set workers_completed accordingly; update swarm-state.json + append completed event with atom_id to child-agents.jsonl.",
+    "Commander: update swarm-state.json with tmp+replace (atomic) on every heartbeat/update to avoid partial reads.",
+    "Monitor: add defensive fallback counts (if telemetry missing/zero) by counting atoms/*.json and/or parsing child-agents.jsonl completed events.",
+    "Telemetry contract: explicitly require launch_requested events (currently absent in this run) so the parent monitor can prove intent vs. actual launch_started."
+  ],
+  "source_refs": [
+    "bin/stampede.sh",
+    "bin/stampede-monitor.sh",
+    "agents/stampede-commander.agent.md",
+    ".stampede/run-20260430-180646/commanders/commander-005/swarm-state.json",
+    ".stampede/run-20260430-180646/commanders/commander-005/child-agents.jsonl",
+    ".stampede/run-20260430-180646/commanders/commander-005/atoms/"
+  ],
+  "completed_at": "2026-05-01T01:14:59Z"
+}

@@ -1,0 +1,20 @@
+{
+  "squad": "sq-040",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Quickstart Flow Verification",
+  "summary": "quickstart.sh structure is orderly but the flow is incomplete/misleading; CLI detection/install logic appears wrong for modern Copilot CLI; skill-only install leaves system unusable; guidance/errors need fixes.",
+  "findings": [
+    "Structure: logical order with strict mode and exec; uses non-atomic curl write for SKILL.md but otherwise clean.",
+    "CLI detection/install: checks only standalone copilot; uses invalid install paths (brew install copilot-cli, gh.io/copilot-install, winget GitHub.Copilot) and ignores gh copilot extension; exec copilot will fail for gh copilot.",
+    "Skill addition: only downloads skills/SKILL.md; does not install agents (stampede-agent/commander/merger) or shell scripts (stampede.sh/monitor/merge); no chmod or ~/bin PATH handling.",
+    "User guidance: says type stampede but correct usage is run stampede \"task\"; no next-step examples; no mention that only skill is installed.",
+    "Errors: fallback message installed can be misleading; failure hints suggest brew even on Linux; no interactive TTY guard before exec."
+  ],
+  "recommendations": [
+    "Update quickstart to install full runtime (agents + scripts) or clearly state it is skill-only and direct users to install.sh for full setup.",
+    "Fix Copilot CLI detection to prefer gh copilot extension and correct install steps (brew install gh + gh extension install github/gh-copilot).",
+    "Adjust guidance to use run stampede \"task\" and add next-step examples (status/merge).",
+    "Improve error messaging by branching per install path and add a TTY check before exec."
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "task_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "status": "partial",
+  "role": "commander",
+  "profile": "metaswarm",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "branch": "havoc-swarm/run-20260430-180646/commander-002",
+  "files_changed": [],
+  "summary": "PARTIAL: commander-002 launched 30 premium Squad Leads before circuit breaker. Recoverable telemetry proves at least 72 worker launches and 67 worker completions, but child-agents.jsonl was truncated/restarted by concurrent writers, so a clean 50x5 SS-250 proof is impossible. Collaboration-bus QA converged on HOLD: protocol/ledgers exist and are active, but append-only integrity is unenforced, review records miss/blur required evidence/source_refs, adoption has no first-class proof, monitor mostly counts lines, and commander/bundle docs drift from runtime requirements. No source files were modified.",
+  "confidence": 0.9,
+  "consensus": {
+    "tier": "MAJORITY",
+    "notes": [
+      "Collaboration bus is operational but not pre-build ready.",
+      "Launch proof degraded due child-agents.jsonl truncation/restart under concurrent child writes.",
+      "Adopt HOLD/PARTIAL consensus until append integrity, schema validation, and adoption proof are enforced."
+    ]
+  },
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 30,
+    "workers_target": 250,
+    "workers_launched": 72,
+    "atoms_received": 39,
+    "children_failed": 0,
+    "squad_leads_completed": 7,
+    "workers_completed": 67,
+    "child_jsonl_bad_lines": 0,
+    "telemetry_integrity_warnings": 1
+  },
+  "launch_proof": {
+    "squad_leads_started": 30,
+    "workers_started": 72,
+    "first_child_started_at": "1777598304.148853",
+    "last_child_started_at": "2026-05-01T01:24:29.138825Z",
+    "valid_for_success": false,
+    "partial_reason": "child-agents.jsonl was truncated/restarted during concurrent child writes; circuit breaker stopped further expansion at 30/50 Squad Leads."
+  },
+  "collaboration": {
+    "proposal_item_id": "prop-c002-collab-bus-001",
+    "adopted_consensus_item_ids": [
+      "cons-c001-pre-build-blockers",
+      "cons-c001-pre-build-majors",
+      "con-003-telemetry-pass",
+      "cons-c002-collab-bus-hold"
+    ],
+    "source_refs": [
+      ".stampede/run-20260430-180646/collab/protocol.json",
+      ".stampede/run-20260430-180646/collab/proposals.jsonl",
+      ".stampede/run-20260430-180646/collab/reviews.jsonl",
+      ".stampede/run-20260430-180646/collab/improvements.jsonl",
+      ".stampede/run-20260430-180646/collab/consensus.jsonl",
+      ".stampede/run-20260430-180646/collab/broadcasts.jsonl",
+      ".stampede/run-20260430-180646/commanders/commander-002/child-agents.jsonl",
+      ".stampede/run-20260430-180646/commanders/commander-002/swarm-state.json"
+    ],
+    "ledger_counts": {
+      "proposals": 5,
+      "reviews": 18,
+      "improvements": 11,
+      "consensus": 8,
+      "broadcasts": 7
+    },
+    "ledger_bad_lines": {
+      "proposals": 0,
+      "reviews": 0,
+      "improvements": 0,
+      "consensus": 0,
+      "broadcasts": 0
+    }
+  },
+  "findings": [
+    {
+      "severity": "critical",
+      "summary": "child-agents.jsonl append-only launch proof is not robust under concurrent child writers; this run observed truncation/restart and required recovered records."
+    },
+    {
+      "severity": "high",
+      "summary": "Collaboration workflow exists in runtime artifacts but is underdocumented in commander/skill/docs and lacks schema validation."
+    },
+    {
+      "severity": "high",
+      "summary": "Consensus/adoption semantics are underspecified; broadcasts can recommend adoption but bundle schema does not consistently require adopted_consensus/source_refs."
+    },
+    {
+      "severity": "high",
+      "summary": "Monitor/counters are largely line-count based and do not validate JSONL shape or malformed trailing lines despite protocol guidance."
+    },
+    {
+      "severity": "medium",
+      "summary": "Peer review ledgers show required-field drift, especially evidence/source_refs consistency."
+    }
+  ],
+  "atom_refs": [
+    ".stampede/run-20260430-180646/commanders/commander-002/atm-010.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-001.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-003.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-004.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-005.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-007.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-011.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-012.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-013.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-014-001.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-014-002.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-014-003.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-014-004.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-014-005.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-014.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-017.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-021.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-022.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-023.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/atm-027.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/wkr-006-001.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/wkr-013-001-drift-audit.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/wkr-013-002-commander-collab.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/wkr-013-003-launcher-protocol.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/wkr-013-004-monitor-collab.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/atoms/wkr-013-005-bundle-schema.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-029/atoms/atm-029.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/atoms/atm-030.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-015/atoms/atm-015.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-019/atoms/atm-019-001.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-019/atoms/atm-019-002.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-019/atoms/atm-019-003.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-019/atoms/atm-019-004.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-019/atoms/atm-019-005.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-019/atoms/atm-019.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-023/atoms/atm-023.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-024/atoms/atm-024.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-025/atoms/atm-025.json",
+    ".stampede/run-20260430-180646/commanders/commander-002/squads/sq-028/atoms/atm-028.json"
+  ],
+  "finalized_at": "2026-05-01T01:24:31.251506Z"
+}

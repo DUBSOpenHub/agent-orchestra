@@ -1,0 +1,24 @@
+{
+  "squad_id": "sq-020",
+  "theme": "telemetry-contract",
+  "status": "success",
+  "summary": [
+    "Monitor does not read child-agents.jsonl, so launch proof relies solely on swarm-state.json counters.",
+    "Telemetry contract/doc gaps: README lacks schema details, heartbeat requirements, and bundle/result path specifics; swarm-state example task_id inconsistency.",
+    "Counter naming/logic inconsistencies (started vs launched, partial status handling) and hardcoded SS-250 label can mislead monitor."
+  ],
+  "worker_atoms": [
+    "atoms/atm-020-001.json",
+    "atoms/atm-020-002.json",
+    "atoms/atm-020-003.json",
+    "atoms/atm-020-004.json",
+    "atoms/atm-020-005.json"
+  ],
+  "blockers": [],
+  "consensus_notes": [
+    "Multiple workers independently flagged missing child-agents.jsonl consumption and telemetry naming mismatches.",
+    "Documentation gaps are consistent across README vs commander/launcher expectations."
+  ],
+  "conflicts": [],
+  "overall_confidence": 0.84
+}

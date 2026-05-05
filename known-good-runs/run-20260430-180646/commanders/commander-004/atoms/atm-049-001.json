@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-049-001",
+  "theme": "docs-ci-readiness",
+  "focus": "ci-scope",
+  "findings": [
+    "CI does not test metaswarm commander launches; only install smoke test with skipped demo launch and help check",
+    "CI does not verify premium-model/banned-model enforcement or bounded spawning to full SS-250 (50\u00d75=250)",
+    "Clear gaps in stop/recovery and partial/failure handling coverage; no interruption, cleanup, restart, or recovery tests"
+  ],
+  "source_refs": [
+    ".github/workflows/ci.yml:13-56",
+    ".github/workflows/ci.yml:38-48"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

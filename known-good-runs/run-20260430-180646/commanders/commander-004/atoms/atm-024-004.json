@@ -1,0 +1,15 @@
+{
+  "worker_id": "wkr-024-004",
+  "theme": "collaboration-bus",
+  "focus": "broadcast-adoption",
+  "findings": [
+    "Assigned docs do not document any collaboration-bus workflow, broadcast mechanism, consensus process, or adoption path.",
+    "Worker output also cited non-assigned files, so this atom keeps only the compliant doc-scope finding and marks the result partial."
+  ],
+  "source_refs": [
+    "README.md:1-100",
+    "skills/SKILL.md:1-100"
+  ],
+  "confidence": "medium",
+  "status": "partial"
+}

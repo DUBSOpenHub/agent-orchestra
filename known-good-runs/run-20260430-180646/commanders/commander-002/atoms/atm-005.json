@@ -1,0 +1,160 @@
+{
+  "squad_id": "sq-005",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "ts": "2026-05-01T01:15:08.635674+00:00",
+  "depth": 2,
+  "task": "Review-only QA collaboration-bus: cross-check commander-001/003/005 proposals for collaboration dependencies, inspect live collab ledgers for protocol compliance",
+  "workers": [
+    {
+      "id": "wkr-005-001",
+      "model": "claude-opus-4.7",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-005-002",
+      "model": "gpt-5.5",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-005-003",
+      "model": "claude-opus-4.6",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-005-004",
+      "model": "gpt-5.4",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-005-005",
+      "model": "claude-opus-4.5",
+      "status": "completed"
+    }
+  ],
+  "findings": {
+    "commander-001": {
+      "item_id": "prop-c001-launcher-runtime-001",
+      "schema_compliant": true,
+      "consensus_candidate": false,
+      "blockers": [
+        "No peer reviews received - lacks reciprocal coverage"
+      ],
+      "confidence": 0.88
+    },
+    "commander-003": {
+      "item_id": "prop-003-telemetry-qa",
+      "schema_compliant": true,
+      "consensus_candidate": "yes_after_adopting_commander_001_additions",
+      "blockers": [
+        "Monitor does not tail child-agents.jsonl",
+        "Commander doc lacks heartbeat-refresh instruction"
+      ],
+      "confidence": 0.9
+    },
+    "commander-005": {
+      "item_id": "prop-005-synthesis-readiness",
+      "schema_compliant": true,
+      "consensus_candidate": false,
+      "blockers": [
+        "Ambiguous source_ref path claimed/commander-005.json",
+        "Bundle schema gap - adopted_consensus_item_ids/source_refs missing",
+        "No improvement event published in response to accept_with_additions"
+      ],
+      "confidence": 0.78
+    },
+    "protocol_compliance": {
+      "ledgers_checked": 5,
+      "total_entries": 18,
+      "compliant_entries": 15,
+      "violations": [
+        {
+          "file": "reviews.jsonl",
+          "item_ids": [
+            "rev-c001-of-c002-collab",
+            "rev-c001-of-c003-telemetry",
+            "rev-c001-of-c005-synthesis"
+          ],
+          "issue": "missing required evidence field"
+        }
+      ],
+      "health_score": 76
+    },
+    "cross_dependencies": [
+      {
+        "type": "shared_blocker",
+        "items": [
+          "prop-c001-launcher-runtime-001",
+          "prop-003-telemetry-qa"
+        ],
+        "issue": "Premium-model enforcement gap"
+      },
+      {
+        "type": "shared_blocker",
+        "items": [
+          "prop-c001-launcher-runtime-001",
+          "prop-c002-collab-bus-001"
+        ],
+        "issue": "No per-commander manifest emitted to queue/"
+      },
+      {
+        "type": "shared_blocker",
+        "items": [
+          "prop-003-telemetry-qa",
+          "prop-c001-launcher-runtime-001"
+        ],
+        "issue": "Monitor does not tail child-agents.jsonl"
+      },
+      {
+        "type": "shared_gap",
+        "items": [
+          "prop-c001-launcher-runtime-001",
+          "prop-005-synthesis-readiness"
+        ],
+        "issue": "Bundle schema missing adopted_consensus_item_ids/source_refs"
+      }
+    ]
+  },
+  "adopted_item_ids": [
+    "prop-c001-launcher-runtime-001",
+    "prop-003-telemetry-qa",
+    "prop-005-synthesis-readiness",
+    "prop-c002-collab-bus-001",
+    "rev-c001-of-c002-collab",
+    "rev-c001-of-c003-telemetry",
+    "rev-c001-of-c005-synthesis",
+    "imp-c001-premium-enforcement",
+    "imp-c001-commander-manifest-emit",
+    "imp-c001-monitor-jsonl-tail",
+    "imp-c001-state-atomic-and-bundle",
+    "imp-c001-heartbeat-instruction",
+    "cons-c001-pre-build-blockers",
+    "cons-c001-pre-build-majors"
+  ],
+  "adopted_source_refs": [
+    "bin/stampede.sh",
+    "bin/stampede-monitor.sh",
+    "agents/stampede-commander.agent.md",
+    "agents/stampede-agent.agent.md",
+    "skills/SKILL.md",
+    ".stampede/run-20260430-180646/state.json",
+    ".stampede/run-20260430-180646/collab/protocol.json",
+    ".stampede/run-20260430-180646/claimed/commander-005.json"
+  ],
+  "consensus_ready": [],
+  "blocked_proposals": [
+    "prop-c001-launcher-runtime-001",
+    "prop-003-telemetry-qa",
+    "prop-005-synthesis-readiness",
+    "prop-c002-collab-bus-001"
+  ],
+  "confidence": 0.85,
+  "evidence": [
+    "Protocol health score 76% - 3 reviews missing required evidence field",
+    "Commander-001 did all 3 peer reviews and submitted 5 improvements",
+    "Commanders 002/003/005 have not submitted peer reviews",
+    "All 4 proposals blocked by pre-build blockers in cons-c001-pre-build-blockers",
+    "Primary blocker: bin/stampede.sh premium-model enforcement",
+    "Secondary blocker: bin/stampede-monitor.sh lacks child-agents.jsonl tailing"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-014-001",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "worker-leaf-lock",
+  "findings": [
+    "PASS: leaf-node lock is explicit and the worker tool list omits task/ask_user (agents/stampede-agent.agent.md:7-14,27-28).",
+    "GAP: bash remains available without an explicit ban on using it to invoke other agents/orchestrators, so the leaf rule is policy-only rather than mechanically enforced (agents/stampede-agent.agent.md:8,27-28).",
+    "GAP: task-loop guidance claims queue items atomically but does not explicitly forbid writing new queue manifests, leaving a recursion avenue if prompts go off-rail (agents/stampede-agent.agent.md:19-21,23-36,109-148).",
+    "GAP: telemetry spawns an untracked background curl process, which is a bounded-execution footgun for a leaf node (agents/stampede-agent.agent.md:332-338).",
+    "GAP: queue-empty shutdown is inconsistent with the later idle-retry loop (agents/stampede-agent.agent.md:148,257-258)."
+  ],
+  "source_refs": [
+    "agents/stampede-agent.agent.md:7-14",
+    "agents/stampede-agent.agent.md:19-21",
+    "agents/stampede-agent.agent.md:23-36",
+    "agents/stampede-agent.agent.md:109-148",
+    "agents/stampede-agent.agent.md:257-258",
+    "agents/stampede-agent.agent.md:332-338"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

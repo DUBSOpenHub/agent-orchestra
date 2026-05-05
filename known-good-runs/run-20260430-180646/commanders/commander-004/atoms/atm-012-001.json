@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-012-001",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "worker-leaf-lock",
+  "findings": [
+    "Leaf-only behavior is stated clearly, but enforcement is policy-only: the worker prompt forbids spawning and labels the agent a LEAF NODE without a runtime guard.",
+    "The manifest generation value is surfaced but never used to refuse recursive work or extra spawning.",
+    "Stop behavior is internally inconsistent: one section says queue-empty means immediate shutdown, while the loop section says retry idle checks before shutdown."
+  ],
+  "source_refs": [
+    "agents/stampede-agent.agent.md:25-29",
+    "agents/stampede-agent.agent.md:137-140",
+    "agents/stampede-agent.agent.md:148-149",
+    "agents/stampede-agent.agent.md:255-257"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

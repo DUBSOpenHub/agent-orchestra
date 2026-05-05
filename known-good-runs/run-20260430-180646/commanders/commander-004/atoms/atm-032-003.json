@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-032-003",
+  "theme": "partial-failure-bundles",
+  "focus": "no-launch-failure",
+  "findings": [
+    "Launcher preflight writes blocked for commander state on auth/preflight failure, which conflicts with the commander rule that zero launched squad leads must be failed.",
+    "Commander spec itself correctly distinguishes partial for constrained launches and failed for zero-launch cases."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:175",
+    "bin/stampede.sh:292-300",
+    "agents/stampede-commander.agent.md:80-82",
+    "agents/stampede-commander.agent.md:142-146"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

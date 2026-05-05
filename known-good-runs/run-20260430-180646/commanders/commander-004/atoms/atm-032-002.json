@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-032-002",
+  "theme": "partial-failure-bundles",
+  "focus": "partial-trigger-paths",
+  "findings": [
+    "SKILL SQL state lacks a partial status for runs/tasks, so commander partial outcomes have no durable state representation.",
+    "Docs require partial or failed when the full child swarm cannot launch, but do not define the threshold or a commander-level recovery/escalation path.",
+    "README and SKILL disagree on when under-launch should be partial versus failed."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:63",
+    "skills/SKILL.md:73",
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:499-548",
+    "skills/SKILL.md:836",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

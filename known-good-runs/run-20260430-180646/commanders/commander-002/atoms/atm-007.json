@@ -1,0 +1,88 @@
+{
+  "sq_id": "sq-007",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "ts": 1777598576.3909278,
+  "status": "complete",
+  "worker_count": 5,
+  "workers": [
+    "wkr-007-001",
+    "wkr-007-002",
+    "wkr-007-003",
+    "wkr-007-004",
+    "wkr-007-005"
+  ],
+  "findings": {
+    "wkr-007-001": {
+      "task": "audit_o_append_safety",
+      "risk_level": "medium",
+      "summary": "Documentation correctly frames the task-claim atomic-rename pattern, but the metaswarm collab ledgers lean on bare O_APPEND with multi-KB JSON payloads written by up to ~50 concurrent commanders, and lack the per-writer line-buffering, size cap, flock, or fsync needed to make that guarantee real.",
+      "top_issues": [
+        "Multi-writer collab ledgers (proposals/reviews/etc) may corrupt when payload > PIPE_BUF",
+        "child-agents.jsonl is single-writer (safe today) but undocumented as such",
+        "No fsync anywhere \u2014 partial trailing lines after crash tolerated not prevented"
+      ]
+    },
+    "wkr-007-002": {
+      "task": "audit_collab_state_counts",
+      "risk_level": "high",
+      "summary": "Collab ledger line counts are safe when read by the monitor, but persisted collab.counts are initialized to zero and never maintained. Swarm-state telemetry counts lack a locking/atomic update mechanism so concurrent writers can lose updates.",
+      "top_issues": [
+        "collab.counts initialized to 0 and never updated \u2014 always stale",
+        "swarm-state.json telemetry counts have no locking \u2014 lost updates possible",
+        "mark_run_blocked() can overwrite concurrent commander telemetry updates"
+      ]
+    },
+    "wkr-007-003": {
+      "task": "audit_adoption_visibility",
+      "risk_level": "high",
+      "summary": "The adoption workflow has three install paths but only git clone + install.sh produces a working end-to-end installation. The quickstart.sh hero path installs only the orchestrator skill without agents, shell scripts, or prerequisite checks, meaning a new users first experience will fail.",
+      "top_issues": [
+        "quickstart.sh hero path produces incomplete install (no agents/scripts)",
+        "Missing prerequisite checks in both quickstart.sh and install.sh",
+        "Contradictory max agent counts across docs (8 vs 20)",
+        "Metaswarm not discoverable \u2014 buried in docs"
+      ]
+    },
+    "wkr-007-004": {
+      "task": "audit_synthesis_broadcast_consumption",
+      "risk_level": "medium",
+      "summary": "broadcasts.jsonl is not actually consumed by orchestrator synthesis; consumption is only requested in the commander launch prompt. Validation, dedupe, cursor tracking, and provenance reporting are not concretely implemented.",
+      "top_issues": [
+        "Orchestrator synthesis never reads broadcasts.jsonl",
+        "No cursor/pointer to track broadcast read position",
+        "No deduplication \u2014 same broadcast could be consumed twice",
+        "No schema validation before broadcast consumption"
+      ]
+    },
+    "wkr-007-005": {
+      "task": "audit_stop_recovery_ledgers",
+      "risk_level": "low",
+      "summary": "Stampede preserves ledger durability well: teardown/kill-session leave .stampede/{run_id}/ intact with all .jsonl files. Recovery logic re-queues claimed tasks from filesystem state. Main gap is lack of explicit signal handlers for graceful shutdown logging.",
+      "top_issues": [
+        "No SIGTERM/SIGINT handler to update state.json to interrupted phase",
+        "No explicit WAL \u2014 .jsonl files serve as implicit WAL undocumented",
+        "No fsync after critical writes"
+      ]
+    }
+  },
+  "consolidated_risks": {
+    "high": [
+      "collab.counts never updated (wkr-007-002)",
+      "swarm-state count races (wkr-007-002)",
+      "quickstart.sh incomplete install (wkr-007-003)"
+    ],
+    "medium": [
+      "O_APPEND safety on multi-writer ledgers (wkr-007-001)",
+      "synthesis never reads broadcasts (wkr-007-004)",
+      "no broadcast deduplication (wkr-007-004)"
+    ],
+    "low": [
+      "no SIGTERM state update (wkr-007-005)",
+      "metaswarm docs buried (wkr-007-003)",
+      "doc count contradictions (wkr-007-003)"
+    ]
+  },
+  "overall_risk": "high"
+}

@@ -1,0 +1,152 @@
+{
+  "squad_id": "sq-005",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "QA Evidence Quality - Part 1",
+  "task": "Review what evidence is captured during QA runs. Check for completeness and verifiability.",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "synthesis_timestamp": "2026-04-30T19:15:00Z",
+  "overall_assessment": {
+    "completeness_score": 55,
+    "verifiability_score": 45,
+    "verdict": "PARTIAL - Evidence infrastructure exists but significant gaps in structured capture and verification"
+  },
+  "findings_by_area": {
+    "bundle_schema_evidence": {
+      "worker": "wkr-005-001",
+      "model": "gpt-5.2",
+      "status": "GAPS_FOUND",
+      "key_findings": [
+        "Worker results lack explicit evidence fields - only narrative summary + git branch/files_changed",
+        "Commander bundle schema includes confidence/consensus but NOT evidence/source_refs fields",
+        "Collab ledgers (proposals.jsonl, consensus.jsonl) DO require evidence/source_refs but bundle omits them",
+        "No structured test/QA proof (tests_run, commands, stdout/stderr, exit_code, artifacts)"
+      ],
+      "evidence_refs": [
+        "agents/stampede-agent.agent.md:225-244",
+        "agents/stampede-commander.agent.md:238-266",
+        "bin/stampede.sh:679-689"
+      ]
+    },
+    "source_refs_tracking": {
+      "worker": "wkr-005-002",
+      "model": "claude-sonnet-4.6",
+      "status": "INCOMPLETE",
+      "key_findings": [
+        "source_refs is required field in collab protocol (array of strings, no sub-schema)",
+        "Four inconsistent patterns: file-only, file:line, squad-IDs, runtime artifact paths",
+        "No git commit SHA tracking - cannot pin to exact code state",
+        "bundle.json files are always empty {} - source_refs never persisted despite requirement",
+        "Squad-ID references (sq-001-schema) break traceability chain to actual source code"
+      ],
+      "evidence_refs": [
+        "bin/stampede.sh:679-689",
+        "bin/stampede.sh:634-691"
+      ]
+    },
+    "confidence_score_evidence": {
+      "worker": "wkr-005-003",
+      "model": "gpt-5.3-codex",
+      "status": "WEAK",
+      "key_findings": [
+        "Confidence is captured as metadata, not computed by documented algorithm",
+        "No scoring formula found - appears human/agent-assigned",
+        "Supporting evidence is narrative/trace refs only",
+        "Shadow/quality scoring (separate system) IS explicit and reproducible",
+        "Cannot independently verify confidence without defined algorithm"
+      ],
+      "evidence_refs": [
+        "bin/stampede.sh:679-689",
+        "agents/stampede-commander.agent.md:253",
+        "bin/stampede-merge.sh:360-418"
+      ]
+    },
+    "telemetry_accuracy": {
+      "worker": "wkr-005-004",
+      "model": "claude-sonnet-4.5",
+      "status": "VERIFIED_WITH_CAVEATS",
+      "trust_score": 85,
+      "key_findings": [
+        "Comprehensive telemetry: swarm-state.json + child-agents.jsonl with cross-validation",
+        "100% valid ISO-8601 timestamps with microsecond precision",
+        "State counters match ledger event counts (cross-validated)",
+        "Smoke tests validate schema and required fields",
+        "GAPS: Heartbeat frequency undefined, counter reconciliation not automated, ledger integrity not verified"
+      ],
+      "critical_gaps": [
+        "Heartbeat frequency/staleness threshold undefined",
+        "No automated counter reconciliation",
+        "No ledger checksum/sequence numbers",
+        "Timestamp ordering not enforced"
+      ],
+      "evidence_refs": [
+        "tests/smoke-test.sh:112-148",
+        "bin/stampede-monitor.sh:140-190",
+        "agents/stampede-commander.agent.md:112-129"
+      ]
+    },
+    "consensus_tier_evidence": {
+      "worker": "wkr-005-005",
+      "model": "gpt-5.2-codex",
+      "status": "INSUFFICIENT",
+      "key_findings": [
+        "Bundle captures consensus.tier enum + freeform notes only",
+        "No vote counts, agreement ratios, or dissent tracking",
+        "No explicit rules mapping tier labels (CONSENSUS/MAJORITY/CONFLICT) to criteria",
+        "Monitor counts ledger entries but doesn't validate tier logic",
+        "Bundle schema omits required adoption fields (item_id, source_refs)"
+      ],
+      "evidence_refs": [
+        "agents/stampede-commander.agent.md:238-266",
+        "bin/stampede.sh:644-689",
+        "bin/stampede-monitor.sh:60-66"
+      ]
+    }
+  },
+  "cross_cutting_issues": [
+    {
+      "issue": "Evidence schema fragmentation",
+      "description": "Evidence lives in collab ledgers (JSONL) but never propagates to bundle.json where it's needed for verification",
+      "severity": "HIGH",
+      "affected_workers": ["wkr-005-001", "wkr-005-002", "wkr-005-005"]
+    },
+    {
+      "issue": "No git commit SHA in source_refs",
+      "description": "Cannot pin evidence to exact code state at QA time - fundamental traceability gap",
+      "severity": "HIGH",
+      "affected_workers": ["wkr-005-002"]
+    },
+    {
+      "issue": "Confidence scores unverifiable",
+      "description": "No algorithm = no reproducibility = no independent verification possible",
+      "severity": "MEDIUM",
+      "affected_workers": ["wkr-005-003"]
+    },
+    {
+      "issue": "Telemetry validation manual-only",
+      "description": "Cross-file consistency checks discovered by QA, not automated in CI/smoke tests",
+      "severity": "MEDIUM",
+      "affected_workers": ["wkr-005-004"]
+    }
+  ],
+  "recommendations": {
+    "immediate": [
+      "Add evidence and source_refs fields to bundle.json schema",
+      "Require git commit SHA in all source_refs entries",
+      "Define heartbeat interval (5-10s) with staleness threshold (3x)"
+    ],
+    "high_priority": [
+      "Document confidence score calculation algorithm",
+      "Add automated counter reconciliation to smoke tests",
+      "Define consensus tier criteria (vote thresholds)",
+      "Add ledger sequence numbers for integrity"
+    ],
+    "nice_to_have": [
+      "Add structured test artifacts field (commands, exit_codes, outputs)",
+      "Add ledger checksums",
+      "Add event schema versioning"
+    ]
+  },
+  "summary": "QA evidence infrastructure exists but has significant gaps. Telemetry is the strongest area (85% trustworthy) with cross-validated state/ledger files. Weakest areas: (1) bundle schema omits evidence/source_refs, (2) source_refs lack git SHAs and use inconsistent formats, (3) confidence scores have no verifiable algorithm, (4) consensus tiers have no documented criteria. Evidence lives in collab ledgers but never propagates to bundles. Recommend prioritizing bundle schema updates and commit SHA requirements."
+}

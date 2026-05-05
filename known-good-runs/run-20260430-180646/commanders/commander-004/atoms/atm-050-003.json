@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-050-003",
+  "theme": "docs-ci-readiness",
+  "focus": "depth-lint-gap-analysis",
+  "findings": [
+    "Depth-guard lint enforces leaf-node prompt block, forbids task/ask_user in worker agent, and checks bounded SS-250 spawn strings and premium policy markers.",
+    "Lint lacks explicit checks for partial/failure handling semantics and stops at first violation without aggregate reporting."
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:17-49",
+    "tests/depth-guard-lint.sh:43-48",
+    "tests/depth-guard-lint.sh:19-61"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

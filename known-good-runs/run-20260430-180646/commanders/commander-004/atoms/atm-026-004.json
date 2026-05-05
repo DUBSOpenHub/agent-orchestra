@@ -1,0 +1,16 @@
+{
+  "atom_id": "atm-026-004",
+  "worker_id": "wkr-026-004",
+  "theme": "agent-pulse-monitoring",
+  "focus": "smoke-coverage",
+  "status": "success",
+  "confidence": 0.75,
+  "findings": [
+    "Smoke test validates metaswarm contract structure and static swarm-state.json target fields, but does not invoke stampede-monitor.sh or validate nested progress rendering.",
+    "Test runs metaswarm in --dry-run mode with agent-cmd true/no-attach, so it cannot validate real-time telemetry updates, heartbeat freshness, or live counts.",
+    "No coverage for monitor orphan recovery behavior, stuck detection, or tmux-based live pane census."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:108-148"
+  ]
+}

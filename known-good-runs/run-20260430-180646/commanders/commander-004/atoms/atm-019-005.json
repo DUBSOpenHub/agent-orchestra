@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-019-005",
+  "theme": "telemetry-contract",
+  "focus": "result-bundle-paths",
+  "findings": [
+    "Dual-write bundle pattern: Commanders write their final bundle to TWO locations: progress_dir/bundle.json (commander-specific) AND BASE_DIR/results/ (centralized). This enables both per-commander discovery and unified result aggregation.",
+    "Consistent commander paths: Progress directories follow BASE_DIR/commanders/commander-{NNN}/ with atoms/ and logs/ subdirs created at launch time.",
+    "Asymmetric worker vs commander results: Standard workers write only to results/, commanders write to both locations.",
+    "Discovery mechanism: Launcher finds completed bundles via find BASE_DIR/results -name *.json -not -name .tmp-* which catches both worker results and commander bundle copies.",
+    "Atomic write protocol: Uses .tmp- prefix + rename pattern (tmp.replace(path)), consistent with POSIX atomic rename guarantees.",
+    "Documentation gap: README documents {queue,claimed,results,logs} but omits commanders/ subdirectory and dual bundle.json locations."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:155",
+    "bin/stampede.sh:665",
+    "bin/stampede.sh:851",
+    "README.md:35"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

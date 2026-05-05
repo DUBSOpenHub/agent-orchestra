@@ -1,0 +1,27 @@
+{
+  "worker_id": "wkr-028-001",
+  "theme": "agent-pulse-monitoring",
+  "focus": "pulse-count-sources",
+  "findings": [
+    "Primary progress pulse counts are sourced from filesystem queue dirs by counting JSON files (queue/claimed/results) via find+wc: queued/claimed/done_count computed each loop. Excludes .tmp-* files. See count_json_files() and main loop usage.",
+    "TOTAL_TASKS pulse denominator is sourced first from BASE/state.json key total_tasks (python3 json load). If missing/0, it falls back to unique JSON filenames across queue/claimed/results (find|sort -u|wc). If still 0, forces TOTAL_TASKS=1 to avoid divide-by-zero. This can skew pct early/when dirs missing.",
+    "Metaswarm collab pulse counts (proposals/reviews/improvements/consensus/broadcasts) are sourced from line counts of JSONL files under BASE/collab/*.jsonl via wc -l; not validated as JSONL. Display gated by is_metaswarm_run().",
+    "Agent liveness pulse source is tmux pane census (pane_current_command, pane_dead) rather than pid files; used both for per-agent status word and dead-agent recovery/orphan recovery decisions.",
+    "Commander nested progress pulse source is commanders' swarm-state.json (progress_dir/swarm-state.json) parsed in embedded python; counts squads/workers launched/targets, running/completed/failed/atoms_received, plus heartbeat age from last_heartbeat_at/updated_at.",
+    "Stuck-task pulse/alert source is claimed/*.json file mtime age via stat; bell triggered once per task id when age>120s.",
+    "Orphan-recovery pulse source combines: (a) tmux census shows 0 live agents, (b) claimed task age >= ORPHAN_RECOVERY_AFTER (180s), (c) no results JSON exists, and (d) commander heartbeat under BASE/commanders/<task_id>/swarm-state.json is stale/missing; then mv claimed back to queue."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:27-30",
+    "bin/stampede-monitor.sh:69-77",
+    "bin/stampede-monitor.sh:57-67",
+    "bin/stampede-monitor.sh:86-90",
+    "bin/stampede-monitor.sh:126-141",
+    "bin/stampede-monitor.sh:218-233",
+    "bin/stampede-monitor.sh:143-193",
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede-monitor.sh:234-279"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,70 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_id": "sq-014",
+  "worker_id": "wkr-014-003",
+  "model": "gpt-5.3-codex",
+  "focus": "absent ledger handling",
+  "status": "success",
+  "verdict": "pass_with_gaps",
+  "summary": "Absent collab ledgers are handled gracefully by the monitor and explicitly required by protocol; launcher pre-creates protocol + ledger files in metaswarm runs, so absence is unlikely at start but still possible later (e.g., deletion/race).",
+  "findings": [
+    {
+      "severity": "info",
+      "issue": "Protocol explicitly requires reader tolerance for absent ledger files",
+      "details": "The collaboration protocol states readers must tolerate absent files and malformed trailing lines.",
+      "evidence_refs": [
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json:33",
+        "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json:34"
+      ]
+    },
+    {
+      "severity": "low",
+      "issue": "Monitor consumer degrades safely when ledgers are missing",
+      "details": "count_jsonl_lines returns 0 when a ledger file is absent, and collab summary uses this function for all ledger counters.",
+      "evidence_refs": [
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:34",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:37",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:61",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:66"
+      ]
+    },
+    {
+      "severity": "info",
+      "issue": "Launcher initialization makes missing ledgers unlikely at run start",
+      "details": "In metaswarm mode launcher creates collab dir, touches each JSONL ledger via append-open, and writes protocol.json atomically before agent work.",
+      "evidence_refs": [
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:614",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:673",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:682",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:683",
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:721"
+      ]
+    },
+    {
+      "severity": "medium",
+      "issue": "Absence remains possible in practice after initialization",
+      "details": "Commander flow depends on consuming/writing collab ledgers during runtime; primary targets show startup creation and monitor fallback, but no additional runtime hardening in these targets against post-start file removal.",
+      "evidence_refs": [
+        "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:910",
+        "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:58"
+      ]
+    }
+  ],
+  "source_refs": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/collab/protocol.json:33",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:34",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede-monitor.sh:61",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:614",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:673",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:683",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:721",
+    "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md",
+    "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:58"
+  ],
+  "confidence": 0.86,
+  "ts": "2026-05-01T01:19:37Z"
+}

@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-030-001",
+  "model": "gpt-5.2",
+  "assignment": "final bundle status",
+  "status": "completed",
+  "bundle_status": {
+    "bundle_present": false,
+    "result_present": false,
+    "swarm_state_status": "partial",
+    "swarm_phase": "launching_squad_leads",
+    "expected_status": "partial",
+    "partial_reason": "telemetry_integrity_warning: child-agents.jsonl was truncated/restarted by concurrent child writes; recovered launched squad lead records appended, but launch-proof can no longer prove a clean 50x5 run."
+  },
+  "evidence": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/swarm-state.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/bundle.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/results/commander-002.json"
+  ]
+}

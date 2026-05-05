@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-019-001",
+  "theme": "telemetry-contract",
+  "focus": "state-shape",
+  "findings": [
+    "Commander agent is the authoritative state-shape spec: it explicitly says swarm-state.json MUST include top-level identity/status fields plus launch_proof, depth_budget, model_policy, premium_model_pool, banned_child_models, detailed telemetry, updated_at, and last_heartbeat_at. README only documents the file pair and high-level purpose, so README is consistent but not sufficient as a schema definition.",
+    "Live telemetry is structured as a richer nested contract than the final bundle: swarm-state.json.telemetry tracks target/launched/running/completed/failed for squad leads and workers, plus workers_per_squad_lead, atoms_received, and children_failed; the bundle telemetry is only a reduced subset. Consumers should not assume bundle telemetry equals live-state telemetry.",
+    "There is naming ambiguity across the launch-proof contract: launch_proof uses squad_leads_started/workers_started, JSONL examples emit launch_started, but completion validation checks telemetry squad_leads_launched/workers_launched. The docs imply these must be kept in sync, but the mapping is not stated explicitly.",
+    "Example values create mild task_id ambiguity: the swarm-state example shows task_id: \"commander-001\", while workflow says task_id comes from the claimed manifest and the bundle example uses a non-commander work item id (contestant-001). This looks like example inconsistency rather than a clear schema conflict."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:45-57",
+    "agents/stampede-commander.agent.md:69-129",
+    "agents/stampede-commander.agent.md:132-145",
+    "agents/stampede-commander.agent.md:238-265",
+    "README.md:35",
+    "README.md:83",
+    "README.md:130"
+  ],
+  "confidence": "medium",
+  "status": "success"
+}

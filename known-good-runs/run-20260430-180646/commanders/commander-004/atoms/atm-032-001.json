@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-032-001",
+  "theme": "partial-failure-bundles",
+  "focus": "success-thresholds",
+  "findings": [
+    "Commander success is gated only on launch counts (50 squad leads, 250 workers), so a bundle can still read success after child failures accumulate.",
+    "Launch-proof fields use started terminology while success validation uses launched counters, creating ambiguous proof semantics."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:83-88",
+    "agents/stampede-commander.agent.md:112-126",
+    "agents/stampede-commander.agent.md:140-147"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

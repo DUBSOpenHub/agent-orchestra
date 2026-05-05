@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-050-002",
+  "theme": "docs-ci-readiness",
+  "focus": "smoke-gap-analysis",
+  "findings": [
+    "Smoke test validates metaswarm scaffolding and schema fields (premium model policy fields, telemetry targets, child-agents.jsonl existence) but only structurally; no behavioral enforcement of banned models or depth guard.",
+    "No stop/recovery scenarios are tested; commander launch uses --agent-cmd true so real commander behavior and launch proof are not exercised."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:94-147",
+    "tests/smoke-test.sh:108-137",
+    "tests/smoke-test.sh:142-147"
+  ],
+  "confidence": "medium",
+  "status": "success"
+}

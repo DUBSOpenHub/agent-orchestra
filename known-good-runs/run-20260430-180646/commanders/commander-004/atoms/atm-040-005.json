@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-040-005",
+  "theme": "stop-teardown-behavior",
+  "focus": "cleanup-gaps",
+  "findings": [
+    "Auto-attach flow writes /tmp/stampede-tasks-$RUN_ID.txt and /tmp/stampede-attach-$RUN_ID.sh but does not remove them after use; only old attach scripts are purged.",
+    "CI smoke test writes /tmp/install-ci.sh without cleanup."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:1366-1376",
+    "bin/stampede.sh:1411-1414",
+    "bin/stampede.sh:1442-1455",
+    ".github/workflows/ci.yml:39-43"
+  ],
+  "confidence": 0.62,
+  "status": "success"
+}

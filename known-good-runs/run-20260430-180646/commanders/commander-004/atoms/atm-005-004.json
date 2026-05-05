@@ -1,0 +1,26 @@
+{
+  "worker_id": "wkr-005-004",
+  "theme": "commander-launch-profile",
+  "focus": "docs-claim-branch-alignment",
+  "findings": [
+    "INCONSISTENT: README says stampede/task-001, AGENTS.md says stampede/<agent-id>/<task-id>",
+    "NO havoc-swarm/ prefix found in docs despite commander.agent.md using it",
+    "PARTIAL: README explains atomic mv (lines 212-226), AGENTS.md mentions but doesn't show",
+    "OK: 250 workers per commander documented in both (README:35,130-136, AGENTS:22,29,72)",
+    "OK: Commander vs worker role separation clear in AGENTS.md:9-29",
+    "PARTIAL: launch proof artifacts named but contract/schema not explained"
+  ],
+  "source_refs": [
+    "README.md:35",
+    "README.md:130-136",
+    "README.md:202-224",
+    "README.md:212-226",
+    "AGENTS.md:9-18",
+    "AGENTS.md:20-29",
+    "AGENTS.md:67-68",
+    "AGENTS.md:69",
+    "AGENTS.md:72"
+  ],
+  "confidence": 0.92,
+  "status": "success"
+}

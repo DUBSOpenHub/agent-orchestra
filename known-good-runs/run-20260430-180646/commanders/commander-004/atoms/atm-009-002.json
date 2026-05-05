@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-009-002",
+  "theme": "premium-model-policy",
+  "focus": "banned-model-guardrails",
+  "findings": [
+    "Banned child models are explicitly listed twice in /Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:106-111 and :203-207: claude-haiku-4.5, gpt-5.4-mini, gpt-5-mini, gpt-4.1.",
+    "The commander enforces the ban at the prompt/spec level by requiring every Squad Lead/Worker launch to set an explicit premium-model override from the approved pool (/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:150-157) and by requiring launch_started telemetry to record the chosen model (/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:166-168).",
+    "If a child launch falls back to a banned model, the documented outcome is not a hard stop; the commander must mark the bundle partial and report the violation (/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:167-168).",
+    "depth-guard-lint.sh does not truly validate banned-model compliance. It only checks that the commander text contains model_policy=premium, Premium Model Policy, and gpt-5.5 (/Users/greggcochran/dev/terminal-stampede/tests/depth-guard-lint.sh:35-53), but it does not assert the banned-model list, detect banned names, or verify runtime enforcement.",
+    "Enforcement gap/bypass: the ban is policy-text only in these files. A commander/squad lead could still launch a banned model if runtime tooling ignores the prompt, because the lint test is string-based and there is no hard validation of child-agents.jsonl entries against banned_child_models in /Users/greggcochran/dev/terminal-stampede/tests/depth-guard-lint.sh:35-63."
+  ],
+  "source_refs": [
+    "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:106-111",
+    "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:150-168",
+    "/Users/greggcochran/dev/terminal-stampede/agents/stampede-commander.agent.md:203-207",
+    "/Users/greggcochran/dev/terminal-stampede/tests/depth-guard-lint.sh:35-53",
+    "/Users/greggcochran/dev/terminal-stampede/tests/depth-guard-lint.sh:55-63"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

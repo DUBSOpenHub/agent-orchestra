@@ -1,0 +1,35 @@
+{
+  "worker_id": "wkr-002-002",
+  "theme": "commander-launch-profile",
+  "focus": "commander-agent-contract",
+  "findings": [
+    "swarm-state.json example uses task_id equal to commander_id, suggesting a copy-paste schema error.",
+    "The commander contract lacks a stop/teardown/recovery protocol or heartbeat-response contract.",
+    "launch_requested is required before every child launch, but its event shape is not documented in the agent contract examples.",
+    "Depth Guard wording is ambiguous because squad leads are shown as general-purpose while workers are restricted to explore/task.",
+    "No squad-lead-specific depth-lock block is mandated; only workers get an explicit no-delegation prompt block.",
+    "The context capsule timeout_s=90 is very short for a 250-worker deployment, with no timeout handling guidance.",
+    "Banned-model fallback detection is required for partial status, but no detection mechanism is specified.",
+    "Atomic write requirements are stated, but the .tmp-then-mv pattern is omitted from the commander contract.",
+    "retry_budget is declared in context but not wired to workflow steps.",
+    "Premium pool, banned-model list, leaf depth lock, 50x5 bounded spawning, and partial/failure conditions are otherwise internally consistent."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:33",
+    "agents/stampede-commander.agent.md:37",
+    "agents/stampede-commander.agent.md:48-61",
+    "agents/stampede-commander.agent.md:57",
+    "agents/stampede-commander.agent.md:75",
+    "agents/stampede-commander.agent.md:94-111",
+    "agents/stampede-commander.agent.md:128",
+    "agents/stampede-commander.agent.md:134-138",
+    "agents/stampede-commander.agent.md:142-147",
+    "agents/stampede-commander.agent.md:153-163",
+    "agents/stampede-commander.agent.md:168",
+    "agents/stampede-commander.agent.md:185",
+    "agents/stampede-commander.agent.md:192-210",
+    "agents/stampede-commander.agent.md:229-236"
+  ],
+  "confidence": 0.91,
+  "status": "partial"
+}

@@ -1,0 +1,64 @@
+{
+  "squad_id": "sq-019",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "timestamp": "2026-05-01T01:21:43.984010+00:00",
+  "workers": 5,
+  "models_used": [
+    "claude-opus-4.7",
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5"
+  ],
+  "focus": "collaboration-bus QA review",
+  "synthesis": {
+    "overall_verdict": "Functional but underspecified. The 6-stage collaboration bus (propose\u2192peer_review\u2192improve\u2192consensus\u2192broadcast\u2192adopt) is operational in live runs with atomic JSONL ledgers, but lacks critical validation, documentation, and consistency.",
+    "critical_findings": [
+      "No JSON Schema or validation tooling \u2014 stage-specific fields (target_item_id, based_on, consensus_item_id) are undocumented and inconsistently applied",
+      "Commander bundle example contradicts launcher requirements (missing adopted_consensus_item_ids/source_refs)",
+      "Review/improvement verdict vocabularies are undefined",
+      "Polymorphic evidence field has no type constraints",
+      "Inconsistent linkage field naming (based_on vs source_item_id across commanders)",
+      "Zero collaboration bus documentation in skills/SKILL.md or README",
+      "Consensus is manual social synthesis, not automated voting/quorum",
+      "Broadcasts are shared-ledger fan-out with no targeted delivery or confirmation",
+      "No test coverage for collab bus workflows",
+      "Monitor shows event counts only \u2014 no latest-event view, validation log, or run-state echo"
+    ],
+    "adoption_blockers_ranked": [
+      "1. Missing validation (no schema, no validator, no enforcement)",
+      "2. Undocumented contracts (linkage fields, verdict vocabularies, evidence types)",
+      "3. Inconsistent field naming across commanders",
+      "4. No examples/docs in user-facing files (SKILL.md, README, CONTRIBUTING)",
+      "5. No observability tooling (validation logs, workflow stage tracking)",
+      "6. No testing (no test coverage for event flows or ledger integrity)",
+      "7. Missing error handling (no retry, dead-letter, or retraction events)",
+      "8. Conflicting bundle examples (commander docs vs launcher prompts)"
+    ],
+    "evidence_quality_assessment": {
+      "score": 0.8,
+      "rationale": "Append-only JSONL design is solid for auditability. Live runs show all 6 stages fire successfully. However, no validation, no consistency checks, no referential integrity enforcement, and no test coverage significantly reduce confidence in production readiness."
+    },
+    "recommended_actions": [
+      "Create JSON Schema for all 5 event types (proposal, peer_review, improvement, consensus, broadcast)",
+      "Document stage-specific required fields (target_item_id, based_on, consensus_item_id, adopted_items)",
+      "Standardize verdict/outcome vocabularies",
+      "Add validation tooling (pre-append schema check, post-run ledger validator)",
+      "Write collaboration bus documentation in SKILL.md and README",
+      "Create example workflows with step-by-step event traces",
+      "Add test suite for collab bus (unit tests for validation, integration tests for full pipeline)",
+      "Standardize linkage field naming across all commanders",
+      "Resolve bundle example conflicts between commander docs and launcher prompts",
+      "Enhance monitor to show latest events, validation status, and workflow stage progress"
+    ]
+  },
+  "confidence": 0.83,
+  "atoms": [
+    "atm-019-001.json",
+    "atm-019-002.json",
+    "atm-019-003.json",
+    "atm-019-004.json",
+    "atm-019-005.json"
+  ]
+}

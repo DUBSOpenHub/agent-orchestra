@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-009-005",
+  "theme": "premium-model-policy",
+  "focus": "fallback-violation-handling",
+  "findings": [
+    "GAP: No banned model list or validation exists - skills/SKILL.md and README.md reference model configs (line 110, 403, 415) but no enforcement mechanism blocks banned models. Models are passed through without validation.",
+    "Partial status requirement exists but no banned-model trigger - skills/SKILL.md:407 and README.md:130 state commanders must report 'partial' or 'failed' if full swarm cannot launch, but this only covers worker count, not banned model fallback.",
+    "No monitoring/alerting for banned model usage - while PID liveness checks exist (skills/SKILL.md:484-486), there is no model compliance monitoring. child-agents.jsonl tracks telemetry but does not flag banned models.",
+    "Silent failure risk: model field is passthrough - skills/SKILL.md:284 shows model is stored in run metadata, but no validation occurs at ingestion. A banned model would execute normally with no warning.",
+    "Recovery path undefined - skills/SKILL.md:772-836 covers crash recovery and requeue logic for dead workers, but no recovery pathway exists for banned model violations. Users cannot remediate because violations are not detected."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:110",
+    "skills/SKILL.md:284",
+    "skills/SKILL.md:403-415",
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:484-486",
+    "README.md:130",
+    "README.md:307"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

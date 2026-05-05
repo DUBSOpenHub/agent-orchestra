@@ -1,0 +1,12 @@
+{
+  "atom_id": "atm-002-001",
+  "area": "commander-manifests",
+  "blockers": 0,
+  "highlights": [
+    "Premium/banned pools identical between bin/stampede.sh and stampede-commander.agent.md",
+    "Worker depth-lock block present verbatim",
+    "MAJOR: launcher emits telemetry_contract/collab/state_file/child_ledger/sub_agent_ledger not documented in agent contract",
+    "MINOR: swarm-state task_id example reads as commander_id (ambiguous)",
+    "MINOR: child-agents.jsonl per-event field table missing"
+  ]
+}

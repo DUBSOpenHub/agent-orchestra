@@ -1,0 +1,74 @@
+{
+  "squad_id": "sq-028",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "agent-pulse-monitoring",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "objective": "Audit Agent Pulse live counts, monitor visibility, nested commander display, and live runtime accuracy.",
+  "worker_results": [
+    {
+      "worker_id": "wkr-028-001",
+      "focus": "pulse-count-sources",
+      "atom_id": "atm-028-001",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-028-002",
+      "focus": "nested-progress-display",
+      "atom_id": "atm-028-002",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-028-003",
+      "focus": "launcher-monitor-handoff",
+      "atom_id": "atm-028-003",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-028-004",
+      "focus": "smoke-coverage",
+      "atom_id": "atm-028-004",
+      "status": "success",
+      "confidence": "high"
+    },
+    {
+      "worker_id": "wkr-028-005",
+      "focus": "docs-claims",
+      "atom_id": "atm-028-005",
+      "status": "success",
+      "confidence": "medium"
+    }
+  ],
+  "consensus_findings": [
+    "Agent Pulse uses multiple live sources (queue/claimed/results JSON counts, fleet tmux census, commander swarm-state telemetry), but display fidelity has gaps under stale/missing telemetry.",
+    "Nested commander progress is visible but compressed and partially hardcoded (e.g., 'full SS-250'), reducing runtime accuracy under non-ideal conditions.",
+    "Launcher\u2192monitor handoff has reliability risks (non-atomic fleet write, fallback find glob quoting), which can skew monitor counts.",
+    "Smoke tests under-cover pulse realism (no heartbeat/pid/liveness assertions, no real commander execution path), limiting confidence in runtime monitoring claims."
+  ],
+  "conflicts_or_gaps": [
+    "docs-claims worker primarily extracted README assertions; code-backed verification came from other workers and is weighted higher.",
+    "No direct runtime execution was performed in this squad review; findings are static-audit based."
+  ],
+  "blockers": [],
+  "key_source_refs": [
+    "bin/stampede-monitor.sh:57-67",
+    "bin/stampede-monitor.sh:143-193",
+    "bin/stampede-monitor.sh:195",
+    "bin/stampede-monitor.sh:218-279",
+    "bin/stampede.sh:653",
+    "bin/stampede.sh:863",
+    "bin/stampede.sh:1060-1073",
+    "tests/smoke-test.sh:24-59",
+    "tests/smoke-test.sh:113-159",
+    "README.md:85-87",
+    "README.md:118",
+    "README.md:130",
+    "README.md:229-236"
+  ],
+  "overall_confidence": "high"
+}

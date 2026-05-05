@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-013-004",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "lint-coverage",
+  "findings": [
+    "Lint checks worker frontmatter for forbidden tools (task, ask_user) and 4 required phrases",
+    "Lint checks commander for 14 metaswarm invariants plus 2 worker-prompt lines",
+    "GAPS: Does not lint SKILL.md at all; only partial coverage of 4-line worker prompt block (checks 2/4); no model list validation",
+    "Missing coverage: worker placeholder rule, 500-word cap, branch-only rule, json.dump requirement, claim cleanup",
+    "Missing coverage: commander claim-one-task rule, sealed-criteria rule, success thresholds"
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:16-19",
+    "tests/depth-guard-lint.sh:21-29",
+    "tests/depth-guard-lint.sh:35-61",
+    "tests/depth-guard-lint.sh:5-9"
+  ],
+  "confidence": 0.93,
+  "status": "success"
+}

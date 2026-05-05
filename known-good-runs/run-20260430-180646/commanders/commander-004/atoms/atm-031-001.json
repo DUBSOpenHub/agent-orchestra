@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-031-001",
+  "theme": "partial-failure-bundles",
+  "focus": "success-thresholds",
+  "findings": [
+    "Success is explicitly gated on squad_leads_launched == 50 and workers_launched == 250.",
+    "Under-launch must report status partial with exact launch counts, and zero squad-lead launch must be failed.",
+    "Gap: success does not require completed workers, atoms received, or zero child failures, so false-success remains possible after launch-only success.",
+    "Bundle example shows success without completeness proof, reinforcing the false-success risk."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:112-125",
+    "agents/stampede-commander.agent.md:142-146",
+    "agents/stampede-commander.agent.md:166-168",
+    "agents/stampede-commander.agent.md:245",
+    "agents/stampede-commander.agent.md:258-264"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-046-005",
+  "theme": "docs-ci-readiness",
+  "focus": "agents-doc-alignment",
+  "status": "success",
+  "confidence": 0.73,
+  "findings": [
+    "Branch naming mismatch: AGENTS.md says stampede/<agent-id>/<task-id> while README examples state stampede/task-001 style branches.",
+    "Merger ordering mismatch: AGENTS.md says largest outputs first; README says smallest changes first."
+  ],
+  "source_refs": [
+    "AGENTS.md:69",
+    "README.md:202-205",
+    "README.md:223-226",
+    "README.md:251-252",
+    "AGENTS.md:33"
+  ]
+}

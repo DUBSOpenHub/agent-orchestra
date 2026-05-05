@@ -1,0 +1,79 @@
+{
+  "squad_lead": "sq-030",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "status": "workers_deployed",
+  "timestamp": "2026-05-01T01:22:44.582825Z",
+  "workers_launched": 5,
+  "worker_tier": "premium",
+  "review_mode": "review-only",
+  "assignment_domain": "collaboration-bus QA",
+  "workers": [
+    {
+      "id": "wkr-030-001",
+      "model": "gpt-5.2",
+      "tier": "premium",
+      "assignment": "Final bundle status check",
+      "output_file": "wkr-030-001-bundle-status.json",
+      "leaf_instructions": true,
+      "status": "launched"
+    },
+    {
+      "id": "wkr-030-002",
+      "model": "claude-sonnet-4.6",
+      "tier": "premium",
+      "assignment": "Exact launch counts verification",
+      "output_file": "wkr-030-002-launch-counts.json",
+      "leaf_instructions": true,
+      "status": "launched"
+    },
+    {
+      "id": "wkr-030-003",
+      "model": "gpt-5.3-codex",
+      "tier": "premium",
+      "assignment": "Result JSON shape audit",
+      "output_file": "wkr-030-003-result-shape.json",
+      "leaf_instructions": true,
+      "status": "launched"
+    },
+    {
+      "id": "wkr-030-004",
+      "model": "claude-sonnet-4.5",
+      "tier": "premium",
+      "assignment": "Claimed cleanup verification",
+      "output_file": "wkr-030-004-claimed-cleanup.json",
+      "leaf_instructions": true,
+      "status": "launched"
+    },
+    {
+      "id": "wkr-030-005",
+      "model": "gpt-5.2-codex",
+      "tier": "premium",
+      "assignment": "Consensus inclusion check",
+      "output_file": "wkr-030-005-consensus-inclusion.json",
+      "leaf_instructions": true,
+      "status": "launched"
+    }
+  ],
+  "telemetry": {
+    "launch_events_appended": 5,
+    "child_agents_jsonl": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/child-agents.jsonl",
+    "atoms_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/atoms/atm-030.json",
+    "worker_prompts_file": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/worker-prompts.json"
+  },
+  "expected_outputs": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-001-bundle-status.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-002-launch-counts.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-003-result-shape.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-004-claimed-cleanup.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squad-leads/sq-030/wkr-030-005-consensus-inclusion.json"
+  ],
+  "review_focus": [
+    "final bundle status",
+    "exact launch counts",
+    "result JSON shape",
+    "claimed cleanup",
+    "consensus inclusion"
+  ]
+}

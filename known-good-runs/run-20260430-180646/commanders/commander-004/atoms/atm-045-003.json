@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-045-003",
+  "theme": "recovery-stuck-detection",
+  "focus": "smoke-recovery-coverage",
+  "findings": [
+    "Smoke test only covers happy-path: 1 agent claims 1 task, completes successfully",
+    "No agent failure scenario tested; stub agent always succeeds",
+    "Stuck-detection NOT tested despite logic in stampede-monitor.sh:200-213",
+    "Dead agent recovery and orphan recovery have zero test coverage",
+    "Recovery/restart behavior (SKILL.md crash recovery) is not tested",
+    "Partial failure scenarios not tested; smoke test uses exactly 1 agent/1 task",
+    "Metaswarm smoke test also only covers success path"
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:5",
+    "tests/smoke-test.sh:14-58",
+    "tests/smoke-test.sh:151-162",
+    "bin/stampede-monitor.sh:200-277"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

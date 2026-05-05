@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-025-002",
+  "theme": "collaboration-bus",
+  "focus": "protocol-alignment",
+  "findings": [
+    "README and SKILL aligned on core collab bus: filesystem IPC with queue/claimed/results",
+    "Directory structure inconsistent: README creates {queue,claimed,results,logs}, SKILL defines {queue,claimed,results,logs,pids,scripts}",
+    "Atomic operations documented unevenly: README has mv claim and .tmp-mv in main flow, SKILL only in landmine table",
+    "Gap: SKILL documents pids/ for liveness, README omits it - operators could miss recovery dirs",
+    "propose->review->improve->consensus flow NOT documented as collab-bus protocol in either file"
+  ],
+  "source_refs": [
+    "README.md:101",
+    "README.md:204-226",
+    "README.md:235",
+    "skills/SKILL.md:143-146",
+    "skills/SKILL.md:165-170",
+    "skills/SKILL.md:568-576"
+  ],
+  "confidence": 95,
+  "status": "success"
+}

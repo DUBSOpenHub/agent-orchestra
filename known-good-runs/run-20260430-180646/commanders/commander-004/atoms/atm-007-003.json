@@ -1,0 +1,29 @@
+{
+  "worker_id": "wkr-007-003",
+  "theme": "premium-model-policy",
+  "focus": "docs-vs-runtime",
+  "findings": [
+    "README.md does NOT document the premium model pool or banned model list; mentions 'premium child-model overrides' at README.md:130 only",
+    "AGENTS.md does NOT document premium model policy, pool, or banned list; model config described as 'configurable per commander' with no detail. AGENTS.md:27",
+    "CONTRADICTION: README.md:115,157,288,307 shows claude-haiku-4.5 as DEFAULT worker model, yet runtime BANS it for metaswarm children. No explanation in docs.",
+    "Premium pool defined only in agents/stampede-commander.agent.md:94-104 and bin/stampede.sh:740-750 \u2014 zero mention in README or AGENTS.md",
+    "Banned list defined only in agents/stampede-commander.agent.md:106-110 and bin/stampede.sh:752-756 \u2014 zero mention in README or AGENTS.md",
+    "GAP: Users reading only README.md would assume claude-haiku-4.5 is valid for all modes including metaswarm \u2014 direct contradiction with runtime enforcement"
+  ],
+  "source_refs": [
+    "README.md:115",
+    "README.md:130",
+    "README.md:157",
+    "README.md:288",
+    "README.md:307",
+    "AGENTS.md:17",
+    "AGENTS.md:27",
+    "agents/stampede-commander.agent.md:94",
+    "agents/stampede-commander.agent.md:106",
+    "bin/stampede.sh:15",
+    "bin/stampede.sh:740",
+    "bin/stampede.sh:752"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

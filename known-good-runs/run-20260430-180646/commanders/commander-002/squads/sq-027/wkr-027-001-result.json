@@ -1,0 +1,35 @@
+{
+  "worker_id": "wkr-027-001",
+  "model": "claude-opus-4.7",
+  "squad_lead": "sq-027",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "focus": "state.json collab counts",
+  "status": "completed",
+  "verdict": "pass_with_minor_gaps",
+  "highlights": [
+    "state.json collab.counts is written ONCE at metaswarm init (bin/stampede.sh:825) as {proposals:0, reviews:0, improvements:0, consensus:0, broadcasts:0} and never updated thereafter",
+    "Live ledger truth (wc -l on RUN_DIR/collab/*.jsonl): proposals=5, reviews=11, improvements=7, consensus=5, broadcasts=4 (32 total events) — but state.json still reports all zeros",
+    "No update_state / patch_state / re-write of collab.counts exists anywhere in bin/stampede.sh post-init; the only later state.json write is the teardown phase update at line 350-359 which does not touch collab",
+    "stampede-monitor.sh:57-66 (print_collab_summary) computes the live dashboard via count_jsonl_lines directly on the JSONL files, NOT from state.json — so the user-visible monitor is correct",
+    "skills/SKILL.md contains no reference to 'collab' or 'counts'; no doc/agent treats state.json collab.counts as a live source",
+    "Effectively by-design: counts field is a one-shot init artifact (schema scaffold), live truth lives in the append-only JSONL ledgers as required by the filesystem-as-IPC convention"
+  ],
+  "gaps": [
+    "Stale counts field is misleading: any external tool/script that reads state.json collab.counts will see permanent zeros despite 32 real events — a latent footgun",
+    "No comment in stampede.sh:820-826 documenting that counts is init-only; future contributors may assume it's live",
+    "No tombstone/derived flag (e.g., counts: null or counts_source: 'wc -l ledgers') to signal the field is not maintained"
+  ],
+  "evidence": [
+    "bin/stampede.sh:820-826 (collab dict literal with counts={name:0 for name in ledger_events})",
+    "bin/stampede.sh:827-843 (single write_json_atomic of state.json at init; no later collab writes)",
+    "bin/stampede.sh:350-359 (teardown updates state.json phase only, not collab)",
+    "bin/stampede-monitor.sh:57-66 (live counts via count_jsonl_lines, bypasses state.json)",
+    "RUN_DIR/state.json collab.counts == all zeros (verified)",
+    "wc -l RUN_DIR/collab/*.jsonl: proposals 5, reviews 11, improvements 7, consensus 5, broadcasts 4",
+    "grep 'collab' on bin/stampede.sh shows no increment/update logic post line 841",
+    "grep 'collab|counts' on skills/SKILL.md: no matches"
+  ],
+  "confidence": 0.95,
+  "ts": "2026-04-30T18:30:00Z"
+}

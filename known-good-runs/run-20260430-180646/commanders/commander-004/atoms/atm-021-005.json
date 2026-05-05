@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-021-005",
+  "theme": "collaboration-bus",
+  "focus": "malformed-ledger-tolerance",
+  "status": "partial",
+  "confidence": 0.94,
+  "findings": [
+    "Protocol.json explicitly says readers must tolerate absent files and malformed trailing lines.",
+    "Monitor gracefully handles missing collab dir, missing ledger files, and malformed fleet.json.",
+    "Launcher/monitor do not validate or skip malformed JSONL ledger entries; they only count lines, so runtime tolerance is documented rather than enforced."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:695-703",
+    "bin/stampede.sh:682-683",
+    "bin/stampede-monitor.sh:32-38",
+    "bin/stampede-monitor.sh:41-53",
+    "bin/stampede-monitor.sh:57-66"
+  ]
+}

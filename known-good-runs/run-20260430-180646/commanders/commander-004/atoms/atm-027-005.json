@@ -1,0 +1,27 @@
+{
+  "worker_id": "wkr-027-005",
+  "theme": "agent-pulse-monitoring",
+  "focus": "docs-claims",
+  "findings": [
+    "Term 'Agent Pulse' absent from README; uses 'monitor pane', 'live progress', 'stampede-monitor.sh' instead.",
+    "Progress bar format documented (README:232) matches monitor implementation (stampede-monitor.sh:115).",
+    "README:136 claims 'real-time nested progress summaries' \u2014 verified by stampede-monitor.sh:143-193 reading swarm-state.json.",
+    "stampede status documented as skill command (AGENTS.md:48, SKILL.md:36,113); stampede-monitor.sh is separate shell tool \u2014 distinction not made clear in README.",
+    "Stuck detection threshold (120s, stampede-monitor.sh:200-216) undocumented in README \u2014 reasonable understatement.",
+    "No specific update frequency documented; 'real time' language (README:46,118,136) is imprecise but not inaccurate for a polling loop.",
+    "stampede-monitor.sh entry in README:86 matches actual file location and described purpose."
+  ],
+  "source_refs": [
+    "README.md:46",
+    "README.md:86",
+    "README.md:118",
+    "README.md:130",
+    "README.md:136",
+    "README.md:232",
+    "bin/stampede-monitor.sh:115",
+    "bin/stampede-monitor.sh:143-193",
+    "bin/stampede-monitor.sh:200-216"
+  ],
+  "confidence": 0.92,
+  "status": "complete"
+}

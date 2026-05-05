@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-023-001",
+  "theme": "collaboration-bus",
+  "focus": "ledger-creation",
+  "findings": [
+    "Run dir created upstream; launcher only creates subdirs (pids, scripts, logs, commanders, collab)",
+    "Collab ledgers (proposals/reviews/improvements/consensus/broadcasts.jsonl) initialized as empty files",
+    "protocol.json written atomically via temp+replace",
+    "swarm-state.json and child-agents.jsonl use plain write, not atomic temp+rename",
+    "Propose->review->improve->consensus flow declared in protocol but not enforced by launcher",
+    "Re-launching same RUN_ID overwrites existing telemetry files"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:533-537",
+    "bin/stampede.sh:612-615",
+    "bin/stampede.sh:664-721",
+    "bin/stampede.sh:792-860",
+    "bin/stampede.sh:705-708"
+  ],
+  "confidence": 0.92,
+  "status": "success"
+}

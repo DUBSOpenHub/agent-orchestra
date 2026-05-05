@@ -1,0 +1,29 @@
+{
+  "worker_id": "wkr-008-001",
+  "theme": "premium-model-policy",
+  "focus": "model-rotation",
+  "findings": [
+    "Multi-model rotation is implemented only at the launcher level via --models (comma-separated) and assigned round-robin per worker/commander (not per task). See bin/stampede.sh rotation parse + modulo assignment.",
+    "Metaswarm premium model policy is expressed as metadata (fleet.json: model_policy/premium_model_pool/banned_child_models) and as an instruction in the commander prompt to rotate a premium pool for sub-agents; the shell launcher itself only sets the commander pane model (from --models/--model) and does not enforce sub-agent model rotation beyond the prompt.",
+    "Silent fallback risk: if a custom --agent-cmd template does not include the {model} placeholder, the per-worker rotation is effectively ignored (model not passed), allowing the underlying CLI/tool to silently use its own default model.",
+    "Silent fallback / mis-detection risk: preflight probes only a single model (first of MODEL_LIST or MODEL), and the later 'Model availability' check message keys off $MODEL (even when --models is used), so invalid/unavailable models later in the rotation list may not be detected before launch, and the displayed model in the error may be misleading.",
+    "Premium-default mismatch risk: launcher default model is claude-haiku-4.5, while the orchestrator skill documents default model claude-sonnet-4.5; if the skill/run invocation fails to pass --model explicitly, runs may silently downgrade to a cheaper/non-premium default."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:15-16",
+    "bin/stampede.sh:35-36",
+    "bin/stampede.sh:57-60",
+    "bin/stampede.sh:202-203",
+    "bin/stampede.sh:448-456",
+    "bin/stampede.sh:603-629",
+    "bin/stampede.sh:729-757",
+    "bin/stampede.sh:850-854",
+    "bin/stampede.sh:883-893",
+    "bin/stampede.sh:922-935",
+    "skills/SKILL.md:33-39",
+    "skills/SKILL.md:104-110",
+    "skills/SKILL.md:407-416"
+  ],
+  "confidence": 0.78,
+  "status": "success"
+}

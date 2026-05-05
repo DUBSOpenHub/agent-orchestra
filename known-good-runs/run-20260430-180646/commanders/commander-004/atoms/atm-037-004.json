@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-037-004",
+  "theme": "stop-teardown-behavior",
+  "focus": "detach-vs-session-lifetime",
+  "findings": [
+    "remain-on-exit is session-wide (L1167) \u2014 covers monitor, worker, and commander panes.",
+    "sleep 86400 (L1154-1156) keeps every successful agent pane live for 24h; processes linger if session not torn down.",
+    "--teardown terminates recorded PIDs then runs tmux session stop (L306-345) \u2014 explicit session removal.",
+    "Metaswarm sub-agents spawned by commanders are not in pids/; teardown cannot reach them \u2014 potential process leak.",
+    "5s PID capture sleep (L1277-1279) insufficient on slow auth startup; wrong PID risk.",
+    "README description of --teardown is incomplete: does not mention sub-agent descendants or collab/commanders directories are NOT cleaned."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:1154-1156",
+    "bin/stampede.sh:1164-1168",
+    "bin/stampede.sh:306-345",
+    "bin/stampede.sh:1275-1279",
+    "README.md"
+  ],
+  "confidence": 0.93,
+  "status": "success"
+}

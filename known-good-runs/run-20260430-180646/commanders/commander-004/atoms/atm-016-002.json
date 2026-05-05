@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-016-002",
+  "theme": "telemetry-contract",
+  "focus": "monitor-consumption",
+  "status": "success",
+  "confidence": 0.93,
+  "findings": [
+    "stampede-monitor.sh aliases/swaps telemetry fields in ways that can silently change meaning (workers_completed falls back to atoms_received; workers_failed falls back to children_failed).",
+    "Monitor mixes telemetry and launch_proof fields with inconsistent naming (squad_leads_launched vs squad_leads_started; workers_launched vs workers_started).",
+    "Timestamp parsing is fragile; missing/variant formats fall back silently to \u201c?\u201d.",
+    "Incomplete-proof warning suppressed when workers_launched == 0 (falsy) and gated on status==success, so it can miss real failures during runtime.",
+    "Monitor does not consume child-agents.jsonl at all; proof ledger exists but monitor does not validate it.",
+    "Results display reads each result JSON multiple times via separate python invocations (mid-write inconsistency risk); runtime-stats updates swallow errors with bare except."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:155-165",
+    "bin/stampede-monitor.sh:158-161",
+    "bin/stampede-monitor.sh:167-173",
+    "bin/stampede-monitor.sh:177-180",
+    "bin/stampede-monitor.sh:87-89",
+    "bin/stampede-monitor.sh:72-77",
+    "bin/stampede-monitor.sh:314-325",
+    "bin/stampede-monitor.sh:344-348"
+  ]
+}

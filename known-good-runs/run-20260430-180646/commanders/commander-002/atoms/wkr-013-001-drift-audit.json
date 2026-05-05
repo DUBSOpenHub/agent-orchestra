@@ -1,0 +1,105 @@
+{
+  "worker_id": "wkr-013-001",
+  "squad_id": "sq-013",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 3,
+  "task": "source-docs-vs-prompt-drift",
+  "scope": "collaboration-bus (filesystem IPC: queue, claimed, results, logs, branches, child telemetry)",
+  "sources_reviewed": [
+    "skills/SKILL.md",
+    "agents/stampede-agent.agent.md",
+    "agents/stampede-commander.agent.md",
+    "agents/stampede-merger.agent.md",
+    ".github/copilot-instructions.md",
+    "AGENTS.md"
+  ],
+  "drift_detected": true,
+  "findings": [
+    {
+      "area": "Branch naming convention (worker)",
+      "documented_behavior": "AGENTS.md (Configuration section) states: 'Each agent works on stampede/<agent-id>/<task-id> — fully isolated'. This implies a 3-segment, agent-scoped branch namespace.",
+      "actual_prompt_behavior": "stampede-agent.agent.md CRITICAL RULES and Step 3 instruct: 'Work on branch stampede/{task_id}' (2-segment, task-scoped only — no agent_id segment). SKILL.md, copilot-instructions.md, and Landmine #17 also use stampede/{task_id}.",
+      "drift_severity": "moderate",
+      "details": "AGENTS.md is the only source that includes <agent-id> in the branch path. The runtime prompt, the orchestrator skill, the launcher conventions, and the merger's branch discovery all assume stampede/{task_id}. AGENTS.md is the drifted artifact. Consequence: a reader following AGENTS.md to write tooling that filters branches by agent id will find no matches; the merger globs 'stampede/*' and would still work, but documentation is misleading."
+    },
+    {
+      "area": "Merger branch ordering (sort direction)",
+      "documented_behavior": "AGENTS.md says the merger 'sorts them by output size (largest first as a quality proxy)' before merging. The stampede-merge.sh row in the script table also describes 'sorts by size'.",
+      "actual_prompt_behavior": "stampede-merger.agent.md Phase 1 Step 2 instructs: 'Sort branches by number of files changed (ascending). Merging smaller changes first builds a cleaner base.' The bash snippet pipes to 'sort -n' (smallest first).",
+      "drift_severity": "major",
+      "details": "Direct contradiction: AGENTS.md says largest-first as quality proxy; the runtime prompt says smallest-first for clean base. They also use different metrics narratively (output 'size' vs. 'number of files changed'). This will produce different merge orders and different conflict resolution outcomes. The runtime prompt is authoritative for behavior; AGENTS.md description is incorrect."
+    },
+    {
+      "area": "Commander branch naming",
+      "documented_behavior": "copilot-instructions.md 'Branch per task' rule and SKILL.md only document stampede/{task_id} branches. There is no top-level documentation of an alternate branch namespace for commander work.",
+      "actual_prompt_behavior": "stampede-commander.agent.md Critical Rule #2 mandates: 'Work on branch havoc-swarm/{run_id}/{task_id}, never on main.'",
+      "drift_severity": "minor",
+      "details": "Not a contradiction (the commander rule extends, rather than violates, the 'never main' invariant), but the havoc-swarm/{run_id}/{task_id} namespace is not surfaced in copilot-instructions.md, AGENTS.md, or SKILL.md's landmine table. Downstream tooling (e.g., the merger, which globs 'stampede/*') will not pick up commander branches. This is a documentation gap rather than a runtime bug."
+    },
+    {
+      "area": "Task claim atomicity primitive",
+      "documented_behavior": "copilot-instructions.md: 'Task claiming via mv (POSIX rename). Race-safe by design.' SKILL.md Landmine #2: 'Workers use atomic mv (rename on same FS).'",
+      "actual_prompt_behavior": "stampede-agent.agent.md Step 1 uses Python os.rename inside a try/except FileNotFoundError loop. stampede-commander.agent.md says 'atomic rename into {RUN_DIR}/claimed/'. Both are functionally equivalent to mv on the same filesystem.",
+      "drift_severity": "none",
+      "details": "Wording differs (mv vs os.rename) but semantics are equivalent. No behavioral drift. The agent's handling of FileNotFoundError correctly implements the documented race-safety guarantee."
+    },
+    {
+      "area": "Atomic result write protocol",
+      "documented_behavior": "copilot-instructions.md: 'Result writing via .tmp- prefix then mv.' SKILL.md Landmine #3: 'Workers write .tmp- then mv to final.'",
+      "actual_prompt_behavior": "stampede-agent.agent.md Step 6 writes to {run_dir}/results/.tmp-{task_id}.json then os.rename to {task_id}.json. stampede-commander.agent.md Critical Rule states 'Write the final bundle atomically to both {RUN_DIR}/commanders/{commander_id}/bundle.json and {RUN_DIR}/results/{task_id}.json' but does not show an explicit .tmp- pattern in its Bundle Shape section.",
+      "drift_severity": "minor",
+      "details": "Worker conforms exactly. Commander prompt asserts atomicity verbally but omits the concrete .tmp-/rename recipe shown in the worker prompt and in SKILL.md. Risk: a commander implementation that writes the final path directly would violate the documented atomic-result invariant. Recommend echoing the explicit two-step recipe in the commander agent prompt."
+    },
+    {
+      "area": "Claim file cleanup after result",
+      "documented_behavior": "SKILL.md Landmine #18 / Constraints checklist requires 'Claimed file removed after result' to prevent the orphan sweep from re-queueing completed tasks (Landmine #19, 10-minute stale-claim sweep).",
+      "actual_prompt_behavior": "stampede-agent.agent.md Step 7 explicitly does 'rm -f CLAIMED_DIR/TASK_FILE' after the atomic result write, and the error path also removes the claim file. stampede-commander.agent.md Required Workflow #11 says 'remove the claimed task file' but does not specify ordering relative to the atomic result rename.",
+      "drift_severity": "minor",
+      "details": "Worker fully conforms. Commander prompt is correct in intent but loose on ordering: the claim file should be removed only AFTER the result rename succeeds, otherwise a crash between rm and rename causes a lost task. The worker prompt encodes this ordering explicitly; the commander prompt should too."
+    },
+    {
+      "area": "Inter-agent communication channel (collaboration-bus surface)",
+      "documented_behavior": "copilot-instructions.md: 'Filesystem as IPC. All coordination through .stampede/{run_id}/ directories inside the repo (queue, claimed, results, logs, pids). No databases, no HTTP, no Redis.' This enumerates 5 directories.",
+      "actual_prompt_behavior": "Runtime prompts add additional channels not enumerated in the rule: SKILL.md creates a 'scripts' directory; stampede-commander.agent.md adds 'commanders/{commander_id}/' with 'atoms/', 'logs/', 'swarm-state.json', and 'child-agents.jsonl'; SKILL.md and merger reference 'fleet.json', 'state.json', 'runtime-stats.json', 'merge-report.json' at the run-dir root.",
+      "drift_severity": "moderate",
+      "details": "The collaboration-bus surface area is wider than documented. The 'no databases / no HTTP' invariant is preserved (everything is still files), but the canonical list (queue/claimed/results/logs/pids) in copilot-instructions.md undersells the contract. Tools auditing the bus by walking only those 5 directories will miss commanders/, scripts/, and the run-root JSON files. AGENTS.md describes commanders/ in prose but the high-level conventions list does not."
+    },
+    {
+      "area": "Worker auto-discovery vs. orchestrator-injected paths",
+      "documented_behavior": "SKILL.md Step 5 builds task manifests with explicit 'run_id' and 'repo_path' fields and is described as the orchestrator that 'parses your instructions and spawns agents' — implying manifests carry all coordinates.",
+      "actual_prompt_behavior": "stampede-agent.agent.md INITIALIZATION runs an auto-discovery glob that picks 'sorted(glob('{cwd}/.stampede/run-*/queue/*.json'), reverse=True)' and falls back to '~/.copilot/stampede/run-*'. The prompt does not require the manifest's run_id to match the run the launcher targeted.",
+      "drift_severity": "moderate",
+      "details": "If two runs coexist (e.g., a metaswarm run plus a leftover prior run-dir), a worker can attach to the wrong one. The documented model (manifest-driven, run-scoped) is stricter than the runtime model (cwd glob, latest wins). Recommend: launcher should export RUN_DIR/RUN_ID into the agent prompt or environment, and the agent should prefer those over auto-discovery — partially supported by commander prompt (Workflow #1) but not enforced for workers."
+    },
+    {
+      "area": "Result schema (files_changed vs files_modified)",
+      "documented_behavior": "SKILL.md synthesis step (Step 8) reads 'result.get(\"files_changed\", result.get(\"files_modified\", []))' — accepting either key, suggesting historical drift the orchestrator is tolerating.",
+      "actual_prompt_behavior": "stampede-agent.agent.md Step 6 writes only 'files_changed'. stampede-commander.agent.md Bundle Shape uses 'files_changed'. stampede-merger.agent.md reads 'files_changed'.",
+      "drift_severity": "minor",
+      "details": "Current prompts are consistent on 'files_changed'. The fallback in SKILL.md is legacy compatibility for older results; harmless but indicates the canonical key was once 'files_modified'. Not a live drift but worth noting that any external producer writing 'files_modified' would be silently accepted by SKILL but ignored by the merger."
+    },
+    {
+      "area": "Result word-count cap enforcement",
+      "documented_behavior": "copilot-instructions.md, SKILL.md (Landmine #14), AGENTS.md, and worker prompt all agree: '500-word result cap'.",
+      "actual_prompt_behavior": "stampede-agent.agent.md truncates at 500 words and emits 'word_count': min(len(words), 500). stampede-commander.agent.md says 'Keep the final summary under 500 words' but does not show an enforcement snippet or word_count field in its Bundle Shape.",
+      "drift_severity": "minor",
+      "details": "Worker conforms behaviorally and reports word_count. Commander relies on author discipline rather than a truncation step. Output may exceed 500 words silently in commander bundles."
+    },
+    {
+      "area": "Child telemetry / launch proof",
+      "documented_behavior": "copilot-instructions.md and AGENTS.md require: 'Each commander must keep swarm-state.json and child-agents.jsonl updated so the monitor can prove Squad Leads and Workers are launching in real time.' Full 50x5=250 expected; partial allowed only as explicit 'partial' status.",
+      "actual_prompt_behavior": "stampede-commander.agent.md fully encodes this: Launch-Proof Contract section, exact swarm-state.json schema with launch_proof block, child-agents.jsonl record shapes, validation gates ('squad_leads_launched == 50 and workers_launched == 250'), and explicit failure/partial status semantics.",
+      "drift_severity": "none",
+      "details": "Strong conformance. Commander prompt is in fact MORE specific than the high-level docs (premium model pool, banned model list, capsule schema). No drift; commander prompt is the source of truth and the high-level docs are a faithful summary."
+    },
+    {
+      "area": "JSON-via-Python invariant",
+      "documented_behavior": "copilot-instructions.md: 'All JSON operations use python3 -c import json; .... Never echo/printf JSON in bash.' SKILL.md Landmine #1.",
+      "actual_prompt_behavior": "All four documents (SKILL, worker, commander, merger) consistently use python3 -c with json.dump. No echo/printf JSON anywhere.",
+      "drift_severity": "none",
+      "details": "Full conformance across the collaboration bus."
+    }
+  ],
+  "summary": "Audit of the collaboration-bus contract across SKILL.md, stampede-agent, stampede-commander, and stampede-merger reveals 8 drift findings. The two highest-impact items are (1) MAJOR: AGENTS.md describes the merger as sorting branches 'largest first as a quality proxy', but the merger prompt actually sorts ASCENDING (smallest first) for cleaner base merges — direct contradiction; and (2) MODERATE: AGENTS.md documents worker branches as 'stampede/<agent-id>/<task-id>' while every runtime prompt and the SKILL/landmine table use the 2-segment form 'stampede/{task_id}'. Other moderate drift: the documented IPC surface (queue/claimed/results/logs/pids) under-enumerates what runtime prompts actually use (commanders/, scripts/, fleet.json, state.json, runtime-stats.json, merge-report.json); and worker auto-discovery via cwd glob can attach to a stale run-dir, weaker than the manifest-driven model SKILL implies. Minor drift: the commander prompt asserts atomic result writes and claim-file cleanup verbally but omits the explicit .tmp-/rename ordering recipe the worker encodes; commander has no truncation step for the 500-word cap; havoc-swarm/{run_id}/{task_id} branch namespace is not mentioned in top-level docs. Conformant areas (no drift): atomic claim primitive (os.rename), JSON-via-Python invariant, files_changed key in current prompts, and the Launch-Proof Contract / child telemetry — the commander prompt is in fact more rigorous than the high-level docs in this last area. Recommended fixes are documentation-side for the major/moderate items (AGENTS.md branch naming and merger sort direction) and prompt-side for the commander to inherit the worker's explicit atomic-write and claim-cleanup snippets."
+}

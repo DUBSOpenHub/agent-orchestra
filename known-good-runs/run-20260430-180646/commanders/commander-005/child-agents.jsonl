@@ -1,0 +1,101 @@
+{"ts": "2026-05-01T01:07:38Z", "event": "commander_registered", "commander_id": "commander-005", "squad_leads_target": 50, "workers_target": 250}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-001", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-002", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-003", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-004", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-005", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-006", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-007", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-008", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-009", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:10:45Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-010", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-011", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-012", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-013", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-014", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-015", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-016", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-017", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-018", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-019", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:11:40Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-020", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-021", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-022", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-023", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-024", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-025", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-026", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-027", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-028", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-029", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:12:31Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-030", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-031", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-032", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-033", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-034", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-035", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-036", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-037", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-038", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:13:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-001", "status": "success"}
+{"ts": "2026-05-01T01:13:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-003", "status": "success"}
+{"ts": "2026-05-01T01:13:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-004", "status": "success"}
+{"ts": "2026-05-01T01:13:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-007", "status": "success"}
+{"ts": "2026-05-01T01:13:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-008", "status": "success"}
+{"ts": "2026-05-01T01:13:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-010", "status": "success"}
+{"ts": "2026-05-01T01:13:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-015", "status": "success"}
+{"ts": "2026-05-01T01:13:55Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-039", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:13:55Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-040", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:13:55Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-041", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.7", "workers_target": 5}
+{"ts": "2026-05-01T01:13:55Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-042", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.5", "workers_target": 5}
+{"ts": "2026-05-01T01:13:55Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-043", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:13:55Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-044", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.4", "workers_target": 5}
+{"ts": "2026-05-01T01:13:55Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-045", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-opus-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:13:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-002", "status": "success"}
+{"ts": "2026-05-01T01:13:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-009", "status": "success"}
+{"ts": "2026-05-01T01:13:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-011", "status": "success"}
+{"ts": "2026-05-01T01:13:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-013", "status": "success"}
+{"ts": "2026-05-01T01:13:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-020", "status": "success"}
+{"ts": "2026-05-01T01:13:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-021", "status": "success"}
+{"ts": "2026-05-01T01:13:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-030", "status": "success"}
+{"ts": "2026-05-01T01:14:16Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-046", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2", "workers_target": 5}
+{"ts": "2026-05-01T01:14:16Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-047", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.6", "workers_target": 5}
+{"ts": "2026-05-01T01:14:16Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-048", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.3-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:16Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-049", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "claude-sonnet-4.5", "workers_target": 5}
+{"ts": "2026-05-01T01:14:16Z", "event": "launch_started", "commander_id": "commander-005", "child_id": "sq-050", "role": "squad_lead", "depth": 2, "agent_type": "general-purpose", "model": "gpt-5.2-codex", "workers_target": 5}
+{"ts": "2026-05-01T01:14:16Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-005", "status": "success"}
+{"ts": "2026-05-01T01:14:16Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-006", "status": "success"}
+{"ts": "2026-05-01T01:14:16Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-017", "status": "success"}
+{"ts": "2026-05-01T01:14:16Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-022", "status": "success"}
+{"ts": "2026-05-01T01:14:16Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-028", "status": "success"}
+{"ts": "2026-05-01T01:14:16Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-029", "status": "success"}
+{"ts": "2026-05-01T01:14:37Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-019", "status": "success"}
+{"ts": "2026-05-01T01:14:51Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-025", "status": "success"}
+{"ts": "2026-05-01T01:14:51Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-027", "status": "success"}
+{"ts": "2026-05-01T01:14:51Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-040", "status": "success"}
+{"ts": "2026-05-01T01:15:08Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-033", "status": "success"}
+{"ts": "2026-05-01T01:15:08Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-034", "status": "success"}
+{"ts": "2026-05-01T01:15:08Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-043", "status": "success"}
+{"ts": "2026-05-01T01:15:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-018", "status": "success"}
+{"ts": "2026-05-01T01:15:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-031", "status": "success"}
+{"ts": "2026-05-01T01:15:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-032", "status": "success"}
+{"ts": "2026-05-01T01:15:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-038", "status": "success"}
+{"ts": "2026-05-01T01:15:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-039", "status": "success"}
+{"ts": "2026-05-01T01:15:18Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-042", "status": "success"}
+{"ts": "2026-05-01T01:15:29Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-016", "status": "success"}
+{"ts": "2026-05-01T01:15:29Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-023", "status": "success"}
+{"ts": "2026-05-01T01:15:29Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-035", "status": "success"}
+{"ts": "2026-05-01T01:15:36Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-014", "status": "success"}
+{"ts": "2026-05-01T01:15:36Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-037", "status": "success"}
+{"ts": "2026-05-01T01:15:45Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-050", "status": "success"}
+{"ts": "2026-05-01T01:16:09Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-012", "status": "success"}
+{"ts": "2026-05-01T01:16:26Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-048", "status": "success"}
+{"ts": "2026-05-01T01:16:33Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-049", "status": "success"}
+{"ts": "2026-05-01T01:16:42Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-045", "status": "success"}
+{"ts": "2026-05-01T01:16:48Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-046", "status": "success"}
+{"ts": "2026-05-01T01:16:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-024", "status": "success"}
+{"ts": "2026-05-01T01:16:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-041", "status": "success"}
+{"ts": "2026-05-01T01:17:20Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-047", "status": "success"}
+{"ts": "2026-05-01T01:17:55Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-026", "status": "success"}
+{"ts": "2026-05-01T01:18:54Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-036", "status": "success"}
+{"ts": "2026-05-01T01:19:58Z", "event": "completed", "commander_id": "commander-005", "child_id": "sq-044", "status": "success"}

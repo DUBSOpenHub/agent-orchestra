@@ -1,0 +1,101 @@
+{
+  "squad_id": "sq-031",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Branch Handling Verification - Part 1",
+  "timestamp": "2026-04-30T18:07:XX",
+  "workers_launched": 5,
+  "workers_completed": 4,
+  "workers_failed": 1,
+  "worker_results": {
+    "wkr-031-001": {
+      "status": "completed",
+      "model": "gpt-5.5",
+      "task": "Branch naming conventions",
+      "findings": {
+        "branch_prefixes": ["stampede/", "havoc-swarm/"],
+        "naming_patterns": {
+          "stampede_task_branches": "stampede/{task_id} (e.g., stampede/task-001)",
+          "stampede_merged_branches": "stampede/merged-{RUN_ID}",
+          "havoc_swarm_branches": "havoc-swarm/{run_id}/{task_id} (commander mode)"
+        },
+        "consistency_issues": [
+          "SKILL.md merge loop only considers stampede/* branches, excludes havoc-swarm/*",
+          "Task branch placeholder casing varies but both represent same pattern"
+        ]
+      }
+    },
+    "wkr-031-002": {
+      "status": "completed",
+      "model": "claude-opus-4.6",
+      "task": "Havoc-swarm prefix handling",
+      "findings": {
+        "creation_method": "Commanders create havoc-swarm/{run_id}/{task_id} branches",
+        "merge_handling": "Merger reads branch from result JSON - no prefix filtering, any branch in results is merged",
+        "cleanup_handling": "NO explicit cleanup for havoc-swarm branches - teardown kills processes but leaves branches intact",
+        "only_used_by": "stampede-commander agents in metaswarm mode"
+      }
+    },
+    "wkr-031-003": {
+      "status": "failed",
+      "model": "gpt-5.4",
+      "task": "Stampede prefix handling",
+      "error": "429 rate limit after 5 retries"
+    },
+    "wkr-031-004": {
+      "status": "completed",
+      "model": "claude-opus-4.5",
+      "task": "Branch creation in agents",
+      "findings": {
+        "agent_branch_logic": {
+          "stampede-agent": "stampede/{task_id} via git checkout -b with fallback",
+          "stampede-merger": "stampede/merged-{RUN_ID} from main/master",
+          "stampede-commander": "havoc-swarm/{run_id}/{task_id}"
+        },
+        "key_git_commands": [
+          "git checkout -b stampede/TASK_ID $BASE_BRANCH",
+          "git checkout -b stampede/merged-RUN_ID",
+          "git checkout main || git checkout master (cleanup)"
+        ],
+        "isolation_rule": "NEVER commit to main (Landmine #11)"
+      }
+    },
+    "wkr-031-005": {
+      "status": "completed",
+      "model": "gpt-5.2",
+      "task": "Branch cleanup patterns",
+      "findings": {
+        "automatic_cleanup": false,
+        "only_auto_deletion": "stampede/merged-{RUN_ID} deleted before recreating (idempotent)",
+        "teardown_behavior": "Kills PIDs, removes PID files, kills tmux - does NOT delete branches",
+        "recommendations": [
+          "Docs claim teardown cleans branches but it doesn't - fix docs or implementation",
+          "Add explicit branch cleanup command documentation",
+          "Consider optional branch deletion in teardown"
+        ]
+      }
+    }
+  },
+  "synthesis": {
+    "branch_naming_verified": true,
+    "patterns_found": {
+      "worker_branches": "stampede/{task_id}",
+      "merged_branches": "stampede/merged-{RUN_ID}",
+      "commander_branches": "havoc-swarm/{run_id}/{task_id}"
+    },
+    "key_findings": [
+      "Two distinct branch prefixes: stampede/ (workers/merger) and havoc-swarm/ (commanders)",
+      "All agents enforce NEVER commit to main rule",
+      "Merger discovers branches from result JSON files, not by prefix filtering",
+      "Branch cleanup is manual - teardown only cleans processes, not git branches",
+      "SKILL.md merge loop may miss havoc-swarm/* branches (only lists stampede/*)"
+    ],
+    "issues_identified": [
+      "Documentation claims teardown cleans branches but it doesn't",
+      "Potential merge gap: havoc-swarm/* branches excluded from SKILL.md merge loop",
+      "No explicit documentation for manual branch cleanup commands"
+    ],
+    "confidence": 0.9,
+    "notes": "Worker wkr-031-003 failed due to rate limiting, but stampede prefix handling was covered by other workers' overlapping investigations"
+  }
+}

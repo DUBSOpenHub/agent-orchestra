@@ -1,0 +1,79 @@
+{
+  "squad_lead_id": "sq-024",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Sub-Agent Telemetry Accuracy - Part 2",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "status": "success",
+  "findings": {
+    "counter_increment_patterns": {
+      "verdict": "risky",
+      "summary": "Counters are initialized in bin/stampede.sh, but runtime increments are delegated to the commander agent with no repository-enforced atomic read-modify-write logic.",
+      "evidence": [
+        "bin/stampede.sh:771-831 initializes telemetry counters at 0 and writes swarm-state.json directly",
+        "agents/stampede-commander.agent.md:57 requires the commander to update swarm-state.json after child launches",
+        "bin/stampede-monitor.sh:160-165 trusts telemetry fields directly"
+      ],
+      "risks": [
+        "Lost updates if multiple child transitions race on stale state",
+        "Drift between telemetry.* and launch_proof.* fallback fields",
+        "Blocked/failed overwrite paths can preserve inconsistent counters"
+      ]
+    },
+    "running_completed_transitions": {
+      "verdict": "incorrect",
+      "summary": "There is no code-enforced transition system for running/completed; real runs show stale and contradictory values.",
+      "evidence": [
+        "run-20260430-180646 commander-005 swarm-state.json shows squad_leads_running=11 and squad_leads_completed=39 while child-agents.jsonl has 50 launch_started and 50 completed records",
+        "bin/stampede-monitor.sh:162-165 computes display strictly from swarm-state.json telemetry",
+        "bin/stampede.sh:982-997 marks commander_launch_failed without reconciling counters"
+      ],
+      "mismatches": [
+        "State can lag ledger events",
+        "Failure status can coexist with inflated completion counts in other runs",
+        "Completed display may mask stale atoms_received via fallback logic"
+      ]
+    },
+    "failed_counter_handling": {
+      "verdict": "ambiguous",
+      "summary": "Failure counters exist, but failure persistence and interaction with running/completed are not programmatically guaranteed.",
+      "evidence": [
+        "bin/stampede.sh:817-825 defines squad_leads_failed/workers_failed/children_failed",
+        "bin/stampede-monitor.sh:164 falls back from workers_failed to children_failed",
+        "agents/stampede-commander.agent.md documents completed events but does not define a strict failure reconciliation algorithm"
+      ],
+      "risks": [
+        "Timeout/partial/failure events may not decrement running consistently",
+        "children_failed and workers_failed can diverge",
+        "Failures depend on commander self-reporting rather than reconciliation from ledger/files"
+      ]
+    },
+    "atoms_received_accuracy": {
+      "verdict": "inaccurate",
+      "summary": "atoms_received is initialized and displayed, but no repository code computes it from atom files or ledger events; it can remain 0 despite existing atoms.",
+      "evidence": [
+        "bin/stampede.sh:824 initializes atoms_received=0",
+        "bin/stampede-monitor.sh:163-166 reads atoms_received directly",
+        "agents/stampede-commander.agent.md:124 expects atoms_received to reach 250 on success",
+        "run-20260430-180646 commander-005 swarm-state.json:53 shows atoms_received=0 despite multiple atom synthesis files in the atoms directory"
+      ]
+    },
+    "telemetry_consistency": {
+      "verdict": "not trustworthy",
+      "summary": "swarm-state.json, child-agents.jsonl, and on-disk atom artifacts are not reconciled from a single source of truth.",
+      "evidence": [
+        "bin/stampede-monitor.sh reads swarm-state.json only for nested telemetry",
+        "child-agents.jsonl contains append-only launch/completed records that can outpace state updates",
+        "No repository code cross-checks telemetry counters against child-agents.jsonl or atoms/ contents"
+      ],
+      "highest_priority_issue": "atoms_received and completion totals can diverge from actual atom files on disk while monitor output still looks healthy."
+    },
+    "overall_verdict": {
+      "result": "swarm-state.json counters are directionally useful but not reliable as accurate live truth without reconciliation.",
+      "recommended_source_of_truth": "Use child-agents.jsonl plus filesystem artifact counts to validate swarm-state.json telemetry."
+    }
+  },
+  "summary": "Telemetry accuracy is weak. swarm-state.json is initialized correctly but runtime counters rely on commander self-reporting, not enforced atomic updates or reconciliation. running/completed/failed semantics can drift from child-agents.jsonl, and atoms_received is especially unreliable because the repo does not derive it from actual atom files. Treat swarm-state.json as advisory, not authoritative.",
+  "completed_at": "2026-05-01T01:16:38Z"
+}

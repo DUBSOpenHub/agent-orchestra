@@ -1,0 +1,97 @@
+{
+  "squad_lead_id": "sq-001",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Bundle Schema Validation - Part 1",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "status": "success",
+  "findings": {
+    "required_fields": {
+      "description": "Complete list of required fields for commander bundle.json",
+      "fields": [
+        {"name": "task_id", "type": "string", "example": "contestant-001"},
+        {"name": "run_id", "type": "string", "example": "run-YYYYMMDD-HHMMSS"},
+        {"name": "commander_id", "type": "string", "example": "commander-001"},
+        {"name": "status", "type": "enum", "values": ["success", "partial", "failed"]},
+        {"name": "role", "type": "string", "expected": "commander"},
+        {"name": "profile", "type": "string", "expected": "metaswarm"},
+        {"name": "swarm_scale", "type": "string", "expected": "ss-250"},
+        {"name": "per_commander_full_swarm", "type": "boolean", "expected": true},
+        {"name": "branch", "type": "string", "format": "havoc-swarm/{run_id}/{task_id}"},
+        {"name": "files_changed", "type": "array", "item_type": "string (repo-relative paths)"},
+        {"name": "summary", "type": "string", "constraint": "under 500 words"},
+        {"name": "confidence", "type": "number", "range": "0.0-1.0"}
+      ],
+      "source": "stampede-commander.agent.md:240-267"
+    },
+    "consensus_fields": {
+      "description": "Consensus object structure",
+      "structure": {
+        "tier": {"type": "enum", "values": ["CONSENSUS", "MAJORITY", "CONFLICT", "UNIQUE"]},
+        "notes": {"type": "array", "item_type": "string"}
+      },
+      "source": "stampede-commander.agent.md:254-257"
+    },
+    "telemetry_fields": {
+      "description": "Required telemetry object fields",
+      "fields": [
+        {"name": "squad_leads_target", "type": "number", "expected": 50},
+        {"name": "squad_leads_launched", "type": "number", "expected": 50},
+        {"name": "workers_target", "type": "number", "expected": 250},
+        {"name": "workers_launched", "type": "number", "expected": 250},
+        {"name": "atoms_received", "type": "number"},
+        {"name": "children_failed", "type": "number"}
+      ],
+      "note": "swarm-state.json contains richer telemetry superset; bundle only has 6 summary fields",
+      "source": "stampede-commander.agent.md:258-265"
+    },
+    "validation_rules": [
+      {"rule": "Success requires squad_leads_launched == 50 AND workers_launched == 250", "source": "lines 140-142"},
+      {"rule": "If blocked, status must be 'partial' with exact launch counts", "source": "lines 143-144"},
+      {"rule": "If no Squad Leads launched, status must be 'failed'", "source": "lines 145-146"},
+      {"rule": "Banned model fallback forces 'partial' status", "source": "lines 166-168"},
+      {"rule": "JSON operations must use Python json.dump", "source": "line 38"},
+      {"rule": "Summary must be under 500 words", "source": "lines 39, 252"}
+    ],
+    "write_locations": [
+      "{RUN_DIR}/commanders/{commander_id}/bundle.json",
+      "{RUN_DIR}/results/{task_id}.json"
+    ],
+    "related_telemetry_files": {
+      "swarm_state": "swarm-state.json (live state, richer telemetry)",
+      "child_ledger": "child-agents.jsonl (append-only event log, launch proof)"
+    }
+  },
+  "discrepancies_found": [
+    {
+      "issue": "Missing collaboration fields",
+      "detail": "stampede.sh prompt (line 880) instructs commanders to include item_ids and source_refs from collaboration bus, but documented Bundle Shape has no such fields",
+      "severity": "medium"
+    },
+    {
+      "issue": "Missing completed_at field",
+      "detail": "Worker results include completed_at timestamp, but commander bundle shape omits it",
+      "severity": "low"
+    },
+    {
+      "issue": "Crash handler gap",
+      "detail": "Bash crash handler (stampede.sh:955-1003) only updates swarm-state.json, never writes bundle.json - crashed commander leaves no bundle",
+      "severity": "medium"
+    },
+    {
+      "issue": "Status value inconsistency",
+      "detail": "Workers use 'done'/'error', commanders use 'success'/'partial'/'failed' - no unified vocabulary",
+      "severity": "low"
+    }
+  ],
+  "git_integration": {
+    "files_changed_source": "git diff --name-only main...HEAD",
+    "path_format": "repo-relative (e.g., src/auth.py)",
+    "branch_format": "havoc-swarm/{run_id}/{task_id}",
+    "branch_must_exist": true,
+    "base_ref": "main"
+  },
+  "summary": "Bundle schema is well-documented in stampede-commander.agent.md lines 238-267. All 17 fields identified with types and constraints. Four discrepancies found between documented spec and actual implementation: missing collaboration bus fields, missing completed_at, crash handler gap, and status vocabulary differences. Telemetry in bundle is a 6-field summary; richer data lives in swarm-state.json and child-agents.jsonl.",
+  "completed_at": "2026-04-30T18:08:00Z"
+}

@@ -1,0 +1,13 @@
+{
+  "worker_id": "wkr-020-002",
+  "model": "claude-sonnet-4.6",
+  "assignment": "audit claimed cleanup",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "SKILL.md orphan sweep re-queues via write+delete (non-atomic) risking duplicate execution (SKILL.md:519-521,544-546,804-806)",
+    "Monitor orphan recovery only when live_agents==0; claimed orphans can persist with one live pane (stampede-monitor.sh:237)",
+    "Threshold mismatch: monitor 180s vs SKILL 600s can requeue active tasks (stampede-monitor.sh:25 vs SKILL.md:536)",
+    "Teardown doesn\"t clear claimed/; stale claims persist across runs (stampede.sh:306-364)\",\"Commander claim removal is prose-only; crash after bundle write can trigger requeue (stampede-commander.agent.md:37,61)\",\"/tmp cleanup wildcard can remove other sessions\""
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-022-005",
+  "theme": "collaboration-bus",
+  "focus": "malformed-ledger-tolerance",
+  "findings": [
+    "Collaboration protocol explicitly requires readers to tolerate absent files and malformed trailing lines.",
+    "Monitor counts ledger lines via wc -l with missing-file fallback, so malformed JSONL does not crash the dashboard.",
+    "Teardown is session-scoped and marks torn_down state.",
+    "Recovery gap: orphan requeue only triggers when no live panes remain, so one hung pane can preserve stale claims indefinitely."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:303-358",
+    "bin/stampede.sh:670-704",
+    "bin/stampede-monitor.sh:27-38",
+    "bin/stampede-monitor.sh:57-66",
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede-monitor.sh:218-279"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

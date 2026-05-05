@@ -1,0 +1,43 @@
+{
+  "worker_id": "wkr-015-005",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "bounded-spawn-failure-modes",
+  "findings": [
+    {
+      "check": "status:partial on degraded launch",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:143-145"
+    },
+    {
+      "check": "status:failed when no Squad Leads",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:146-147"
+    },
+    {
+      "check": "Circuit breaker/timeout handling",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:143,167-168,209"
+    },
+    {
+      "check": "mark_run_blocked() exists",
+      "status": "PASS",
+      "ref": "stampede.sh:139-193"
+    },
+    {
+      "check": "Propagates to swarm-state.json",
+      "status": "PASS",
+      "ref": "stampede.sh:171-180"
+    },
+    {
+      "check": "Commander count cap (5 max)",
+      "status": "PASS",
+      "ref": "stampede.sh:504-506"
+    }
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:143-147,167-168,209",
+    "bin/stampede.sh:139-193,504-506"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

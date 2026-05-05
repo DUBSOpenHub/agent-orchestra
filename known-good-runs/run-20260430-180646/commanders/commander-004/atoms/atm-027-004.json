@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-027-004",
+  "theme": "agent-pulse-monitoring",
+  "focus": "smoke-coverage",
+  "findings": [
+    "stampede-monitor.sh never invoked in smoke test; no running/completed/failed count assertions. tests/smoke-test.sh:71,108-113,151-158",
+    "Metaswarm path checks artifact existence only (swarm-state.json, child-agents.jsonl dirs) \u2014 not live monitor rendering or count aggregation. tests/smoke-test.sh:112-148",
+    "No live count accuracy test: no queue/claimed/results reconciliation against reported counts. tests/smoke-test.sh:22,151-158",
+    "Coverage gaps: no failed-agent scenario, no queue state assertions, no claimed-to-completed transition, no monitor polling behavior. tests/smoke-test.sh:66-71,105-113",
+    "False-positive risk: result file existence checked but status field never asserted. tests/smoke-test.sh:53-56,154-157",
+    "False-positive risk: metaswarm uses --agent-cmd true so pre-created artifacts satisfy assertions without real agent execution. tests/smoke-test.sh:108-113,132-147"
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:66-71",
+    "tests/smoke-test.sh:73-113",
+    "tests/smoke-test.sh:114-148",
+    "tests/smoke-test.sh:151-158"
+  ],
+  "confidence": 0.98,
+  "status": "complete"
+}

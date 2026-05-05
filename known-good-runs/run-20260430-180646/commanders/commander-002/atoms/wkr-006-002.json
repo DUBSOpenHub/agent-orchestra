@@ -1,0 +1,27 @@
+{
+  "worker_id": "wkr-006-002",
+  "model": "claude-sonnet-4.6",
+  "assignment": "audit protocol required_fields vs emitted records",
+  "key_findings": [
+    "Collab bus protocol.json defines a single flat required_fields list applied to all ledgers; in practice, ledgers diverge (e.g., reviews omit evidence, broadcasts vary cross-ref fields).",
+    "Commander telemetry bus child-agents.jsonl has no schema and shows widespread missing run_id/commander_id, aliased event names, and ts vs timestamp inconsistencies.",
+    "Protocol is not enforced anywhere; monitor mostly line-counts JSONL, not validate fields/types."
+  ],
+  "evidence": [
+    {"path": "bin/stampede.sh", "lines": "684-721", "note": "protocol.json and required_fields definition"},
+    {"path": "bin/stampede.sh", "lines": "854-860", "note": "commander_registered written to child-agents.jsonl without run_id"},
+    {"path": "skills/SKILL.md", "lines": "~445", "note": "echo-based JSON write for orchestrator.jsonl (Landmine #1 risk)"},
+    {"path": "bin/stampede-monitor.sh", "lines": "~57-66", "note": "counts JSONL lines in collab ledgers"}
+  ],
+  "mismatches_examples": [
+    {"ledger": "reviews.jsonl", "issue": "evidence missing though protocol requires it"},
+    {"ledger": "broadcasts.jsonl", "issue": "evidence sometimes missing; adopted_items vs consensus_item_id drift"},
+    {"stream": "child-agents.jsonl", "issue": "run_id missing on shell/agent emitted events; event name aliases"}
+  ],
+  "recommendations": [
+    "Move from flat required_fields to per-ledger schema; make review-specific fields required and make evidence optional/removed for reviews.",
+    "Standardize child-agents.jsonl required fields (run_id, commander_id, ts) and event taxonomy; update commander agent spec examples accordingly.",
+    "Add protocol validator (test or monitor hook) that reads protocol.json and validates all JSONL records." 
+  ],
+  "confidence": 0.83
+}

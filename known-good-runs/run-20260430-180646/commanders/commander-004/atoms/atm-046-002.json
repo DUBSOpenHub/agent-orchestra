@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-046-002",
+  "theme": "docs-ci-readiness",
+  "focus": "smoke-gap-analysis",
+  "status": "success",
+  "confidence": 0.95,
+  "findings": [
+    "Metaswarm structured-contract portion is a false positive: it runs stampede.sh with --agent-cmd true, so no commander/agent logic executes; launcher writes artifacts and test passes anyway.",
+    "Smoke test depends on tmux sessions (tmux kill-session; stampede.sh --no-attach). CI workflow does not provision tmux server; this blocks running smoke-test in CI as-is.",
+    "Single-agent smoke uses a bespoke stub agent (smoke-agent.sh) rather than stampede-agent.agent.md.",
+    "Hardcoded string greps in dry-run are whitespace-fragile.",
+    "Smoke test uses claude-haiku-4.5 for the single-agent run, which is banned per premium-only child model policy in the capsule."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:14-18",
+    "tests/smoke-test.sh:24-60",
+    "tests/smoke-test.sh:70-72",
+    "tests/smoke-test.sh:108-113",
+    "tests/smoke-test.sh:114-148",
+    "tests/smoke-test.sh:109-110",
+    "tests/smoke-test.sh:66-67"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-010-002",
+  "theme": "premium-model-policy",
+  "focus": "banned-model-guardrails",
+  "findings": [
+    "Banned model list is consistent across schema, prose policy, and capsule blocks (agents/stampede-commander.agent.md:106-111, 162-164, 203-207).",
+    "Enforcement is reactive: policy says mark bundle partial after fallback, but no pre-launch validation or retry/abort guidance (agents/stampede-commander.agent.md:168-169).",
+    "Depth-guard lint has no checks for banned-model lists, overlaps, or consistency across sections, allowing drift (tests/depth-guard-lint.sh:17-61)."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:106-111",
+    "agents/stampede-commander.agent.md:162-164",
+    "agents/stampede-commander.agent.md:168-169",
+    "agents/stampede-commander.agent.md:203-207",
+    "tests/depth-guard-lint.sh:17-61"
+  ],
+  "confidence": 0.94,
+  "status": "success"
+}

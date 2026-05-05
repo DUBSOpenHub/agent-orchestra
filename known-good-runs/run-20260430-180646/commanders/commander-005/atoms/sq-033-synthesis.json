@@ -1,0 +1,115 @@
+{
+  "squad_lead": "sq-033",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Error Handling Coverage - Part 1",
+  "sub_task": "Verify error handling in launcher scripts",
+  "workers_launched": 5,
+  "workers_completed": 3,
+  "workers_failed": 2,
+  "failure_reason": "wkr-033-003 (gpt-5.2) and wkr-033-004 (claude-sonnet-4.6) hit 429 rate limits",
+  "models_used": ["gpt-5.4", "claude-opus-4.5", "gpt-5.2", "claude-sonnet-4.6", "gpt-5.3-codex"],
+  "timestamp": "2025-07-27T18:07:00Z",
+  "findings": {
+    "overall_score": 5.7,
+    "category_scores": {
+      "stampede_sh_general": 7,
+      "auth_error_handling": 4,
+      "tmux_error_handling": 6,
+      "file_operation_errors": 6,
+      "exit_code_handling": 6
+    },
+    "strengths": [
+      "Uses set -euo pipefail as baseline protection",
+      "Preflight system validates Copilot CLI auth in tmux runtime before launch",
+      "Atomic JSON writes via Python tmp+rename pattern (write_json_atomic)",
+      "Prerequisite check for required binaries (tmux, python3, jq, git, bash)",
+      "Duplicate tmux session detection and cleanup before launch",
+      "Agent CLI exit code captured via PIPESTATUS[0]",
+      "Blocked state persistence with mark_run_blocked() function"
+    ],
+    "critical_gaps": [
+      {
+        "id": "GAP-001",
+        "title": "No main cleanup traps (EXIT/ERR/INT)",
+        "severity": "high",
+        "description": "Failed or interrupted launches leave tmux sessions, scripts, and state behind with no automatic cleanup",
+        "location": "bin/stampede.sh (entire script lacks trap handlers)"
+      },
+      {
+        "id": "GAP-002",
+        "title": "Monitor exits 0 on partial/failure conditions",
+        "severity": "high",
+        "description": "stampede-monitor.sh reports partial failures but always returns exit code 0, masking failures from callers",
+        "location": "bin/stampede-monitor.sh:300-337"
+      },
+      {
+        "id": "GAP-003",
+        "title": "No proactive gh/git auth validation",
+        "severity": "high",
+        "description": "No gh auth status check or GITHUB_TOKEN validation before operations begin",
+        "location": "bin/stampede.sh (check_prereqs function)"
+      },
+      {
+        "id": "GAP-004",
+        "title": "Launcher does not fail on partial worker launch failure",
+        "severity": "high",
+        "description": "If some workers fail to start, launcher prints warning but exits 0",
+        "location": "bin/stampede.sh:1158-1205"
+      },
+      {
+        "id": "GAP-005",
+        "title": "No differentiated exit code taxonomy",
+        "severity": "medium",
+        "description": "All errors use exit 1; no distinction between usage errors, auth failures, runtime failures",
+        "location": "All scripts"
+      },
+      {
+        "id": "GAP-006",
+        "title": "Preflight unclear response not treated as failure",
+        "severity": "medium",
+        "description": "Ambiguous agent responses during preflight allow launch to continue despite potential issues",
+        "location": "bin/stampede.sh:442-467"
+      },
+      {
+        "id": "GAP-007",
+        "title": "tmux UI commands silently ignore errors",
+        "severity": "low",
+        "description": "Multiple || true patterns on tmux set-option/select-pane could mask session-state issues",
+        "location": "bin/stampede.sh:1033-1136"
+      },
+      {
+        "id": "GAP-008",
+        "title": "No disk space or write permission pre-checks",
+        "severity": "medium",
+        "description": "mkdir -p relies on set -e but no proactive space/permission validation",
+        "location": "bin/stampede.sh:591-594"
+      }
+    ],
+    "tmux_analysis": {
+      "note": "Worker wkr-033-003 hit rate limit; analysis performed by squad lead from grep data",
+      "tmux_available_check": true,
+      "duplicate_session_handling": true,
+      "pane_creation_error_handling": false,
+      "session_cleanup_on_exit": false,
+      "version_compatibility_check": false,
+      "send_keys_failure_handling": false
+    },
+    "file_ops_analysis": {
+      "note": "Worker wkr-033-004 hit rate limit; analysis performed by squad lead from grep data",
+      "atomic_writes_used": true,
+      "mkdir_error_handling": "relies on set -e only",
+      "disk_space_checks": false,
+      "permission_pre_checks": false,
+      "corrupt_json_handling": "partial - .tmp- prefix filter in queue reads"
+    }
+  },
+  "recommendations": [
+    "Add trap 'cleanup' EXIT ERR INT to stampede.sh main body",
+    "Make monitor/merge return non-zero on partial/failed conditions",
+    "Add gh auth status check to check_prereqs()",
+    "Implement exit code taxonomy: 0=success, 1=runtime, 2=usage, 3=auth, 4=partial",
+    "Add --strict flag that makes partial worker launch fatal",
+    "Pre-check write permissions on .stampede directory before queue creation"
+  ]
+}

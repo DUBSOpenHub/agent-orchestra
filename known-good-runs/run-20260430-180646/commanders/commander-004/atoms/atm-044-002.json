@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-044-002",
+  "theme": "recovery-stuck-detection",
+  "focus": "recovery-paths",
+  "findings": [
+    "Teardown and duplicate-session restart kill processes but never move claimed tasks back to queue, so worker death can strand work.",
+    "Worker-mode nonzero exits lack the commander-grade failure telemetry written to swarm-state and child ledgers.",
+    "Restart semantics are destroy-and-retry; no resume path restores claimed tasks or prior in-flight state."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:304-364",
+    "bin/stampede.sh:716-720",
+    "bin/stampede.sh:1096-1150",
+    "bin/stampede.sh:1277-1305"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

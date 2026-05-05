@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-006-004",
+  "theme": "premium-model-policy",
+  "focus": "child-override-propagation",
+  "findings": [
+    "Launcher enforces metaswarm premium model selection for commander panes, but commander->child model override propagation appears to rely on prompt instructions rather than mechanical enforcement.",
+    "Banned list exists in multiple places (shell vars, generated JSON, commander docs). Multiple sources of truth increases drift risk.",
+    "Commander docs require explicit model override for every child launch, but do not provide a strict mechanism that prevents omission (default fallback risk)."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:19-20,516-530",
+    "agents/stampede-commander.agent.md:148-168"
+  ],
+  "confidence": 0.85,
+  "status": "success",
+  "atom_id": "atm-006-004"
+}

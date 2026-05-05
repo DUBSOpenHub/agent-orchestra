@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-023-003",
+  "theme": "collaboration-bus",
+  "focus": "commander-ledger-usage",
+  "findings": [
+    "Commander agent.md has ZERO references to collaboration bus, collab ledgers, or propose->consensus flow",
+    "Only telemetry files referenced: child-agents.jsonl and swarm-state.json (internal monitoring only)",
+    "No instructions for participating in or orchestrating the collaboration protocol",
+    "No instructions for broadcasting results or adopting peer consensus",
+    "Critical gap: collab protocol entirely delivered via runtime prompt injection at stampede.sh:910 \u2014 fragile to context truncation",
+    "Bundle schema in agent.md lacks adopted/source_refs fields the launcher demands"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:34-36",
+    "agents/stampede-commander.agent.md:240-267",
+    "bin/stampede.sh:910",
+    "bin/stampede.sh:930-936"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

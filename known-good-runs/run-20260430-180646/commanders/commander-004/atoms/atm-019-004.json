@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-019-004",
+  "theme": "telemetry-contract",
+  "focus": "launch-proof-counters",
+  "findings": [
+    "Monitor launch-proof validation is display-only: it reads squad_leads_launched/workers_launched from telemetry, falling back to launch_proof.squad_leads_started/workers_started, with defaults 50 squad leads and 250 workers, but does not use those counters to decide completion/partial status.",
+    "Proof warning thresholds are asymmetric: it shows \u26a0 no sub-agent proof only when launch_proof_required=true and squad leads are exactly 0 outside startup phases; it shows \u26a0 incomplete proof only when workers_launched is nonzero, below target, and status is success. A success state with workers_started=0 would skip the incomplete-proof warning entirely.",
+    "Full vs partial deployment is not determined from launch-proof counters. partial is set only when all panes are dead for 15s and at least one task finished; otherwise any run with all tasks done is COMPLETE, even if worker proof is below 250. This does not enforce the README requirement that metaswarm report partial instead of silently downgrading when full child swarm cannot launch.",
+    "The 250-worker full-swarm requirement is only a target/comparison in monitor output (workers_target default 250; printed as workers X/250), not a hard validation gate. The roster even labels commanders full SS-250 unconditionally in the UI line.",
+    "Documented proof sources and monitor behavior diverge: README says runtime proof is written to both swarm-state.json and child-agents.jsonl, but this monitor checks only swarm-state.json counters for launch proof and does not inspect child-agents.jsonl here."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:145-190",
+    "bin/stampede-monitor.sh:158-161",
+    "bin/stampede-monitor.sh:176-180",
+    "bin/stampede-monitor.sh:183-186",
+    "bin/stampede-monitor.sh:193",
+    "bin/stampede-monitor.sh:295-301",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-002-004",
+  "theme": "commander-launch-profile",
+  "focus": "docs-claim-branch-alignment",
+  "findings": [
+    "README and AGENTS disagree on branch naming: README says stampede/task-001 while AGENTS says stampede/<agent-id>/<task-id>.",
+    "Launch docs mention --model usage but not premium-model policy enforcement or restrictions.",
+    "Commander launch profile, sub-agent telemetry, Agent Pulse live counts, and stop/recovery behavior are not documented in the reviewed docs.",
+    "Atomic mv task claiming is documented, but the docs omit SwarmMesh collaboration bus details.",
+    "Queue path defaults conflict between README and AGENTS."
+  ],
+  "source_refs": [
+    "README.md:100",
+    "README.md:114-127",
+    "README.md:193",
+    "README.md:205-208",
+    "AGENTS.md:56-58"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

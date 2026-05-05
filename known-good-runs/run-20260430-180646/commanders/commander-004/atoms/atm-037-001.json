@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-037-001",
+  "theme": "stop-teardown-behavior",
+  "focus": "pid-tracking",
+  "findings": [
+    "find_leaf_pid() (L73-90): only inspects first-child chain via head -n1; can return wrong PID if agent is on a sibling branch.",
+    "Fixed 5s delay before PID capture (L1277-1279); no readiness loop \u2014 slow auth can cause shell PID recorded instead of agent PID.",
+    "Teardown (L327-338) sends plain SIGTERM; no SIGKILL fallback, no wait/retry loop.",
+    "Commander PID files named commander-XXX.pid (L1293-1299) \u2014 correctly distinct from worker PIDs.",
+    "No launcher-level tracking for commander-spawned sub-agents; only telemetry via child-agents.jsonl (L1049). Teardown cannot reach nested sub-agents."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:73-90",
+    "bin/stampede.sh:1277-1299",
+    "bin/stampede.sh:327-345",
+    "bin/stampede.sh:1049"
+  ],
+  "confidence": 0.96,
+  "status": "success"
+}

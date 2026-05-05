@@ -1,0 +1,34 @@
+{
+  "worker_id": "wkr-007-001",
+  "theme": "premium-model-policy",
+  "focus": "model-rotation",
+  "findings": [
+    "stampede.sh uses round-robin rotation ONLY when multiple --models supplied: MODEL_LIST parsed, assignment via (worker_num-1) % MODEL_COUNT. bin/stampede.sh:603-605,723,850-853,867,943-953",
+    "DEFAULT model is claude-haiku-4.5 (a BANNED model): bin/stampede.sh:15-16. If no --model/--models passed, all launched agents receive a banned model.",
+    "Metaswarm child Squad Lead/Worker model assignment is instruction-level only: premium pool and banned list injected via prompt metadata, not enforced by launcher code. bin/stampede.sh:739-756,793-810,883-888",
+    "SKILL.md instructs static --model usage; does not mention --models, rotation, or round-robin. Default shown is claude-sonnet-4.5. skills/SKILL.md:33-39,399-415,884",
+    "GAP: No banned-model validation gate in stampede.sh before launch. Preflight only validates run_id/count/repo. bin/stampede.sh:491-509,603-605"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:15",
+    "bin/stampede.sh:16",
+    "bin/stampede.sh:603",
+    "bin/stampede.sh:605",
+    "bin/stampede.sh:723",
+    "bin/stampede.sh:739",
+    "bin/stampede.sh:752",
+    "bin/stampede.sh:793",
+    "bin/stampede.sh:850",
+    "bin/stampede.sh:853",
+    "bin/stampede.sh:886",
+    "bin/stampede.sh:943",
+    "bin/stampede.sh:953",
+    "skills/SKILL.md:33",
+    "skills/SKILL.md:39",
+    "skills/SKILL.md:399",
+    "skills/SKILL.md:415",
+    "skills/SKILL.md:884"
+  ],
+  "confidence": 0.96,
+  "status": "success"
+}

@@ -1,0 +1,35 @@
+{
+  "squad_id": "sq-045",
+  "theme": "recovery-stuck-detection",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "status": "success",
+  "overall_confidence": "high",
+  "consensus": {
+    "key_findings": [
+      "Stuck detection is alert-only (120s threshold), NOT auto-recovery; orphan recovery only when no live agents remain (180s)",
+      "No automatic worker restart on crash or kill; manual --teardown is only recovery option",
+      "README documentation does not match actual recovery implementation",
+      "Smoke tests cover ONLY happy path; zero coverage for failure or recovery scenarios",
+      "Failure containment exists (isolated panes, Depth Guard, metaswarm cap) but no active watchdog"
+    ],
+    "critical_gaps": [
+      "No --resume or --restart CLI flags despite recovery narrative in docs",
+      "No PID-based liveness despite PIDS_DIR being declared",
+      "Dead-worker re-queue only in edge case (all agents gone plus 180s stale)",
+      "Test coverage for recovery scenarios is zero percent"
+    ]
+  },
+  "conflicts": [],
+  "worker_atoms": [
+    "atm-045-001.json",
+    "atm-045-002.json",
+    "atm-045-003.json",
+    "atm-045-004.json",
+    "atm-045-005.json"
+  ],
+  "blockers": []
+}

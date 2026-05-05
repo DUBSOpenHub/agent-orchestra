@@ -1,0 +1,43 @@
+{
+  "worker_id": "wkr-015-002",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "commander-depth-budget",
+  "findings": [
+    {
+      "check": "depth_budget.squads_allocated=50",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:52"
+    },
+    {
+      "check": "constraints.max_workers=250",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:51"
+    },
+    {
+      "check": "50\u00d75=250 formula explicit",
+      "status": "PARTIAL",
+      "ref": "stampede-commander.agent.md:54-56",
+      "note": "Components stated separately, not as single formula"
+    },
+    {
+      "check": "per_commander_full_swarm: true",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:50,79"
+    },
+    {
+      "check": "launch_proof_required: true",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:82"
+    },
+    {
+      "check": "Worker Depth Lock has DO NOT use task tool",
+      "status": "PASS",
+      "ref": "stampede-commander.agent.md:232"
+    }
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:50-56,69-82,227-236"
+  ],
+  "confidence": 0.92,
+  "status": "success"
+}

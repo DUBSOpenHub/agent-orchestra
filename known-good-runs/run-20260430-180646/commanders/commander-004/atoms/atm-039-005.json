@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-039-005",
+  "theme": "stop-teardown-behavior",
+  "focus": "cleanup-gaps",
+  "findings": "CLEANUP GAPS IDENTIFIED:\n\n1. NO GLOBAL TRAP HANDLER: Main stampede.sh (line 3) uses 'set -euo pipefail' but lacks a trap for SIGINT/SIGTERM to clean up tmux sessions, PID files, or child processes on unexpected termination. Only trap found is a cosmetic cursor-restore trap (line 1380) in the attach script.\n\n2. TEARDOWN NOT AUTOMATIC ON ERROR: Error exits (lines 487, 492, 498, 503, 508, 513, 527, 697, 707, 971) exit immediately without calling do_teardown(). Partial state (tmux sessions, PID files, queue files) may remain.\n\n3. PREFLIGHT CLEANUP IS GOOD: Preflight section (line 213) properly cleans temp files and kills test tmux session (line 274) on timeout/completion.\n\n4. PID FILE CLEANUP INCOMPLETE: Teardown (line 339) only cleans PIDs dir but doesn't verify child processes actually died. 'kill -0' check at line 333 could silently fail.\n\n5. CI COVERAGE ABSENT: ci.yml has NO tests for teardown or cleanup behavior. Only tests: shell syntax (line 18-24), shellcheck (line 25-29), frontmatter (line 31-36), install smoke (line 38-43), --help (line 45-48), changelog order (line 50-56). NO 'teardown', 'cleanup', 'stop', or 'kill' keywords found in CI.\n\n6. EDGE CASE - ORPHAN TMUX SESSIONS: If stampede.sh crashes between session creation (line 716-719) and PID tracking, orphan tmux sessions remain with no cleanup path.\n\n7. MISSING CLEANUP ON VALIDATION FAILURES: Lines 485-513 validate args but don't cleanup any partial state that may exist from prior runs with same RUN_ID.",
+  "source_refs": [
+    "bin/stampede.sh:3 (set -euo pipefail, no trap)",
+    "bin/stampede.sh:1380 (only trap is cosmetic)",
+    "bin/stampede.sh:487-513 (exit without cleanup)",
+    "bin/stampede.sh:213 (preflight cleanup - good)",
+    "bin/stampede.sh:274 (preflight tmux kill - good)",
+    "bin/stampede.sh:333-339 (teardown kill logic)",
+    "bin/stampede.sh:716-719 (session creation, no rollback)",
+    ".github/workflows/ci.yml:13-57 (no teardown tests)"
+  ],
+  "confidence": 92,
+  "status": "success"
+}

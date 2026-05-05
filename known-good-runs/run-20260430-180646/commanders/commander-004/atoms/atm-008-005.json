@@ -1,0 +1,33 @@
+{
+  "worker_id": "wkr-008-005",
+  "theme": "premium-model-policy",
+  "focus": "fallback-violation-handling",
+  "findings": [
+    {
+      "id": "f1",
+      "summary": "Metaswarm guidance explicitly forbids silent downgrade and requires reporting a partial/failed bundle if the full SS-250 child swarm cannot launch.",
+      "evidence": [
+        "skills/SKILL.md:407-408",
+        "README.md:35",
+        "README.md:130"
+      ],
+      "severity": "info"
+    },
+    {
+      "id": "f2",
+      "summary": "Beyond metaswarm downgrade handling, the only explicit fallback mention is a generic objective template; no additional fallback-violation handling is described for non-metaswarm/model availability cases.",
+      "evidence": [
+        "skills/SKILL.md:121-129"
+      ],
+      "severity": "medium"
+    }
+  ],
+  "source_refs": [
+    "skills/SKILL.md:121-129",
+    "skills/SKILL.md:407-408",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": 0.68,
+  "status": "success"
+}

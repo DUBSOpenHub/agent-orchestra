@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-030-002",
+  "model": "claude-sonnet-4.6",
+  "assignment": "exact launch counts",
+  "status": "completed",
+  "launch_counts": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 31,
+    "workers_target": 250,
+    "workers_launched": 39,
+    "workers_running": 32,
+    "workers_completed": 7,
+    "launch_proof": {
+      "squad_leads_started": 30,
+      "workers_started": 34,
+      "first_child_started_at": "1777598304.148853",
+      "last_child_started_at": "2026-05-01T01:19:39.928043Z"
+    }
+  },
+  "evidence": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/swarm-state.json"
+  ]
+}

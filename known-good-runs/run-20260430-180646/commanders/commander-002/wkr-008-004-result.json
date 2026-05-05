@@ -1,0 +1,12 @@
+{
+  "worker_id": "wkr-008-004",
+  "model": "claude-sonnet-4.5",
+  "assignment": "audit broadcasts adoption semantics",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "broadcast schema inconsistency (consensus_item_id vs adopted_items)",
+    "missing dedicated adopt ledger and no enforcement",
+    "bundle/merger adoption provenance drift"
+  ]
+}

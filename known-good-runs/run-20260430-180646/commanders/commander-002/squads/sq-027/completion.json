@@ -1,0 +1,13 @@
+{
+  "squad_lead": "sq-027",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "status": "completed",
+  "ts": "2026-05-01T01:22:50Z",
+  "atom_id": "atm-027",
+  "overall_verdict": "high_risk_gap",
+  "workers": 5,
+  "workers_completed": 5,
+  "domain": "collaboration-bus",
+  "confidence": 0.95
+}

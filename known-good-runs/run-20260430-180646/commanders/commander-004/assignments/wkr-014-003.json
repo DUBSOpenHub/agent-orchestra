@@ -1,0 +1,20 @@
+{
+  "child_id": "wkr-014-003",
+  "parent_id": "sq-014",
+  "role": "worker",
+  "depth": 3,
+  "agent_type": "task",
+  "model": "gpt-5.3-codex",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "skill-depth-rules",
+  "variant": 4,
+  "files": [
+    "skills/SKILL.md"
+  ],
+  "repo_path": "/Users/greggcochran/dev/terminal-stampede",
+  "worktree_path": "/Users/greggcochran/.copilot/session-state/04a5df55-8399-4b4a-9d16-351b02b2530e/files/commander-004-worktree",
+  "progress_dir": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004",
+  "capsule_path": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/context-capsule.json",
+  "output_atom": "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-004/atoms/atm-014-003.json",
+  "deliverable": "Return concise findings only. Do not modify source files. Cite exact files and line references when possible."
+}

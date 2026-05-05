@@ -1,0 +1,18 @@
+{
+  "atom_id": "atm-026-002",
+  "worker_id": "wkr-026-002",
+  "theme": "agent-pulse-monitoring",
+  "focus": "nested-progress-display",
+  "status": "success",
+  "confidence": 0.91,
+  "findings": [
+    "Nested commander display reads progress_dir/swarm-state.json and prints squads/workers targets and telemetry counters; defaults (50/250) align with launcher-seeded swarm-state.json.",
+    "Critical metaswarm bug: orphan recovery checks commander heartbeat at $BASE/commanders/<task_id>/swarm-state.json, where task_id comes from claimed task JSON. Commander state is actually stored under $BASE/commanders/<commander_id>/swarm-state.json, so commander_active resolves false and claimed tasks may be incorrectly re-queued after ORPHAN_RECOVERY_AFTER even while commander is running.",
+    "Minor: commander line hardcodes label \"full SS-250\" rather than reading swarm_scale from state."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:145-193",
+    "bin/stampede-monitor.sh:234-277",
+    "bin/stampede.sh:747-864"
+  ]
+}

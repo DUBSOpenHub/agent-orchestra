@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-044-003",
+  "theme": "recovery-stuck-detection",
+  "focus": "smoke-recovery-coverage",
+  "findings": [
+    "Smoke coverage waits for result files but does not assert monitor-driven stuck detection behavior.",
+    "No scenario exercises stalled/crashed workers, requeue/restart paths, or mixed success/failure recovery.",
+    "Teardown exists, but the test does not verify cleanup correctness or orphan PID/session handling."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:14-21",
+    "tests/smoke-test.sh:24-58",
+    "tests/smoke-test.sh:73-148",
+    "tests/smoke-test.sh:151-162"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

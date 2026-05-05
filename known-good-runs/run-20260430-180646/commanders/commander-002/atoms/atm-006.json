@@ -1,0 +1,85 @@
+{
+  "squad_id": "sq-006",
+  "status": "success",
+  "confidence": 0.81,
+  "worker_agent_ids": {
+    "wkr-006-001": null,
+    "wkr-006-002": null,
+    "wkr-006-003": null,
+    "wkr-006-004": null,
+    "wkr-006-005": null
+  },
+  "findings": [
+    {
+      "id": "collab-init-process-safety",
+      "severity": "high",
+      "summary": "Collab protocol/state atomic writer uses a fixed '{path}.tmp' which is not process-safe; concurrent launches can clobber protocol.json/state.json.",
+      "recommendation": "Use unique tmp names (PID+rand/uuid) or locking for atomic JSON writes during initialization."
+    },
+    {
+      "id": "telemetry-restart-not-idempotent",
+      "severity": "high",
+      "summary": "Metaswarm commander progress init opens child-agents.jsonl with 'w' (truncates), wiping prior telemetry if re-run against same run dir.",
+      "recommendation": "On restart/resume, never truncate JSONL; append 'restarted' markers and merge swarm-state updates."
+    },
+    {
+      "id": "protocol-required-fields-misaligned",
+      "severity": "high",
+      "summary": "protocol.json uses a single flat required_fields list for all ledgers; reviews commonly omit evidence (yet protocol requires it) while essential review fields (verdict/target refs) are not required.",
+      "recommendation": "Define per-ledger schemas (required/recommended) and standardize record shapes and event vocabularies."
+    },
+    {
+      "id": "bundle-schema-adoption-gap",
+      "severity": "medium",
+      "summary": "Commander bundle shape in agents/stampede-commander.agent.md does not specify adopted consensus item_ids nor bundle-level source_refs, but launcher prompt expects them.",
+      "recommendation": "Align bundle schema with runtime prompt/protocol; add validation for adopted_consensus_item_ids and source_refs."
+    },
+    {
+      "id": "monitor-count-only-collab",
+      "severity": "medium",
+      "summary": "stampede-monitor.sh reports collab bus progress by wc -l counts only; it does not validate JSON or required fields, so blank/malformed/partial lines can mislead.",
+      "recommendation": "Count/validate via Python JSONL parser; surface malformed-line counts and required-field violations."
+    },
+    {
+      "id": "jsonl-malformed-line-tolerance-inconsistent",
+      "severity": "low",
+      "summary": "Telemetry parsing in monitor is tolerant (per-line json.loads with try/except), but collab ledgers are never parsed; smoke test does substring checks and may be brittle to malformed/truncated lines.",
+      "recommendation": "If collab ledgers gain consumers, require tolerant per-line parsing; improve tests to tolerate malformed trailing lines per protocol guidance."
+    }
+  ],
+  "evidence": [
+    {
+      "path": "bin/stampede.sh",
+      "lines": "710-719",
+      "note": "metaswarm creates collab dir and kills existing tmux session (reset semantics)"
+    },
+    {
+      "path": "bin/stampede.sh",
+      "lines": "664-669",
+      "note": "write_json_atomic uses fixed tmp filename '{path}.tmp'"
+    },
+    {
+      "path": "bin/stampede.sh",
+      "lines": "850-860",
+      "note": "commander progress dir init; child-agents.jsonl opened with 'w' (truncation)"
+    },
+    {
+      "path": "bin/stampede-monitor.sh",
+      "lines": "32-66",
+      "note": "count_jsonl_lines uses wc -l; collab summary prints counts"
+    },
+    {
+      "path": "agents/stampede-commander.agent.md",
+      "lines": "254-283",
+      "note": "bundle shape lacks adopted consensus + source_refs fields"
+    },
+    {
+      "path": "commander-002/atoms/wkr-006-002.json",
+      "note": "worker protocol audit summary"
+    },
+    {
+      "path": "commander-002/atoms/wkr-006-003.json",
+      "note": "worker bundle schema gap summary"
+    }
+  ]
+}

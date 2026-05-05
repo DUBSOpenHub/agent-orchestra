@@ -1,0 +1,13 @@
+{
+  "worker_id": "wkr-008-003",
+  "model": "gpt-5.3-codex",
+  "assignment": "audit consensus promotion requirements",
+  "status": "completed",
+  "severity": "high",
+  "readiness": "fail",
+  "highlights": [
+    "no formal promotion criteria and no adopt ledger",
+    "reviews missing required evidence field",
+    "contradictory readiness signals across atoms"
+  ]
+}

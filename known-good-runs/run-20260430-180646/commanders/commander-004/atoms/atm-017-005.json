@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-017-005",
+  "theme": "telemetry-contract",
+  "focus": "result-bundle-paths",
+  "findings": [
+    "Launcher prompt specifies both bundle paths: progress_dir/bundle.json and BASE_DIR/results/",
+    "Monitor correctly reads BASE_DIR/results/*.json for completion display",
+    "state.json teardown is non-atomic \u2014 race hazard when monitor reads concurrently",
+    "task_id equals commander_id in queue manifests \u2014 filename mapping is correct",
+    "STAMPEDE_PROGRESS_DIR exported correctly for commander pane",
+    "Launcher prompt does NOT instruct commander to remove claimed task file \u2014 cleanup gap"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:892",
+    "bin/stampede-monitor.sh:342-366",
+    "bin/stampede.sh:348-358",
+    "bin/stampede.sh:909-910"
+  ],
+  "confidence": 0.92,
+  "status": "success"
+}

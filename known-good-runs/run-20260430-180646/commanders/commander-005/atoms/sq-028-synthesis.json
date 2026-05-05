@@ -1,0 +1,156 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_id": "sq-028",
+  "focus": "Atomic Operations Verification - Part 2",
+  "sub_task": "Verify JSONL append-only semantics",
+  "overall_verdict": "fail_with_caveats",
+  "summary": "Most JSONL writers use append mode, but bin/stampede.sh initializes child-agents.jsonl with write mode (truncate), violating strict append-only semantics. Shared collab ledgers rely on O_APPEND guidance without lock enforcement, so concurrency is mostly safe with caveats.",
+  "worker_findings": [
+    {
+      "worker_id": "wkr-028-001",
+      "topic": "JSONL append patterns",
+      "model": "claude-sonnet-4.5",
+      "verdict": "mixed",
+      "evidence": [
+        {
+          "file": "bin/stampede.sh",
+          "line": 832,
+          "pattern": "open(..., 'w') for child-agents.jsonl",
+          "append_only": false
+        },
+        {
+          "file": "bin/stampede.sh",
+          "line": 1002,
+          "pattern": "open(..., \"a\") for child-agents.jsonl",
+          "append_only": true
+        },
+        {
+          "file": "agents/stampede-merger.agent.md",
+          "line": 318,
+          "pattern": "open(..., \"a\") merger.jsonl",
+          "append_only": true
+        },
+        {
+          "file": "agents/stampede-agent.agent.md",
+          "lines": [
+            98,
+            303
+          ],
+          "pattern": "open(..., \"a\") AGENT_ID.jsonl",
+          "append_only": true
+        }
+      ]
+    },
+    {
+      "worker_id": "wkr-028-002",
+      "topic": "No rewrite/truncate verification",
+      "model": "gpt-5.2-codex",
+      "verdict": "fail",
+      "evidence": [
+        {
+          "file": "bin/stampede.sh",
+          "line": 832,
+          "operation": "open(..., 'w')",
+          "impact": "truncate/rewrite of child-agents.jsonl on init"
+        }
+      ]
+    },
+    {
+      "worker_id": "wkr-028-003",
+      "topic": "Malformed line tolerance",
+      "model": "claude-opus-4.7",
+      "verdict": "tolerant_by_design",
+      "evidence": [
+        {
+          "file": "bin/stampede.sh",
+          "line": 680,
+          "behavior": "protocol explicitly requires readers to tolerate malformed trailing lines"
+        },
+        {
+          "file": ".stampede/run-20260430-193212/commanders/commander-002/telemetry.py",
+          "lines": [
+            55,
+            68
+          ],
+          "behavior": "JSONDecodeError handled; malformed lines converted to marker events"
+        }
+      ],
+      "note": "Malformed tolerance evidence includes runtime telemetry helper from another run artifact."
+    },
+    {
+      "worker_id": "wkr-028-004",
+      "topic": "Absent file handling",
+      "model": "gpt-5.5",
+      "verdict": "mostly_robust",
+      "evidence": [
+        {
+          "file": "bin/stampede-monitor.sh",
+          "lines": [
+            32,
+            39
+          ],
+          "behavior": "missing JSONL returns 0 lines"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "line": 680,
+          "behavior": "protocol requires tolerance of absent files"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "lines": [
+            180,
+            188
+          ],
+          "behavior": "append-mode writes create ledger if missing"
+        }
+      ]
+    },
+    {
+      "worker_id": "wkr-028-005",
+      "topic": "Concurrent append safety",
+      "model": "claude-opus-4.6",
+      "verdict": "mostly_safe_with_caveats",
+      "evidence": [
+        {
+          "file": "bin/stampede.sh",
+          "line": 674,
+          "behavior": "atomic_append_guidance documented"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "line": 680,
+          "behavior": "readers must tolerate malformed trailing lines"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "lines": [
+            660,
+            682
+          ],
+          "behavior": "shared collab JSONL ledgers across commanders rely on append semantics"
+        },
+        {
+          "file": "README.md",
+          "line": 219,
+          "behavior": "project philosophy avoids lock-based coordination"
+        }
+      ],
+      "risk": "No explicit file locking; safety depends on O_APPEND and line-size discipline."
+    }
+  ],
+  "critical_issues": [
+    {
+      "id": "jsonl-init-truncate",
+      "severity": "high",
+      "description": "child-agents.jsonl is initialized with write mode, which truncates any existing ledger.",
+      "location": "bin/stampede.sh:832"
+    }
+  ],
+  "recommended_actions": [
+    "Change child-agents.jsonl initialization from write mode to append-safe create-if-missing behavior.",
+    "Introduce bounded record-size guidance/enforcement for shared collab JSONL ledgers.",
+    "Optionally add a centralized append helper to guarantee single-write-per-line behavior."
+  ]
+}

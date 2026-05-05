@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-009-001",
+  "theme": "premium-model-policy",
+  "focus": "model-rotation",
+  "findings": [
+    "Yes: `--metaswarm` switches panes to commanders and applies top-level model rotation across commanders via round-robin modulo over `MODEL_LIST`; this is not random. /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:603-606,617-621,723-741,850-853,874-886; /Users/greggcochran/dev/terminal-stampede/skills/SKILL.md:407-416",
+    "Premium child-model pool is a fixed 10-model allowlist: `claude-opus-4.7`, `gpt-5.5`, `claude-opus-4.6`, `gpt-5.4`, `claude-opus-4.5`, `gpt-5.2`, `claude-sonnet-4.6`, `gpt-5.3-codex`, `claude-sonnet-4.5`, `gpt-5.2-codex`. /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:739-750,793-804,886",
+    "Distribution is even/deterministic across commander slots (`(i-1) % len(models)` / `(worker_num-1) % MODEL_COUNT`), not randomized; same mechanism is used for normal workers too. /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:568-569,723,850-853",
+    "Cheap/banned child models are explicitly listed (`claude-haiku-4.5`, `gpt-5.4-mini`, `gpt-5-mini`, `gpt-4.1`) and forbidden in the commander prompt, but enforcement is advisory/metadata-driven here; actual child selection is delegated to commanders, so fallback risk remains if an agent ignores policy. /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:752-756,806-810,886-888",
+    "Gap/violation: launcher default model is `claude-haiku-4.5`, while SKILL docs say default is `claude-sonnet-4.5`; preflight also uses the first/default model. In metaswarm without explicit `--model/--models`, commanders may start on Haiku even though Haiku is banned for metaswarm sub-agents. /Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:15-16,202,886; /Users/greggcochran/dev/terminal-stampede/skills/SKILL.md:39,110"
+  ],
+  "source_refs": [
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:15",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:202",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:603-606",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:723-756",
+    "/Users/greggcochran/dev/terminal-stampede/bin/stampede.sh:850-886",
+    "/Users/greggcochran/dev/terminal-stampede/skills/SKILL.md:39",
+    "/Users/greggcochran/dev/terminal-stampede/skills/SKILL.md:407-416"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,162 @@
+{
+  "worker_id": "wkr-017-005",
+  "model": "claude-opus-4.5",
+  "squad_id": "sq-017",
+  "focus": "recovery_behavior",
+  "status": "ok",
+  "findings": {
+    "stuck_agent_detection": {
+      "launcher_stampede_sh": {
+        "timeout_for_commanders": false,
+        "detail": "No timeout check for commanders in stampede.sh. Launcher has COPILOT_PREFLIGHT_TIMEOUT (line 25) for startup preflight only, not for ongoing stuck detection.",
+        "evidence": [
+          "bin/stampede.sh:25",
+          "bin/stampede.sh:260"
+        ]
+      },
+      "monitor_stampede_monitor_sh": {
+        "stuck_detection_exists": true,
+        "threshold_seconds": 120,
+        "applies_to_commanders": true,
+        "detail": "Monitor checks claimed/*.json age > 120s and alerts with bell (lines 201-216). Also has orphan recovery after 180s (ORPHAN_RECOVERY_AFTER, line 25) for claimed tasks when all agents are dead.",
+        "evidence": [
+          "bin/stampede-monitor.sh:201-216",
+          "bin/stampede-monitor.sh:25",
+          "bin/stampede-monitor.sh:237-278"
+        ]
+      },
+      "commander_specific_stuck_banner": false,
+      "detail": "Monitor does NOT have a dedicated blocked/stuck banner for commander panes. Generic stuck detection applies to all claimed tasks but does not differentiate commander from worker roles."
+    },
+    "recovery_retry_behavior": {
+      "failed_commander_recovery": {
+        "retry_logic_in_launcher": false,
+        "detail": "stampede.sh does not retry failed commander launches. On failure (exit code != 0), it logs to child-agents.jsonl and swarm-state.json with status=failed (lines 983-1037) but does not relaunch.",
+        "evidence": [
+          "bin/stampede.sh:983-1037"
+        ]
+      },
+      "failed_worker_recovery": {
+        "retry_logic_in_launcher": false,
+        "detail": "Workers also do not have retry logic in launcher. The monitor's orphan recovery (lines 237-278) returns claimed tasks to queue when all agents are dead and claim_age >= 180s, but this requires a new agent to pick up the task.",
+        "evidence": [
+          "bin/stampede-monitor.sh:237-278"
+        ]
+      },
+      "commander_active_gate": {
+        "exists": true,
+        "detail": "Orphan recovery checks if commander is actively heartbeating via swarm-state.json before returning claimed task to queue (lines 247-272). Threshold is ORPHAN_RECOVERY_AFTER (180s).",
+        "evidence": [
+          "bin/stampede-monitor.sh:247-272"
+        ]
+      },
+      "retry_budget_field": {
+        "defined_in_commander_agent": true,
+        "value": 1,
+        "usage": "Context capsule constraints only (line 210); no actual retry logic in launcher or monitor consumes this value.",
+        "evidence": [
+          "agents/stampede-commander.agent.md:210"
+        ]
+      }
+    },
+    "teardown_behavior": {
+      "drains_in_flight_writers": false,
+      "status_field_update": "phase=torn_down (NOT status=stopped)",
+      "detail": "--teardown (lines 302-362) kills PIDs and tmux session, then sets state.json phase=torn_down. Does NOT drain in-flight bundle writers or wait for atomic writes to complete. Does NOT update status field.",
+      "evidence": [
+        "bin/stampede.sh:302-362",
+        "bin/stampede.sh:348-356"
+      ],
+      "gap": "MAJOR: Teardown may leave partial/corrupt results if writers are mid-write. Uses phase=torn_down but state.json status field remains unchanged."
+    },
+    "duplicate_run_id_handling": {
+      "warns_or_refuses": false,
+      "behavior": "Silent overwrite",
+      "detail": "Lines 617-622: if tmux session exists, it logs a warning then kills the existing session. Does NOT refuse to proceed or require confirmation. Overwrites .stampede/{run_id}/ contents.",
+      "evidence": [
+        "bin/stampede.sh:617-622"
+      ],
+      "gap": "MAJOR: Duplicate run_id silently kills prior session and overwrites data. No --force flag required."
+    },
+    "pid_capture": {
+      "one_shot": true,
+      "has_race_condition": true,
+      "detail": "Lines 1162-1192: PID capture happens once after 'sleep 5'. Uses find_leaf_pid() to walk process tree (lines 71-88), but no refresh on pane restart. If agent hasn't spawned yet, captures wrong PID.",
+      "evidence": [
+        "bin/stampede.sh:1162-1192",
+        "bin/stampede.sh:71-88",
+        "bin/stampede.sh:1165"
+      ],
+      "gap": "Race condition: 5-second fixed sleep may not be enough for slow agent startups; PID is never refreshed."
+    },
+    "pane_death_handling": {
+      "commander_vs_worker_differentiation": false,
+      "detail": "stampede-monitor.sh (lines 127-142, 221-232) checks tmux pane status via list-panes and #{pane_dead}. Same logic for commanders and workers - no role-specific handling. Commander pane death updates icon to '\u2715' and word='dead' but no separate blocked state banner.",
+      "evidence": [
+        "bin/stampede-monitor.sh:127-142",
+        "bin/stampede-monitor.sh:221-232"
+      ]
+    }
+  },
+  "gaps": [
+    {
+      "severity": "MAJOR",
+      "area": "teardown",
+      "description": "--teardown does not drain in-flight writers; sets phase=torn_down but not status=stopped",
+      "evidence": "bin/stampede.sh:348-356"
+    },
+    {
+      "severity": "MAJOR",
+      "area": "duplicate_run_id",
+      "description": "Duplicate run_id silently kills prior tmux session and overwrites .stampede/{run_id}/ without requiring --force",
+      "evidence": "bin/stampede.sh:617-622"
+    },
+    {
+      "severity": "MAJOR",
+      "area": "pid_capture",
+      "description": "PID capture is one-shot after fixed 5s sleep with no refresh; race condition with slow agent startups",
+      "evidence": "bin/stampede.sh:1165"
+    },
+    {
+      "severity": "MINOR",
+      "area": "commander_stuck_detection",
+      "description": "No dedicated blocked/stuck banner for commanders vs workers in monitor",
+      "evidence": "bin/stampede-monitor.sh:127-142"
+    },
+    {
+      "severity": "MINOR",
+      "area": "retry_budget",
+      "description": "retry_budget field in commander capsule (value=1) is never consumed by launcher or monitor",
+      "evidence": "agents/stampede-commander.agent.md:210"
+    },
+    {
+      "severity": "INFO",
+      "area": "orphan_recovery",
+      "description": "Monitor orphan recovery exists (180s threshold + commander-active gate) but requires new agent to claim returned task",
+      "evidence": "bin/stampede-monitor.sh:237-278"
+    }
+  ],
+  "evidence": [
+    "bin/stampede.sh:25 - COPILOT_PREFLIGHT_TIMEOUT (preflight only, not ongoing)",
+    "bin/stampede.sh:71-88 - find_leaf_pid() process tree walker",
+    "bin/stampede.sh:302-362 - do_teardown() function",
+    "bin/stampede.sh:348-356 - teardown updates phase=torn_down",
+    "bin/stampede.sh:617-622 - duplicate session silent kill",
+    "bin/stampede.sh:983-1037 - commander launch failure handling",
+    "bin/stampede.sh:1162-1192 - PID capture with 5s sleep",
+    "bin/stampede-monitor.sh:25 - ORPHAN_RECOVERY_AFTER=180",
+    "bin/stampede-monitor.sh:127-142 - pane status detection",
+    "bin/stampede-monitor.sh:201-216 - stuck detection (120s)",
+    "bin/stampede-monitor.sh:237-278 - orphan recovery logic",
+    "bin/stampede-monitor.sh:247-272 - commander_active gate",
+    "agents/stampede-commander.agent.md:210 - retry_budget=1 in capsule",
+    "commander-001/bundle.json - prior QA confirmed these same findings"
+  ],
+  "cross_validation": {
+    "confirms_commander_001_findings": true,
+    "atm-006-001_alignment": "Fully aligned - same 2 blockers (teardown + duplicate run_id) identified",
+    "additional_finding": "PID capture race condition not explicitly called out in atm-006-001"
+  },
+  "confidence": 0.92,
+  "ts": "2026-05-01T01:20:45Z"
+}

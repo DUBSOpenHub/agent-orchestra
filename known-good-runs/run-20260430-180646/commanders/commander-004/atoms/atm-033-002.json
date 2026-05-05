@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-033-002",
+  "theme": "partial-failure-bundles",
+  "focus": "partial-trigger-paths",
+  "findings": [
+    "partial trigger documented only for metaswarm launch shortfall (SKILL.md:407, README.md:35,130)",
+    "Run-level status model only allows running/completed/failed/paused\u2014no partial at orchestrator level (SKILL.md:63)",
+    "Run finalized as completed if failed_tasks==0, else failed (SKILL.md:836-838)",
+    "GAP: partial exists for commander bundles but not mapped to top-level run status",
+    "Mixed worker success/failure not well-documented for users"
+  ],
+  "source_refs": [
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:63",
+    "skills/SKILL.md:836-838",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": 83,
+  "status": "success"
+}

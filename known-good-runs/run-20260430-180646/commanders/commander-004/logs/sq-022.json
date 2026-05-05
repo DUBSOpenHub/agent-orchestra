@@ -1,0 +1,45 @@
+{
+  "child_id": "sq-022",
+  "role": "squad_lead",
+  "theme": "collaboration-bus",
+  "status": "partial",
+  "objective": "Final pre-build QA review of metaswarm and SwarmMesh readiness using the synced launcher and fixed Agent Pulse.",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "blockers": [
+    "Task tool returned synchronous findings without background agent ids, so launch_started telemetry was recorded without agent_id fields."
+  ],
+  "consensus_notes": [
+    "Consensus: collaboration bus scaffolding exists in bin/stampede.sh and malformed-ledger tolerance is partially designed.",
+    "Consensus: premium model policy, banned-model list, Depth Guard, and launch-proof telemetry are strongly specified for commanders.",
+    "Consensus: documentation/spec drift exists across README.md and skills/SKILL.md for default model, max agent count, and install paths.",
+    "Consensus: recovery behavior has a gap because stale claimed work is only requeued after all panes are non-live, allowing single-pane hangs to stall progress."
+  ],
+  "conflict_notes": [
+    "Conflict: one worker found collaboration-bus concepts absent from docs, while launcher audit found concrete collab ledgers in bin/stampede.sh; resolved as implementation exists but docs do not name or explain it consistently.",
+    "Conflict: some findings framed Agent Pulse as missing; resolved as live counts exist in monitor/state summaries, but an explicit Agent Pulse contract/name is not consistently documented or enforced."
+  ],
+  "overall_confidence": "high",
+  "main_findings": [
+    "bin/stampede.sh creates collab protocol.json and five append-only ledgers, but lacks schema/health enforcement for commander writes.",
+    "agents/stampede-commander.agent.md enforces premium child models, banned-model policy, Depth Guard, and launch-proof telemetry, but lacks a detailed recovery/requeue contract.",
+    "README.md and skills/SKILL.md drift on default model, max worker count, and agent install path, weakening protocol alignment.",
+    "bin/stampede-monitor.sh tolerates missing/malformed ledgers for counts, but orphan recovery only occurs when no panes are live."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:303-358",
+    "bin/stampede.sh:514-531",
+    "bin/stampede.sh:670-728",
+    "bin/stampede.sh:895-914",
+    "agents/stampede-commander.agent.md:34-37",
+    "agents/stampede-commander.agent.md:140-168",
+    "skills/SKILL.md:39",
+    "skills/SKILL.md:108",
+    "skills/SKILL.md:879",
+    "README.md:35",
+    "README.md:83",
+    "README.md:130",
+    "README.md:307",
+    "bin/stampede-monitor.sh:218-279"
+  ]
+}

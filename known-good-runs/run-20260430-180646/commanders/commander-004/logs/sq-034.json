@@ -1,0 +1,66 @@
+{
+  "squad_id": "sq-034",
+  "commander_id": "commander-004",
+  "theme": "partial-failure-bundles",
+  "status": "partial",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "worker_results": [
+    {
+      "worker_id": "wkr-034-001",
+      "focus": "success-thresholds",
+      "status": "partial",
+      "atom_id": "atm-034-001"
+    },
+    {
+      "worker_id": "wkr-034-002",
+      "focus": "partial-trigger-paths",
+      "status": "success",
+      "atom_id": "atm-034-002"
+    },
+    {
+      "worker_id": "wkr-034-003",
+      "focus": "no-launch-failure",
+      "status": "success",
+      "atom_id": "atm-034-003"
+    },
+    {
+      "worker_id": "wkr-034-004",
+      "focus": "bundle-shape",
+      "status": "success",
+      "atom_id": "atm-034-004"
+    },
+    {
+      "worker_id": "wkr-034-005",
+      "focus": "count-accuracy",
+      "status": "success",
+      "atom_id": "atm-034-005"
+    }
+  ],
+  "summary_findings": [
+    "False-success prevention exists in commander/docs, but visible enforcement is still launch-count heavy and does not clearly require completion/atom/artifact integrity for success.",
+    "Partial rules are documented for under-launch, yet banned-model/unavailable-model paths and bundle-completeness enforcement are not clearly specified in reviewed docs.",
+    "Bundle/report shapes do not capture partial/failure reasons rigorously enough to audit missing artifacts or validation failures.",
+    "Monitor completion math can overstate completeness because any result JSON counts as done and filesystem-derived totals can shrink."
+  ],
+  "blockers": [
+    "swarm_progress.py uses a fixed .tmp-swarm-state.json path, so parallel launch_requested calls raced; sequential retries were needed.",
+    "Leaf task launches did not expose background agent IDs through the task tool, so launch_started telemetry was recorded without agent_id."
+  ],
+  "consensus_notes": [
+    "All five workers agreed the repo documents no-silent-downgrade expectations.",
+    "Multiple workers independently identified gaps between documented success/partial rules and concrete artifact/count enforcement."
+  ],
+  "conflict_notes": [
+    "No material conflicts across worker findings; differences were scope-specific between documentation, commander contract, launcher, and monitor behavior."
+  ],
+  "overall_confidence": "high",
+  "key_source_refs": [
+    "agents/stampede-commander.agent.md:140-147",
+    "agents/stampede-commander.agent.md:256-283",
+    "skills/SKILL.md:407",
+    "README.md:130",
+    "bin/stampede-monitor.sh:284-337",
+    "bin/stampede.sh:1096-1144"
+  ]
+}

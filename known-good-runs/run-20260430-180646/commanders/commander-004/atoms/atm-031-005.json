@@ -1,0 +1,26 @@
+{
+  "worker_id": "wkr-031-005",
+  "theme": "partial-failure-bundles",
+  "focus": "count-accuracy",
+  "findings": [
+    "Monitor queue, claimed, done, total-task fallback, and tmux live or done counts are derived consistently from filesystem and pane state.",
+    "Launcher launched count increments only after PID file capture plus kill -0 validation, and telemetry initializes commander targets and counters correctly.",
+    "Stop and teardown paths do not inflate completion counters, and monitor warns on missing or incomplete sub-agent proof.",
+    "Minor edge case: the 5-second PID capture window can miss agents that crash immediately, though they are still marked failed to start rather than miscounted as launched."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:27-30",
+    "bin/stampede-monitor.sh:70-77",
+    "bin/stampede-monitor.sh:87-89",
+    "bin/stampede-monitor.sh:147-189",
+    "bin/stampede-monitor.sh:221-232",
+    "bin/stampede-monitor.sh:237-279",
+    "bin/stampede-monitor.sh:295-305",
+    "bin/stampede.sh:306-363",
+    "bin/stampede.sh:936-950",
+    "bin/stampede.sh:1278",
+    "bin/stampede.sh:1318-1346"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

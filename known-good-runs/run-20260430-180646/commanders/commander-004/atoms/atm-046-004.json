@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-046-004",
+  "theme": "docs-ci-readiness",
+  "focus": "install-doc-alignment",
+  "status": "success",
+  "confidence": 1.0,
+  "findings": [
+    "README \u201cSix files land\u2026\u201d is incorrect; table lists 7 items and install.sh installs 8 (adds ~/bin/stampede-demo).",
+    "README does not mention install.sh will exec into stampede-demo (installer replaces shell); can surprise users.",
+    "install.sh only exports PATH for current process; README does not instruct persisting ~/bin in shell profile.",
+    "README quickstart vs install diverges: quickstart implies skill-only path, whereas metaswarm requires commander/agents/scripts installed."
+  ],
+  "source_refs": [
+    "README.md:77-88",
+    "install.sh:22-56",
+    "install.sh:69-74",
+    "install.sh:58-61"
+  ]
+}

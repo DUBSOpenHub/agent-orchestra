@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-044-004",
+  "theme": "recovery-stuck-detection",
+  "focus": "docs-vs-runtime-recovery",
+  "findings": [
+    "README mentions stuck detection but omits the actual 120s threshold used at runtime.",
+    "README still describes PID-based failure detection, while runtime recovery logic uses tmux pane state and commander heartbeat checks.",
+    "Recovery docs are incomplete for users: resume/recovery behavior and commander-specific recovery are under-documented relative to runtime behavior."
+  ],
+  "source_refs": [
+    "README.md:86",
+    "README.md:235",
+    "README.md:257",
+    "bin/stampede-monitor.sh:25",
+    "bin/stampede-monitor.sh:208",
+    "bin/stampede-monitor.sh:219-272"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

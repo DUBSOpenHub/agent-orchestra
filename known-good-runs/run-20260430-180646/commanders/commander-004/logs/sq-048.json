@@ -1,0 +1,92 @@
+{
+  "squad_id": "sq-048",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "docs-ci-readiness",
+  "status": "partial",
+  "objective": "Review-only QA audit for docs/CI readiness claims covering policy enforcement, depth guard, bounded spawning, telemetry, and recovery semantics.",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "worker_results": [
+    {
+      "worker_id": "wkr-048-001",
+      "focus": "ci-scope",
+      "atom_id": "atm-048-001",
+      "status": "success",
+      "confidence": 0.86
+    },
+    {
+      "worker_id": "wkr-048-002",
+      "focus": "smoke-gap-analysis",
+      "atom_id": "atm-048-002",
+      "status": "success",
+      "confidence": 0.97
+    },
+    {
+      "worker_id": "wkr-048-003",
+      "focus": "depth-lint-gap-analysis",
+      "atom_id": "atm-048-003",
+      "status": "success",
+      "confidence": 0.93
+    },
+    {
+      "worker_id": "wkr-048-004",
+      "focus": "install-doc-alignment",
+      "atom_id": "atm-048-004",
+      "status": "partial",
+      "confidence": 0.85
+    },
+    {
+      "worker_id": "wkr-048-005",
+      "focus": "agents-doc-alignment",
+      "atom_id": "atm-048-005",
+      "status": "success",
+      "confidence": 0.58
+    }
+  ],
+  "consensus": [
+    "Current CI/lint/smoke suite validates structure and documentation cues but not runtime enforcement for premium/banned model policies.",
+    "Depth Guard and bounded spawning are primarily phrase/contract checked; runtime degradation, stop/recovery, and pulse-live behavior are under-tested.",
+    "Docs alignment is good for install paths and artifact locations, but critical metaswarm policy/recovery details are incomplete in top-level docs."
+  ],
+  "conflicts_or_variance": [
+    "Confidence variance (0.58-0.97) reflects differing evidence depth between script-level checks and prose docs.",
+    "One worker marked partial due documentation completeness gap despite successful technical inspection."
+  ],
+  "main_findings": [
+    {
+      "id": "F1",
+      "summary": "CI workflow lacks explicit metaswarm runtime readiness checks (policy enforcement, telemetry pulse, recovery).",
+      "refs": [
+        ".github/workflows/ci.yml:13-57"
+      ]
+    },
+    {
+      "id": "F2",
+      "summary": "Smoke test asserts structural contracts but misses runtime reject/recovery/partial-path verification.",
+      "refs": [
+        "tests/smoke-test.sh:114-148",
+        "tests/smoke-test.sh:152-162"
+      ]
+    },
+    {
+      "id": "F3",
+      "summary": "Depth lint enforces leaf/depth wording but not strict runtime denylist behavior.",
+      "refs": [
+        "tests/depth-guard-lint.sh:35-53"
+      ]
+    },
+    {
+      "id": "F4",
+      "summary": "README/AGENTS under-document banned-model enforcement, Depth Guard details, and Agent Pulse semantics.",
+      "refs": [
+        "README.md:130-136",
+        "AGENTS.md:22-29"
+      ]
+    }
+  ],
+  "blockers": [
+    "Task-tool executions returned inline results without a platform background agent id; launch_started used synthetic sync agent ids for telemetry continuity."
+  ],
+  "overall_confidence": 0.84
+}

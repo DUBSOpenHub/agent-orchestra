@@ -1,0 +1,60 @@
+{
+  "squad_lead": "sq-030",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "CI Validation Coverage - Part 2",
+  "summary": "CI workflow lacks coverage for metaswarm-specific tests; depth-guard and smoke-test scripts are not executed. Changelog order check exists but does not enforce changelog updates per PR.",
+  "ci_workflow": {
+    "file": ".github/workflows/ci.yml",
+    "observed_steps": [
+      "bash -n shell syntax check (bin/*.sh, install.sh)",
+      "ShellCheck (bin/, install.sh)",
+      "YAML frontmatter check (skills/ + agents/)",
+      "install.sh smoke test (install only)",
+      "stampede.sh --help",
+      "Changelog version order check"
+    ]
+  },
+  "gaps": [
+    {
+      "item": "Depth Guard lint",
+      "status": "missing",
+      "local_script": "tests/depth-guard-lint.sh",
+      "ci_reference": "Not referenced in .github/workflows/ci.yml",
+      "notes": "Script enforces forbidden tools and metaswarm invariants; currently not automated in CI."
+    },
+    {
+      "item": "Metaswarm smoke test",
+      "status": "missing",
+      "local_script": "tests/smoke-test.sh",
+      "ci_reference": "Not referenced in .github/workflows/ci.yml",
+      "notes": "Script validates metaswarm contracts (fleet.json, swarm-state.json, child-agents.jsonl) and full 250 worker constraints; not run in CI."
+    },
+    {
+      "item": "Changelog update enforcement",
+      "status": "partial",
+      "local_script": "CHANGELOG.md",
+      "ci_reference": "Changelog order check present in ci.yml",
+      "notes": "CI verifies version order only; does not enforce changelog updates per PR or version bump requirement."
+    }
+  ],
+  "recommendations": [
+    "Add CI step: bash tests/depth-guard-lint.sh",
+    "Add CI step: bash tests/smoke-test.sh (ensure tmux/agent requirements available or mock agent)",
+    "If desired, add PR-level changelog enforcement (e.g., diff check or required version bump)."
+  ],
+  "sources": [
+    {
+      "file": "tests/depth-guard-lint.sh",
+      "note": "Depth Guard lint script exists; not invoked in CI."
+    },
+    {
+      "file": "tests/smoke-test.sh",
+      "note": "Metaswarm smoke test script exists; not invoked in CI."
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "note": "CI steps do not include depth-guard-lint.sh or smoke-test.sh; includes changelog order check."
+    }
+  ]
+}

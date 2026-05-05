@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-006-001",
+  "theme": "premium-model-policy",
+  "focus": "model-rotation",
+  "findings": [
+    "bin/stampede.sh default MODEL is claude-haiku-4.5 (banned/cheap) unless overridden; creates risk of unintended cheap model usage in non-metaswarm runs.",
+    "skills/SKILL.md docs claim default model claude-sonnet-4.5, conflicting with launcher default.",
+    "Metaswarm premium/banned model policy is largely instructional for commander/children; launcher enforces banned models only for initial metaswarm --model/--models selection.",
+    "Model policy metadata (premium pool + banned list) is written to state/metadata, but child launches are not mechanically blocked from using banned models.",
+    "Custom --agent-cmd templates can omit {model}, potentially causing silent fallback to external CLI defaults."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:11-20,39-41,54-56",
+    "skills/SKILL.md:39-40,104-111",
+    "bin/stampede.sh:516-530",
+    "bin/stampede.sh:61-64"
+  ],
+  "confidence": 0.9,
+  "status": "success",
+  "atom_id": "atm-006-001"
+}

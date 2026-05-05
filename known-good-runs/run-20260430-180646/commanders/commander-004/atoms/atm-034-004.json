@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-034-004",
+  "theme": "partial-failure-bundles",
+  "focus": "bundle-shape",
+  "findings": [
+    "Bundle schema permits success/partial/failed but gives no structured fields for missing artifacts, validation errors, or partial-reason detail.",
+    "Bundle telemetry includes atoms_received, yet success rules do not require nonzero atoms or artifact completeness before success is claimed.",
+    "README repeats the no-silent-downgrade rule, but the agent contract shown here does not define an artifact-integrity check that forces partial when expected bundle contents are absent."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:140-146",
+    "agents/stampede-commander.agent.md:256-283",
+    "agents/stampede-commander.agent.md:279",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

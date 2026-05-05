@@ -1,0 +1,34 @@
+{
+  "worker_id": "wkr-028-002",
+  "theme": "agent-pulse-monitoring",
+  "focus": "nested-progress-display",
+  "findings": [
+    "Nested progress is commander-role-only (line 143 `[[ \"$role\" == \"commander\" ]]`). Regular agent rows (line 195) receive zero nested display \u2014 no per-worker pulse visible for non-commander agents.",
+    "Nested data sourced exclusively from `swarm-state.json` (line 145). If the file is absent, `nested` is silently empty string \u2014 no fallback warning or staleness indicator is rendered on the commander row.",
+    "All nested metrics are collapsed into a single inline string appended to the commander row (line 193). There is no indented sub-row or visual hierarchy; squads, workers, atoms, heartbeat, and phase all concatenate on one line \u2014 can overflow narrow terminals despite BAR_W clamping (line 98).",
+    "Heartbeat age is computed (lines 167\u2013174) and shown as `hb Xs` but carries no color change or alert threshold \u2014 a commander that has been silent for minutes displays identically to a live one, providing no visual pulse distinction.",
+    "The label `full SS-250` (line 193) is hardcoded and does not reflect `squads_target`/`workers_target` from telemetry \u2014 if a commander reports a non-250 scale, the monitor still displays 'full SS-250'.",
+    "Warning conditions (lines 176\u2013180) cover only two cases: zero squads launched outside the startup phases, and workers_launched < workers_target on a success status. A commander stuck mid-run with partial squads but non-success status emits no warning.",
+    "`print_collab_summary` (lines 57\u201367) invokes `is_metaswarm_run()` on every 5-second loop iteration (line 116), which spawns a Python3 subprocess reading `fleet.json` each cycle \u2014 minor but additive overhead at scale.",
+    "README line 130 documents that nested progress is written to `commanders/{commander_id}/swarm-state.json` + `child-agents.jsonl`, but the monitor never reads `child-agents.jsonl` \u2014 child-agent telemetry is unused by the display layer.",
+    "`ORPHAN_RECOVERY_AFTER=180` (line 25) is hardcoded and shared between orphan recovery logic and `commander_active` staleness detection (line 274) \u2014 no way to tune the pulse-absence threshold without editing the script."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:57-67 (print_collab_summary)",
+    "bin/stampede-monitor.sh:116 (collab summary draw call)",
+    "bin/stampede-monitor.sh:119-198 (fleet.json agent roster loop)",
+    "bin/stampede-monitor.sh:143 (commander role branch)",
+    "bin/stampede-monitor.sh:145 (swarm-state.json path)",
+    "bin/stampede-monitor.sh:147-191 (python3 nested metrics block)",
+    "bin/stampede-monitor.sh:155-165 (telemetry/launch_proof field reads)",
+    "bin/stampede-monitor.sh:167-174 (heartbeat age calculation)",
+    "bin/stampede-monitor.sh:176-180 (warning conditions)",
+    "bin/stampede-monitor.sh:182-189 (nested print statement)",
+    "bin/stampede-monitor.sh:193 (commander row render, hardcoded 'full SS-250')",
+    "bin/stampede-monitor.sh:195 (agent row \u2014 no nested display)",
+    "bin/stampede-monitor.sh:25 (ORPHAN_RECOVERY_AFTER hardcoded 180)",
+    "README.md:130 (child-agents.jsonl documented but unused by monitor)"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

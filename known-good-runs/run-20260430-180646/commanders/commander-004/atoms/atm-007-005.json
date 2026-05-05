@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-007-005",
+  "theme": "premium-model-policy",
+  "focus": "fallback-violation-handling",
+  "findings": [
+    "SKILL.md:407 explicitly requires no-silent-downgrade: 'if the full child swarm cannot launch, the commander bundle must be partial or failed'",
+    "README.md:130 documents: 'must report a partial bundle rather than silently downgrading if the full child swarm cannot launch'",
+    "README.md:130 states metaswarm uses 'premium child-model overrides by default' \u2014 premium default documented",
+    "POSITIVE: partial and failed are explicit terminal states in SKILL.md:63,73 \u2014 system reports degraded results rather than hiding them",
+    "GAP: Neither SKILL.md nor README.md defines behavior when a specific premium model is unavailable at API level (rate limit, quota, outage)",
+    "GAP: No explicit banned-model list or validation gate documented in SKILL.md or README.md",
+    "GAP: No retry/timeout policy documented for model API failures \u2014 unclear if system fails fast or retries with different model"
+  ],
+  "source_refs": [
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:129",
+    "skills/SKILL.md:63",
+    "skills/SKILL.md:73",
+    "README.md:130",
+    "README.md:35"
+  ],
+  "confidence": 0.85,
+  "status": "success"
+}

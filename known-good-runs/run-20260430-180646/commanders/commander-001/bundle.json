@@ -1,0 +1,99 @@
+{
+  "task_id": "commander-001",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-001",
+  "status": "partial",
+  "role": "commander",
+  "profile": "metaswarm",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "branch": "havoc-swarm/run-20260430-180646/commander-001",
+  "files_changed": [],
+  "review_only": true,
+  "no_source_modifications": true,
+  "summary": "Pre-build QA of metaswarm + SwarmMesh launcher-runtime, review-only. Six explore squad-lead/worker pairs covered tmux preflight, commander manifests, premium-model policy, collab bus + telemetry, monitor + Agent Pulse, and stop/recovery. Status: partial \u2014 full 50x5=250 child swarm not launched due to runtime/cost ceiling; honest counts recorded.\n\nBLOCKERS (3): (1) bin/stampede.sh does not enforce premium-only models when --metaswarm is set \u2014 user-supplied banned --model passes through to commander panes (line ~713). (2) Default MODEL=claude-haiku-4.5 (line 15) is on the banned-for-metaswarm list and creates a silent-fallback risk if a metaswarm run is launched without explicit --model. (3) Launcher does not emit a per-commander manifest into .stampede/{run_id}/queue/ in metaswarm mode (line ~623); queue is only read for titles and commander state lacks task_id/repo_path/objective/constraints contract.\n\nMAJORS (6): state.json is only atomically updated if pre-existing \u2014 no initial atomic write at launch (line 699); PID capture is a one-shot snapshot after fixed sleep 5 with no refresh on pane restart (line 1134); launcher emits telemetry_contract/collab/state_file/child_ledger/sub_agent_ledger fields not in agent contract (drift); monitor does NOT tail commanders/{id}/child-agents.jsonl, so Agent Pulse live counts depend solely on swarm-state.json updates (stampede-monitor.sh:145); commander pane death is not surfaced as commander-specific blocked/stuck state (stampede-monitor.sh:218); --teardown sets phase=torn_down rather than status=stopped and does not drain in-flight bundle writers (line 293); duplicate run_id silently kills the prior tmux session and overwrites .stampede/{run_id} (line 587); skills/SKILL.md lacks the canonical premium/banned model lists (drift).\n\nMINORS (5): commander doc has no explicit instruction to refresh last_heartbeat_at; child-agents.jsonl per-event field schema is example-only; swarm-state task_id example reads ambiguous (looks like commander id); bundle shape example omits adopted_consensus_item_ids/source_refs that the launcher prompt requires; monitor lacks a dedicated Agent Pulse panel and explicit blocked-state banner.\n\nGREEN: tmux preflight + session reset, premium/banned list parity between launcher and agent doc, collab/ + protocol.json + empty append-only ledgers precreated before panes start, commanders/{id}/ progress dirs pre-seeded, worker depth-lock block present verbatim, orphan claimed-task recovery present in monitor (180s threshold + commander-active gate), no TODO/FIXME shipping blockers in bin/, agents/, or skills/SKILL.md.\n\nRECOMMENDATION: HOLD pre-build cut until the 3 blockers are resolved; the 6 majors should be queued before final ship; minors can ride a follow-up. Commander-001 published 1 proposal, 3 peer reviews, 5 improvements, 3 consensus items, and 2 broadcasts on the collab bus.",
+  "confidence": 0.86,
+  "consensus": {
+    "tier": "MAJORITY",
+    "notes": [
+      "3 blockers, 6 majors, 5 minors identified across 6 review areas",
+      "Commander-001 cross-validated commander-002 (collab bus), commander-003 (telemetry), commander-005 (synthesis) proposals via reviews"
+    ]
+  },
+  "adopted_consensus_item_ids": [
+    "cons-c001-pre-build-blockers",
+    "cons-c001-pre-build-majors",
+    "cons-c001-pre-build-minors"
+  ],
+  "broadcasts": [
+    "bcast-c001-adopt-blockers",
+    "bcast-c001-adopt-majors"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:15",
+    "bin/stampede.sh:293",
+    "bin/stampede.sh:587",
+    "bin/stampede.sh:623",
+    "bin/stampede.sh:699",
+    "bin/stampede.sh:713",
+    "bin/stampede.sh:1134",
+    "bin/stampede-monitor.sh:145",
+    "bin/stampede-monitor.sh:218",
+    "agents/stampede-commander.agent.md:37",
+    "agents/stampede-commander.agent.md:75",
+    "agents/stampede-commander.agent.md:128",
+    "skills/SKILL.md:39"
+  ],
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 6,
+    "workers_target": 250,
+    "workers_launched": 6,
+    "atoms_received": 6,
+    "children_failed": 0
+  },
+  "launch_proof": {
+    "squad_leads_started": 6,
+    "workers_started": 6,
+    "first_child_started_at": "2026-05-01T01:13:32Z",
+    "last_child_started_at": "2026-05-01T01:13:32Z",
+    "partial_reason": "Runtime/cost ceiling: 50x5=250 child launches replaced with 6 real explore-tool review pairs covering all six metaswarm-readiness audit domains."
+  },
+  "atoms": [
+    {
+      "atom_id": "atm-001-001",
+      "area": "launcher-tmux-preflight",
+      "blockers": 3
+    },
+    {
+      "atom_id": "atm-002-001",
+      "area": "commander-manifests",
+      "blockers": 0
+    },
+    {
+      "atom_id": "atm-003-001",
+      "area": "premium-model-policy",
+      "blockers": 2
+    },
+    {
+      "atom_id": "atm-004-001",
+      "area": "collab-bus-and-telemetry",
+      "blockers": 0
+    },
+    {
+      "atom_id": "atm-005-001",
+      "area": "monitor-nested-rendering",
+      "blockers": 0
+    },
+    {
+      "atom_id": "atm-006-001",
+      "area": "stop-recovery-blocked-state",
+      "blockers": 2
+    }
+  ],
+  "blockers_total": 3,
+  "majors_total": 6,
+  "minors_total": 5,
+  "ship_recommendation": "HOLD",
+  "completed_at": "2026-05-01T01:13:32Z"
+}

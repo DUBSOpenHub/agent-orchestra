@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-025-004",
+  "theme": "collaboration-bus",
+  "focus": "broadcast-adoption",
+  "findings": [
+    "New-user IPC onboarding present in README showing filesystem bus and atomic mv flow",
+    "CLI-agnostic adoption clear with --agent-cmd examples for Claude Code and Aider",
+    "Setup docs inconsistent: README creates queue,claimed,results,logs but SKILL depends on pids/ too",
+    "No explicit broadcast pattern documented - only queue-based bus plus logs/PIDs",
+    "Installation path inconsistency: README uses ~/.copilot/..., SKILL checklist says ~/.stampede/agents/"
+  ],
+  "source_refs": [
+    "README.md:39-41",
+    "README.md:52-55",
+    "README.md:69-90",
+    "README.md:204-235",
+    "skills/SKILL.md:136-146",
+    "skills/SKILL.md:445",
+    "skills/SKILL.md:877-880"
+  ],
+  "confidence": 94,
+  "status": "success"
+}

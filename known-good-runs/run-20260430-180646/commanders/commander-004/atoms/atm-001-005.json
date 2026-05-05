@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-001-005",
+  "theme": "commander-launch-profile",
+  "focus": "negative-downgrade-cases",
+  "findings": [
+    "Banned models are rejected at metaswarm launch time, but runtime verification of actual child model use is not enforced beyond telemetry logging.",
+    "Depth Guard is documented/prompted rather than implemented as code-level enforcement in stampede.sh.",
+    "Partial status is instructed in commander prompts, but launcher code does not validate bundle status against actual worker launch counts.",
+    "Smoke test checks banned_child_models metadata presence but does not execute a negative banned-model rejection test."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:521-527",
+    "bin/stampede.sh:773-778",
+    "bin/stampede.sh:827-832",
+    "bin/stampede.sh:907-913",
+    "tests/smoke-test.sh:127-130"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

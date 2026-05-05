@@ -1,0 +1,88 @@
+{
+  "child_id": "sq-042",
+  "role": "squad_lead",
+  "theme": "recovery-stuck-detection",
+  "status": "partial",
+  "objective": "Audit stuck-agent detection, recovery behavior, restart semantics, and resilience after partial child failure.",
+  "launched_workers": 5,
+  "worker_models": [
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex",
+    "claude-sonnet-4.5",
+    "gpt-5.2-codex"
+  ],
+  "summary_findings": [
+    "Stuck detection is heuristic and alert-first: claim-age >120s can false-positive, while actual recovery depends on later orphan logic and pane census.",
+    "Launcher recovery is shallow: no watchdog or restart loop, teardown does not requeue claimed work, and pane sleep can mask dead workers.",
+    "Smoke coverage is weak on recovery semantics: no stuck-path assertions, no restart/resume test, and no simulated mid-run commander failure.",
+    "Failure containment exists for blocked and commander-launch-failed states, but launch-summary PID failures are not written back into progress telemetry.",
+    "README overstates and underspecifies recovery behavior, especially around requeue conditions, teardown, and partial-complete timing."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:25-26",
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede-monitor.sh:218-305",
+    "bin/stampede.sh:141-196",
+    "bin/stampede.sh:306-363",
+    "bin/stampede.sh:1096-1157",
+    "bin/stampede.sh:1275-1333",
+    "tests/smoke-test.sh:108-162",
+    "README.md:86",
+    "README.md:235",
+    "agents/stampede-commander.agent.md:31-33",
+    "agents/stampede-commander.agent.md:243-252"
+  ],
+  "worker_results": [
+    {
+      "worker_id": "wkr-042-001",
+      "focus": "stuck-heuristics",
+      "status": "success",
+      "confidence": "high",
+      "atom_id": "atm-042-001"
+    },
+    {
+      "worker_id": "wkr-042-002",
+      "focus": "recovery-paths",
+      "status": "success",
+      "confidence": "high",
+      "atom_id": "atm-042-002"
+    },
+    {
+      "worker_id": "wkr-042-003",
+      "focus": "smoke-recovery-coverage",
+      "status": "success",
+      "confidence": "high",
+      "atom_id": "atm-042-003"
+    },
+    {
+      "worker_id": "wkr-042-004",
+      "focus": "docs-vs-runtime-recovery",
+      "status": "success",
+      "confidence": "medium",
+      "atom_id": "atm-042-004"
+    },
+    {
+      "worker_id": "wkr-042-005",
+      "focus": "failure-containment",
+      "status": "success",
+      "confidence": "medium",
+      "atom_id": "atm-042-005"
+    }
+  ],
+  "consensus": {
+    "agreement": [
+      "Recovery depends heavily on monitor heuristics rather than robust launcher supervision.",
+      "Current implementation favors observability over automatic remediation.",
+      "Documentation and smoke coverage lag behind implemented failure semantics."
+    ],
+    "conflicts": [
+      "No material factual conflicts across worker findings; only confidence varies on documentation severity."
+    ]
+  },
+  "blockers": [
+    "Task tool did not expose background agent IDs for worker launches, so launch_started records used agent_id=unavailable and launch proof is incomplete.",
+    "Worker wkr-042-004 compared README claims against runtime files, so its audit slightly exceeded the single-file scope even though the conclusion is useful."
+  ],
+  "overall_confidence": "medium-high"
+}

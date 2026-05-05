@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-024-001",
+  "theme": "collaboration-bus",
+  "focus": "ledger-creation",
+  "findings": [
+    "Metaswarm-only collab bus directory is created at run launch: `${BASE_DIR}/collab` via `mkdir -p` (no collab bus in non-metaswarm runs).",
+    "Ledger files are proactively created (\"touched\") in metaswarm using Python: `${BASE_DIR}/collab/{proposals,reviews,improvements,consensus,broadcasts}.jsonl` via `open(path,'a').close()`; this ensures existence but is not an atomic-temp-then-rename creation pattern (acceptable for append-only ledgers, but no fsync).",
+    "`protocol.json` for the collab bus is written atomically via `write_json_atomic(... os.replace(tmp,path))` to `${BASE_DIR}/collab/protocol.json`.",
+    "Commander panes are pointed at the shared run-level collab bus: `collab_dir=${BASE_DIR}/collab`, and env vars `STAMPEDE_COLLAB_*` export exact ledger paths for sub-agent usage.",
+    "Gap: collab bus metadata is only written into `${BASE_DIR}/state.json` if that file already exists (`if os.path.exists(state_path)`); this launcher does not create `state.json` during normal launch, so consumers expecting collab paths in `state.json` may not see them."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:612-615",
+    "bin/stampede.sh:653-684",
+    "bin/stampede.sh:664-669",
+    "bin/stampede.sh:721-728",
+    "bin/stampede.sh:729-740",
+    "bin/stampede.sh:895-901",
+    "bin/stampede.sh:926-937"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

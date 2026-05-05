@@ -1,0 +1,73 @@
+{
+  "squad_id": "sq-001",
+  "status": "ok",
+  "task_focus": "QA collaboration-bus, review-only",
+  "findings": {
+    "protocol_required_fields": [
+      "ts",
+      "run_id",
+      "commander_id",
+      "event",
+      "item_id",
+      "summary",
+      "evidence",
+      "confidence",
+      "source_refs"
+    ],
+    "append_only": "protocol mandates append-only JSONL; ledgers pre-touched in append mode; readers must tolerate absent files and malformed trailing lines (bin/stampede.sh:660-682).",
+    "ledger_creation": "Launcher creates .stampede/{run_id}/collab/{proposals,reviews,improvements,consensus,broadcasts}.jsonl via open(path,'a').close(); protocol.json written atomically; commander dirs + child-agents.jsonl seeded (bin/stampede.sh:591-700, 830-839).",
+    "workflow_phase_coverage": {
+      "propose": "partial",
+      "peer_review": "partial",
+      "improve": "partial",
+      "consensus": "partial",
+      "broadcast": "partial",
+      "adopt": "partial"
+    },
+    "monitor_tolerance": "Monitor uses wc -l; safe on missing/empty/malformed ledgers but undercounts trailing partial lines and never validates content. Synthesis/merge paths do not consume collab ledgers at all.",
+    "final_bundle_source_refs": "Required only as informal prose in stampede.sh:889; Bundle Shape in stampede-commander.agent.md:240-267 omits source_refs/adopted_consensus; no enforcement in merger or commander agents."
+  },
+  "gaps": [
+    "No schema_version, msg_id, from/to, kind, payload, parent_msg_id, signature, or seq fields in protocol; no per-event schema (proposal vs review share required_fields).",
+    "protocol.json is generated at runtime inside bin/stampede.sh; no docs/protocol.md or docs/collaboration-bus.md single source of truth.",
+    "stampede-commander.agent.md has zero mention of collaboration-bus, the 6 phases, or the ledger files; entire workflow conveyed via runtime prompt injection.",
+    "child-agents.jsonl is opened with mode 'w' during fleet seeding (bin/stampede.sh:830-839) \u2014 relaunch can truncate prior commander ledger.",
+    "No chmod/umask/flock for collab ledgers; concurrent commander appends rely on O_APPEND guidance only.",
+    "Monitor never JSON-parses ledger content; unknown kinds and out-of-order ts are ignored, not warned.",
+    "Bundle Shape lacks source_refs/adopted_consensus fields; no validator enforces presence; merger does not consume collab ledgers.",
+    "'adopt' phase has no dedicated ledger; adoption only described as a bundle prose requirement."
+  ],
+  "evidence": [
+    "bin/stampede.sh:591-594 - mkdir for commanders/collab",
+    "bin/stampede.sh:651-666 - collab_dir + open(path,'a').close() for 5 JSONL ledgers; protocol.version='1.0', profile='metaswarm'",
+    "bin/stampede.sh:674-682 - atomic_append_guidance.mode='append-only-jsonl'; readers tolerate absent/malformed",
+    "bin/stampede.sh:684-686 - commander_workflow ['propose','peer_review','improve','consensus','broadcast','adopt']",
+    "bin/stampede.sh:688-698 - required_fields list",
+    "bin/stampede.sh:700 - write_json_atomic protocol.json",
+    "bin/stampede.sh:830-839 - swarm-state.json + child-agents.jsonl seeded with open(...,'w')",
+    "bin/stampede.sh:889 - commander prompt: 'Follow workflow ... include adopted consensus item_ids and source_refs in bundle.json'",
+    "bin/stampede.sh:907-915 - STAMPEDE_COLLAB_* env vars",
+    "bin/stampede-monitor.sh:34-37,61 - wc -l-based ledger counting; no JSON parse",
+    "bin/stampede-merge.sh:88; skills/SKILL.md:583-584 - synthesis reads results/*.json, not collab ledgers",
+    "agents/stampede-commander.agent.md:1-267 - zero occurrences of 'collaborat'/'propose'/'broadcast'/'ledger'/'adopt'",
+    "agents/stampede-commander.agent.md:240-267 - Bundle Shape lacks source_refs/adopted_consensus",
+    "agents/stampede-merger.agent.md:1-356 - no source_refs validation",
+    "skills/SKILL.md:143-147 - SKILL.md only creates queue/claimed/results/logs/pids/scripts/commanders dirs (collab created by launcher only)"
+  ],
+  "worker_agent_ids": [
+    "wkr-001-001",
+    "wkr-001-002",
+    "wkr-001-003",
+    "wkr-001-004",
+    "wkr-001-005"
+  ],
+  "worker_models": {
+    "wkr-001-001": "claude-opus-4.7",
+    "wkr-001-002": "gpt-5.5",
+    "wkr-001-003": "claude-opus-4.6",
+    "wkr-001-004": "gpt-5.4",
+    "wkr-001-005": "claude-opus-4.5"
+  },
+  "confidence": 0.9,
+  "ts": "2026-05-01T01:14:00Z"
+}

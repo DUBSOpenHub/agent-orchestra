@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-045-002",
+  "theme": "recovery-stuck-detection",
+  "focus": "recovery-paths",
+  "findings": [
+    "No automatic restart logic for failed workers; launcher does not relaunch dead panes",
+    "Task state preserved only via filesystem workflow (claim by mv, atomic result write)",
+    "Cleanup limited to teardown: kill PIDs, remove PID files, kill tmux session",
+    "CLI recovery options limited to --teardown, --dry-run, --preflight; no --resume/--restart",
+    "Dead-worker recovery/re-queuing NOT implemented in stampede.sh; monitor only reports",
+    "Metaswarm records commander launch failures but no automatic restart/requeue"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:35-64",
+    "bin/stampede.sh:176-200",
+    "bin/stampede.sh:327-360",
+    "bin/stampede.sh:996-1014",
+    "bin/stampede.sh:1096-1208"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

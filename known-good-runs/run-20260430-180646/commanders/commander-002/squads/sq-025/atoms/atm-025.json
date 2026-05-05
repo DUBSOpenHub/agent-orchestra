@@ -1,0 +1,112 @@
+{
+  "ts": "2026-05-01T01:21:38.886105+00:00",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_id": "sq-025",
+  "depth": 2,
+  "domain": "collaboration-bus QA",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "worker_results": [
+    {
+      "worker_id": "wkr-025-001",
+      "model": "claude-opus-4.7",
+      "assignment": "cross-commander consensus",
+      "verdict": "partial",
+      "confidence": 0.86,
+      "key_findings": [
+        "5 consensus entries from 3 distinct commanders",
+        "Evidence field type inconsistent (array vs string)",
+        "Cross-commander co-signing absent - each writes own scope"
+      ],
+      "issues": [
+        "commander-003 entry missing verdict and based_on fields",
+        "Verdict vocabulary inconsistent (partial vs blocker/major/minor)"
+      ]
+    },
+    {
+      "worker_id": "wkr-025-002",
+      "model": "gpt-5.5",
+      "assignment": "evidence quality",
+      "verdict": "fail",
+      "confidence": 0.9,
+      "key_findings": [
+        "All 11 reviews.jsonl records have evidence=null",
+        "Some citations not resolvable from repo root",
+        "High confidence assigned to unsupported records"
+      ],
+      "issues": [
+        "Protocol requires evidence but many records omit it",
+        "source_refs often duplicated from evidence",
+        "Confidence scores uncorrelated with evidence strength"
+      ]
+    },
+    {
+      "worker_id": "wkr-025-003",
+      "model": "claude-opus-4.6",
+      "assignment": "adoption readiness",
+      "verdict": "pass",
+      "confidence": 0.85,
+      "key_findings": [
+        "protocol.json defines full workflow sequence",
+        "broadcasts.jsonl properly links consensus items",
+        "Commander-001 and commander-003 cycles complete"
+      ],
+      "issues": [
+        "No dedicated 'adopt' ledger - implicit in broadcasts",
+        "Two different linking patterns (consensus_item_id vs adopted_items)"
+      ]
+    },
+    {
+      "worker_id": "wkr-025-004",
+      "model": "gpt-5.4",
+      "assignment": "source_refs",
+      "verdict": "partial",
+      "confidence": 0.97,
+      "key_findings": [
+        "31/31 entries have source_refs arrays",
+        "Spot-checked refs: bin/stampede.sh etc exist",
+        "Mixed format conventions (51 paths, 27 file:line)"
+      ],
+      "issues": [
+        "Some refs broken (claimed/commander-005.json, sq-001-synthesis.json)",
+        "source_refs frequently duplicate evidence values"
+      ]
+    },
+    {
+      "worker_id": "wkr-025-005",
+      "model": "claude-opus-4.5",
+      "assignment": "blockers",
+      "verdict": "pass",
+      "confidence": 0.88,
+      "key_findings": [
+        "6 blockers identified with high confidence (0.92)",
+        "All blockers have actionable improvements",
+        "Cross-referencing between commander-001 and commander-005"
+      ],
+      "blockers_identified": [
+        "Launcher does not enforce premium-model policy",
+        "No per-commander manifest file in queue/",
+        "state.json lacks initial atomic write",
+        "Monitor does not tail child-agents.jsonl",
+        "Bundle schema lacks required fields"
+      ]
+    }
+  ],
+  "synthesis": {
+    "overall_verdict": "partial",
+    "confidence": 0.89,
+    "summary": "Collaboration-bus QA reveals mixed results. Adoption workflow and blocker identification are sound, but evidence quality fails QA due to missing evidence arrays in reviews.jsonl and high confidence assigned without supporting citations. Cross-commander consensus is weak - no co-signed entries exist.",
+    "blockers": [
+      "Evidence field missing in reviews.jsonl (protocol violation)",
+      "source_refs duplicate evidence rather than providing distinct provenance",
+      "Cross-commander consensus not demonstrated via co-signing"
+    ],
+    "source_refs": [
+      ".stampede/run-20260430-180646/collab/protocol.json",
+      ".stampede/run-20260430-180646/collab/consensus.jsonl",
+      ".stampede/run-20260430-180646/collab/reviews.jsonl",
+      ".stampede/run-20260430-180646/collab/broadcasts.jsonl"
+    ]
+  }
+}

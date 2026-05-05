@@ -1,0 +1,11 @@
+{
+  "worker_id": "wkr-018-002",
+  "model": "claude-sonnet-4.6",
+  "assignment": "audit adopted consensus bundle fields",
+  "status": "completed",
+  "highlights": [
+    "Field name split: adopted_consensus_item_ids vs adopted_consensus",
+    "Consensus evidence type drift (array/string/missing)",
+    "Missing bundles for some commanders drop adoption traceability"
+  ]
+}

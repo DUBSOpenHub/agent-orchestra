@@ -1,0 +1,82 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead_id": "sq-008",
+  "focus": "Documentation Gaps - Part 2",
+  "scope": "AGENTS.md documentation completeness review",
+  "workers": [
+    {
+      "worker_id": "wkr-008-001",
+      "focus": "Commander section",
+      "status": "completed",
+      "highlights": [
+        "Commander basics are present, but operational guardrails are underspecified.",
+        "Missing explicit leaf-worker prompt enforcement requirement.",
+        "Missing explicit config keys for full swarm behavior (per_commander_full_swarm, swarm_scale).",
+        "'partial' downgrade reporting behavior is not clearly defined.",
+        "Launch-proof requirement should explicitly mention both swarm-state.json and child-agents.jsonl."
+      ]
+    },
+    {
+      "worker_id": "wkr-008-002",
+      "focus": "Worker agent documentation",
+      "status": "completed",
+      "highlights": [
+        "Worker coverage is partial; key constraints are missing.",
+        "Leaf-only constraints should be explicit (no task/ask_user/spawning).",
+        "Should document atomic result write details and 500-word summary cap.",
+        "Single-task invocation example is ambiguous."
+      ]
+    },
+    {
+      "worker_id": "wkr-008-003",
+      "focus": "Merger agent documentation",
+      "status": "completed",
+      "highlights": [
+        "Sort-order claim is inconsistent with implementation/docs elsewhere.",
+        "Usage example lacks required --run-id and --repo arguments.",
+        "Merger outputs (merge-report.json) and scoring details are underdocumented.",
+        "Optional --model flag not documented."
+      ]
+    },
+    {
+      "worker_id": "wkr-008-004",
+      "focus": "Shell script documentation",
+      "status": "completed",
+      "highlights": [
+        "Script table is too terse and contains stale merger behavior claims.",
+        "stampede.sh example using --task appears invalid for current launcher behavior.",
+        "Monitor docs omit orphan recovery/partial-completion behavior.",
+        "Claimed max agent limit is not clearly enforced in launcher."
+      ]
+    },
+    {
+      "worker_id": "wkr-008-005",
+      "focus": "Configuration documentation",
+      "status": "completed",
+      "highlights": [
+        "Critical contradictions across AGENTS.md, SKILL.md, and scripts for defaults/limits.",
+        "Default model and max-agent constraints are inconsistent across docs.",
+        "Branch naming documentation conflicts with worker agent instructions.",
+        "Key knobs missing: --agent-cmd, --models, env vars, and operational flags."
+      ]
+    }
+  ],
+  "synthesis": {
+    "overall_assessment": "AGENTS.md is directionally accurate but materially incomplete and partially stale for commander/worker/merger/shell/config sections.",
+    "critical_gaps": [
+      "Cross-document contradictions (default model, max agents, branch naming).",
+      "Stale/incorrect merger and script behavior documentation.",
+      "Missing hard constraints for leaf behavior and commander depth/launch proof.",
+      "Incomplete usage/precondition docs for merge and launcher commands."
+    ],
+    "top_priority_fixes": [
+      "Reconcile AGENTS.md with current implementation and SKILL.md for: model defaults, count limits, branch naming.",
+      "Correct merger/script descriptions (including sort behavior, invocation requirements, and actual responsibilities).",
+      "Add explicit worker/commander safety constraints (leaf lock, no spawning, depth guard, launch proof files, partial reporting semantics).",
+      "Document required/important flags and config knobs: --run-id, --repo, --agent-cmd, --models, env vars, and 500-word cap."
+    ],
+    "risk_if_unfixed": "Operators may execute invalid commands, misconfigure runs, or misunderstand safety constraints, resulting in degraded swarm correctness, observability, and reproducibility."
+  },
+  "recommended_next_action": "Execute a targeted AGENTS.md cleanup pass to align all contradictory statements with bin/*.sh and agent files, then add a quick doc-consistency checklist for future updates."
+}

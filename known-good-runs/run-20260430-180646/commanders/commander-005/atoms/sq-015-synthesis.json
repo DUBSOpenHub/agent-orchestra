@@ -1,0 +1,117 @@
+{
+  "squad_id": "sq-015",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Agent Pulse Live Counts - Part 1",
+  "sub_task": "Verify Agent Pulse live count monitoring in bin/stampede-monitor.sh",
+  "completed_at": "2026-05-01T01:12:21.572652Z",
+  "workers_launched": 5,
+  "workers_completed": 4,
+  "workers_failed": 1,
+  "findings": {
+    "agent_pulse_section": {
+      "worker": "wkr-015-001",
+      "status": "complete",
+      "location": "Lines 118-198 (agent/commander roster display)",
+      "no_literal_heading": "No 'Agent Pulse' string - it's the agent roster section",
+      "displays": [
+        "Per-pane agent status from tmux (dead/done/active)",
+        "Agent # + status icon + model name",
+        "Commander nested telemetry (squads, workers, run counts, atoms, heartbeat)",
+        "Phase warnings (no sub-agent proof, incomplete proof)"
+      ],
+      "colors": {
+        "background": "dark gray (48;5;233)",
+        "done": "green \u2713",
+        "active": "amber \u25cf",
+        "dead": "red \u2715",
+        "commander_stats": "cyan"
+      }
+    },
+    "live_count_calculation": {
+      "worker": "wkr-015-002",
+      "status": "failed_429_retry",
+      "manual_investigation": true,
+      "count_functions": {
+        "count_json_files": "Line 27 - counts JSON files in directory",
+        "count_jsonl_lines": "Line 32 - counts lines in JSONL files"
+      },
+      "counting_method": {
+        "queued": "count_json_files($BASE/queue)",
+        "claimed": "count_json_files($BASE/claimed)",
+        "done_count": "count_json_files($BASE/results)",
+        "total_tasks": "From state.json or filesystem find across all dirs"
+      },
+      "race_safety": "Uses simple file counting - atomic at filesystem level",
+      "status_determination": {
+        "COMPLETE": "done_count >= TOTAL_TASKS",
+        "RUNNING": "claimed > 0",
+        "WAITING": "default fallback"
+      }
+    },
+    "refresh_rate": {
+      "worker": "wkr-015-003",
+      "status": "complete",
+      "default_interval": "5 seconds (sleep 5 at line 400)",
+      "configurable": false,
+      "loop_type": "while true + clear + redraw",
+      "resize_handling": "Partial - recomputes tput cols each loop, no SIGWINCH trap",
+      "throttling": "Fixed 5s pacing, ALERTED flag prevents repeated bells"
+    },
+    "commander_nested_progress": {
+      "worker": "wkr-015-004",
+      "status": "complete",
+      "metaswarm_detection": {
+        "function": "is_metaswarm_run() lines 41-55",
+        "checks": [
+          "$BASE/collab directory exists",
+          "fleet.json profile=metaswarm OR role=commander"
+        ]
+      },
+      "progress_source": ".stampede/{run_id}/commanders/{commander_id}/swarm-state.json",
+      "displayed_metrics": [
+        "squads_launched/squads_target (50)",
+        "workers_launched/workers_target (250)",
+        "running/completed/failed counts",
+        "atoms_received/workers_target",
+        "heartbeat age (seconds)",
+        "phase (running, claiming, etc.)",
+        "warnings for no/incomplete launch proof"
+      ],
+      "hierarchy_visualization": "Flat inline - commanders show nested stats, workers don't"
+    },
+    "stuck_agent_detection": {
+      "worker": "wkr-015-005",
+      "status": "complete",
+      "stuck_criteria": "Claimed task mtime > 120s (lines 200-215)",
+      "heartbeat_tracking": {
+        "task_activity": "File mtime of claimed/*.json",
+        "commander_heartbeat": "swarm-state.json last_heartbeat_at/updated_at",
+        "agent_liveness": "tmux pane status (pane_dead, pane_current_command)"
+      },
+      "timeouts": {
+        "stuck_threshold": "120 seconds",
+        "orphan_recovery": "180 seconds (ORPHAN_RECOVERY_AFTER)",
+        "grace_before_partial": "15 seconds when all agents dead"
+      },
+      "alerts": [
+        "Bell + \u26a0 <tid> stuck (<age>s)",
+        "\u26a0 All agents dead \u2014 completing in Ns"
+      ],
+      "auto_recovery": "Tasks moved back to queue if agent died, stale \u2265180s, no result, commander inactive"
+    }
+  },
+  "verification_summary": {
+    "agent_pulse_present": true,
+    "live_counts_working": true,
+    "refresh_rate_functional": true,
+    "commander_progress_supported": true,
+    "stuck_detection_implemented": true
+  },
+  "issues_found": [],
+  "recommendations": [
+    "Consider adding --refresh CLI flag for configurable refresh rate",
+    "Add SIGWINCH trap for instant terminal resize handling",
+    "Add literal 'Agent Pulse' section header for discoverability"
+  ]
+}

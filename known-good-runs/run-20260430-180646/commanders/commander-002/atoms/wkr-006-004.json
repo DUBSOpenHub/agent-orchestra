@@ -1,0 +1,26 @@
+{
+  "worker_id": "wkr-006-004",
+  "model": "claude-sonnet-4.5",
+  "assignment": "audit monitor count-only behavior",
+  "summary": [
+    "bin/stampede-monitor.sh uses wc -l line counts for collab JSONL ledgers and does not parse/validate JSON or required fields.",
+    "Count-only approach can misreport in presence of blank lines, malformed/truncated lines, missing trailing newline, or interleaved concurrent writes."
+  ],
+  "evidence": [
+    {"path": "bin/stampede-monitor.sh", "lines": "32-39", "note": "count_jsonl_lines uses wc -l"},
+    {"path": "bin/stampede-monitor.sh", "lines": "61-67", "note": "prints proposals/reviews/improvements/consensus/broadcasts counts"},
+    {"path": "bin/stampede.sh", "lines": "~793-801", "note": "protocol says readers tolerate malformed trailing lines"}
+  ],
+  "failure_modes": [
+    "Blank lines inflate counts.",
+    "Malformed JSON lines counted as valid events.",
+    "Partial last line without newline undercounts by 1.",
+    "Concurrent writes can interleave/corrupt JSON while counts still increase."
+  ],
+  "recommendations": [
+    "Replace wc -l with Python validator that counts valid JSON objects and reports malformed lines separately.",
+    "Optionally validate required_fields from protocol.json and show warnings.",
+    "Provide a blessed append helper with locking/atomic append semantics for commanders."
+  ],
+  "confidence": 0.81
+}

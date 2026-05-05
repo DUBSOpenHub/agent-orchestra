@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-016-003",
+  "theme": "telemetry-contract",
+  "focus": "atomic-write-patterns",
+  "status": "success",
+  "confidence": 0.92,
+  "findings": [
+    "Launcher contains atomic JSON write helpers/patterns (tmp + replace/os.replace) but also has some direct non-atomic file writes for telemetry/artifacts.",
+    "Ledger JSONL is append-only (appropriate) and documented as such.",
+    "Commander agent doc requires atomic final bundle writes but does not spell out the exact mechanism (.tmp- then mv/os.replace).",
+    "Documented convention says \u201c.tmp- prefix then mv\u201d; implementation often uses \u201c.tmp\u201d plus os.replace (minor convention mismatch, but still atomic)."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:153-157",
+    "bin/stampede.sh:664-668",
+    "bin/stampede.sh:1016-1018",
+    "bin/stampede.sh:355",
+    "bin/stampede.sh:851-852",
+    "bin/stampede.sh:863-864",
+    "bin/stampede.sh:183-190",
+    "bin/stampede.sh:695-703",
+    "agents/stampede-commander.agent.md:37-38",
+    "agents/stampede-commander.agent.md:61"
+  ]
+}

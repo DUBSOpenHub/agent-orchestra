@@ -1,0 +1,97 @@
+{
+  "squad_id": "sq-025",
+  "commander_id": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Depth Guard Enforcement - Part 1",
+  "sub_task": "Verify depth guard enforcement in commander agent",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "worker_results": {
+    "wkr-025-001": {
+      "task": "Check depth lock text in agent",
+      "model": "gpt-5.2",
+      "status": "completed_by_lead",
+      "findings": {
+        "found_depth_lock": true,
+        "depth_lock_text": "Worker Depth Lock section at line 227-236 with exact 4-line block",
+        "location": "agents/stampede-commander.agent.md lines 227-236",
+        "assessment": "Comprehensive - explicit block that must be included verbatim in every worker prompt"
+      }
+    },
+    "wkr-025-002": {
+      "task": "Verify worker prompt requirements",
+      "model": "claude-sonnet-4.6",
+      "status": "completed",
+      "findings": {
+        "prompt_template_found": true,
+        "includes_depth_lock": true,
+        "prompt_construction_method": "Context Capsule JSON object (lines 171-225) with depth_config, depth_budget, constraints. Worker prompts must include verbatim Worker Depth Lock block (lines 229-236).",
+        "gaps_identified": [
+          "No programmatic enforcement - relies on commander following instructions",
+          "No post-launch verification that child agents received leaf-node constraint",
+          "No explicit capsule shape for workers setting can_launch=false",
+          "No circuit breaker to abort worker that attempts task tool anyway"
+        ]
+      }
+    },
+    "wkr-025-003": {
+      "task": "Check can_launch field handling",
+      "model": "gpt-5.3-codex",
+      "status": "completed_by_lead",
+      "findings": {
+        "can_launch_found": true,
+        "propagation_logic": "depth_config.can_launch=true for commanders, can_launch=false in worker telemetry at depth 3",
+        "validation_exists": true,
+        "code_locations": [
+          "agents/stampede-commander.agent.md:136 - worker logged with can_launch:false",
+          "agents/stampede-commander.agent.md:215 - depth_config.can_launch: true for commanders",
+          "tests/depth-guard-lint.sh:31 - forbids can_launch: true in worker agent"
+        ]
+      }
+    },
+    "wkr-025-004": {
+      "task": "Verify depth config propagation",
+      "model": "claude-sonnet-4.5",
+      "status": "completed",
+      "findings": {
+        "depth_tracking_mechanism": "depth_config object with current_depth, max_depth, can_launch fields; plus depth_budget with squads_allocated/squads_max",
+        "decrement_logic": "Depth INCREMENTS down hierarchy: commander depth=1, squad lead depth=2, worker depth=3 with can_launch=false",
+        "config_locations": {
+          "commander_agent": "lines 212-221",
+          "launcher": "bin/stampede.sh lines 758-792",
+          "lint": "tests/depth-guard-lint.sh"
+        },
+        "hierarchy_flow": "Launcher -> Commander (depth=1) -> Squad Lead (depth=2) -> Worker (depth=3, can_launch=false)"
+      }
+    },
+    "wkr-025-005": {
+      "task": "Check depth budget enforcement",
+      "model": "gpt-5.2-codex",
+      "status": "completed",
+      "findings": {
+        "enforcement_mechanism": "Structural lint forbids spawn tools in leaf workers; commander instructions mandate leaf workers with Worker Depth Lock block",
+        "error_handling": "Commander must mark success only if 50 squad leads/250 workers launched; partial if blocked; failed if no squad leads",
+        "bypass_risks": "STAMPEDE_METASWARM_NO_GATES override disables local timeouts/circuit breakers/cost ceiling",
+        "depth_2_enforcement": "No explicit depth=2 leaf-only rule; leaf block applied to workers generally not specifically to depth=2"
+      }
+    }
+  },
+  "synthesis": {
+    "depth_guard_status": "IMPLEMENTED",
+    "key_mechanisms": [
+      "Worker Depth Lock block (4-line verbatim text) required in every worker prompt",
+      "depth_config object with current_depth/max_depth/can_launch propagated via Context Capsule",
+      "Structural lint (depth-guard-lint.sh) forbids can_launch=true and task tool in stampede-agent",
+      "child-agents.jsonl telemetry records depth and can_launch for verification"
+    ],
+    "gaps_found": [
+      "Enforcement is prompt-only - no runtime guard to abort workers that attempt task tool",
+      "No programmatic validation that depth lock was actually injected before launch",
+      "No explicit depth=2 leaf-only rule - applies to all workers regardless of depth",
+      "STAMPEDE_METASWARM_NO_GATES bypass could disable safety checks"
+    ],
+    "confidence": 0.85,
+    "recommendation": "Add runtime circuit breaker that detects and logs if a leaf worker attempts task tool invocation"
+  },
+  "status": "complete"
+}

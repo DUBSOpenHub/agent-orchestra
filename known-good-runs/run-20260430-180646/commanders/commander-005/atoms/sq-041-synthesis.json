@@ -1,0 +1,114 @@
+{
+  "squad_lead": "sq-041",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "JSON Handling Patterns",
+  "sub_task": "Verify Python JSON usage patterns (no echo/printf JSON)",
+  "workers_launched": 5,
+  "depth": 2,
+  "models_used": [
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5",
+    "gpt-5.2"
+  ],
+  "status": "complete",
+  "findings": {
+    "python3_json_patterns": {
+      "worker": "wkr-041-001",
+      "model": "gpt-5.5",
+      "summary": "Project follows Python-for-JSON convention across 4 shell scripts",
+      "files_analyzed": [
+        "bin/stampede.sh",
+        "bin/stampede-monitor.sh",
+        "bin/stampede-merge.sh",
+        "tests/smoke-test.sh"
+      ],
+      "issues": [
+        "Unsafe python3 -c shell interpolation with single quotes can break on special chars",
+        "Repeated Python process spawning is inefficient",
+        "Some non-atomic JSON writes",
+        "Broad exception swallowing"
+      ],
+      "recommendation": "Use sys.argv/heredoc for paths, batch operations, temp+replace writes"
+    },
+    "echo_printf_antipattern": {
+      "worker": "wkr-041-002",
+      "model": "claude-opus-4.6",
+      "summary": "No production violations found",
+      "instances": 1,
+      "is_violation": false,
+      "detail": "Single instance in skills/SKILL.md is documentation example, not runtime code",
+      "severity": "low",
+      "recommendation": "Update doc example to use python3 -c pattern for consistency"
+    },
+    "json_dump_usage": {
+      "worker": "wkr-041-003",
+      "model": "gpt-5.4",
+      "summary": "Mixed atomic vs non-atomic writes, missing explicit UTF-8",
+      "good_patterns": [
+        "bin/stampede.sh:151-155 temp+replace",
+        "bin/stampede-merge.sh:500-504 temp+replace"
+      ],
+      "risky_patterns": [
+        "Direct overwrites with w mode: stampede.sh:353,830,842",
+        "Silent exception swallowing drops updates",
+        "JSONL appends have interleaving risk",
+        "No explicit encoding=utf-8 anywhere"
+      ],
+      "recommendation": "Add explicit UTF-8 encoding, convert direct writes to atomic pattern"
+    },
+    "json_load_usage": {
+      "worker": "wkr-041-004",
+      "model": "claude-opus-4.5",
+      "summary": "Critical crash risks in merge script - 5 unprotected json.load calls",
+      "total_instances": {
+        "json.load": 18,
+        "json.loads": 6
+      },
+      "properly_handled": 8,
+      "crash_prone": [
+        "stampede-merge.sh:282 - fleet.json no try/except",
+        "stampede-merge.sh:291 - state.json no try/except",
+        "stampede-merge.sh:311 - runtime-stats.json no try/except",
+        "stampede-merge.sh:318 - result files in loop - one bad file kills merge",
+        "stampede.sh:350 - teardown state.json unprotected"
+      ],
+      "recommendation": "Wrap all json.load in try/except with sensible defaults, add per-file handling in loops"
+    },
+    "json_error_handling": {
+      "worker": "wkr-041-005",
+      "model": "gpt-5.2",
+      "summary": "JSONDecodeError only caught specifically in docs, not in production code",
+      "try_except_locations": [
+        "stampede.sh:158-167",
+        "stampede.sh:169-190",
+        "stampede.sh:709-719",
+        "stampede-monitor.sh:48-53",
+        "stampede-monitor.sh:260-270"
+      ],
+      "fallback_types": [
+        "bash 2>/dev/null || echo default",
+        "except Exception: pass",
+        "except: continue"
+      ],
+      "unhandled_crash_risks": [
+        "stampede.sh:346-354 teardown - set -e will abort",
+        "stampede-merge.sh:282,291,311,318,568 - all unguarded under set -e",
+        "smoke-test.sh:50,117,135 - will crash on malformed JSON"
+      ],
+      "recommendation": "Catch JSONDecodeError specifically, avoid broad except swallowing"
+    }
+  },
+  "overall_assessment": {
+    "convention_compliance": "HIGH - Project correctly uses Python for JSON, no echo/printf violations in production",
+    "error_handling": "MEDIUM - Many locations have try/except but too broad; merge script is most vulnerable",
+    "atomicity": "MEDIUM - Some good temp+replace patterns, some risky direct overwrites",
+    "top_priority_fixes": [
+      "Add try/except to 5 unprotected json.load calls in stampede-merge.sh",
+      "Protect teardown json.load in stampede.sh:350",
+      "Switch from except Exception to except JSONDecodeError where appropriate"
+    ]
+  }
+}

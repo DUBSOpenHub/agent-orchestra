@@ -1,0 +1,69 @@
+{
+  "squad_id": "sq-009",
+  "theme": "premium-model-policy",
+  "commander_id": "commander-004",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": "high",
+  "summary": "All 5 workers completed successfully. High-confidence audit reveals critical gaps in premium model policy enforcement: (1) launcher default is banned Haiku, conflicts with docs; (2) metaswarm commanders may start on banned models if --model not set; (3) banned model enforcement is prompt-only, no runtime validation; (4) depth-guard-lint.sh does not verify actual model compliance; (5) user docs omit premium pool/banned list entirely; (6) child model rotation is non-deterministic; (7) no monitoring/alerting for banned model usage; (8) partial status only covers count, not model violations.",
+  "consensus_findings": [
+    "CRITICAL: Launcher default model claude-haiku-4.5 (bin/stampede.sh:15) is on banned list for metaswarm children, creating immediate conflict",
+    "CRITICAL: No runtime enforcement of banned models - all validation is prompt/policy text only, violations trigger partial status after launch rather than prevention",
+    "HIGH: User-facing docs (README.md, AGENTS.md) never define premium pool or banned models, users must read internal agent specs",
+    "HIGH: depth-guard-lint.sh validates text presence but not actual model compliance or child-agents.jsonl entries",
+    "MEDIUM: Child model rotation at commander level is non-deterministic, could skip or repeat models without violating spec",
+    "MEDIUM: No monitoring, alerting, or recovery path for banned model violations"
+  ],
+  "conflicting_findings": [],
+  "blockers": [],
+  "worker_atoms": [
+    {
+      "worker_id": "wkr-009-001",
+      "focus": "model-rotation",
+      "confidence": "high",
+      "status": "success",
+      "key_finding": "Model rotation is deterministic at launcher level but default conflicts with ban list"
+    },
+    {
+      "worker_id": "wkr-009-002",
+      "focus": "banned-model-guardrails",
+      "confidence": "high",
+      "status": "success",
+      "key_finding": "Ban enforcement is prompt-only, lint test does not validate runtime compliance"
+    },
+    {
+      "worker_id": "wkr-009-003",
+      "focus": "docs-vs-runtime",
+      "confidence": "high",
+      "status": "success",
+      "key_finding": "User docs omit premium pool and banned models, default model contradiction not explained"
+    },
+    {
+      "worker_id": "wkr-009-004",
+      "focus": "child-override-propagation",
+      "confidence": "high",
+      "status": "success",
+      "key_finding": "Commander-to-child propagation is policy-only, child rotation is non-deterministic"
+    },
+    {
+      "worker_id": "wkr-009-005",
+      "focus": "fallback-violation-handling",
+      "confidence": "high",
+      "status": "success",
+      "key_finding": "No validation, monitoring, or recovery for banned model violations"
+    }
+  ],
+  "source_refs_summary": [
+    "bin/stampede.sh:15 (launcher default=haiku)",
+    "bin/stampede.sh:515-526 (metaswarm model rejection)",
+    "bin/stampede.sh:723-886 (model rotation and pool)",
+    "agents/stampede-commander.agent.md:106-111 (banned list)",
+    "agents/stampede-commander.agent.md:150-168 (child launch policy)",
+    "tests/depth-guard-lint.sh:35-63 (text-only validation)",
+    "README.md:130,307 (docs gaps)",
+    "AGENTS.md:17,27 (docs conflicts)",
+    "skills/SKILL.md:407,484-486,772-836 (partial status, monitoring, recovery)"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-005-005",
+  "theme": "commander-launch-profile",
+  "focus": "negative-downgrade-cases",
+  "findings": [
+    "HIGH: No min-worker validation - 250 target in prompts only, not enforced (line 497-504)",
+    "MEDIUM: Banned model enforcement is prompt-only, no hard gate (lines 752-757, 806-811, 886)",
+    "OK: Error handling defines partial/failed status contract (lines 887-890, 985-986)",
+    "PARTIAL: Teardown cleans PIDs but NOT commander progress dirs (lines 302-358)",
+    "MISSING: No resume capability for crashed commanders (lines 596-601)",
+    "PARTIAL: Smoke tests check config but NOT enforcement of banned models or downgrade"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:302-358",
+    "bin/stampede.sh:497-504",
+    "bin/stampede.sh:596-601",
+    "bin/stampede.sh:752-757",
+    "bin/stampede.sh:806-811",
+    "bin/stampede.sh:886-890",
+    "bin/stampede.sh:985-1010",
+    "tests/smoke-test.sh:73-149"
+  ],
+  "confidence": 0.85,
+  "status": "success"
+}

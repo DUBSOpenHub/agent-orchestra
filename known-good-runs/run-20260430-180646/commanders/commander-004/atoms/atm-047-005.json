@@ -1,0 +1,28 @@
+{
+  "atom_id": "atm-047-005",
+  "worker_id": "wkr-047-005",
+  "theme": "docs-ci-readiness",
+  "focus": "agents-doc-alignment",
+  "findings": [
+    "Neither AGENTS.md nor README.md documents Agent Pulse or live count feature by name",
+    "AGENTS.md does not document stop/teardown/recovery behavior; README does (README.md:202,235,301,310)",
+    "Neither file documents banned-model enforcement or premium model pool policy",
+    "SwarmMesh collaboration bus not mentioned in either file \u2014 not a mismatch but a docs gap",
+    "AGENTS.md shell scripts table (lines 57-62) omits stampede-merge.sh merger script row",
+    "AGENTS.md install instructions omit chmod +x step present in README.md:74",
+    "AGENTS.md shows /skills add shortcut not documented in README",
+    "4-agent description and 250-worker commander constraint consistently documented",
+    "Shadow scoring 3-layer detail: README has it (lines 253-260), AGENTS.md references it briefly (line 33) \u2014 aligned"
+  ],
+  "source_refs": [
+    "AGENTS.md:57-62",
+    "AGENTS.md:77-80",
+    "AGENTS.md:22,29,72",
+    "README.md:72-75",
+    "README.md:202,235,301,310",
+    "README.md:253-260"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "ts": "2026-05-01T01:29:05Z"
+}

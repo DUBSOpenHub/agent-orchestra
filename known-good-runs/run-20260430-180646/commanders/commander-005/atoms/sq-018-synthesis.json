@@ -1,0 +1,234 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-005",
+  "squad_lead_id": "sq-018",
+  "focus": "Stop/Recovery Behavior - Part 2",
+  "subtask": "Verify dead agent recovery patterns",
+  "generated_at": "2026-05-01T01:14:54Z",
+  "worker_launch": {
+    "required_workers": 5,
+    "launched_workers": [
+      {
+        "worker_id": "wkr-018-001",
+        "model": "claude-sonnet-4.5",
+        "topic": "dead agent detection",
+        "status": "failed",
+        "error": "429 too many requests"
+      },
+      {
+        "worker_id": "wkr-018-002",
+        "model": "gpt-5.2-codex",
+        "topic": "task reclaim logic",
+        "status": "completed"
+      },
+      {
+        "worker_id": "wkr-018-003",
+        "model": "claude-opus-4.7",
+        "topic": "orphan cleanup",
+        "status": "failed",
+        "error": "429 too many requests"
+      },
+      {
+        "worker_id": "wkr-018-004",
+        "model": "gpt-5.5",
+        "topic": "recovery documentation",
+        "status": "failed",
+        "error": "429 too many requests"
+      },
+      {
+        "worker_id": "wkr-018-005",
+        "model": "claude-opus-4.6",
+        "topic": "recovery edge cases",
+        "status": "completed"
+      }
+    ],
+    "note": "All 5 required leaf workers were launched exactly once. Synthesis supplements failed worker scopes with direct code evidence."
+  },
+  "findings": {
+    "dead_agent_detection": {
+      "status": "partial-pass",
+      "what_exists": [
+        "PID liveness detection via os.kill(pid, 0) in orchestrator polling loop",
+        "tmux pane census (pane_dead + pane_current_command) in monitor",
+        "stale PID cleanup after dead-worker detection"
+      ],
+      "evidence": [
+        {
+          "file": "skills/SKILL.md",
+          "lines": "473-487",
+          "detail": "PID heartbeat and dead worker collection"
+        },
+        {
+          "file": "skills/SKILL.md",
+          "lines": "499-527",
+          "detail": "dead-worker recovery loop + stale pid removal"
+        },
+        {
+          "file": "bin/stampede-monitor.sh",
+          "lines": "220-232",
+          "detail": "live/done/dead pane census"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "lines": "329-330",
+          "detail": "teardown uses kill -0 then kill"
+        }
+      ],
+      "risks": [
+        "PID reuse can produce false liveness and delay reclaim",
+        "Detection split across orchestrator and monitor creates divergent behavior"
+      ]
+    },
+    "task_reclaim_logic": {
+      "status": "mixed",
+      "what_exists": [
+        "Dead-worker reclaim by matching claimed_by, incrementing generation, requeueing or failing after max_generation=2",
+        "Orphan sweep requeues stale claims older than 600s",
+        "Monitor fallback requeues stale claims when no live agents for >=180s",
+        "Resume flow requeues all claimed tasks after crash"
+      ],
+      "evidence": [
+        {
+          "file": "skills/SKILL.md",
+          "lines": "499-521",
+          "detail": "dead-worker reclaim + generation cap"
+        },
+        {
+          "file": "skills/SKILL.md",
+          "lines": "529-547",
+          "detail": "orphan sweep >10 min"
+        },
+        {
+          "file": "skills/SKILL.md",
+          "lines": "793-807",
+          "detail": "resume requeue-all logic"
+        },
+        {
+          "file": "bin/stampede-monitor.sh",
+          "lines": "234-277",
+          "detail": "monitor reclaim when live_agents==0"
+        },
+        {
+          "file": "agents/stampede-agent.agent.md",
+          "lines": "130-136,238-252",
+          "detail": "claim + atomic result write + claimed cleanup"
+        }
+      ],
+      "risks": [
+        "SKILL reclaim uses write-then-delete (non-atomic move), allowing duplicate presence on crash",
+        "Monitor reclaim path does not enforce generation cap or metadata clearing",
+        "Monitor reclaim only runs when live_agents==0, so single-worker death may stall until orchestrator/orphan sweep"
+      ]
+    },
+    "orphan_cleanup": {
+      "status": "present-with-gaps",
+      "what_exists": [
+        "Orphan sweep by claim file mtime > 600s",
+        "Monitor stale-claim reclaim after 180s with commander heartbeat guard",
+        "Teardown removes PID files and kills session-specific worker PIDs"
+      ],
+      "evidence": [
+        {
+          "file": "skills/SKILL.md",
+          "lines": "529-547",
+          "detail": "stale claim sweep and requeue"
+        },
+        {
+          "file": "bin/stampede-monitor.sh",
+          "lines": "247-275",
+          "detail": "commander_active heartbeat check + stale reclaim"
+        },
+        {
+          "file": "bin/stampede.sh",
+          "lines": "301-337",
+          "detail": "session-scoped teardown and pid cleanup"
+        }
+      ],
+      "risks": [
+        "No persistent monitor recovery state; monitor restart resets dead-window timer",
+        "No explicit cleanup for orphan .tmp result files beyond filename exclusion logic"
+      ]
+    },
+    "recovery_documentation": {
+      "status": "partial",
+      "what_docs_cover": [
+        "README states dead-agent PID detection and re-queue behavior",
+        "Skill command table includes status/resume/teardown flows",
+        "Crash recovery step documents requeue of claimed tasks"
+      ],
+      "evidence": [
+        {
+          "file": "README.md",
+          "lines": "235-236",
+          "detail": "agent dies -> detect and requeue"
+        },
+        {
+          "file": "README.md",
+          "lines": "299-312",
+          "detail": "teardown CLI usage"
+        },
+        {
+          "file": "skills/SKILL.md",
+          "lines": "35-37",
+          "detail": "status/resume/teardown commands"
+        },
+        {
+          "file": "skills/SKILL.md",
+          "lines": "772-807",
+          "detail": "crash recovery runbook"
+        },
+        {
+          "file": "skills/SKILL.md",
+          "lines": "847-869",
+          "detail": "landmine recovery references"
+        }
+      ],
+      "gaps": [
+        "Docs do not clearly explain dual reclaim authorities (orchestrator + monitor) and precedence",
+        "Docs claim atomic patterns broadly but reclaim path in SKILL is not atomic rename",
+        "No explicit operator runbook for partial-worker death while others remain live"
+      ]
+    },
+    "recovery_edge_cases": {
+      "status": "high-risk-identified",
+      "high_priority_cases": [
+        {
+          "case": "Claim metadata TOCTOU",
+          "impact": "Claim can lack claimed_by if worker dies after rename and before rewrite; dead-worker reclaim miss",
+          "evidence": "agents/stampede-agent.agent.md:130-136 with SKILL claimed_by match at 506"
+        },
+        {
+          "case": "Non-atomic requeue duplication",
+          "impact": "Crash between queue write and claimed delete can duplicate task across queue/claimed",
+          "evidence": "skills/SKILL.md:519-521"
+        },
+        {
+          "case": "Concurrent recovery race",
+          "impact": "Monitor and orchestrator can both reclaim same claim with different semantics",
+          "evidence": "bin/stampede-monitor.sh:234-277 vs skills/SKILL.md:499-547"
+        },
+        {
+          "case": "Result-exists requeue",
+          "impact": "SKILL dead-worker reclaim lacks results existence guard; may requeue already-completed task",
+          "evidence": "skills/SKILL.md:500-521 (no result check), monitor has guard at 274"
+        },
+        {
+          "case": "PID reuse false alive",
+          "impact": "Dead worker may appear alive, delaying recovery",
+          "evidence": "skills/SKILL.md:484"
+        }
+      ]
+    }
+  },
+  "recommended_actions": [
+    "Unify reclaim implementation to single atomic rename path (claimed -> queue) shared by monitor and orchestrator",
+    "Always check for existing results/{task}.json before any requeue action",
+    "Persist monitor recovery state (e.g., all-dead-since) in run dir to survive monitor restarts",
+    "Augment PID checks with process start-time or pane-bound identity validation",
+    "Document precise recovery authority and failure-mode runbooks (single worker death, monitor restart, dual-reclaimer behavior)"
+  ],
+  "overall_assessment": {
+    "grade": "B-",
+    "summary": "Recovery mechanisms are substantial (dead detection, reclaim, orphan sweep, resume), but split control paths and non-atomic requeue in the SKILL path introduce correctness risk under crashes and races."
+  }
+}

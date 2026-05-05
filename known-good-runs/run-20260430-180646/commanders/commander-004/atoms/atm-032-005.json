@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-032-005",
+  "theme": "partial-failure-bundles",
+  "focus": "count-accuracy",
+  "findings": [
+    "Monitor completion is based on raw result-file count, not result status, so partial/failed bundles still drive the UI to COMPLETE.",
+    "Final monitor rendering only colors success/done as green, but completion gating happens earlier and ignores bundle health."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:909-911",
+    "bin/stampede-monitor.sh:87-111",
+    "bin/stampede-monitor.sh:295-301",
+    "bin/stampede-monitor.sh:349-354"
+  ],
+  "confidence": "medium",
+  "status": "success"
+}

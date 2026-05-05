@@ -1,0 +1,15 @@
+{
+  "worker_id": "wkr-020-001",
+  "model": "gpt-5.2",
+  "assignment": "audit final artifact writes",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "Non-atomic launcher seed truncates swarm-state.json/child-agents.jsonl (stampede.sh:954-963); commander-002 partial_reason notes truncation",
+    "Commander-002 bundle.json/results/commander-002.json missing despite contract (claimed manifest + agent contract + atm-028)",
+    "Monitor counts all results/*.json (incl. non-task artifacts) for done totals; can inflate progress",
+    "Collab required_fields (protocol.json) not enforced; run audit reports missing evidence fields",
+    "Worker result writes use .tmp- + rename (atomic) and monitor ignores temp files (good)",
+    "fleet.json written non-atomically (stampede.sh:966-967) risks parse race"
+  ]
+}

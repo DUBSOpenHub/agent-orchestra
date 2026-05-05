@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-038-005",
+  "theme": "stop-teardown-behavior",
+  "focus": "cleanup-gaps",
+  "status": "success",
+  "confidence": 0.56,
+  "findings": [
+    "Teardown is only invoked via explicit --teardown path; interruption/crash paths lack comprehensive auto-clean hooks.",
+    "do_teardown sends one SIGTERM per recorded PID with no wait/escalation and does not remove broader run directories.",
+    "Auto-attach helper path writes /tmp task file without explicit cleanup lifecycle in launcher.",
+    "CI workflow does not test teardown/stop cleanup paths; coverage is lint/help/install smoke only."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:304-363",
+    "bin/stampede.sh:333-335",
+    "bin/stampede.sh:474-483",
+    "bin/stampede.sh:1366-1381",
+    ".github/workflows/ci.yml:18-49"
+  ]
+}

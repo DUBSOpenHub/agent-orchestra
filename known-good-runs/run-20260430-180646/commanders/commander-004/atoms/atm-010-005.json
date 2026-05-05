@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-010-005",
+  "theme": "premium-model-policy",
+  "focus": "fallback-violation-handling",
+  "findings": [
+    "Docs require marking partial when full child swarm cannot launch and forbid silent downgrade (README.md:35, 130-134; skills/SKILL.md:407-408).",
+    "No explicit handling path for premium-model policy violations or premium unavailability beyond swarm-size failure (README.md:130-134; skills/SKILL.md:407-408)."
+  ],
+  "source_refs": [
+    "README.md:35",
+    "README.md:130-134",
+    "skills/SKILL.md:407-408"
+  ],
+  "confidence": 0.7,
+  "status": "success"
+}

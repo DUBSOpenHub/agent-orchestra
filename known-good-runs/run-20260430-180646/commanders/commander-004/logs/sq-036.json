@@ -1,0 +1,28 @@
+{
+  "squad_id": "sq-036",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "stop-teardown-behavior",
+  "status": "partial",
+  "blockers": [
+    "Leaf worker tool runs did not expose background agent_ids, so launch_started telemetry could not include agent_id fields."
+  ],
+  "consensus": {
+    "monitor_is_observer_only": true,
+    "teardown_is_manual": true,
+    "stop_coverage_is_thin": true
+  },
+  "top_findings": [
+    "No unified stop mechanism from monitor; stop is via stampede.sh --teardown or manual tmux operations (monitor ignores pidfiles).",
+    "Teardown is opt-in (no general traps) and relies on pidfiles; risks include stale PID reuse, incomplete cleanup if tmux session is ended directly, and no SIGKILL escalation.",
+    "Tests/CI do not validate teardown semantics; smoke test does not assert tmux/pids/.stampede cleanup."
+  ],
+  "worker_atoms": [
+    "atm-036-001",
+    "atm-036-002",
+    "atm-036-003",
+    "atm-036-004",
+    "atm-036-005"
+  ],
+  "overall_confidence": "high"
+}

@@ -1,0 +1,72 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "squad_lead": "sq-010",
+  "generated_at": "2026-05-01T01:20:55Z",
+  "scope": "QA review-only audit (no source modifications) on collaboration-bus and worker/commander/monitor/merger behaviors.",
+  "workers": {
+    "wkr-010-001": {
+      "model": "gpt-5.2",
+      "assignment": "Audit final result schema",
+      "findings": [
+        "Worker results use agent_id but monitor/merger expect worker_id, breaking attribution and runtime stats linkage.",
+        "runtime-stats.json is never created; monitor only updates if it already exists, so scoring/telemetry stays empty.",
+        "Status vocabulary inconsistent: worker done vs commander success; merge script accepts only done while monitor treats success/done as success.",
+        "Commander bundle lacks explicit fields for adopted collab consensus item_ids/source_refs though launcher requires them.",
+        "Collab bus JSONL has no validation; malformed lines can poison parsing; concurrent append risk noted.",
+        "Default-branch assumption main in files_changed and diff scoring can yield empty change lists on non-main repos."
+      ]
+    },
+    "wkr-010-002": {
+      "model": "claude-sonnet-4.6",
+      "assignment": "Audit bundle atomic write expectations",
+      "findings": [
+        "stampede.sh uses .tmp suffix while docs/monitor/merge expect .tmp- prefix; inconsistency undermines temp-file filtering assumptions.",
+        "stampede.sh uses os.replace vs docs/agents using os.rename; behavior diverges (minor but undocumented).",
+        "Commander agent lacks explicit atomic write code snippet/checklist, increasing risk of non-atomic bundle writes."
+      ]
+    },
+    "wkr-010-003": {
+      "model": "gpt-5.3-codex",
+      "assignment": "Audit claimed task cleanup",
+      "findings": [
+        "Requeue of claimed tasks only triggers when live_agents == 0; dead-agent claims persist if any agent still alive.",
+        "Requeue keeps stale claimed_by/claimed_at metadata.",
+        "Teardown does not reconcile claimed tasks; claims can remain stranded.",
+        "Monitor can idle with queued tasks and no agents after recovery.",
+        "Collaboration-bus artifacts lack cleanup lifecycle."
+      ]
+    },
+    "wkr-010-004": {
+      "model": "claude-sonnet-4.5",
+      "assignment": "Audit collaboration consensus inclusion",
+      "findings": [
+        "Consensus is captured in collab JSONL ledgers but not consumed by orchestrator or merger.",
+        "No worker-level consensus signals or cross-agent voting/semantic conflict detection.",
+        "Commander bundles include consensus tier but downstream ignores it."
+      ]
+    },
+    "wkr-010-005": {
+      "model": "gpt-5.2-codex",
+      "assignment": "Audit blocked/partial status behavior",
+      "findings": [
+        "No blocked/partial status defined in schemas; monitor treats non-done/non-success as failure.",
+        "Commander partial status is not surfaced; monitor only warns when status==success but incomplete proof."
+      ]
+    }
+  },
+  "summary": {
+    "top_risks": [
+      "Result schema mismatches (worker_id vs agent_id; status done vs success) break attribution and merge inclusion.",
+      "Atomic write naming inconsistencies and missing commander atomic guidance risk partial/corrupt bundles.",
+      "Consensus data captured but unused, losing critical multi-agent agreement signals.",
+      "Claimed-task cleanup can leave stranded tasks in claimed/ with stale metadata."
+    ],
+    "quick_wins": [
+      "Standardize result schema fields (worker_id/agent_id) and status vocabulary across worker/commander/merge.",
+      "Create runtime-stats.json skeleton early in runs.",
+      "Align atomic write naming to .tmp- prefix everywhere; add commander atomic write snippet.",
+      "Incorporate collab consensus into orchestrator synthesis and merger scoring."
+    ]
+  }
+}

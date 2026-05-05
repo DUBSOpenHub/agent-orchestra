@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-029-002",
+  "theme": "agent-pulse-monitoring",
+  "focus": "nested-progress-display",
+  "findings": [
+    "Metaswarm runs visible but no explicit top-level badge/banner (bin/stampede-monitor.sh:41-67,116,118-197)",
+    "Nested commander progress implemented from swarm-state.json with squads/workers/running/done/fail counts (bin/stampede-monitor.sh:145-191; README.md:130-136)",
+    "Commander status rows combine tmux-pane liveness with nested swarm summary (bin/stampede-monitor.sh:126-143,193)",
+    "Child-agent telemetry stored but NOT presented in monitor UI; no child-agents.jsonl parsing (bin/stampede-monitor.sh:145-191; README.md:130)",
+    "Commander rows always print full SS-250 even when launch proof missing/incomplete (bin/stampede-monitor.sh:177-180,193)"
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:41-67",
+    "bin/stampede-monitor.sh:116-197",
+    "bin/stampede-monitor.sh:126-143",
+    "bin/stampede-monitor.sh:145-191",
+    "bin/stampede-monitor.sh:177-180",
+    "bin/stampede-monitor.sh:193",
+    "README.md:83",
+    "README.md:130-136"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

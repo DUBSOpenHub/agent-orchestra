@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-005-003",
+  "theme": "commander-launch-profile",
+  "focus": "skill-launch-phrasing",
+  "findings": [
+    "OK: Metaswarm grammar clear at line 34",
+    "ISSUE: Default model claude-sonnet-4.5 for both modes, no premium default for commanders (line 39)",
+    "OK: Agent limits correct - max 8 standard, 3 default commanders (line 39)",
+    "GAP: No commander task JSON template (only worker template at lines 227-254)",
+    "OK: --metaswarm flag usage correct (lines 409-417)",
+    "ISSUE: No SQL schema for commanders, only stampede_workers table (lines 86-95)"
+  ],
+  "source_refs": [
+    "skills/SKILL.md:34",
+    "skills/SKILL.md:39",
+    "skills/SKILL.md:86-95",
+    "skills/SKILL.md:108-109",
+    "skills/SKILL.md:227-254",
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:409-417"
+  ],
+  "confidence": 0.88,
+  "status": "success"
+}

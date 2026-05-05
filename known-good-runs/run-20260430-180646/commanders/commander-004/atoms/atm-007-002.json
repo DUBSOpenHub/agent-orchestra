@@ -1,0 +1,26 @@
+{
+  "worker_id": "wkr-007-002",
+  "theme": "premium-model-policy",
+  "focus": "banned-model-guardrails",
+  "findings": [
+    "stampede-commander.agent.md:106-111 explicitly lists banned child models: claude-haiku-4.5, gpt-5.4-mini, gpt-5-mini, gpt-4.1",
+    "stampede-commander.agent.md:150-168 enforces premium-only child launches; banned models disallowed; violation must mark bundle partial. agents/stampede-commander.agent.md:167-168",
+    "stampede-commander.agent.md:203-208 repeats banned_child_models in required Context Capsule for propagation to child-launch context",
+    "Banned-model detection maps to partial status only \u2014 no failed path exists for this case. agents/stampede-commander.agent.md:142-146",
+    "GAP: tests/depth-guard-lint.sh:35-53 does NOT test banned models directly; only checks generic strings like model_policy=premium and gpt-5.5",
+    "GAP: depth-guard-lint.sh does not verify banned_child_models entries nor assert partial/failed when banned models detected. tests/depth-guard-lint.sh:35-61"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:106",
+    "agents/stampede-commander.agent.md:150",
+    "agents/stampede-commander.agent.md:159",
+    "agents/stampede-commander.agent.md:167",
+    "agents/stampede-commander.agent.md:203",
+    "agents/stampede-commander.agent.md:142",
+    "tests/depth-guard-lint.sh:35",
+    "tests/depth-guard-lint.sh:51",
+    "tests/depth-guard-lint.sh:55"
+  ],
+  "confidence": 0.97,
+  "status": "success"
+}

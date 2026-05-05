@@ -1,0 +1,60 @@
+{
+  "atom_id": "atm-003",
+  "squad_lead": "sq-003",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "ts": "2026-05-01T01:12:59Z",
+  "depth": 2,
+  "worker_agent_ids": [
+    "wkr-003-001",
+    "wkr-003-002",
+    "wkr-003-003",
+    "wkr-003-004",
+    "wkr-003-005"
+  ],
+  "confidence": 0.97,
+  "findings": {
+    "collab_bus_exists": true,
+    "collab_bus_location": ".stampede/{run_id}/collab/",
+    "ledger_files": [
+      "proposals.jsonl",
+      "reviews.jsonl",
+      "improvements.jsonl",
+      "consensus.jsonl",
+      "broadcasts.jsonl"
+    ],
+    "protocol_defined": true,
+    "workflow_sequence": "propose -> peer_review -> improve -> consensus -> broadcast -> adopt",
+    "initialization": "bin/stampede.sh lines 649-707 (metaswarm mode only)",
+    "monitor_integration": "bin/stampede-monitor.sh print_collab_summary() reads collab/ JSONL files and displays aggregate metrics",
+    "env_vars_exported": [
+      "STAMPEDE_COLLAB_DIR",
+      "STAMPEDE_COLLAB_PROTOCOL",
+      "STAMPEDE_COLLAB_PROPOSALS",
+      "STAMPEDE_COLLAB_REVIEWS",
+      "STAMPEDE_COLLAB_IMPROVEMENTS",
+      "STAMPEDE_COLLAB_CONSENSUS",
+      "STAMPEDE_COLLAB_BROADCASTS"
+    ],
+    "live_evidence": {
+      "proposals": 4,
+      "reviews": 3,
+      "improvements": 5,
+      "consensus": 3,
+      "broadcasts": 0
+    },
+    "skill_md_has_collab": false,
+    "commander_agent_has_collab": false,
+    "collab_is_metaswarm_only": true
+  },
+  "evidence": [
+    "stampede.sh creates collab/ dir with 5 JSONL ledgers and protocol.json in metaswarm mode (lines 649-707)",
+    "Protocol defines atomic append-only workflow: propose->peer_review->improve->consensus->broadcast->adopt",
+    "Commander prompts receive STAMPEDE_COLLAB_* env vars (lines 909-915)",
+    "Monitor reads collab/ and displays aggregate metrics via print_collab_summary()",
+    "Live run shows active ledger entries: 4 proposals, 3 reviews, 5 improvements, 3 consensus, 0 broadcasts",
+    "SKILL.md and stampede-commander.agent.md contain no explicit collab-bus references - implementation lives in shell scripts only",
+    "Collab infrastructure is exclusive to metaswarm mode; regular stampede runs do not create it"
+  ],
+  "summary": "Collaboration bus confirmed: implemented in stampede.sh (metaswarm mode), consumed by monitor, active in live run with 15 ledger entries across 4 of 5 stages. Not referenced in SKILL.md or commander agent markdown - purely shell-script infrastructure."
+}

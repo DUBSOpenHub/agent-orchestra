@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-020-004",
+  "theme": "telemetry-contract",
+  "focus": "launch-proof-counters",
+  "findings": [
+    "Monitor expects telemetry.*_launched with fallback to launch_proof.*_started; naming mismatch can trigger false no-proof warnings.",
+    "Monitor hardcodes \"full SS-250\" label even if swarm-state.json targets differ.",
+    "Incomplete proof warning only triggers when status=success; partial status with low counts lacks warning.",
+    "Atoms displayed as atoms/250 but README does not define atoms in telemetry contract.",
+    "Monitor never reads child-agents.jsonl despite README stating launch proof uses it."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:158-165",
+    "bin/stampede-monitor.sh:177-180",
+    "bin/stampede-monitor.sh:193",
+    "README.md:35",
+    "README.md:83",
+    "README.md:130-136"
+  ],
+  "confidence": 0.75,
+  "status": "success"
+}

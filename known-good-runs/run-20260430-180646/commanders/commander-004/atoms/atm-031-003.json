@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-031-003",
+  "theme": "partial-failure-bundles",
+  "focus": "no-launch-failure",
+  "findings": [
+    "Commander launch failure is correctly forced to status failed in swarm-state.json with a commander_launch_failed ledger event.",
+    "Blocked pre-launch state propagates blocked to run and commander state files, and initial state is starting rather than success.",
+    "Gap: non-commander worker launch failure lacks a structured persisted failed artifact; failure may only appear via PID liveness and stdout.",
+    "Gap: fleet launched banner prints even when launched count is below requested count, creating an optimistic signal despite partial launch."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:141-179",
+    "bin/stampede.sh:802",
+    "bin/stampede.sh:1006-1007",
+    "bin/stampede.sh:1026",
+    "bin/stampede.sh:1096-1149",
+    "bin/stampede.sh:1197-1226",
+    "agents/stampede-commander.agent.md:142-146",
+    "agents/stampede-commander.agent.md:168"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

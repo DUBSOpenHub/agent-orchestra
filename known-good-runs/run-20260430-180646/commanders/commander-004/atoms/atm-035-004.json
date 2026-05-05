@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-035-004",
+  "theme": "partial-failure-bundles",
+  "focus": "bundle-shape",
+  "findings": [
+    "Bundle requires: task_id, run_id, commander_id, status, role, profile, swarm_scale, branch, files_changed, summary, confidence, consensus, telemetry (stampede-commander.agent.md:254-282)",
+    "Same bundle shape for success/partial/failed - only status-specific rules differ (stampede-commander.agent.md:140-146)",
+    "Partial must include exact launch counts; failed if no Squad Leads launched",
+    "Validation exists only for launch proof - no explicit bundle completeness check before write (stampede-commander.agent.md:59-61)",
+    "README documents partial bundle requirement but not bundle JSON schema (README.md:35,130)"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:254-282",
+    "agents/stampede-commander.agent.md:140-146",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "gaps": "No explicit pre-write bundle completeness/schema validation; README lacks bundle field-level documentation"
+}

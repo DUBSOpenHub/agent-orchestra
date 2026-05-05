@@ -1,0 +1,203 @@
+{
+  "atom_id": "atm-027",
+  "squad_lead": "sq-027",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "ts": "2026-05-01T01:22:25Z",
+  "depth": 2,
+  "review_only": true,
+  "domain": "collaboration-bus",
+  "worker_agent_ids": [
+    "wkr-027-001",
+    "wkr-027-002",
+    "wkr-027-003",
+    "wkr-027-004",
+    "wkr-027-005"
+  ],
+  "worker_models": {
+    "wkr-027-001": "claude-opus-4.7",
+    "wkr-027-002": "gpt-5.5",
+    "wkr-027-003": "claude-opus-4.6",
+    "wkr-027-004": "gpt-5.4",
+    "wkr-027-005": "claude-opus-4.5"
+  },
+  "workers": [
+    {
+      "worker_id": "wkr-027-001",
+      "model": "claude-opus-4.7",
+      "focus": "state.json collab counts",
+      "status": "completed",
+      "verdict": "pass_with_minor_gaps",
+      "highlights": [
+        "state.json collab.counts is written ONCE at metaswarm init (bin/stampede.sh:825) as {proposals:0, reviews:0, improvements:0, consensus:0, broadcasts:0} and never updated thereafter",
+        "Live ledger truth (wc -l on RUN_DIR/collab/*.jsonl): proposals=5, reviews=11, improvements=7, consensus=5, broadcasts=4 (32 total events) \u2014 but state.json still reports all zeros",
+        "No update_state / patch_state / re-write of collab.counts exists anywhere in bin/stampede.sh post-init; the only later state.json write is the teardown phase update at line 350-359 which does not touch collab",
+        "stampede-monitor.sh:57-66 (print_collab_summary) computes the live dashboard via count_jsonl_lines directly on the JSONL files, NOT from state.json \u2014 so the user-visible monitor is correct",
+        "skills/SKILL.md contains no reference to 'collab' or 'counts'; no doc/agent treats state.json collab.counts as a live source",
+        "Effectively by-design: counts field is a one-shot init artifact (schema scaffold), live truth lives in the append-only JSONL ledgers as required by the filesystem-as-IPC convention"
+      ],
+      "gaps": [
+        "Stale counts field is misleading: any external tool/script that reads state.json collab.counts will see permanent zeros despite 32 real events \u2014 a latent footgun",
+        "No comment in stampede.sh:820-826 documenting that counts is init-only; future contributors may assume it's live",
+        "No tombstone/derived flag (e.g., counts: null or counts_source: 'wc -l ledgers') to signal the field is not maintained"
+      ]
+    },
+    {
+      "worker_id": "wkr-027-002",
+      "model": "gpt-5.5",
+      "focus": "monitor collab display",
+      "status": "completed",
+      "verdict": "accept_with_major_additions",
+      "highlights": [
+        "Collab display is gated by is_metaswarm_run(): present BASE/collab returns true, otherwise fleet.json is parsed for profile=metaswarm or role=commander.",
+        "Live collab state exists and all five JSONL ledgers currently parse cleanly: proposals=5, reviews=11, improvements=7, consensus=5, broadcasts=4.",
+        "If collab/ is absent, metaswarm runs still show a zero-count Collab row when fleet.json identifies commanders; non-metaswarm/missing or invalid fleet suppresses it gracefully."
+      ],
+      "gaps": [
+        "count_jsonl_lines uses wc -l, so it counts newline characters, not valid JSONL records: empty files count 0, trailing newlines are fine, but a final record without newline is undercounted and malformed partial lines ending in newline are overcounted.",
+        "Monitor never JSON-parses collab ledger contents; it cannot detect invalid schema, malformed records, duplicate events, wrong run/commander IDs, stale phases, quorum/consensus quality, or failed adoption.",
+        "No adopt phase is displayed; protocol exposes only proposals/reviews/improvements/consensus/broadcasts ledgers, so propose->peer_review->improve->consensus->broadcast is visible but adopt is absent.",
+        "Commander nested progress shows squads/workers/run/done/fail/atoms/heartbeat/phase from per-commander swarm-state.json, but no per-commander collab ledger counts or collab health. Collab counts are global only."
+      ]
+    },
+    {
+      "worker_id": "wkr-027-003",
+      "model": "claude-opus-4.6",
+      "focus": "synthesis collab consumption",
+      "status": "completed",
+      "verdict": "high_risk_gap",
+      "highlights": [
+        "bin/stampede-merge.sh has ZERO references to collab/, consensus, broadcasts, proposals, or adopted items",
+        "agents/stampede-merger.agent.md Load Context reads only results/*.json, fleet.json, runtime-stats.json \u2014 no collab awareness",
+        "skills/SKILL.md synthesis (lines 570-660) iterates results/*.json only \u2014 never reads collab/ ledgers or bundle consensus fields",
+        "bin/stampede.sh line 1013 instructs commanders to include adopted_consensus_item_ids in bundle.json, but no downstream consumer reads them",
+        "32 lines of real collab data exist in this run (5 proposals, 11 reviews, 7 improvements, 5 consensus, 4 broadcasts) \u2014 all silently discarded"
+      ],
+      "gaps": [
+        "stampede-merge.sh does not pass any collab content into the merger agent prompt",
+        "stampede-merger.agent.md has no instructions to read collab/*.jsonl or validate source_refs",
+        "SKILL.md synthesis step does not consume adopted_consensus from bundles or collab ledgers",
+        "Bundle Shape in stampede-commander.agent.md defines a consensus field but no reader exists",
+        "No code path anywhere in merge/synthesis reads broadcasts.jsonl or consensus.jsonl",
+        "Commander-002 has no bundle.json yet, so even if a reader existed it would find nothing to consume"
+      ]
+    },
+    {
+      "worker_id": "wkr-027-004",
+      "model": "gpt-5.4",
+      "focus": "adoption and broadcast mechanics",
+      "status": "completed",
+      "verdict": "high_risk_gap",
+      "highlights": [
+        "protocol defines 6 phases but protocol.json exposes no adopt ledger/event; adoption is only hinted via stampede.sh prompt text and ad-hoc broadcast/bundle prose",
+        "broadcast records are inconsistent: broadcasts.jsonl line 3 omits required evidence and uses adopted_items instead of consensus_item_id",
+        "consensus->broadcast->adopt is not fully traceable from ledgers alone; no forward pointer from consensus to broadcasts and no dedicated adoption ledger"
+      ],
+      "gaps": [
+        "No adopt ledger file exists under collab/ despite protocol workflow including adopt",
+        "stampede-commander.agent.md has no consume_broadcasts step; collab workflow is injected by launcher prompt, not the agent contract",
+        "Bundle shape in stampede-commander.agent.md omits adopted_consensus_item_ids/source_refs required by bin/stampede.sh prompt",
+        "Post-run auditors cannot verify item-by-item adoption from ledgers alone"
+      ]
+    },
+    {
+      "worker_id": "wkr-027-005",
+      "model": "claude-opus-4.5",
+      "focus": "stop and recovery mechanics",
+      "status": "completed",
+      "verdict": "accept_with_major_additions",
+      "highlights": [
+        "mark_run_blocked() atomically updates state.json via .tmp rename; preserves ledger integrity",
+        "Collab ledgers preserved on block: 32 lines total (5 proposals, 11 reviews, 7 improvements, 5 consensus, 4 broadcasts) intact",
+        "mark_run_blocked() appends commander_blocked event to child-agents.jsonl for each commander",
+        "do_teardown() sets phase=torn_down (NOT status=stopped) \u2014 semantic inconsistency",
+        "protocol.json correctly instructs readers to tolerate malformed trailing lines"
+      ],
+      "gaps": [
+        "NO --resume support: grep returns zero matches; blocked runs cannot be reattached",
+        "do_teardown() does NOT drain in-flight writers before killing PIDs \u2014 partial writes possible",
+        "mark_run_blocked() does NOT append run_blocked event to collab ledgers (proposals/broadcasts)",
+        "count_jsonl_lines uses wc -l: partial final lines count as 0 bytes but still return a count \u2014 no graceful handling",
+        "Teardown kills workers synchronously before state update; no SIGTERM grace period for writers"
+      ]
+    }
+  ],
+  "findings": {
+    "state_json_collab_counts": {
+      "verdict": "pass_with_minor_gaps",
+      "summary": "collab.counts in state.json initialized to all-zeros at metaswarm launch and never updated at runtime; monitor reads live counts from JSONL ledgers via wc -l instead, so dashboard is accurate but state.json field is stale and misleading for external readers",
+      "evidence": [
+        "bin/stampede.sh:820-826 (collab dict literal with counts={name:0 for name in ledger_events})",
+        "bin/stampede.sh:827-843 (single write_json_atomic of state.json at init; no later collab writes)",
+        "bin/stampede.sh:350-359 (teardown updates state.json phase only, not collab)",
+        "bin/stampede-monitor.sh:57-66 (live counts via count_jsonl_lines, bypasses state.json)",
+        "RUN_DIR/state.json collab.counts == all zeros (verified)",
+        "wc -l RUN_DIR/collab/*.jsonl: proposals 5, reviews 11, improvements 7, consensus 5, broadcasts 4",
+        "grep 'collab' on bin/stampede.sh shows no increment/update logic post line 841",
+        "grep 'collab|counts' on skills/SKILL.md: no matches"
+      ]
+    },
+    "monitor_display": {
+      "verdict": "accept_with_major_additions",
+      "summary": "print_collab_summary() correctly reads 5 live JSONL ledgers via wc -l; no JSON parsing of content; adopt phase has no ledger and no monitor display; per-commander collab counts absent; graceful on missing files; trailing-partial-line risk present",
+      "evidence": [
+        "bin/stampede-monitor.sh:32-39 wc -l based count_jsonl_lines",
+        "bin/stampede-monitor.sh:41-55 is_metaswarm_run collab-dir/fleet fallback",
+        "bin/stampede-monitor.sh:57-66 print_collab_summary counts five ledgers only",
+        "bin/stampede-monitor.sh:143-193 commander nested display excludes collab counts",
+        "live collab/: proposals=5 reviews=11 improvements=7 consensus=5 broadcasts=4; parsed_records match and bad=0",
+        "collab/protocol.json ledgers list five events: proposal, peer_review, improvement, consensus, broadcast"
+      ]
+    },
+    "synthesis_consumption": {
+      "verdict": "high_risk_gap",
+      "summary": "Synthesis pipeline (stampede-merge.sh, stampede-merger.agent.md, SKILL.md) is entirely blind to all collab ledgers; launcher instructs commanders to include adopted_consensus in bundle.json but no downstream code reads or validates those fields; entire collab workflow output is silently discarded at synthesis",
+      "evidence": [
+        "bin/stampede-merge.sh: grep for collab|consensus|broadcast|adopted returns 0 matches",
+        "agents/stampede-merger.agent.md: grep for collab|consensus|broadcast|adopted returns 0 matches",
+        "skills/SKILL.md: grep for collab|consensus|broadcast|adopted returns 0 matches",
+        "bin/stampede.sh:1013 \u2014 commander prompt says include adopted consensus item_ids in bundle.json",
+        "agents/stampede-commander.agent.md:270 \u2014 Bundle Shape has consensus.tier and consensus.notes fields",
+        ".stampede/run-20260430-180646/collab/ \u2014 32 lines across 5 ledger files (real data exists)",
+        "commanders/commander-002/ \u2014 no bundle.json present"
+      ]
+    },
+    "adoption_broadcast_mechanics": {
+      "verdict": "high_risk_gap",
+      "summary": "No dedicated adopt ledger or adopt event type defined in protocol.json; adoption tracked only via bundle.json prose per launcher prompt injection; broadcasts.jsonl has missing required_fields in some records; consensus-to-broadcast-to-adopt chain is not fully reconstructable from ledgers alone; stampede-commander.agent.md lacks consume_broadcasts step",
+      "evidence": [
+        "collab/protocol.json:5-25,37-57",
+        "collab/broadcasts.jsonl:1-4 (line 3 missing evidence; uses adopted_items)",
+        "collab/consensus.jsonl:1-5 (no broadcast pointer; line 5 missing evidence)",
+        "bin/stampede.sh:1013-1014",
+        "agents/stampede-commander.agent.md:41-61,254-282"
+      ]
+    },
+    "recovery": {
+      "verdict": "accept_with_major_additions",
+      "summary": "mark_run_blocked() preserves ledger data atomically and appends commander_blocked to child-agents.jsonl but does NOT append a run_blocked event to collab ledgers; no --resume flag; do_teardown kills PIDs synchronously risking in-flight partial-line corruption; wc -l count_jsonl_lines is vulnerable to partial final lines",
+      "evidence": [
+        "stampede.sh:141-195 mark_run_blocked() \u2014 atomic state update, child-agents.jsonl append",
+        "stampede.sh:306-364 do_teardown() \u2014 kills PIDs, then sets phase=torn_down, no drain logic",
+        "stampede-monitor.sh count_jsonl_lines() \u2014 simple wc -l, no partial-line detection",
+        "collab/protocol.json:29-34 \u2014 atomic_append_guidance acknowledges malformed trailing lines",
+        "state.json shows status=blocked, ledger counts all 0 in state but files have 32 lines total",
+        "grep --resume returns no matches in stampede.sh"
+      ]
+    }
+  },
+  "gaps": [
+    "state.json collab.counts never refreshed post-init; stale zeros mislead external readers",
+    "No adopt ledger or adopt event type in protocol.json; adoption is prose-only",
+    "Synthesis/merge pipeline fully blind to all collab ledgers and adopted_consensus fields",
+    "broadcasts.jsonl records missing required evidence field; protocol conformance inconsistent",
+    "consensus\u2192broadcast\u2192adopt chain not reconstructable from ledgers alone (no forward pointers)",
+    "stampede-commander.agent.md has zero collab-bus or adopt/broadcast workflow instructions",
+    "No --resume support; blocked run cannot restart without losing in-progress state",
+    "do_teardown does not drain in-flight collab writers; partial-line corruption risk",
+    "Monitor displays collab only as global counts; no per-commander collab breakdown",
+    "adopt phase not reflected anywhere in monitor or synthesis output"
+  ],
+  "overall_verdict": "high_risk_gap",
+  "confidence": 0.95
+}

@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-011-001",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "worker-leaf-lock",
+  "findings": [
+    "Leaf-lock is explicit via 'DO NOT attempt to spawn sub-agents... any other agents' and 'You are a LEAF NODE'.",
+    "Worker frontmatter omits task/ask_user tools, but bash remains available so anti-spawn protection is instruction-level rather than sandbox-enforced.",
+    "Task loop is single-agent and contains no delegation workflow."
+  ],
+  "source_refs": [
+    "agents/stampede-agent.agent.md:7-14",
+    "agents/stampede-agent.agent.md:27-28",
+    "agents/stampede-agent.agent.md:37-49",
+    "agents/stampede-agent.agent.md:105-177"
+  ],
+  "confidence": "high",
+  "status": "instruction_leaf_locked_but_not_fully_tool_enforced"
+}

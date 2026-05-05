@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-046-003",
+  "theme": "docs-ci-readiness",
+  "focus": "depth-lint-gap-analysis",
+  "status": "success",
+  "confidence": 0.91,
+  "findings": [
+    "Depth Guard lint enforces leaf worker frontmatter lacks task/ask_user, and requires several key phrases in worker and commander agent docs.",
+    "Checks are primarily substring-based; can false-pass if phrases appear out of context, and can false-fail on minor wording changes.",
+    "Forbidden tool checks are narrow (\"  - task\" and \"  - ask_user\" only) and may miss YAML variants.",
+    "Worker prompt \u201cexact block\u201d is not validated as a block; only two phrases are checked.",
+    "No explicit file existence checks; missing agent files fail at read_text() with less clear errors."
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:16-20",
+    "tests/depth-guard-lint.sh:21-34",
+    "tests/depth-guard-lint.sh:35-54",
+    "tests/depth-guard-lint.sh:55-62",
+    "tests/depth-guard-lint.sh:13-14"
+  ]
+}

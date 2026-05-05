@@ -1,0 +1,307 @@
+{
+  "ts": "2026-05-01T01:42:13.110281Z",
+  "run_id": "run-20260430-180646",
+  "profile": "metaswarm",
+  "queue": 0,
+  "claimed": 0,
+  "results": 5,
+  "total_tasks": 5,
+  "lines": [
+    "cmd 0/5 active \u00b7 sub-agents 0 running / 820 done / 856 seen \u00b7 q 0 \u00b7 claimed 0 \u00b7 results 5/5",
+    "collab p5 r18 i11 c8 b7",
+    "terminal: commander-001=partial, commander-002=partial, commander-003=success, commander-004=partial, commander-005=success"
+  ],
+  "agents": [
+    {
+      "id": "commander-001",
+      "status": "partial",
+      "phase": "complete",
+      "active": false,
+      "model": "claude-opus-4.7",
+      "objective": "",
+      "heartbeat_age_s": 1768,
+      "squad_leads": 6,
+      "squad_target": 50,
+      "workers": 6,
+      "worker_target": 250,
+      "sub_agents_seen": 12,
+      "sub_agents_running": 0,
+      "sub_agents_done": 12,
+      "sub_agents_failed": 0,
+      "worker_sub_agents_seen": 6,
+      "worker_sub_agents_running": 0,
+      "worker_sub_agents_done": 6,
+      "worker_sub_agents_failed": 0,
+      "telemetry_workers_seen": 6,
+      "telemetry_workers_running": 0,
+      "telemetry_workers_done": 6,
+      "telemetry_workers_failed": 0,
+      "atoms": 6,
+      "recent": [
+        {
+          "event": "completed",
+          "child_id": "wkr-005-001",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-005",
+          "role": "squad_lead",
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "wkr-006-001",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-006",
+          "role": "squad_lead",
+          "model": null,
+          "summary": null
+        }
+      ]
+    },
+    {
+      "id": "commander-002",
+      "status": "partial",
+      "phase": "complete",
+      "active": false,
+      "model": "gpt-5.5",
+      "objective": "",
+      "heartbeat_age_s": 1061,
+      "squad_leads": 30,
+      "squad_target": 50,
+      "workers": 72,
+      "worker_target": 250,
+      "sub_agents_seen": 130,
+      "sub_agents_running": 54,
+      "sub_agents_done": 76,
+      "sub_agents_failed": 0,
+      "worker_sub_agents_seen": 100,
+      "worker_sub_agents_running": 32,
+      "worker_sub_agents_done": 68,
+      "worker_sub_agents_failed": 0,
+      "telemetry_workers_seen": 100,
+      "telemetry_workers_running": 5,
+      "telemetry_workers_done": 67,
+      "telemetry_workers_failed": 0,
+      "atoms": 39,
+      "recent": [
+        {
+          "event": "completed",
+          "child_id": "wkr-006-003",
+          "role": "worker",
+          "model": "gpt-5.3-codex",
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "wkr-006-004",
+          "role": "worker",
+          "model": "claude-sonnet-4.5",
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "wkr-006-005",
+          "role": "worker",
+          "model": "gpt-5.2-codex",
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-006",
+          "role": "squad_lead",
+          "model": "(squad-lead)",
+          "summary": null
+        }
+      ]
+    },
+    {
+      "id": "commander-003",
+      "status": "success",
+      "phase": "complete",
+      "active": false,
+      "model": "claude-opus-4.6",
+      "objective": "",
+      "heartbeat_age_s": 1563,
+      "squad_leads": 50,
+      "squad_target": 50,
+      "workers": 250,
+      "worker_target": 250,
+      "sub_agents_seen": 300,
+      "sub_agents_running": 0,
+      "sub_agents_done": 300,
+      "sub_agents_failed": 0,
+      "worker_sub_agents_seen": 250,
+      "worker_sub_agents_running": 0,
+      "worker_sub_agents_done": 250,
+      "worker_sub_agents_failed": 0,
+      "telemetry_workers_seen": 250,
+      "telemetry_workers_running": 0,
+      "telemetry_workers_done": 250,
+      "telemetry_workers_failed": 0,
+      "atoms": 250,
+      "recent": [
+        {
+          "event": "completed",
+          "child_id": "sq-047",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-048",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-049",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-050",
+          "role": null,
+          "model": null,
+          "summary": null
+        }
+      ]
+    },
+    {
+      "id": "commander-004",
+      "status": "partial",
+      "phase": "complete",
+      "active": false,
+      "model": "gpt-5.4",
+      "objective": "",
+      "heartbeat_age_s": 95,
+      "squad_leads": 50,
+      "squad_target": 50,
+      "workers": 250,
+      "worker_target": 250,
+      "sub_agents_seen": 300,
+      "sub_agents_running": 25,
+      "sub_agents_done": 274,
+      "sub_agents_failed": 1,
+      "worker_sub_agents_seen": 250,
+      "worker_sub_agents_running": 25,
+      "worker_sub_agents_done": 224,
+      "worker_sub_agents_failed": 1,
+      "telemetry_workers_seen": 250,
+      "telemetry_workers_running": 0,
+      "telemetry_workers_done": 247,
+      "telemetry_workers_failed": 3,
+      "atoms": 247,
+      "recent": [
+        {
+          "event": "completed",
+          "child_id": "wkr-046-004",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "wkr-046-005",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-046",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-045",
+          "role": null,
+          "model": null,
+          "summary": null
+        }
+      ]
+    },
+    {
+      "id": "commander-005",
+      "status": "success",
+      "phase": "complete",
+      "active": false,
+      "model": "claude-opus-4.5",
+      "objective": "",
+      "heartbeat_age_s": 1319,
+      "squad_leads": 50,
+      "squad_target": 50,
+      "workers": 250,
+      "worker_target": 250,
+      "sub_agents_seen": 50,
+      "sub_agents_running": 0,
+      "sub_agents_done": 50,
+      "sub_agents_failed": 0,
+      "worker_sub_agents_seen": 0,
+      "worker_sub_agents_running": 0,
+      "worker_sub_agents_done": 0,
+      "worker_sub_agents_failed": 0,
+      "telemetry_workers_seen": 250,
+      "telemetry_workers_running": 0,
+      "telemetry_workers_done": 250,
+      "telemetry_workers_failed": 0,
+      "atoms": 50,
+      "recent": [
+        {
+          "event": "completed",
+          "child_id": "sq-047",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-026",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-036",
+          "role": null,
+          "model": null,
+          "summary": null
+        },
+        {
+          "event": "completed",
+          "child_id": "sq-044",
+          "role": null,
+          "model": null,
+          "summary": null
+        }
+      ]
+    }
+  ],
+  "collab": {
+    "proposals": 5,
+    "reviews": 18,
+    "improvements": 11,
+    "consensus": 8,
+    "broadcasts": 7
+  },
+  "active_commanders": 0,
+  "running_sub_agents": 0,
+  "sub_agents_seen": 856,
+  "sub_agents_done": 820
+}

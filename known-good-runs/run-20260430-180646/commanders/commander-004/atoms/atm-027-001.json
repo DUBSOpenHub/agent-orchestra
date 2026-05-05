@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-027-001",
+  "theme": "agent-pulse-monitoring",
+  "focus": "pulse-count-sources",
+  "findings": [
+    "Running count = len(claimed/*.json), completed = len(results/*.json), queued = len(queue/*.json); no separate top-level failed count. stampede-monitor.sh:69-77",
+    "Count sources: state.json for total_tasks snapshot, fleet.json for roles, swarm-state.json per commander for nested telemetry. stampede-monitor.sh:20,41-55,87-89",
+    "Fallback TOTAL_TASKS uses find on full paths across queue/claimed/results dirs \u2014 same task in multiple dirs is double-counted (off-by-one risk). stampede-monitor.sh:75",
+    "Race window: queue/claimed/results counted in separate find calls; concurrent mv during task claiming can momentarily skew counts. stampede-monitor.sh:86-89",
+    "Empty-run guard: if computed total==0, forces TOTAL_TASKS=1 (synthetic denominator). stampede-monitor.sh:74-77",
+    "Metaswarm nested counts displayed per-commander via swarm-state.json telemetry: workers_running, workers_completed, workers_failed, atoms_received. stampede-monitor.sh:145-190",
+    "No aggregate commander-vs-worker summary row; nested display is per-commander inline only."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:27-30",
+    "bin/stampede-monitor.sh:69-77",
+    "bin/stampede-monitor.sh:86-89",
+    "bin/stampede-monitor.sh:113-115",
+    "bin/stampede-monitor.sh:143-190",
+    "bin/stampede-monitor.sh:237-276",
+    "bin/stampede-monitor.sh:362-363"
+  ],
+  "confidence": 0.95,
+  "status": "complete"
+}

@@ -1,0 +1,36 @@
+{
+  "worker_id": "wkr-027-003",
+  "model": "claude-opus-4.6",
+  "squad_lead": "sq-027",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "focus": "synthesis collab consumption",
+  "status": "completed",
+  "verdict": "high_risk_gap",
+  "highlights": [
+    "bin/stampede-merge.sh has ZERO references to collab/, consensus, broadcasts, proposals, or adopted items",
+    "agents/stampede-merger.agent.md Load Context reads only results/*.json, fleet.json, runtime-stats.json \u2014 no collab awareness",
+    "skills/SKILL.md synthesis (lines 570-660) iterates results/*.json only \u2014 never reads collab/ ledgers or bundle consensus fields",
+    "bin/stampede.sh line 1013 instructs commanders to include adopted_consensus_item_ids in bundle.json, but no downstream consumer reads them",
+    "32 lines of real collab data exist in this run (5 proposals, 11 reviews, 7 improvements, 5 consensus, 4 broadcasts) \u2014 all silently discarded"
+  ],
+  "gaps": [
+    "stampede-merge.sh does not pass any collab content into the merger agent prompt",
+    "stampede-merger.agent.md has no instructions to read collab/*.jsonl or validate source_refs",
+    "SKILL.md synthesis step does not consume adopted_consensus from bundles or collab ledgers",
+    "Bundle Shape in stampede-commander.agent.md defines a consensus field but no reader exists",
+    "No code path anywhere in merge/synthesis reads broadcasts.jsonl or consensus.jsonl",
+    "Commander-002 has no bundle.json yet, so even if a reader existed it would find nothing to consume"
+  ],
+  "evidence": [
+    "bin/stampede-merge.sh: grep for collab|consensus|broadcast|adopted returns 0 matches",
+    "agents/stampede-merger.agent.md: grep for collab|consensus|broadcast|adopted returns 0 matches",
+    "skills/SKILL.md: grep for collab|consensus|broadcast|adopted returns 0 matches",
+    "bin/stampede.sh:1013 \u2014 commander prompt says include adopted consensus item_ids in bundle.json",
+    "agents/stampede-commander.agent.md:270 \u2014 Bundle Shape has consensus.tier and consensus.notes fields",
+    ".stampede/run-20260430-180646/collab/ \u2014 32 lines across 5 ledger files (real data exists)",
+    "commanders/commander-002/ \u2014 no bundle.json present"
+  ],
+  "confidence": 0.97,
+  "ts": "2026-05-01T01:21:45Z"
+}

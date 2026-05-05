@@ -1,0 +1,10 @@
+{
+  "squad_id": "sq-009",
+  "parent_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "atom_id": "atm-009",
+  "status": "complete",
+  "timestamp": "2026-04-30T18:19:25.306125Z",
+  "worker_count": 5,
+  "all_workers_succeeded": true
+}

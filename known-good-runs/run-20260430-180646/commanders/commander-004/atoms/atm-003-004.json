@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-003-004",
+  "theme": "commander-launch-profile",
+  "focus": "docs-claim-branch-alignment",
+  "findings": [
+    "Task-claiming docs aligned: README/AGENTS both describe atomic mv/POSIX rename",
+    "Branch naming INCONSISTENT: README says stampede/{task_id}, AGENTS says stampede/<agent-id>/<task-id>",
+    "Metaswarm gating consistently documented as explicit --metaswarm opt-in across all docs",
+    "50 SL x 5 W = 250 contract consistent across README, AGENTS, SKILL, commander agent",
+    "Silent-downgrade handling consistently documented: must surface as partial not silently reduce"
+  ],
+  "source_refs": [
+    "README.md:52,212-219,223-227; AGENTS.md:67-69",
+    "README.md:202,223-225; AGENTS.md:69",
+    "README.md:130-136; AGENTS.md:20-30,72",
+    "README.md:35,83,130; AGENTS.md:22,29,72",
+    "README.md:35,130; AGENTS.md:29"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

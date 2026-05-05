@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-030-003",
+  "theme": "agent-pulse-monitoring",
+  "focus": "launcher-monitor-handoff",
+  "findings": [
+    "Launcher seeds commander progress_dir, swarm-state.json, and child-agents.jsonl, and exports STAMPEDE_PROGRESS_DIR to commander.",
+    "Monitor launch uses RUN_ID and BASE_DIR for run-scoped context.",
+    "No explicit Agent Pulse channel beyond swarm-state.json heartbeat fields.",
+    "Fallback watch mode does not read commander progress artifacts, reducing pulse visibility.",
+    "Prereq warning for missing monitor may overstate skip risk."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:747-749",
+    "bin/stampede.sh:851-860",
+    "bin/stampede.sh:905",
+    "bin/stampede.sh:929",
+    "bin/stampede.sh:1059-1061",
+    "bin/stampede.sh:1064-1100"
+  ],
+  "confidence": 0.9,
+  "status": "success"
+}

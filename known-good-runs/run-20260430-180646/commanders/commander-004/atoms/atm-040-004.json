@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-040-004",
+  "theme": "stop-teardown-behavior",
+  "focus": "detach-vs-session-lifetime",
+  "findings": [
+    "tmux sessions are created detached (-d) with optional auto-attach; --no-attach suppresses attach.",
+    "README documents detach keeps agents running; sessions persist until explicit teardown.",
+    "remain-on-exit enabled to keep crashed panes visible."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:22",
+    "bin/stampede.sh:42",
+    "bin/stampede.sh:57",
+    "bin/stampede.sh:260",
+    "bin/stampede.sh:1166-1167",
+    "bin/stampede.sh:1362-1475",
+    "bin/stampede.sh:305-360",
+    "README.md:311-324"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

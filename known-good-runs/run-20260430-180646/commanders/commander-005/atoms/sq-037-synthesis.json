@@ -1,0 +1,218 @@
+{
+  "squad_lead": "sq-037",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Shadow Score Integration - Part 1",
+  "timestamp": "2026-04-30T18:06:46Z",
+  "workers": [
+    {
+      "id": "wkr-037-001",
+      "task": "Check shadow score references",
+      "model": "gpt-5.3-codex",
+      "status": "complete",
+      "findings": {
+        "files_with_references": [
+          "bin/stampede-merge.sh",
+          "bin/stampede-monitor.sh",
+          "agents/stampede-merger.agent.md",
+          "skills/SKILL.md",
+          "AGENTS.md",
+          "README.md",
+          "BLOG.md",
+          "docs/story.md",
+          "gen-stampede-gif.py"
+        ],
+        "reference_types": {
+          "implementation_variables": "bin/stampede-merge.sh (SHADOW_SCORE, shadow_score, sealed test execution, percent calculation, level mapping, report JSON)",
+          "ui_text": "bin/stampede-monitor.sh:375, gen-stampede-gif.py:134",
+          "documentation": "All markdown files (README, AGENTS, BLOG, docs/story)",
+          "agent_skill": "agents/stampede-merger.agent.md, skills/SKILL.md"
+        },
+        "actual_calculation_present": true,
+        "calculation_location": "bin/stampede-merge.sh:231",
+        "calculation_formula": "SHADOW_SCORE=$((SEALED_FAILED * 100 / SEALED_TOTAL))",
+        "spec_url": "https://github.com/DUBSOpenHub/shadow-score-spec",
+        "spec_url_locations": [
+          "AGENTS.md:70",
+          "skills/SKILL.md:332",
+          "README.md:42",
+          "BLOG.md:13,61",
+          "docs/story.md:13,61"
+        ]
+      }
+    },
+    {
+      "id": "wkr-037-002",
+      "task": "Verify score calculation patterns",
+      "model": "claude-sonnet-4.5",
+      "status": "complete",
+      "findings": {
+        "scoring_layers": 3,
+        "weighted_dimensions": [
+          { "name": "Completeness", "weight": 0.30 },
+          { "name": "Scope Adherence", "weight": 0.25 },
+          { "name": "Code Quality", "weight": 0.20 },
+          { "name": "Test Impact", "weight": 0.15 },
+          { "name": "Conflict Friendliness", "weight": 0.10 }
+        ],
+        "formula": "weighted_total = (completeness*0.30 + scope*0.25 + quality*0.20 + test*0.15 + conflict*0.10) * 5",
+        "scale": "0-50",
+        "runtime_bonus": {
+          "speed_bonus": "+2 if duration <= 120s",
+          "stuck_penalty": "-1 per stuck count, max -3"
+        },
+        "rubrics_defined": true,
+        "rubric_locations": "bin/stampede-merge.sh:360-411",
+        "sealed_envelope_scoring": {
+          "formula": "shadow_score_pct = sealed_failed * 100 / sealed_total",
+          "thresholds": {
+            "0%": "Perfect",
+            "<=15%": "Minor blind spots",
+            "<=30%": "Moderate gaps",
+            "<=50%": "Significant gaps",
+            ">50%": "Critical - consider rework"
+          }
+        },
+        "model_aggregation": "avg_score, best, worst per model stored in ~/.stampede/model-stats.json",
+        "gaps": [
+          "Sealed test auto-generation not automated in pipeline",
+          "No minimum quality gates or rejection thresholds",
+          "Score justification text not implemented in shell script",
+          "No real-time scoring during execution"
+        ]
+      }
+    },
+    {
+      "id": "wkr-037-003",
+      "task": "Check sealed criteria handling",
+      "model": "gpt-5.2-codex",
+      "status": "complete",
+      "findings": {
+        "sealed_criteria_defined_before_run": true,
+        "definition_location": "skills/SKILL.md:329-388 (Step 5.5)",
+        "mechanism": "Before launching agents, generate 3-5 acceptance tests per task, hash them with sha256sum stored in .seal-hash, never share with workers",
+        "post_hoc_measurement": true,
+        "measurement_location": "bin/stampede-merge.sh:202-253",
+        "tamper_evidence": "sha256sum hash verification of sealed tests before scoring",
+        "worker_agent_awareness": "stampede-agent.agent.md has NO mentions of sealed/envelope/hidden criteria (leaf workers are unaware by design)",
+        "merger_uses_predefined_criteria": true,
+        "merger_criteria_location": "agents/stampede-merger.agent.md:18-21, 141-172",
+        "documentation": "README.md and AGENTS.md both confirm: quality defined before agents run, measured silently after"
+      }
+    },
+    {
+      "id": "wkr-037-004",
+      "task": "Verify score reporting",
+      "model": "claude-opus-4.7",
+      "status": "complete",
+      "findings": {
+        "score_report_outputs": [
+          {
+            "type": "JSON report",
+            "path": ".stampede/{run_id}/merge-report.json",
+            "written_by": "bin/stampede-merge.sh",
+            "atomic_write": true
+          },
+          {
+            "type": "Console scorecard",
+            "format": "ASCII table",
+            "written_by": "bin/stampede-merge.sh:506-555"
+          },
+          {
+            "type": "JSONL log",
+            "path": ".stampede/{run_id}/logs/merger.jsonl",
+            "written_by": "bin/stampede-merge.sh:597-608"
+          },
+          {
+            "type": "Cross-run stats",
+            "path": "~/.stampede/model-stats.json",
+            "written_by": "bin/stampede-merge.sh:557-595"
+          }
+        ],
+        "report_schema_defined_in": [
+          "agents/stampede-merger.agent.md:239-298",
+          "bin/stampede-merge.sh:463-504"
+        ],
+        "score_fields": [
+          "completeness", "scope_adherence", "code_quality",
+          "conflict_friendliness", "test_impact", "weights",
+          "weighted_total", "runtime_bonus", "adjusted_total"
+        ],
+        "aggregation_levels": [
+          "per-agent (5 weighted dimensions)",
+          "run-level average (summary.avg_score)",
+          "per-model aggregation (model_scores)",
+          "cross-run tracking (~/.stampede/model-stats.json)"
+        ],
+        "gaps": [
+          "No actual merge-report.json exists in current run dirs",
+          "No sealed-envelope tests in sample run (sealed-tests/ absent)",
+          "No per-agent JSON score output during execution",
+          "No markdown report generated, only JSON + console",
+          "Duplicate score logic between SKILL.md:700-768 and stampede-merge.sh"
+        ]
+      }
+    },
+    {
+      "id": "wkr-037-005",
+      "task": "Check shadow score spec link",
+      "model": "gpt-5.5",
+      "status": "complete",
+      "findings": {
+        "spec_url": "https://github.com/DUBSOpenHub/shadow-score-spec",
+        "url_is_live": true,
+        "link_format_in_readme": "[Shadow scoring](https://github.com/DUBSOpenHub/shadow-score-spec)",
+        "link_locations": [
+          "README.md:42",
+          "AGENTS.md:70",
+          "skills/SKILL.md:332",
+          "BLOG.md:13,61",
+          "docs/story.md:13,61"
+        ],
+        "non_link_reference": "bin/stampede-merge.sh:233 (comment: # Interpret score per Shadow Score spec)",
+        "local_spec_document": false,
+        "inline_spec_embedded": true,
+        "inline_spec_locations": [
+          "skills/SKILL.md:329-389 (sealed-envelope test generation)",
+          "skills/SKILL.md:686-707 (scorecard display format)",
+          "agents/stampede-merger.agent.md:141-172 (weighted scoring rubric)",
+          "agents/stampede-merger.agent.md:235-305 (merge-report.json schema)",
+          "bin/stampede-merge.sh:230-248 (score computation and band mapping)"
+        ],
+        "implementation_type": "external spec (linked) + internal implementation (embedded in skill, merger agent, and merge script)",
+        "run_data_observation": "No merge-report.json or score files found in existing .stampede run directories; result JSONs contain confidence/consensus/telemetry/launch_proof fields but not Shadow Score fields"
+      }
+    }
+  ],
+  "synthesis": {
+    "overall_status": "Shadow Score integration is well-designed and substantially implemented but has key gaps between spec and live execution",
+    "integration_health": "partial",
+    "strengths": [
+      "External spec consistently linked (https://github.com/DUBSOpenHub/shadow-score-spec) across README, AGENTS.md, SKILL.md, BLOG.md, docs",
+      "Spec URL is live and accessible",
+      "Complete 5-dimension weighted scoring formula implemented in bin/stampede-merge.sh",
+      "Sealed-envelope protocol fully specified in SKILL.md with tamper-evidence (sha256 hash)",
+      "Scorer is hidden from workers by design (stampede-agent.agent.md has no scoring awareness)",
+      "Score reporting schema defined in both agent spec and shell implementation",
+      "Atomic write for merge-report.json (tmp file + rename pattern)",
+      "Model-level aggregation and cross-run statistics implemented",
+      "Runtime bonus/penalty system accounts for speed and stuck events"
+    ],
+    "gaps": [
+      "No actual merge-report.json files exist in any .stampede run directory — scoring pipeline has not been exercised end-to-end",
+      "sealed-tests/ directory absent from all observed runs — sealed test generation not happening in practice",
+      "Score justification text (per-dimension explanations) specified in merger agent but not implemented in stampede-merge.sh",
+      "No minimum quality gates or auto-rejection thresholds",
+      "Duplicate score display logic between SKILL.md:700-768 and stampede-merge.sh (drift risk)",
+      "Existing run result files (commander-*.json, state.json) contain telemetry/confidence fields but no Shadow Score fields"
+    ],
+    "critical_finding": "Shadow Score exists as a well-defined specification embedded in the codebase, but there is no evidence it has ever executed end-to-end in the current run infrastructure. The .stampede/ run directories lack both sealed-tests/ and merge-report.json, indicating the scoring pipeline is implemented but not yet integrated into the active orchestration flow.",
+    "recommendations": [
+      "Wire sealed test generation into SKILL.md Step 5.5 with actual automated execution, not just prose instructions",
+      "Add merge-report.json to the run state schema so commander result bundles can reference it",
+      "Remove duplicate scorecard logic from SKILL.md or make it the single source of truth",
+      "Add a minimum score threshold (e.g., adjusted_total < 20 triggers rework signal)",
+      "Implement score justification text in stampede-merge.sh to match the merger agent spec"
+    ]
+  }
+}

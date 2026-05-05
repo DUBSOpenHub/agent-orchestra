@@ -1,0 +1,138 @@
+{
+  "squad_id": "sq-017",
+  "commander_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "squad_lead": "sq-017",
+  "depth": 2,
+  "domain": "collaboration-bus",
+  "task_focus": "QA collaboration-bus review-only: runtime_prompt_vs_agent_docs, event_schema_compliance, consensus_linkage, broadcasts_adoption, recovery_behavior",
+  "review_only": true,
+  "status": "ok",
+  "ts": "2026-05-01T01:22:48.341084+00:00",
+  "worker_agent_ids": [
+    "wkr-017-001",
+    "wkr-017-002",
+    "wkr-017-003",
+    "wkr-017-004",
+    "wkr-017-005"
+  ],
+  "worker_models": {
+    "wkr-017-001": "claude-opus-4.7",
+    "wkr-017-002": "gpt-5.5",
+    "wkr-017-003": "claude-opus-4.6",
+    "wkr-017-004": "gpt-5.4",
+    "wkr-017-005": "claude-opus-4.5"
+  },
+  "findings": {
+    "runtime_prompt_vs_agent_docs": {
+      "collab_workflow_absent_from_agent_doc": "stampede-commander.agent.md has zero mentions of collaboration-bus, propose->peer_review->improve->consensus->broadcast->adopt, ledger paths, required_fields, or atomic_append_guidance. Entire bus workflow conveyed via runtime prompt injection only.",
+      "STAMPEDE_COLLAB_vars_undocumented": "7 STAMPEDE_COLLAB_* env vars exported by launcher (bin/stampede.sh:930-936) absent from agent doc's Required Workflow step 1 env discovery list.",
+      "STAMPEDE_METASWARM_NO_GATES_contradiction": "STAMPEDE_METASWARM_NO_GATES=1 override (bin/stampede.sh:912-914) instructs disable of circuit-breaker/timeout/cost ceiling; agent doc Launch-Proof lines 142-146 still mandates 'partial' status \u2014 direct contradiction.",
+      "bundle_shape_missing_adopted_consensus_and_source_refs": "Runtime prompt requires adopted_consensus_item_ids/source_refs in bundle (bin/stampede.sh:910); agent doc Bundle Shape (lines 240-267) omits both fields entirely.",
+      "model_rotation_requirement_absent_from_doc": "Runtime mandates model rotation across workers; agent doc only says 'explicit model override' required \u2014 no rotation requirement.",
+      "task_id_example_drift": "Agent doc Bundle Shape example uses task_id='contestant-001' (Havoc-style); live run uses 'commander-002'.",
+      "sub_agent_vs_child_agent_terminology": "Runtime prompt uses 'sub-agent' 3x; canonical filename is child-agents.jsonl and agent doc uses 'child-agent' exclusively.",
+      "worker_depth_lock_doc_only": "LEAF NODE block exists in agent doc (lines 230-236) but not echoed in runtime prompt \u2014 depth-bypass risk if commander derives worker prompt from runtime alone.",
+      "stampede_agent_compliance": "stampede-agent.agent.md confirmed compliant: no task/ask_user/read_agent/list_agents; explicit LEAF NODE rule present."
+    },
+    "event_schema_compliance": {
+      "total_events_audited": 32,
+      "malformed_lines": 0,
+      "missing_evidence_field": {
+        "count": 13,
+        "affected_ledger": "reviews.jsonl",
+        "detail": "11/11 review events missing 'evidence' field (required by protocol.json). reviews.jsonl also has 'target_commander' and 'target_item_id' fields not in protocol schema."
+      },
+      "missing_source_refs": {
+        "count": 2,
+        "detail": "2 events missing source_refs (improvements.jsonl entries by commander-003/005)"
+      },
+      "event_field_mismatches": 0,
+      "confidence_range_violations": 0,
+      "ts_format_inconsistency": "Mixed formats: some use 'Z' suffix, some use '+00:00' offset, some omit microseconds \u2014 all parse as valid ISO 8601 but inconsistent.",
+      "item_id_cross_reference_consistency": "item_id values are stable within ledgers; based_on arrays and consensus_item_id references link correctly where used, but some improvements use source_item_id vs based_on inconsistently."
+    },
+    "consensus_linkage": {
+      "orphaned_proposals": 0,
+      "orphaned_improvements": 1,
+      "detail_orphaned_improvements": "imp-003-terminology not referenced in any consensus based_on array",
+      "consensus_not_broadcast": 1,
+      "detail_not_broadcast": "cons-c001-pre-build-minors has no corresponding broadcast",
+      "broadcasts_with_invalid_consensus_ref": 0,
+      "workflow_completeness": {
+        "full_workflow_commanders": [
+          "commander-001",
+          "commander-003",
+          "commander-005"
+        ],
+        "partial_workflow_commanders": [
+          "commander-002",
+          "commander-004"
+        ],
+        "detail": "commander-002 stalled at propose-only; commander-004 stalled at propose-only. 3/5 commanders completed full workflow."
+      },
+      "adoption_linkage": "No standard adopted_consensus_item_ids field enforced across commanders; commander-001 broadcast uses ADOPT prefix in summary; commander-003 uses adopted_items non-standard field."
+    },
+    "broadcasts_adoption": {
+      "broadcasts_with_adopt_recommendation": 2,
+      "broadcasts_informational_only": 2,
+      "schema_inconsistency": "commander-003 broadcast uses adopted_items[] non-standard field; commander-001 uses consensus_item_id; no unified adoption field schema.",
+      "commander_agent_describes_adoption": false,
+      "launcher_enforces_broadcast_before_complete": false,
+      "skill_consumes_broadcast_ledger": false,
+      "merger_gates_on_adoption": false,
+      "monitor_shows_adoption_status": false,
+      "summary": "Adoption is protocol-defined and launcher-instructed but never enforced by any component (commander agent, launcher validation, merger, SKILL.md, monitor)."
+    },
+    "recovery_behavior": {
+      "commander_timeout_in_launcher": false,
+      "stuck_detection": "Monitor detects claimed task age > 120s (stampede-monitor.sh:201-216); orphan recovery at 180s (line 25, 237-278).",
+      "commander_specific_stuck_banner": false,
+      "teardown_drains_writers": false,
+      "teardown_status_drift": "--teardown sets phase=torn_down (swarm-state.json) but status field not set to 'stopped'; bundle writers may still be active.",
+      "duplicate_run_id": "Silently tears down existing tmux session and overwrites .stampede/{run_id} data \u2014 no warning/refuse.",
+      "pid_capture_race": "PID captured after fixed sleep 5 (bin/stampede.sh:293); not refreshed on pane restart; race with process startup.",
+      "retry_budget_unused": "retry_budget=1 defined in context capsule constraints but no component (launcher, monitor) consumes or enforces it.",
+      "failed_commander_no_relaunch": "On commander failure, launcher logs failed status but does not retry or relaunch."
+    }
+  },
+  "gaps": [
+    "stampede-commander.agent.md has zero coverage of collaboration-bus \u2014 entire workflow is runtime-prompt-only with no doc fallback.",
+    "reviews.jsonl: all 11 events missing required 'evidence' field (protocol violation).",
+    "Bundle Shape missing adopted_consensus_item_ids and source_refs despite runtime requirement.",
+    "STAMPEDE_METASWARM_NO_GATES=1 override contradicts agent doc partial-status circuit-breaker rule.",
+    "cons-c001-pre-build-minors never broadcast; imp-003-terminology never referenced in consensus.",
+    "commander-002 and commander-004 stalled at propose-only \u2014 no peer_review/improve/consensus/broadcast.",
+    "Adoption enforcement: zero components (agent, launcher, merger, SKILL.md, monitor) validate broadcast-before-complete or adopted_consensus presence.",
+    "Teardown does not drain in-flight bundle writers; duplicate run_id silently overwrites data.",
+    "No commander-specific stuck/blocked banner in monitor.",
+    "retry_budget field defined but unused; failed commanders not retried.",
+    "ts format inconsistency across ledgers (Z vs +00:00 vs microseconds).",
+    "item_id cross-ledger referencing inconsistent (adopted_items vs consensus_item_id vs based_on).",
+    "STAMPEDE_COLLAB_* env vars absent from agent doc env discovery list."
+  ],
+  "evidence": [
+    "agents/stampede-commander.agent.md:1-267 \u2014 zero occurrences of 'collaborat'/'propose'/'broadcast'/'ledger'/'adopt'",
+    "bin/stampede.sh:907-936 \u2014 STAMPEDE_COLLAB_* env vars + runtime collab prompt",
+    "bin/stampede.sh:912-914 \u2014 STAMPEDE_METASWARM_NO_GATES override",
+    "agents/stampede-commander.agent.md:142-146 \u2014 partial-status circuit-breaker (contradicts override)",
+    "agents/stampede-commander.agent.md:240-267 \u2014 Bundle Shape missing adopted_consensus_item_ids/source_refs",
+    "collab/reviews.jsonl:all 11 events \u2014 missing evidence field",
+    "collab/consensus.jsonl:cons-c001-pre-build-minors \u2014 no matching broadcast",
+    "collab/improvements.jsonl:imp-003-terminology \u2014 not in any consensus based_on",
+    "collab/broadcasts.jsonl:bcast-003-findings \u2014 uses adopted_items[] non-standard field",
+    "bin/stampede.sh:293 \u2014 PID capture after fixed sleep 5",
+    "bin/stampede-monitor.sh:201-216 \u2014 stuck detection 120s; 237-278 orphan recovery 180s",
+    "bin/stampede-monitor.sh \u2014 no commander-specific blocked banner",
+    "bin/stampede.sh teardown \u2014 sets phase=torn_down not status=stopped; no drain",
+    "agents/stampede-commander.agent.md:210 \u2014 retry_budget=1 context-only, never consumed"
+  ],
+  "confidence": 0.91,
+  "sq_worker_confidences": {
+    "wkr-017-001": 0.92,
+    "wkr-017-002": 0.94,
+    "wkr-017-003": 0.93,
+    "wkr-017-004": 0.96,
+    "wkr-017-005": 0.92
+  }
+}

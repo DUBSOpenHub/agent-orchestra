@@ -1,0 +1,27 @@
+{
+  "worker_id": "wkr-004-003",
+  "theme": "commander-launch-profile",
+  "focus": "skill-launch-phrasing",
+  "findings": [
+    "Metaswarm launch phrasing is explicit: commander panes plus a full SS-250 child swarm per commander.",
+    "Bounded spawning is encoded with constraints.max_workers=250 and depth_budget.squads_allocated=50.",
+    "No-silent-downgrade behavior is explicit; under-launch must report partial or failed.",
+    "Sub-agent telemetry/proof is explicitly required via swarm-state.json and child-agents.jsonl per commander.",
+    "Live worker liveness counts are present in monitor output, but Agent Pulse terminology is not explicit.",
+    "Model parsing/default exists, but the skill text does not itself spell out premium-only or banned-model enforcement.",
+    "Teardown/resume/cleanup behavior is surfaced in command grammar and flow.",
+    "No collaboration-bus creation phrasing appears in this file."
+  ],
+  "source_refs": [
+    "skills/SKILL.md:34",
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:489",
+    "skills/SKILL.md:110",
+    "skills/SKILL.md:112-114",
+    "skills/SKILL.md:33-34",
+    "skills/SKILL.md:35-37",
+    "skills/SKILL.md:841"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

@@ -1,0 +1,27 @@
+{
+  "worker_id": "wkr-003-005",
+  "theme": "commander-launch-profile",
+  "focus": "negative-downgrade-cases",
+  "findings": [
+    "Silent worker reduction if tmux pane creation fails - no error check at line 1117",
+    "PID file write failures go unreported - no error check at line 1186",
+    "No stuck detection in launcher; dead workers leave tasks in claimed/ forever",
+    "Race condition window: agents instructed to use mv but no POSIX rename enforcement",
+    "No validation that commanders actually launched 250 workers - could silently report success with fewer",
+    "Teardown only kills tracked PIDs - orphan child processes possible",
+    "Smoke test does not cover partial/failed bundle validation",
+    "Error handler swallows exceptions silently in mark_run_blocked"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:1117-1120,1205-1222",
+    "bin/stampede.sh:1186,325-337",
+    "bin/stampede.sh:1092-1097; tests/smoke-test.sh:151-161",
+    "bin/stampede.sh:893-894,904",
+    "bin/stampede.sh:908-911,833-847",
+    "bin/stampede.sh:304-361,71-88",
+    "tests/smoke-test.sh:73-149",
+    "bin/stampede.sh:139-193"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

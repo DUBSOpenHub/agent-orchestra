@@ -1,0 +1,11 @@
+{
+  "atom_id": "atm-005-001",
+  "area": "monitor-nested-rendering",
+  "blockers": 0,
+  "highlights": [
+    "Metaswarm detection via fleet.json/collab present (not commanders/ direct)",
+    "MAJOR: monitor does NOT tail child-agents.jsonl - Agent Pulse derives only from swarm-state.json",
+    "MAJOR: no commander-specific blocked/stuck on pane death; recovery is task-centric only",
+    "MINOR: no dedicated Agent Pulse panel or explicit stuck-threshold display"
+  ]
+}

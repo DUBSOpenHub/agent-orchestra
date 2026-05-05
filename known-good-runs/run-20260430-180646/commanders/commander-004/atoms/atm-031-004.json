@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-031-004",
+  "theme": "partial-failure-bundles",
+  "focus": "bundle-shape",
+  "findings": [
+    "Core status rules are clear: success only at 50 squad leads and 250 workers launched, partial on prevented full launch, failed on zero squad leads.",
+    "swarm-state.json has a stronger launch-proof schema than the final commander bundle.",
+    "Gap: final bundle schema does not require launch_proof, partial or failure reasons, or explicit consistency checks between status and telemetry.",
+    "README reiterates partial-not-success policy but does not tighten the final bundle contract."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:69-129",
+    "agents/stampede-commander.agent.md:140-146",
+    "agents/stampede-commander.agent.md:254-283",
+    "README.md:130-136"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

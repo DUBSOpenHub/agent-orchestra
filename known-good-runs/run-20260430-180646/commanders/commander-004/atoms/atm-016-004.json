@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-016-004",
+  "theme": "telemetry-contract",
+  "focus": "launch-proof-counters",
+  "status": "success",
+  "confidence": 0.92,
+  "findings": [
+    "Monitor uses mismatched counter names between telemetry and launch_proof (squad_leads_launched vs squad_leads_started; workers_launched vs workers_started).",
+    "Monitor conflates workers_completed with atoms_received fallback (semantic ambiguity: \u201ccompleted workers\u201d != \u201catoms received\u201d).",
+    "workers_failed falls back to children_failed (term mismatch).",
+    "Incomplete proof warning triggers only when status==success, so it may not surface during execution; and it suppresses if workers_launched == 0 (falsy).",
+    "README describes metaswarm scaling but does not define counter fields/semantics, leaving contract implicit."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:158-165",
+    "bin/stampede-monitor.sh:160-164",
+    "bin/stampede-monitor.sh:179-180",
+    "README.md:35",
+    "README.md:83"
+  ]
+}

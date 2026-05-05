@@ -1,0 +1,81 @@
+{
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-004",
+  "task_id": "commander-004",
+  "role": "commander",
+  "profile": "metaswarm",
+  "swarm_scale": "ss-250",
+  "per_commander_full_swarm": true,
+  "phase": "complete",
+  "status": "partial",
+  "launch_proof_required": true,
+  "launch_proof": {
+    "squad_leads_started": 50,
+    "workers_started": 250,
+    "first_child_started_at": "2026-05-01T01:15:39Z",
+    "last_child_started_at": "2026-05-01T01:32:30Z"
+  },
+  "depth_budget": {
+    "squads_allocated": 50,
+    "squads_max": 50
+  },
+  "model_policy": "premium",
+  "premium_model_pool": [
+    "claude-opus-4.7",
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5",
+    "gpt-5.2",
+    "claude-sonnet-4.6",
+    "gpt-5.3-codex",
+    "claude-sonnet-4.5",
+    "gpt-5.2-codex"
+  ],
+  "banned_child_models": [
+    "claude-haiku-4.5",
+    "gpt-5.4-mini",
+    "gpt-5-mini",
+    "gpt-4.1"
+  ],
+  "telemetry": {
+    "squad_leads_target": 50,
+    "squad_leads_launched": 50,
+    "squad_leads_running": 0,
+    "squad_leads_completed": 37,
+    "squad_leads_failed": 13,
+    "workers_per_squad_lead": 5,
+    "workers_target": 250,
+    "workers_launched": 250,
+    "workers_running": 0,
+    "workers_completed": 247,
+    "workers_failed": 3,
+    "atoms_received": 247,
+    "children_failed": 16
+  },
+  "updated_at": "2026-05-01T01:40:38Z",
+  "last_heartbeat_at": "2026-05-01T01:40:38Z",
+  "reconciliation": {
+    "worker_requests": 249,
+    "worker_launch_started_events": 218,
+    "worker_completed_events": 232,
+    "worker_failed_events": 9,
+    "atom_files": 247,
+    "missing_atom_workers": [
+      "wkr-039-001",
+      "wkr-039-002",
+      "wkr-039-004"
+    ],
+    "squad_status_counts": {
+      "success": 37,
+      "partial": 13
+    },
+    "reconciled_completion_events": [
+      "sq-045"
+    ],
+    "notes": [
+      "worker evidence union combines launch_started, completed, and actual atom files",
+      "swarm-state counters were rebuilt from ledger/log reconciliation because concurrent child writes clobbered mutable state"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-035-002",
+  "theme": "partial-failure-bundles",
+  "focus": "partial-trigger-paths",
+  "findings": [
+    "SKILL.md only describes partial trigger for metaswarm launch shortfall (SKILL.md:407)",
+    "Run/task status enums exclude partial - only completed or failed (SKILL.md:63,73,836,890)",
+    "README explains partial only for metaswarm silent-downgrade prevention (README.md:35,130)",
+    "No explicit rule distinguishes when to choose partial vs failed",
+    "Banned-model usage NOT documented as partial trigger in SKILL.md or README"
+  ],
+  "source_refs": [
+    "skills/SKILL.md:407",
+    "skills/SKILL.md:63",
+    "skills/SKILL.md:836",
+    "README.md:35",
+    "README.md:130"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "gaps": "Partial only documented narratively for metaswarm bundles; not in SKILL status schema; no partial/failed decision criteria; banned-model partial trigger undocumented"
+}

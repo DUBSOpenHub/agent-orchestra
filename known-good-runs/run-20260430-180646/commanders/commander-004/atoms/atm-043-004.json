@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-043-004",
+  "theme": "recovery-stuck-detection",
+  "focus": "docs-vs-runtime-recovery",
+  "findings": [
+    "README claims PID-based detection; runtime uses tmux pane status instead",
+    "Recovery narrower than docs imply: requeue only when ALL agents dead AND claim stale 180s",
+    "Stuck detection is alert-only (no automatic unstick/restart)",
+    "README does not document key thresholds: 120s stuck, 180s orphan, 15s grace",
+    "Single-dead-worker-while-others-alive is NOT recovered (undocumented)",
+    "Zero coordination failures claim is aspirational for recovery surface"
+  ],
+  "source_refs": [
+    "README.md:235",
+    "README.md:86",
+    "README.md:160",
+    "README.md:173",
+    "bin/stampede-monitor.sh:200-216,237-277,298-305"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

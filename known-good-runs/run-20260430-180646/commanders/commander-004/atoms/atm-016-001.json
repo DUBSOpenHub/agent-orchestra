@@ -1,0 +1,24 @@
+{
+  "worker_id": "wkr-016-001",
+  "theme": "telemetry-contract",
+  "focus": "state-shape",
+  "status": "success",
+  "confidence": 0.78,
+  "findings": [
+    "README points to proof file locations but does not define swarm-state.json required shape; contract lives only in commander agent doc (discoverability gap).",
+    "Commander doc example suggests task_id == commander_id (\"task_id\": \"commander-001\"), potentially misleading vs guidance to record claimed task_id.",
+    "Dual naming schemes: launch_proof uses *_started while telemetry uses *_launched; linkage not explicitly defined.",
+    "child-agents.jsonl example omits launch_requested and completed record is schema-minimal vs launch_started records (parser fragility risk).",
+    "Heartbeat fields (updated_at/last_heartbeat_at) required but cadence/semantics not specified beyond \u201ckeep current\u201d."
+  ],
+  "source_refs": [
+    "README.md:130-136",
+    "agents/stampede-commander.agent.md:45-48",
+    "agents/stampede-commander.agent.md:63-130",
+    "agents/stampede-commander.agent.md:73-76",
+    "agents/stampede-commander.agent.md:83-88",
+    "agents/stampede-commander.agent.md:112-126",
+    "agents/stampede-commander.agent.md:132-138",
+    "agents/stampede-commander.agent.md:140-146"
+  ]
+}

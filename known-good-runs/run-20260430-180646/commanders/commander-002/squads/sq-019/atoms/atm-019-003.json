@@ -1,0 +1,70 @@
+{
+  "worker_id": "wkr-019-003",
+  "model": "claude-opus-4.6",
+  "focus": "review and improvement events",
+  "findings": {
+    "review_schema": {
+      "event_type": "peer_review",
+      "ledger_file": "reviews.jsonl",
+      "required_fields_from_protocol": ["ts", "run_id", "commander_id", "event", "item_id", "summary", "evidence", "confidence", "source_refs"],
+      "observed_additional_fields": ["target_item_id", "target_commander", "verdict"],
+      "field_types": {
+        "ts": "string (ISO-8601 timestamp)",
+        "run_id": "string",
+        "commander_id": "string",
+        "event": "string (literal peer_review)",
+        "item_id": "string (reviewer-defined unique ID)",
+        "target_item_id": "string (item_id of the proposal being reviewed)",
+        "target_commander": "string (commander who authored the reviewed proposal)",
+        "summary": "string (free-text review body)",
+        "verdict": "string (observed: accept_with_additions, approve_with_suggestions, approve, endorse, endorse_with_caveat)",
+        "confidence": "number (0.0-1.0)",
+        "evidence": "string or array (inconsistent, sometimes absent)",
+        "source_refs": "array of strings (file paths)"
+      },
+      "validation_gaps": [
+        "verdict field not in protocol required_fields but used by all 11 observed reviews",
+        "target_item_id and target_commander not in required_fields but essential for linkage",
+        "No enum constraint on verdict values - each commander uses different vocabulary",
+        "evidence field sometimes absent in reviews despite being in required_fields"
+      ]
+    },
+    "improvement_schema": {
+      "event_type": "improvement",
+      "ledger_file": "improvements.jsonl",
+      "required_fields_from_protocol": ["ts", "run_id", "commander_id", "event", "item_id", "summary", "evidence", "confidence", "source_refs"],
+      "observed_additional_fields": ["based_on", "source_item_id"],
+      "field_types": {
+        "ts": "string (ISO-8601 timestamp)",
+        "run_id": "string",
+        "commander_id": "string",
+        "event": "string (literal improvement)",
+        "item_id": "string (improvement-unique ID)",
+        "summary": "string (free-text improvement description)",
+        "evidence": "array of strings (file:line refs) or string (inconsistent)",
+        "based_on": "array of strings (item_ids of source proposals/reviews)",
+        "source_item_id": "string (alternative to based_on, used by commander-003)",
+        "confidence": "number (0.0-1.0)",
+        "source_refs": "array of strings (file paths with optional line numbers)"
+      },
+      "validation_gaps": [
+        "based_on vs source_item_id inconsistency across commanders",
+        "evidence type inconsistent: array vs string across commanders",
+        "No schema enforcer validates events before append",
+        "based_on is not in required_fields but is the primary linkage mechanism"
+      ]
+    },
+    "linkage": "Reviews link to proposals via target_item_id (referencing proposal item_id). Improvements link to proposals and reviews via based_on array (containing item_ids from proposals/reviews). These linkage fields are NOT in protocol required_fields, making them convention-only. Commander-003 uses source_item_id instead of based_on, breaking cross-commander interop. Stable item_id guidance enables referential integrity but nothing validates it.",
+    "adoption_blockers": [
+      "Verdict vocabulary unstandardized: accept_with_additions vs approve_with_suggestions vs endorse vs endorse_with_caveat",
+      "Linkage fields (target_item_id, target_commander, based_on) absent from required_fields - omission is protocol-compliant",
+      "evidence field has inconsistent types (string vs array) with no schema enforcement",
+      "No tooling validates events against protocol - append is fire-and-forget",
+      "Workflow sequence documented but not enforced - commanders can skip steps",
+      "Commander-003 uses source_item_id while others use based_on - no normalization",
+      "SKILL.md does not document the collaboration bus at all"
+    ],
+    "evidence_quality": "Moderate-to-good. All 11 reviews contain substantive technical analysis with specific file references. All 7 improvements cite source proposals and include actionable recommendations with file:line evidence. Confidence scores calibrated (0.82-0.90). Gaps: no mechanism verifies source_refs point to real files, evidence field type varies making automated parsing unreliable, no deduplication check, timestamp precision varies across commanders."
+  },
+  "confidence": 0.88
+}

@@ -1,0 +1,13 @@
+{
+  "worker_id": "wkr-020-003",
+  "model": "gpt-5.3-codex",
+  "assignment": "audit result schema",
+  "status": "completed",
+  "severity": "medium",
+  "highlights": [
+    "Status enum drift: worker uses done/error, commander uses success/partial, SKILL treats only done/completed as success (SKILL.md:613-618)",
+    "Commander bundle schema underspecified; real bundles use adopted_consensus_item_ids vs adopted_consensus (results/commander-001.json vs commander-003.json)",
+    "Synthesizer defaults missing task_id/status to unknown; missing task_id observed (results/atm-009.json)",
+    "Example report JSONs use different schemas than worker/commander contracts; no discriminated schema versioning"
+  ]
+}

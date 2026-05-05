@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-010-004",
+  "theme": "premium-model-policy",
+  "focus": "child-override-propagation",
+  "findings": [
+    "Commander file propagates premium pool and banned list via swarm-state schema, policy prose, and context capsule (agents/stampede-commander.agent.md:93-111, 148-169, 176-224).",
+    "Launcher embeds premium policy in fleet and swarm-state metadata and instructs commanders in prompt (bin/stampede.sh:750-791, 792-832, 906-909).",
+    "No environment variables export model policy to child processes; enforcement relies on prompt/state file parsing (bin/stampede.sh:921-936).",
+    "Operator override text allows platform refusal caveat, creating ambiguity in banned-model fallback handling (bin/stampede.sh:912-913)."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:93-111",
+    "agents/stampede-commander.agent.md:148-169",
+    "agents/stampede-commander.agent.md:176-224",
+    "bin/stampede.sh:750-791",
+    "bin/stampede.sh:792-832",
+    "bin/stampede.sh:906-909",
+    "bin/stampede.sh:912-913",
+    "bin/stampede.sh:921-936"
+  ],
+  "confidence": 0.78,
+  "status": "success"
+}

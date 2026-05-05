@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-011-002",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "commander-depth-budget",
+  "findings": [
+    "Commander file explicitly bounds SS-250 rollout to 50 squad leads x 5 workers and caps max depth at 3.",
+    "Commander-only spawning boundary and required leaf-node block for workers are documented.",
+    "Partial/failure reporting for launch shortfall is explicitly required."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:31-37",
+    "agents/stampede-commander.agent.md:48-57",
+    "agents/stampede-commander.agent.md:89-92",
+    "agents/stampede-commander.agent.md:135-146",
+    "agents/stampede-commander.agent.md:212-236"
+  ],
+  "confidence": "high",
+  "status": "no_issues_found"
+}

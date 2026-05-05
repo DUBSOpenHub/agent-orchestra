@@ -1,0 +1,17 @@
+{
+  "worker_id": "wkr-048-003",
+  "theme": "docs-ci-readiness",
+  "focus": "depth-lint-gap-analysis",
+  "status": "success",
+  "confidence": 0.93,
+  "findings": [
+    "Depth-guard lint enforces leaf restrictions and key guardrail phrases in agent docs.",
+    "Checks are phrase-based; no strict denylist/runtime model-enforcement validation.",
+    "No lint coverage for stop/recovery workflows, collaboration bus behavior, or live pulse telemetry semantics."
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:16-33",
+    "tests/depth-guard-lint.sh:35-53",
+    "tests/depth-guard-lint.sh:1-65"
+  ]
+}

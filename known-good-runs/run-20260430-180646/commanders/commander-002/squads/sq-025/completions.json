@@ -1,0 +1,9 @@
+{
+  "ts": "2026-05-01T01:21:51.902510+00:00",
+  "squad_id": "sq-025",
+  "status": "complete",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "overall_verdict": "partial",
+  "atom_path": "atoms/atm-025.json"
+}

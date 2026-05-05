@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-021-001",
+  "theme": "collaboration-bus",
+  "focus": "ledger-creation",
+  "status": "partial",
+  "confidence": 0.95,
+  "findings": [
+    "Metaswarm launcher creates collab/ plus five JSONL ledgers and writes protocol.json.",
+    "Commander launch prompt exports ledger env vars and instructs propose -> peer_review -> improve -> consensus -> broadcast -> adopt.",
+    "This file documents required fields but does not validate appended ledger entries or update collab counts after writes.",
+    "Collaboration bus creation is metaswarm-only."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:613-615",
+    "bin/stampede.sh:671-727",
+    "bin/stampede.sh:904-910",
+    "bin/stampede.sh:928-936"
+  ]
+}

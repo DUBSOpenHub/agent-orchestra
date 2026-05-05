@@ -1,0 +1,20 @@
+{
+  "worker_id": "wkr-020-005",
+  "theme": "telemetry-contract",
+  "focus": "result-bundle-paths",
+  "findings": [
+    "Launcher/monitor count results as *.json in .stampede/{run_id}/results, but README does not state the .json requirement for result files.",
+    "Commander bundle expected at {progress_dir}/bundle.json and copied to results/, but README metaswarm section omits bundle.json/result path details."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:626-629",
+    "bin/stampede.sh:996-1014",
+    "bin/stampede.sh:1184-1199",
+    "README.md:97-101",
+    "README.md:130",
+    "README.md:223-227",
+    "README.md:351-353"
+  ],
+  "confidence": 0.78,
+  "status": "success"
+}

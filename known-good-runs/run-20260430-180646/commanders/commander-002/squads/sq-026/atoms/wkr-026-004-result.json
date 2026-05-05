@@ -1,0 +1,153 @@
+{
+  "validation_timestamp": "2026-05-01T01:28:38.452684Z",
+  "run_id": "run-20260430-180646",
+  "commander_id": "commander-002",
+  "task_id": "commander-002",
+  "schema_source": "agents/stampede-commander.agent.md",
+  "swarm_state_validation": {
+    "schema_compliant": true,
+    "missing_fields": [],
+    "undocumented_fields": [
+      {
+        "field": "partial_reason",
+        "type": "str",
+        "value_preview": "child-agents.jsonl was truncated/restarted during concurrent child writes; circuit breaker stopped f"
+      }
+    ],
+    "drift_details": [
+      {
+        "location": "launch_proof",
+        "undocumented_nested_fields": [
+          "valid_for_success",
+          "partial_reason"
+        ],
+        "note": "Fields not in documented schema but present in runtime"
+      }
+    ]
+  },
+  "bundle_validation": {
+    "schema_compliant": false,
+    "missing_fields": [],
+    "undocumented_fields": [
+      {
+        "field": "findings",
+        "type": "list",
+        "count": 5
+      },
+      {
+        "field": "launch_proof",
+        "type": "dict"
+      },
+      {
+        "field": "finalized_at",
+        "type": "str"
+      },
+      {
+        "field": "atom_refs",
+        "type": "list",
+        "count": 39
+      },
+      {
+        "field": "collaboration",
+        "type": "dict",
+        "subfields": [
+          "proposal_item_id",
+          "adopted_consensus_item_ids",
+          "source_refs",
+          "ledger_counts",
+          "ledger_bad_lines"
+        ]
+      }
+    ],
+    "drift_details": [
+      {
+        "location": "telemetry",
+        "undocumented_nested_fields": [
+          "squad_leads_completed",
+          "telemetry_integrity_warnings",
+          "child_jsonl_bad_lines",
+          "workers_completed"
+        ],
+        "note": "Telemetry fields not in documented bundle schema"
+      }
+    ]
+  },
+  "cross_commander_consistency": {
+    "consistent": false,
+    "differences": [
+      {
+        "type": "fields_in_commander-001_not_in_commander-002",
+        "fields": [
+          "ship_recommendation",
+          "minors_total",
+          "blockers_total",
+          "source_refs",
+          "no_source_modifications",
+          "broadcasts",
+          "majors_total",
+          "atoms",
+          "review_only",
+          "adopted_consensus_item_ids",
+          "completed_at"
+        ]
+      },
+      {
+        "type": "fields_in_commander-002_not_in_commander-001",
+        "fields": [
+          "finalized_at",
+          "atom_refs",
+          "findings",
+          "collaboration"
+        ]
+      }
+    ]
+  },
+  "severity_summary": {
+    "critical": 0,
+    "high": 1,
+    "medium": 6,
+    "low": 0
+  },
+  "recommendations": [
+    {
+      "priority": "medium",
+      "area": "swarm-state.json schema documentation",
+      "action": "Document 1 additional fields in stampede-commander.agent.md schema example",
+      "fields": [
+        "partial_reason"
+      ]
+    },
+    {
+      "priority": "high",
+      "area": "bundle.json schema documentation",
+      "action": "Document 5 additional fields in stampede-commander.agent.md Bundle Shape section",
+      "fields": [
+        "findings",
+        "launch_proof",
+        "finalized_at",
+        "atom_refs",
+        "collaboration"
+      ],
+      "note": "collaboration, launch_proof, findings, atom_refs, finalized_at are all present in runtime but missing from docs"
+    },
+    {
+      "priority": "high",
+      "area": "bundle.json telemetry schema",
+      "action": "Update documented telemetry schema to include all runtime fields",
+      "rationale": "Runtime emits more telemetry than documented schema specifies"
+    },
+    {
+      "priority": "high",
+      "area": "cross-commander bundle consistency",
+      "action": "Establish canonical bundle field set or document optional fields",
+      "rationale": "Different commanders emit different field sets, suggesting schema is under-specified or optional fields are undocumented"
+    }
+  ],
+  "summary": {
+    "swarm_state_compliant": true,
+    "bundle_compliant": false,
+    "total_undocumented_fields": 6,
+    "primary_issue": "Bundle schema documentation significantly lags runtime implementation",
+    "impact": "Commanders emit useful operational fields (collaboration, findings, atom_refs, launch_proof) that are not reflected in the documented bundle schema, making it difficult for consumers to know what fields are available"
+  }
+}

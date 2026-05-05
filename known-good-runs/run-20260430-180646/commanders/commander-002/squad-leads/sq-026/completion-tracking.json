@@ -1,0 +1,45 @@
+{
+  "squad_lead": "sq-026",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "status": "workers_completed",
+  "timestamp": "2026-05-01T01:34:05.281996Z",
+  "workers_launched": 5,
+  "expected_outputs": [
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-001-result.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-002-result.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-003-result.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-004-result.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/wkr-026-005-result.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/atoms/atm-026.json",
+    "/Users/greggcochran/dev/terminal-stampede/.stampede/run-20260430-180646/commanders/commander-002/squads/sq-026/completions.json"
+  ],
+  "workers": [
+    {
+      "id": "wkr-026-001",
+      "model": "gpt-5.2",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-026-002",
+      "model": "claude-sonnet-4.6",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-026-003",
+      "model": "gpt-5.3-codex",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-026-004",
+      "model": "claude-sonnet-4.5",
+      "status": "completed"
+    },
+    {
+      "id": "wkr-026-005",
+      "model": "gpt-5.2-codex",
+      "status": "completed"
+    }
+  ]
+}

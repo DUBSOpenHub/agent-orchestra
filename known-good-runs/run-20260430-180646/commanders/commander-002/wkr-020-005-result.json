@@ -1,0 +1,14 @@
+{
+  "worker_id": "wkr-020-005",
+  "model": "gpt-5.2-codex",
+  "assignment": "audit partial/failure reporting",
+  "status": "completed",
+  "severity": "medium",
+  "highlights": [
+    "Commander status uses running/success/partial/failed, but SKILL task schema uses queued/claimed/done/failed; partial not recognized",
+    "Monitor marks partial as failure (bin/stampede-monitor.sh:349-354); commander-001 partial would show \u274c",
+    "Launcher writes status blocked (stampede.sh:171-180) not in commander contract",
+    "Run state blocked while commander artifacts show success (state.json vs commander-003.json)",
+    "Commander-004 swarm-state telemetry inconsistent: squad_leads_started=0 but completed=9"
+  ]
+}

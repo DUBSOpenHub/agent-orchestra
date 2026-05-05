@@ -1,0 +1,23 @@
+{
+  "worker_id": "wkr-022-004",
+  "theme": "collaboration-bus",
+  "focus": "broadcast-adoption",
+  "findings": [
+    "README and SKILL describe filesystem IPC/message-bus architecture and metaswarm proof paths.",
+    "Neither file clearly documents collaboration-bus or Agent Pulse as named concepts, so broadcast-adoption guidance is hard to trace from user-facing docs.",
+    "Recovery behavior is documented via resume/orphan-requeue logic, but not tied to broadcast adoption semantics."
+  ],
+  "source_refs": [
+    "README.md:39",
+    "README.md:52",
+    "README.md:130",
+    "SKILL.md:35",
+    "SKILL.md:112",
+    "SKILL.md:165-170",
+    "SKILL.md:407",
+    "SKILL.md:499-548",
+    "SKILL.md:772-815"
+  ],
+  "confidence": "high",
+  "status": "partial"
+}

@@ -1,0 +1,16 @@
+{
+  "worker_id": "wkr-006-005",
+  "theme": "premium-model-policy",
+  "focus": "fallback-violation-handling",
+  "findings": [
+    "README.md and skills/SKILL.md clearly require metaswarm to report partial/failed rather than silently downgrading when full SS-250 child swarm cannot launch.",
+    "Docs do not describe a concrete enforcement mechanism for banned-model fallback (primarily directive-based)."
+  ],
+  "source_refs": [
+    "README.md:130-131",
+    "skills/SKILL.md:407"
+  ],
+  "confidence": 0.63,
+  "status": "success",
+  "atom_id": "atm-006-005"
+}

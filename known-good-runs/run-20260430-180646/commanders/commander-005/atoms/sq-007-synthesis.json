@@ -1,0 +1,159 @@
+{
+  "squad_lead": "sq-007",
+  "commander": "commander-005",
+  "run_id": "run-20260430-180646",
+  "focus": "Documentation Gaps - Part 1",
+  "subtask": "Review README.md for metaswarm documentation completeness",
+  "timestamp": "2026-05-01T01:12:03.384339Z",
+  "workers": [
+    {
+      "id": "wkr-007-001",
+      "model": "gpt-5.3-codex",
+      "focus": "README metaswarm section completeness",
+      "status": "completed",
+      "key_findings": [
+        "Metaswarm section exists as inline bold paragraph only \u2014 no standalone ## heading",
+        "Core 50x5=250 worker architecture correctly documented in multiple places",
+        "One usage example provided: stampede.sh --metaswarm --run-id ... --count 3",
+        "swarm-state.json and child-agents.jsonl mentioned as runtime proof",
+        "Missing: decision guidance on when to use metaswarm vs normal mode",
+        "Missing: metaswarm-specific task-file JSON schema",
+        "Missing: partial/failure output shape beyond one sentence"
+      ]
+    },
+    {
+      "id": "wkr-007-002",
+      "model": "claude-sonnet-4.5",
+      "focus": "Commander launch documentation",
+      "status": "completed",
+      "key_findings": [
+        "No step-by-step explanation of how launcher switches to commander mode internally",
+        "No architecture diagram for metaswarm/commander topology",
+        "--count meaning changes (workers in normal mode, commanders in metaswarm) \u2014 undocumented",
+        "child-agents.jsonl and swarm-state.json file schemas completely absent",
+        "Depth Guard concept not explained in README",
+        "No documentation of collaboration bus at .stampede/{run_id}/collab/",
+        "No failure mode documentation (partial bundle, circuit breaker, silent downgrade prevention)",
+        "Commander vs worker agent distinction not explained for end users"
+      ]
+    },
+    {
+      "id": "wkr-007-003",
+      "model": "gpt-5.2-codex",
+      "focus": "Premium model policy documentation",
+      "status": "completed",
+      "key_findings": [
+        "No list of premium vs standard models in README",
+        "Only --model flag documented; --models (multi-model) flag not mentioned",
+        "No per-agent model selection guidance",
+        "Metaswarm mentions uses premium child-model overrides by default without naming models",
+        "General note about lightweight vs powerful models exists (line 377) but no formal policy",
+        "Commander vs worker model assignment not documented"
+      ]
+    },
+    {
+      "id": "wkr-007-004",
+      "model": "claude-opus-4.7",
+      "focus": "Collaboration bus documentation",
+      "status": "completed",
+      "key_findings": [
+        "No collaboration bus concept documented anywhere in README",
+        "Architecture is intentionally isolation-first: agents explicitly share nothing",
+        "No Convergence Broadcasts or cross-agent signaling documented",
+        "No context/discovery sharing mechanism described",
+        "Commander-worker communication is one-way telemetry only (children -> commander -> monitor)",
+        "Collaboration bus at .stampede/{run_id}/collab/ (referenced in agent files) absent from README",
+        "This is partly architectural: system designed as embarrassingly parallel, not collaborative"
+      ]
+    },
+    {
+      "id": "wkr-007-005",
+      "model": "gpt-5.5",
+      "focus": "SwarmMesh scaffold mentions",
+      "status": "completed",
+      "key_findings": [
+        "SwarmMesh: ZERO mentions anywhere in the entire repository",
+        "swarm-mesh and swarm_mesh: ZERO matches in any file",
+        "No mesh topology documentation exists",
+        "No SwarmMesh scaffold or template files exist",
+        "Architecture uses centralized filesystem queue hub-model, not peer-to-peer mesh",
+        "Closest related feature is metaswarm/Swarm Command SS-250 (commander hierarchy)",
+        "SwarmMesh appears to be a gap: feature not yet built and not documented"
+      ]
+    }
+  ],
+  "synthesis": {
+    "overall_assessment": "The README covers the basics of metaswarm mode but lacks depth for operators who need to debug, extend, or understand the full architecture.",
+    "documentation_gaps_found": [
+      {
+        "gap": "No standalone Metaswarm section heading",
+        "severity": "medium",
+        "detail": "Metaswarm is described inline under Run section only. A dedicated ## Metaswarm Mode section would improve discoverability."
+      },
+      {
+        "gap": "No --models multi-model flag documentation",
+        "severity": "high",
+        "detail": "The --models flag for multi-model configurations is completely absent. Only --model (single) is shown."
+      },
+      {
+        "gap": "No premium model list or policy",
+        "severity": "medium",
+        "detail": "Premium models are referenced (premium child-model overrides) but never listed or defined. Users cannot know which models qualify."
+      },
+      {
+        "gap": "No file format schemas for swarm-state.json and child-agents.jsonl",
+        "severity": "high",
+        "detail": "These files are mentioned as runtime proof but zero schema/format documentation exists."
+      },
+      {
+        "gap": "No Depth Guard explanation",
+        "severity": "medium",
+        "detail": "Depth Guard concept (preventing recursive spawning beyond depth 2) is referenced in agent files but never explained in README."
+      },
+      {
+        "gap": "Collaboration bus entirely undocumented",
+        "severity": "medium",
+        "detail": ".stampede/{run_id}/collab/ collaboration bus referenced in agent file but absent from README. Likely by architectural design (isolation-first) but should be noted."
+      },
+      {
+        "gap": "SwarmMesh not mentioned or implemented",
+        "severity": "low",
+        "detail": "SwarmMesh concept is completely absent from the codebase. Not a documentation gap but an unbuilt feature gap."
+      },
+      {
+        "gap": "No architecture diagram for metaswarm topology",
+        "severity": "medium",
+        "detail": "The ASCII architecture diagram covers standard worker flow only. Metaswarm commander hierarchy needs its own diagram."
+      },
+      {
+        "gap": "No failure mode documentation for commanders",
+        "severity": "high",
+        "detail": "No documentation on what happens when a commander fails, what partial means, or circuit breaker behavior."
+      },
+      {
+        "gap": "--count semantic change undocumented",
+        "severity": "medium",
+        "detail": "In normal mode --count = number of workers. In metaswarm mode --count = number of commanders. This semantic change is never explained."
+      }
+    ],
+    "well_documented_areas": [
+      "50x5=250 worker architecture per commander clearly stated",
+      "Filesystem IPC design and atomic operations explained well",
+      "Basic --metaswarm flag and single usage example present",
+      "Commander agent purpose and location documented in AGENTS.md",
+      "Branch-per-task isolation model well documented",
+      "Merger workflow documented"
+    ],
+    "priority_recommendations": [
+      "Add dedicated ## Metaswarm Mode section with architecture diagram",
+      "Document --models flag with multi-model examples",
+      "Add file format schemas for swarm-state.json and child-agents.jsonl",
+      "Document failure modes and partial result handling",
+      "Clarify --count semantic difference between normal and metaswarm modes",
+      "Add premium model list and selection policy"
+    ]
+  },
+  "gap_count": 10,
+  "critical_gaps": 3,
+  "confidence": 0.94
+}

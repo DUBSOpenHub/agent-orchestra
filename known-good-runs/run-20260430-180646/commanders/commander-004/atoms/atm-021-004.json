@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-021-004",
+  "theme": "collaboration-bus",
+  "focus": "broadcast-adoption",
+  "status": "partial",
+  "confidence": 0.92,
+  "findings": [
+    "Docs explain filesystem queue/message-bus behavior.",
+    "Docs do not teach users or operators how/when to use broadcasts or the collaboration-bus adoption path.",
+    "README still describes agents as isolated/working alone, which conflicts with the new collaborative protocol concept."
+  ],
+  "source_refs": [
+    "README.md:39-40",
+    "README.md:52-54",
+    "README.md:221-227",
+    "skills/SKILL.md:165-170"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-036-003",
+  "theme": "stop-teardown-behavior",
+  "focus": "smoke-stop-coverage",
+  "status": "success",
+  "confidence": "high",
+  "findings": [
+    "Smoke test attempts cleanup (trap EXIT; tmux kill-session; rm -rf REPO_PATH) but does not assert teardown succeeded.",
+    "tmux kill-session uses || true, masking failures; no tmux has-session verification.",
+    "PID cleanup not tested; pids/ dirs created but no assertions that pidfiles are removed or processes stopped.",
+    ".stampede/<run_id> dirs are created in current working dir; cleanup removes only REPO_PATH, not those .stampede dirs.",
+    "Metaswarm coverage focuses on structured contract (fleet/state) but not stop/teardown semantics."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:14-21",
+    "tests/smoke-test.sh:15-18",
+    "tests/smoke-test.sh:22",
+    "tests/smoke-test.sh:75",
+    "tests/smoke-test.sh:112-149"
+  ]
+}

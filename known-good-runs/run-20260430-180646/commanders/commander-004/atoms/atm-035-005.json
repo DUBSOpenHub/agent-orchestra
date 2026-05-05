@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-035-005",
+  "theme": "partial-failure-bundles",
+  "focus": "count-accuracy",
+  "findings": [
+    "LAUNCHED incremented post-hoc via kill -0 PID probe - not atomic (stampede.sh:1318-1335)",
+    "fleet.json written non-atomically - potential corruption risk (stampede.sh:966-967)",
+    "Telemetry counters never updated by stampede.sh - depends on commanders (stampede.sh:938,944)",
+    "No reconciliation between WORKER_COUNT expected and LAUNCHED actual",
+    "Monitor uses filesystem scans for task counts - race-safe (stampede-monitor.sh:27-30)",
+    "Agent liveness via tmux pane status - separate from PID files, no reconciliation (stampede-monitor.sh:221-232)"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:1318-1335",
+    "bin/stampede.sh:966-967",
+    "bin/stampede-monitor.sh:27-30",
+    "bin/stampede-monitor.sh:221-232"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "gaps": "No launch verification/retry loop; fleet.json not atomic; telemetry self-reported; no cross-validation between PID/tmux/fleet; partial failure silent - no exit code"
+}

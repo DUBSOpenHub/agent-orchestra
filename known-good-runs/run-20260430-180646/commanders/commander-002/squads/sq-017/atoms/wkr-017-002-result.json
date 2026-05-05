@@ -1,0 +1,147 @@
+{
+  "worker_id": "wkr-017-002",
+  "model": "gpt-5.5",
+  "squad_id": "sq-017",
+  "focus": "event_schema_compliance",
+  "status": "ok",
+  "findings": {
+    "protocol": {
+      "required_fields": [
+        "ts",
+        "run_id",
+        "commander_id",
+        "event",
+        "item_id",
+        "summary",
+        "evidence",
+        "confidence",
+        "source_refs"
+      ],
+      "atomic_append_guidance": "append-only JSONL; one complete JSON object per line; O_APPEND; never rewrite/truncate/sort/compact; readers tolerate absent files and malformed trailing lines; stable item_id values required",
+      "commander_workflow": [
+        "propose",
+        "peer_review",
+        "improve",
+        "consensus",
+        "broadcast",
+        "adopt"
+      ]
+    },
+    "ledger_summary": {
+      "proposals": {
+        "valid_events": 5,
+        "malformed_lines": 0,
+        "missing_required_events": 0,
+        "event_mismatches": 0,
+        "extra_fields": []
+      },
+      "reviews": {
+        "valid_events": 11,
+        "malformed_lines": 0,
+        "missing_required_events": 11,
+        "event_mismatches": 0,
+        "extra_fields": [
+          "target_commander",
+          "target_item_id",
+          "verdict"
+        ]
+      },
+      "improvements": {
+        "valid_events": 7,
+        "malformed_lines": 0,
+        "missing_required_events": 0,
+        "event_mismatches": 0,
+        "extra_fields": [
+          "based_on",
+          "source_item_id"
+        ]
+      },
+      "consensus": {
+        "valid_events": 5,
+        "malformed_lines": 0,
+        "missing_required_events": 1,
+        "event_mismatches": 0,
+        "extra_fields": [
+          "based_on",
+          "verdict"
+        ]
+      },
+      "broadcasts": {
+        "valid_events": 3,
+        "malformed_lines": 0,
+        "missing_required_events": 1,
+        "event_mismatches": 0,
+        "extra_fields": [
+          "consensus_item_id",
+          "adopted_items"
+        ]
+      }
+    },
+    "required_field_violations": {
+      "reviews_missing_evidence": [
+        "rev-c001-of-c002-collab",
+        "rev-c001-of-c003-telemetry",
+        "rev-c001-of-c005-synthesis",
+        "review-005-for-001",
+        "review-005-for-003",
+        "review-005-for-002",
+        "review-005-for-004",
+        "review-003-of-c001",
+        "review-003-of-c002",
+        "review-003-of-c004",
+        "review-003-of-c005"
+      ],
+      "consensus_missing_evidence": [
+        "cons-005-synthesis-readiness"
+      ],
+      "broadcasts_missing_evidence": [
+        "bcast-003-findings"
+      ]
+    },
+    "event_name_compliance": "All parsed records match expected ledger event values: proposal, peer_review, improvement, consensus, broadcast.",
+    "confidence_values": "All confidence values are numeric and within [0,1].",
+    "timestamp_format": "All ts values match ISO-8601 UTC/Z or offset form; precision varies between seconds and fractional seconds, which is still consistent ISO-8601.",
+    "line_integrity": "All five ledgers contain only parseable JSON objects; no blank, malformed, or partial lines were found. Each file ends with a newline.",
+    "item_id_assessment": {
+      "duplicates": 0,
+      "reference_counts": {
+        "total_reference_edges_checked": 42,
+        "ledger_internal_refs_resolved": 36,
+        "external_or_unresolved_refs": 6
+      },
+      "external_or_unresolved_refs": [
+        "sq-001-synthesis.json",
+        "sq-011-synthesis.json",
+        "sq-029-synthesis.json",
+        "sq-049-synthesis.json",
+        "sq-041-synthesis.json",
+        "sq-047-synthesis.json"
+      ],
+      "pattern_gaps": [
+        "commander identity is encoded inconsistently: c001, 003, 005, and commander-004 forms coexist",
+        "reviews use both rev-* and review-* prefixes",
+        "consensus uses both cons-* and con-* prefixes",
+        "some based_on values point to artifact filenames rather than ledger item_ids, weakening automated graph traversal"
+      ]
+    },
+    "existing_atom_context": "atm-001/003/004/005 were read; atm-002 was not present under commander-002. New delta: all 11 current review records, not just the first 3, omit evidence; newer consensus and broadcast records also omit evidence. No malformed/event/confidence/ts failures were found."
+  },
+  "gaps": [
+    "Protocol required_fields are not enforced by writers: 13 of 31 current events omit required evidence.",
+    "Extra per-ledger fields are useful but undocumented, so target_item_id, based_on, consensus_item_id, verdict, and adopted_items remain optional/ad hoc.",
+    "Item_id naming is unique but not normalized across commanders or ledgers, which makes stable machine references harder.",
+    "Some based_on references name external squad artifact files; if intended, they should be source_refs or a separate artifact_refs field rather than item graph references.",
+    "No adoption ledger exists despite adopt being in commander_workflow; adoption proof remains outside the collaboration bus."
+  ],
+  "evidence": [
+    "collab/protocol.json required_fields lines 48-58 and workflow lines 37-46",
+    "proposals.jsonl: 5/5 valid, schema-complete, event=proposal",
+    "reviews.jsonl: 11/11 valid and event=peer_review, but all 11 miss required evidence",
+    "improvements.jsonl: 7/7 valid, schema-complete, event=improvement",
+    "consensus.jsonl: 5/5 valid and event=consensus; cons-005-synthesis-readiness misses evidence",
+    "broadcasts.jsonl: 3/3 valid and event=broadcast; bcast-003-findings misses evidence",
+    "Parser check found 31 total item_ids, 0 duplicates, 0 malformed lines, 0 out-of-range confidence values, 0 non-ISO ts values"
+  ],
+  "confidence": 0.94,
+  "ts": "2026-05-01T01:20:29Z"
+}

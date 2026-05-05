@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-037-003",
+  "theme": "stop-teardown-behavior",
+  "focus": "smoke-stop-coverage",
+  "findings": [
+    "--teardown flag is NEVER exercised in smoke-test.sh (zero occurrences).",
+    "PID file creation and cleanup never asserted.",
+    "No test for dead-agent orphan requeue (stub agent always succeeds, L24-59).",
+    "cleanup() (L14-20) stops both regular and metaswarm tmux sessions but not commander-spawned sub-agent processes.",
+    "Line 149 explicit tmux stop is benign redundancy with trap-based cleanup \u2014 not a gap.",
+    "state.json never checked for terminal phase after any operation.",
+    "Overall stop/teardown coverage: ~15% \u2014 only happy-path completion exercised."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:14-20",
+    "tests/smoke-test.sh:21",
+    "tests/smoke-test.sh:149",
+    "tests/smoke-test.sh:152-159"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-048-005",
+  "theme": "docs-ci-readiness",
+  "focus": "agents-doc-alignment",
+  "status": "success",
+  "confidence": 0.58,
+  "findings": [
+    "AGENTS and README align on launch-proof artifacts, but Depth Guard and policy details are not consistently documented.",
+    "Premium policy phrasing exists but explicit banned-model enforcement is not documented in AGENTS/README.",
+    "Agent Pulse/live-count behavior is not documented in either file."
+  ],
+  "source_refs": [
+    "AGENTS.md:22",
+    "AGENTS.md:27",
+    "README.md:130-136",
+    "README.md:300-311"
+  ]
+}

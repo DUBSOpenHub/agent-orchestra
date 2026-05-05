@@ -1,0 +1,68 @@
+{
+  "squad_id": "sq-027",
+  "commander_id": "commander-004",
+  "theme": "agent-pulse-monitoring",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": 0.952,
+  "blockers": [],
+  "consensus": [
+    "Pulse counts are filesystem-derived (queue/claimed/results dirs), not process-based \u2014 correct approach but vulnerable to transient skew during atomic mv operations.",
+    "Metaswarm nested progress reads swarm-state.json telemetry fields via fleet.json progress_dir \u2014 functional and consistent with architecture.",
+    "Monitor cannot auto-discover runs; requires co-launch by stampede.sh with run_id/base_dir args \u2014 by design, but undocumented constraint.",
+    "All README claims about live progress and nested display are broadly accurate; 'Agent Pulse' term is absent from user-facing docs.",
+    "Smoke tests do not cover Agent Pulse counts, monitor invocation, or live accuracy \u2014 significant gap for pre-build QA."
+  ],
+  "conflicts": [
+    "Orphan recovery uses hard-coded $BASE/commanders/$task_id path while UI display trusts fleet.json progress_dir \u2014 minor path consistency gap (wkr-027-002 vs wkr-027-001)."
+  ],
+  "key_findings": {
+    "pulse-count-sources": {
+      "worker": "wkr-027-001",
+      "atom": "atm-027-001",
+      "summary": "Counts are correct in steady state but double-counting risk in TOTAL_TASKS fallback; no top-level failed count; race window during mv operations.",
+      "confidence": 0.95
+    },
+    "nested-progress-display": {
+      "worker": "wkr-027-002",
+      "atom": "atm-027-002",
+      "summary": "Nested commander rows show squads/workers separately; no visual separator from agent rows; README underdocuments rendered fields.",
+      "confidence": 0.96
+    },
+    "launcher-monitor-handoff": {
+      "worker": "wkr-027-003",
+      "atom": "atm-027-003",
+      "summary": "Metadata (fleet.json, swarm-state.json) written before monitor starts \u2014 race-free. PID liveness data has ~5-15s gap after startup. No auto-discovery.",
+      "confidence": 0.95
+    },
+    "smoke-coverage": {
+      "worker": "wkr-027-004",
+      "atom": "atm-027-004",
+      "summary": "Zero coverage of Agent Pulse counts or monitor invocation. False-positive risks: result status unchecked, metaswarm uses --agent-cmd true.",
+      "confidence": 0.98
+    },
+    "docs-claims": {
+      "worker": "wkr-027-005",
+      "atom": "atm-027-005",
+      "summary": "README claims accurate but imprecise ('real time' without frequency). 'Agent Pulse' term undocumented. Stuck detection threshold (120s) undocumented.",
+      "confidence": 0.92
+    }
+  },
+  "top_risks": [
+    "TOTAL_TASKS double-count in fallback path (stampede-monitor.sh:75) \u2014 could show inflated totals if a task file exists in multiple dirs simultaneously.",
+    "Smoke test uses --agent-cmd true making metaswarm assertions effectively no-ops \u2014 pre-build QA gap.",
+    "No test exercises the failed-agent path or count-accuracy reconciliation.",
+    "PID liveness gap (~5-15s) means monitor shows 0 alive agents immediately after launch."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:69-77",
+    "bin/stampede-monitor.sh:143-190",
+    "bin/stampede-monitor.sh:200-216",
+    "bin/stampede.sh:747-865",
+    "bin/stampede.sh:1059-1192",
+    "tests/smoke-test.sh:108-158",
+    "README.md:130-136"
+  ]
+}

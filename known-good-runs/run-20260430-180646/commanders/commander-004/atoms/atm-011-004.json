@@ -1,0 +1,19 @@
+{
+  "worker_id": "wkr-011-004",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "lint-coverage",
+  "findings": [
+    "Lint script checks worker leaf-only markers, can_launch=false variants, and several commander bounded-spawning markers.",
+    "Banned-model coverage is indirect/positive-only and lacks explicit rejection assertions for banned model names.",
+    "Commander recursion prevention is mostly phrase-based rather than negative lint coverage."
+  ],
+  "source_refs": [
+    "tests/depth-guard-lint.sh:16-19",
+    "tests/depth-guard-lint.sh:21-29",
+    "tests/depth-guard-lint.sh:31-33",
+    "tests/depth-guard-lint.sh:35-53",
+    "tests/depth-guard-lint.sh:55-61"
+  ],
+  "confidence": "high",
+  "status": "issues_found"
+}

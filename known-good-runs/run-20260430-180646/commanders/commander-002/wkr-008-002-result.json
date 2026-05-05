@@ -1,0 +1,12 @@
+{
+  "worker_id": "wkr-008-002",
+  "model": "claude-sonnet-4.6",
+  "assignment": "audit commander proposals/reviews consistency",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "atom schema drift and missing atom_id across files",
+    "workers_completed exceeds workers_launched in swarm-state",
+    "review ledger/protocol violations and missing adopt ledger"
+  ]
+}

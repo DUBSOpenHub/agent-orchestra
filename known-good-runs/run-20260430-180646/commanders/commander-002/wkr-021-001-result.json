@@ -1,0 +1,55 @@
+{
+  "worker_id": "wkr-021-001",
+  "model": "claude-opus-4.7",
+  "assignment": "protocol",
+  "status": "completed",
+  "severity": "high",
+  "highlights": [
+    "protocol.json generated only in bin/stampede.sh:670-721; no docs/ SoT.",
+    "Schema field is 'version':'1.0', not 'schema_version'.",
+    "Five event kinds: proposal/peer_review/improvement/consensus/broadcast; no 'adoption' kind despite 6-phase workflow.",
+    "Required_fields are flat/shared across all kinds; no envelope (msg_id/parent_msg_id/seq/from/to/payload).",
+    "stampede-commander.agent.md does not mention bus/phases/ledgers; injected only via runtime prompt at bin/stampede.sh:910."
+  ],
+  "evidence": [
+    {
+      "file": "bin/stampede.sh",
+      "lines": "670-721",
+      "note": "protocol.json generated; ledger_events dict; required_fields list."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "line": 685,
+      "note": "'version': '1.0' (not schema_version)."
+    },
+    {
+      "file": "bin/stampede.sh",
+      "lines": "705-708",
+      "note": "workflow sequence includes 'adopt' but no adoption ledger/event."
+    },
+    {
+      "file": "agents/stampede-commander.agent.md",
+      "note": "no matches for collaboration-bus / phase names / ledger files."
+    },
+    {
+      "file": "docs/",
+      "note": "only docs/story.md exists; no docs/protocol.md or docs/collaboration-bus.md."
+    }
+  ],
+  "gaps": [
+    "No schema_version (uses 'version').",
+    "No envelope: msg_id/parent_msg_id/seq/from/to/kind/payload/signature.",
+    "No per-event payload schemas.",
+    "'adopt' workflow phase has no event kind or ledger.",
+    "No JSON Schema files or validator.",
+    "Commander agent prompt lacks bus documentation outside runtime injection."
+  ],
+  "recommendations": [
+    "Add docs/collaboration-bus.md as canonical source of truth.",
+    "Rename 'version'\u2192'schema_version'; semver bumps on envelope changes.",
+    "Introduce envelope {schema_version,msg_id,parent_msg_id,seq,ts,from,to,kind,payload}.",
+    "Define per-kind payload schemas; ship schemas/*.schema.json.",
+    "Add adoptions.jsonl + 'adoption' event kind.",
+    "Embed bus protocol summary into stampede-commander.agent.md."
+  ]
+}

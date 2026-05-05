@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-033-003",
+  "theme": "partial-failure-bundles",
+  "focus": "no-launch-failure",
+  "findings": [
+    "Preflight gate catches auth/config issues before launch (stampede.sh:198-300, 60s timeout)",
+    "Post-spawn 5s PID liveness check reports failures but does NOT abort or retry (stampede.sh:1328-1332)",
+    "Commander exit handler writes copilot_launch_failed to swarm-state.json (stampede.sh:1095-1150)",
+    "ZERO automated recovery: no retry, no replacement pane, no degraded-mode fallback",
+    "Distinction between never-launched vs crashed-early is timing artifact only (5s window)",
+    "No explicit launch_failed event type in child-agents.jsonl protocol"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:198-300",
+    "bin/stampede.sh:1278-1346",
+    "bin/stampede.sh:1095-1150",
+    "bin/stampede.sh:1167"
+  ],
+  "confidence": 35,
+  "status": "success"
+}

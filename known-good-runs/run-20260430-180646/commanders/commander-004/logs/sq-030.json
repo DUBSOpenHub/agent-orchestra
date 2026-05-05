@@ -1,0 +1,42 @@
+{
+  "squad_id": "sq-030",
+  "theme": "agent-pulse-monitoring",
+  "status": "success",
+  "summary": [
+    "Monitor live counts rely on queue/claimed/results file counts and tmux pane heuristics, not agent heartbeats.",
+    "Nested commander display reads swarm-state.json only; child-agents.jsonl telemetry is not surfaced.",
+    "Smoke tests and README lack coverage/definitions for live counts and pulse behavior.",
+    "Launcher seeds progress_dir and state files, but fallback watch mode omits commander telemetry."
+  ],
+  "workers": [
+    {
+      "worker_id": "wkr-030-001",
+      "status": "success",
+      "confidence": 0.86
+    },
+    {
+      "worker_id": "wkr-030-002",
+      "status": "success",
+      "confidence": 0.88
+    },
+    {
+      "worker_id": "wkr-030-003",
+      "status": "success",
+      "confidence": 0.9
+    },
+    {
+      "worker_id": "wkr-030-004",
+      "status": "success",
+      "confidence": 0.15
+    },
+    {
+      "worker_id": "wkr-030-005",
+      "status": "success",
+      "confidence": 0.56
+    }
+  ],
+  "blockers": [],
+  "consensus": "All workers note gaps in live/pulse visibility: monitor counts derived from file state and tmux heuristics, per-child telemetry not displayed, and docs/tests lack precision.",
+  "conflicts": "No material conflicts reported.",
+  "overall_confidence": 0.67
+}

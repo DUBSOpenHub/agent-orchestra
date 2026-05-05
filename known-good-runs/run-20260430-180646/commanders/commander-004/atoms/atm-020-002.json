@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-020-002",
+  "theme": "telemetry-contract",
+  "focus": "monitor-consumption",
+  "findings": [
+    "stampede-monitor.sh never reads child-agents.jsonl; launch proof relies solely on swarm-state.json counters.",
+    "launch_proof counters are used only as fallback behind telemetry.launched values; stale telemetry could override proof.",
+    "Partial-launch warnings only trigger at zero squads or when status=success; mid-run stalls can be missed.",
+    "Monitor hardcodes \"full SS-250\" label regardless of actual scale.",
+    "Live counts displayed from telemetry only; no cross-check with commander queue/results directories."
+  ],
+  "source_refs": [
+    "bin/stampede-monitor.sh:32-39",
+    "bin/stampede-monitor.sh:145-193",
+    "bin/stampede-monitor.sh:160-180",
+    "bin/stampede-monitor.sh:193",
+    "bin/stampede-monitor.sh:247-271"
+  ],
+  "confidence": 0.93,
+  "status": "success"
+}

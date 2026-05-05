@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-035-003",
+  "theme": "partial-failure-bundles",
+  "focus": "no-launch-failure",
+  "findings": [
+    "CRITICAL: stampede.sh has no guard for LAUNCHED==0 - continues to auto-attach even if all agents fail (stampede.sh:1318-1358)",
+    "Individual commander launch failures write failed to swarm-state.json (stampede.sh:1096-1149)",
+    "Preflight check catches pre-launch env issues but not post-spawn failures (stampede.sh:198-294)",
+    "No timeout-based stuck-launch detection in stampede.sh - only 5s PID check (stampede.sh:1278)",
+    "Commander agent spec requires status=failed if no Squad Leads launched (stampede-commander.agent.md:146)",
+    "timeout_s and retry_budget defined but no explicit timeout-triggered failure path documented"
+  ],
+  "source_refs": [
+    "bin/stampede.sh:1318-1358",
+    "bin/stampede.sh:1096-1149",
+    "agents/stampede-commander.agent.md:146",
+    "agents/stampede-commander.agent.md:199,227"
+  ],
+  "confidence": "high",
+  "status": "success",
+  "gaps": "No LAUNCHED==0 guard in stampede.sh; no post-launch watchdog; no explicit timeout-failure path; no fleet-level state.json update on total launch failure"
+}

@@ -1,0 +1,11 @@
+{
+  "worker_id": "wkr-018-005",
+  "model": "gpt-5.2-codex",
+  "assignment": "audit tests/docs gaps",
+  "status": "completed",
+  "highlights": [
+    "No tests for source_refs propagation/adopted fields",
+    "No malformed JSONL robustness tests",
+    "Docs omit collab protocol and bundle field requirements"
+  ]
+}

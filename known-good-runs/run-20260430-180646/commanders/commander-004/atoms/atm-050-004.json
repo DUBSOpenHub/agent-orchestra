@@ -1,0 +1,15 @@
+{
+  "worker_id": "wkr-050-004",
+  "theme": "docs-ci-readiness",
+  "focus": "install-doc-alignment",
+  "findings": [
+    "README describes metaswarm mode with premium overrides, partial requirement, and telemetry file locations; install.sh only copies agents/scripts and auto-launches demo with no metaswarm policy or telemetry guidance.",
+    "install.sh installs launcher/monitor/merger but provides no stop/recovery or Depth Guard guidance during install."
+  ],
+  "source_refs": [
+    "README.md:130",
+    "install.sh:22-74"
+  ],
+  "confidence": "medium-high",
+  "status": "success"
+}

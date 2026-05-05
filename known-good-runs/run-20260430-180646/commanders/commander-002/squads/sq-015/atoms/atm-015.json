@@ -1,0 +1,67 @@
+{
+  "squad": "sq-015",
+  "commander": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "task": "QA collaboration-bus review-only audit",
+  "workers_launched": 5,
+  "models_used": [
+    "claude-opus-4.7",
+    "gpt-5.5",
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "claude-opus-4.5"
+  ],
+  "worker_results": {
+    "wkr-015-001": {
+      "task": "audit_proposals",
+      "proposals_found": 5,
+      "cross_reviews": 11,
+      "conflicts": 1,
+      "status": "complete"
+    },
+    "wkr-015-002": {
+      "task": "consensus_candidates",
+      "candidates": 5,
+      "top_consensus": "prop-c002-collab-bus-001",
+      "all_unanimous": true,
+      "status": "complete"
+    },
+    "wkr-015-003": {
+      "task": "validate_evidence",
+      "validated": 14,
+      "missing_evidence": 0,
+      "weak_evidence": 3,
+      "validation_rate": 0.79,
+      "status": "complete"
+    },
+    "wkr-015-004": {
+      "task": "adoption_readiness",
+      "ready_for_adoption": 3,
+      "needs_work": 0,
+      "status": "complete"
+    },
+    "wkr-015-005": {
+      "task": "summarize_blockers",
+      "blockers": 8,
+      "themes": 6,
+      "critical_blockers": 5,
+      "status": "complete"
+    }
+  },
+  "synthesis": {
+    "proposals_audited": 5,
+    "reviews_tracked": 11,
+    "consensus_rate": 1.0,
+    "evidence_validation_rate": 0.79,
+    "adoption_ready": 3,
+    "critical_blockers": 5,
+    "top_themes": [
+      "Premium/banned model enforcement gaps",
+      "Schema drift between launcher and agent docs",
+      "Telemetry self-reporting without external validation",
+      "Monitor lacks child-agents.jsonl tailing"
+    ]
+  },
+  "completed_at": "2026-05-01T01:18:49Z"
+}

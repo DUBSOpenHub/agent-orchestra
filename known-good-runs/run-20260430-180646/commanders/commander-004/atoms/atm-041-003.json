@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-041-003",
+  "theme": "recovery-stuck-detection",
+  "focus": "smoke-recovery-coverage",
+  "findings": [
+    "smoke coverage never exercises stuck-agent detection; the tested agent is happy-path only and completes immediately",
+    "there is no restart or recovery-after-failure path for agents that crash, exit nonzero, or strand tasks in claimed/",
+    "pid tracking is created but never asserted through a dead-worker or orphaned-claim recovery test",
+    "partial result write handling is untested; no case leaves a .tmp- artifact behind",
+    "polling only distinguishes result present vs absent, so failures are not diagnosed as crash vs slow run",
+    "metaswarm smoke coverage kills the session but does not validate recovery from stuck squad-leads or partial child-agent ledger state"
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:24-59",
+    "tests/smoke-test.sh:22",
+    "tests/smoke-test.sh:14-21",
+    "tests/smoke-test.sh:149",
+    "tests/smoke-test.sh:152-162"
+  ],
+  "confidence": "high",
+  "status": "success"
+}

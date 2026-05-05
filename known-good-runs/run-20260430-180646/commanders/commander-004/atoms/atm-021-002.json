@@ -1,0 +1,18 @@
+{
+  "worker_id": "wkr-021-002",
+  "theme": "collaboration-bus",
+  "focus": "protocol-alignment",
+  "status": "partial",
+  "confidence": 0.91,
+  "findings": [
+    "README and SKILL consistently describe filesystem IPC/message-bus mechanics.",
+    "Neither file documents the collaboration-bus ledger names or the explicit propose/review/improve/consensus/adopt workflow.",
+    "User-facing adoption guidance for the collaboration bus is missing."
+  ],
+  "source_refs": [
+    "README.md:39-40",
+    "README.md:52-54",
+    "skills/SKILL.md:4-6",
+    "skills/SKILL.md:165-170"
+  ]
+}

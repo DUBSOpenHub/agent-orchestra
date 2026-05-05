@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-013-002",
+  "theme": "depth-guard-bounded-spawning",
+  "focus": "commander-depth-budget",
+  "findings": [
+    "max_depth:3 and depth tracking enforced via depth_config at lines 212-215",
+    "depth_budget caps squads at 50, workers/squad at 5, total 250 at lines 51-56 and 217-221",
+    "Worker Depth Lock block required at lines 227-236",
+    "Forbids single swarm-command wrapper at line 36",
+    "partial/failed reporting defined at lines 142-145"
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:212-215",
+    "agents/stampede-commander.agent.md:51-56",
+    "agents/stampede-commander.agent.md:227-236",
+    "agents/stampede-commander.agent.md:36",
+    "agents/stampede-commander.agent.md:142-145"
+  ],
+  "confidence": 0.95,
+  "status": "success"
+}

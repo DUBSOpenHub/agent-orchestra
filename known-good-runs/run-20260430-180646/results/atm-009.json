@@ -1,0 +1,130 @@
+{
+  "atom_id": "atm-009",
+  "squad_id": "sq-009",
+  "parent_id": "commander-002",
+  "run_id": "run-20260430-180646",
+  "depth": 2,
+  "title": "QA Audit: Collaboration Bus Implementation",
+  "summary": "Comprehensive review of collaboration-bus across 5 code areas: stampede.sh, commander agent docs, SKILL.md prompt generation, test coverage, and user documentation. Found complete implementation in stampede.sh but pervasive documentation gaps and zero test coverage.",
+  "findings": {
+    "stampede_sh": {
+      "worker": "wkr-009-001",
+      "status": "CRITICAL_GAPS",
+      "summary": "Collaboration-bus block parsing does NOT exist as documented. Collab is implicit, metaswarm-only, no collab=enable/disable flag. Env vars exported globally but directory created only in metaswarm mode. Silent error handling. No validation.",
+      "gaps": [
+        "No --collab or collab=enable/disable CLI flag",
+        "STAMPEDE_COLLAB_* env vars exported in non-metaswarm mode but directories not created",
+        "Silent exception handling (line 739-740)",
+        "No protocol.json validation",
+        "No teardown on failure",
+        "Leaf workers get env vars but no prompt context",
+        "Three sources of truth for collab state (state.json, fleet.json, swarm-state.json)"
+      ],
+      "line_refs": [
+        43,
+        614,
+        -70,
+        -6,
+        -1,
+        721
+      ]
+    },
+    "commander_agent": {
+      "worker": "wkr-009-002",
+      "status": "MISSING",
+      "summary": "agents/stampede-commander.agent.md contains ZERO collaboration-bus documentation. No mention of collab, proposals, reviews, consensus, broadcasts, or the 6-step workflow. Commander instructions are incomplete.",
+      "gaps": [
+        "No mention of collaboration bus anywhere",
+        "collab_enabled not in Context Capsule (lines 170-224)",
+        "Workflow (lines 41-61) omits all collab steps",
+        "No cross-commander coordination guidance",
+        "Bundle schema missing collab fields",
+        "Commanders depend on ephemeral launcher prompt injection (stampede.sh:891)"
+      ]
+    },
+    "skill_md": {
+      "worker": "wkr-009-003",
+      "status": "ABSENT",
+      "summary": "skills/SKILL.md has ZERO collaboration-bus logic. Does not generate collab blocks, does not add collab field to task manifests, does not document collab. All collab is runtime-only injection by stampede.sh.",
+      "gaps": [
+        "Task manifest template (lines 208-254) has no collab field",
+        "No collab=enable/disable mechanism",
+        "No collaboration instructions in agent prompts",
+        "state.json schema (lines 310-324) missing collab key",
+        "STEP 2 directory creation (lines 143-146) does not create collab/",
+        "Fragile: collab depends entirely on bash prompt string (stampede.sh:891)"
+      ]
+    },
+    "tests": {
+      "worker": "wkr-009-004",
+      "status": "ZERO_COVERAGE",
+      "summary": "tests/ directory has NO collaboration-bus coverage. smoke-test.sh validates metaswarm structure but not collab ledgers, workflow, or cross-commander interaction.",
+      "missing_tests": [
+        "Collaboration block parsing",
+        "collab=enable and collab=disable scenarios",
+        "Cross-agent proposal \u2192 review \u2192 improve \u2192 consensus \u2192 broadcast \u2192 adopt flow",
+        "Concurrent append/race behavior",
+        "Malformed protocol.json or JSONL entries",
+        "Missing collab/ directory or ledger files",
+        "Duplicate item_id handling",
+        "Adoption with missing source_refs",
+        "Single-commander/no-peer behavior",
+        "Bundle assertions for adopted consensus"
+      ]
+    },
+    "documentation": {
+      "worker": "wkr-009-005",
+      "status": "UNDOCUMENTED",
+      "summary": "Collaboration bus is NOT documented in any user-facing docs: README, AGENTS, CHANGELOG, docs/story.md, or agent .md files. Feature is undiscoverable except by reading shell script source.",
+      "missing_docs": [
+        "No README section for collaboration bus",
+        "No schema documentation for JSONL ledgers",
+        "No explanation of 6-step workflow",
+        "No metaswarm architecture doc",
+        "stampede-commander.agent.md missing collab section",
+        "No --collab flag documented",
+        "No CHANGELOG entry",
+        "No usage examples or guidance"
+      ]
+    }
+  },
+  "cross_cutting_issues": [
+    "Collaboration bus exists in code but is completely undocumented",
+    "Implementation is runtime-only (bash prompt injection) with no structural representation in task manifests or agent specs",
+    "Zero test coverage for the entire feature",
+    "Brittle architecture: collab depends on stampede.sh line 891 prompt string and env vars",
+    "Commanders have no fallback if bash prompt fails",
+    "Workers excluded from collab (no broadcast consumption)",
+    "No enable/disable toggle, implicit metaswarm-only",
+    "Three duplicate sources of truth (state.json, fleet.json, swarm-state.json)"
+  ],
+  "severity": "HIGH",
+  "recommendation": "Collaboration bus is production-ready code but lacks documentation, tests, and structural integration. Immediate actions: (1) Add README/AGENTS.md collab section with ledger schemas and workflow. (2) Add integration test with 2+ commanders exchanging proposals/reviews/consensus. (3) Add collab field to SKILL.md task manifest template. (4) Document collab in stampede-commander.agent.md. (5) Consider adding --collab flag for explicit control. (6) Add error handling and validation for malformed ledger entries.",
+  "workers": [
+    {
+      "id": "wkr-009-001",
+      "model": "claude-opus-4.7",
+      "assignment": "bin/stampede.sh collaboration block"
+    },
+    {
+      "id": "wkr-009-002",
+      "model": "gpt-5.5",
+      "assignment": "agents/stampede-commander.agent.md"
+    },
+    {
+      "id": "wkr-009-003",
+      "model": "claude-opus-4.6",
+      "assignment": "skills/SKILL.md"
+    },
+    {
+      "id": "wkr-009-004",
+      "model": "gpt-5.4",
+      "assignment": "tests/"
+    },
+    {
+      "id": "wkr-009-005",
+      "model": "claude-opus-4.5",
+      "assignment": "docs/"
+    }
+  ]
+}

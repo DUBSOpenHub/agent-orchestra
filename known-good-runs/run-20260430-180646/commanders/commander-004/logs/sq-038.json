@@ -1,0 +1,67 @@
+{
+  "squad_id": "sq-038",
+  "commander_id": "commander-004",
+  "run_id": "run-20260430-180646",
+  "theme": "stop-teardown-behavior",
+  "status": "success",
+  "objective": "Review-only audit of stop, teardown, PID cleanup, monitor stop flows, and cleanup coverage.",
+  "workers_launched": 5,
+  "workers_expected": 5,
+  "worker_results": [
+    {
+      "worker_id": "wkr-038-001",
+      "focus": "pid-tracking",
+      "status": "success",
+      "confidence": 0.86,
+      "atom_id": "atm-038-001"
+    },
+    {
+      "worker_id": "wkr-038-002",
+      "focus": "monitor-stop-flows",
+      "status": "success",
+      "confidence": 0.93,
+      "atom_id": "atm-038-002"
+    },
+    {
+      "worker_id": "wkr-038-003",
+      "focus": "smoke-stop-coverage",
+      "status": "success",
+      "confidence": 0.93,
+      "atom_id": "atm-038-003"
+    },
+    {
+      "worker_id": "wkr-038-004",
+      "focus": "detach-vs-session-lifetime",
+      "status": "success",
+      "confidence": 0.95,
+      "atom_id": "atm-038-004"
+    },
+    {
+      "worker_id": "wkr-038-005",
+      "focus": "cleanup-gaps",
+      "status": "success",
+      "confidence": 0.56,
+      "atom_id": "atm-038-005"
+    }
+  ],
+  "consensus": [
+    "Teardown reliability is weak: termination path is single-pass without verification/escalation and can leave residual processes or stale artifacts.",
+    "Stop/recovery observability is limited due to silent-failure handling and no robust signal-trap/cleanup pathways in monitor/launcher flows.",
+    "Test/CI coverage does not directly validate stop/teardown cleanup invariants, allowing regressions to evade detection."
+  ],
+  "conflicts": [
+    "No major factual conflicts across workers; confidence varied on severity and impact likelihood."
+  ],
+  "blockers": [],
+  "key_source_refs": [
+    "bin/stampede.sh:304-364",
+    "bin/stampede.sh:327-341",
+    "bin/stampede.sh:474-493",
+    "bin/stampede-monitor.sh:237-279",
+    "bin/stampede-monitor.sh:296-305",
+    "tests/smoke-test.sh:14-21",
+    "tests/smoke-test.sh:149",
+    ".github/workflows/ci.yml:18-49"
+  ],
+  "overall_confidence": 0.85
+}

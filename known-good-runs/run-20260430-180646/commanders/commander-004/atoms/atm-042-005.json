@@ -1,0 +1,22 @@
+{
+  "worker_id": "wkr-042-005",
+  "theme": "recovery-stuck-detection",
+  "focus": "failure-containment",
+  "findings": [
+    "Preflight or auth failures are contained by marking the run and commander swarm-state files blocked and appending commander_blocked events.",
+    "Metaswarm spawning is bounded to at most 5 commanders, matching the configured full-250-per-commander profile.",
+    "Commander nonzero exits are recorded as commander_launch_failed with failed status, containing failure state in telemetry.",
+    "Commander instructions explicitly enforce Depth Guard and leaf-node worker prompts.",
+    "If PID validation fails at launch summary time, stampede.sh only prints failed-to-start and does not update swarm-state.json or child-agents.jsonl, weakening failure visibility."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:141-196",
+    "bin/stampede.sh:506-508",
+    "bin/stampede.sh:1096-1144",
+    "bin/stampede.sh:1324-1333",
+    "agents/stampede-commander.agent.md:31-33",
+    "agents/stampede-commander.agent.md:243-252"
+  ],
+  "confidence": "medium",
+  "status": "success"
+}

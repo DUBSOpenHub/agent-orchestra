@@ -1,0 +1,28 @@
+{
+  "squad_id": "sq-033",
+  "commander_id": "commander-004",
+  "theme": "partial-failure-bundles",
+  "status": "success",
+  "workers_launched": 5,
+  "workers_completed": 5,
+  "workers_failed": 0,
+  "overall_confidence": 70,
+  "consensus_notes": "All 5 workers agree: partial/failure handling is DEFINED in docs but has significant gaps in enforcement and recovery. Success gates on launched-not-completed counts. No automated retry. Monitor trusts self-reported telemetry without validation.",
+  "key_findings": [
+    "SUCCESS THRESHOLD GAP: Success gates on workers_launched==250, not workers_completed. Post-launch crashes dont prevent success status.",
+    "NO RECOVERY: Zero automated retry/replacement for failed launches. Preflight is the only hard gate.",
+    "PARTIAL SCOPE LIMITED: partial status exists only at commander-bundle level, not at orchestrator run level.",
+    "BUNDLE MISSING TIMING: Final bundle has no started_at/completed_at/duration fields.",
+    "COUNT ACCURACY RISK: Metaswarm rollups trust commander self-report with no cross-validation against child-agents.jsonl.",
+    "ORPHAN INFLATION: 180s orphan recovery delay inflates claimed counts during agent death."
+  ],
+  "source_refs": [
+    "agents/stampede-commander.agent.md:140-146 (success/partial/failed rules)",
+    "bin/stampede.sh:1095-1150 (commander exit handler)",
+    "bin/stampede.sh:1278-1346 (post-launch health check)",
+    "skills/SKILL.md:63,836-838 (run status model)",
+    "bin/stampede-monitor.sh:144-191 (metaswarm rollup)"
+  ],
+  "blockers": [],
+  "conflict_notes": "Minor conflict: wkr-001 confidence 88 vs wkr-003 confidence 35 reflects that rules are well-documented but poorly enforced. No factual disagreement."
+}

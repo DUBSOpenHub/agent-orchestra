@@ -1,0 +1,25 @@
+{
+  "worker_id": "wkr-004-001",
+  "theme": "commander-launch-profile",
+  "focus": "launcher-flags",
+  "findings": [
+    "Metaswarm is explicitly gated by --metaswarm; in metaswarm mode worker panes switch to stampede-commander with commander-specific env vars/progress dirs.",
+    "Bounded spawning for metaswarm commanders enforced: hard cap WORKER_COUNT<=5; error message claims total cap 1600 though 5*250=1250 (math/message mismatch).",
+    "Metaswarm run metadata records SS-250 profile, per_commander_full_swarm=true, depth_budget squads_max=50, telemetry_contract requiring swarm-state.json + child-agents.jsonl, premium model pool, and banned_child_models list.",
+    "Commander prompt explicitly instructs SS-250 capsule, max_workers=250, premium model rotation for Squad Leads/Workers, banned-model list, launch proof via child-agents.jsonl + swarm-state.json, and partial status if circuit breaker triggers.",
+    "Launcher uses --autopilot with -p prompts and --no-ask-user for both copilot and gh copilot paths; commander-launch failures are captured and written to swarm-state.json + child-agents.jsonl.",
+    "Default launcher model is claude-haiku-4.5 unless overridden; premium model policy for sub-agents is conveyed by prompt/metadata, not enforced by launcher default selection.",
+    "Teardown stops only session-specific PIDs from pidfiles then kills tmux session and marks state.json torn_down."
+  ],
+  "source_refs": [
+    "bin/stampede.sh:15-43",
+    "bin/stampede.sh:470-505",
+    "bin/stampede.sh:632-680",
+    "bin/stampede.sh:721-829",
+    "bin/stampede.sh:874-893",
+    "bin/stampede.sh:938-1016",
+    "bin/stampede.sh:300-360"
+  ],
+  "confidence": 0.83,
+  "status": "success"
+}

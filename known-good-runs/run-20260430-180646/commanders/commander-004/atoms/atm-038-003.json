@@ -1,0 +1,21 @@
+{
+  "worker_id": "wkr-038-003",
+  "theme": "stop-teardown-behavior",
+  "focus": "smoke-stop-coverage",
+  "status": "success",
+  "confidence": 0.93,
+  "findings": [
+    "Smoke test cleanup is best-effort and does not assert teardown success, so stop failures can be masked.",
+    "Script kills metaswarm tmux session once but does not verify all related processes/PIDs are terminated.",
+    "No explicit stop-path test for primary run; it only waits for result.json existence.",
+    "No targeted recovery tests for interrupted teardown or stale PID/claimed state.",
+    "Timeout failure path does not validate post-failure cleanup invariants."
+  ],
+  "source_refs": [
+    "tests/smoke-test.sh:14-21",
+    "tests/smoke-test.sh:149",
+    "tests/smoke-test.sh:151-159",
+    "tests/smoke-test.sh:62-148",
+    "tests/smoke-test.sh:161-162"
+  ]
+}
