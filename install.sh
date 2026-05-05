@@ -1,70 +1,54 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Terminal Stampede Installer
-# ⚡ 8 AI agents. One terminal. All at once.
-# Works with any CLI coding agent. Skill/agent files install to
-# ~/.copilot/ for GitHub Copilot CLI users.
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BIN_DIR="${HOME}/bin"
+LAUNCHER="${BIN_DIR}/agent-orchestra-pulse"
 
-echo "🦬 Installing Terminal Stampede..."
-echo ""
+need() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Missing required command: $1" >&2
+    exit 1
+  fi
+}
 
-# Paths — skill/agent files go to ~/.copilot/ (Copilot CLI format)
-# Shell scripts go to ~/bin/ (CLI-agnostic)
-SKILL_DIR="$HOME/.copilot/skills/stampede"
-AGENT_DIR="$HOME/.copilot/agents"
-BIN_DIR="$HOME/bin"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+need python3
+need git
 
-# Create directories
-mkdir -p "$SKILL_DIR" "$AGENT_DIR" "$BIN_DIR"
-
-# Install orchestrator skill
-cp "$SCRIPT_DIR/skills/SKILL.md" "$SKILL_DIR/SKILL.md"
-echo "  ✅ Orchestrator skill → $SKILL_DIR/SKILL.md"
-
-# Install worker agent
-cp "$SCRIPT_DIR/agents/stampede-agent.agent.md" "$AGENT_DIR/stampede-agent.agent.md"
-echo "  ✅ Agent → $AGENT_DIR/stampede-agent.agent.md"
-
-# Install merger agent
-cp "$SCRIPT_DIR/agents/stampede-merger.agent.md" "$AGENT_DIR/stampede-merger.agent.md"
-echo "  ✅ Merger agent → $AGENT_DIR/stampede-merger.agent.md"
-
-# Install launcher
-cp "$SCRIPT_DIR/bin/stampede.sh" "$BIN_DIR/stampede.sh"
-chmod +x "$BIN_DIR/stampede.sh"
-echo "  ✅ Launcher → $BIN_DIR/stampede.sh"
-
-# Install monitor
-cp "$SCRIPT_DIR/bin/stampede-monitor.sh" "$BIN_DIR/stampede-monitor.sh"
-chmod +x "$BIN_DIR/stampede-monitor.sh"
-echo "  ✅ Monitor → $BIN_DIR/stampede-monitor.sh"
-
-# Install merger script
-cp "$SCRIPT_DIR/bin/stampede-merge.sh" "$BIN_DIR/stampede-merge.sh"
-chmod +x "$BIN_DIR/stampede-merge.sh"
-echo "  ✅ Merger → $BIN_DIR/stampede-merge.sh"
-
-# Install demo
-cp -f "$SCRIPT_DIR/bin/stampede-demo.sh" "$BIN_DIR/stampede-demo" 2>/dev/null || ln -sf "$SCRIPT_DIR/bin/stampede-demo.sh" "$BIN_DIR/stampede-demo"
-chmod +x "$BIN_DIR/stampede-demo"
-echo "  ✅ Demo → $BIN_DIR/stampede-demo"
-
-# Check ~/bin is in PATH
-if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-    export PATH="$HOME/bin:$PATH"
+if [[ ! -f "${ROOT}/BASELINE.json" ]]; then
+  echo "BASELINE.json not found. Run install.sh from the Agent Orchestra repo." >&2
+  exit 1
 fi
 
-echo ""
-echo "🦬 Terminal Stampede installed!"
-echo ""
-echo "  📋 Copilot CLI skill/agents → ~/.copilot/"
-echo "  📋 Shell scripts (CLI-agnostic) → ~/bin/"
-echo ""
-echo "  Launching demo..."
-echo ""
-sleep 1
+if [[ ! -d "${ROOT}/known-good-runs/run-20260430-180646" ]]; then
+  echo "Known-good run artifacts are missing." >&2
+  exit 1
+fi
 
-# Auto-launch the demo
-exec "$BIN_DIR/stampede-demo"
+if [[ ! -f "${ROOT}/agent-pulse-current/agent_pulse.py" ]]; then
+  echo "Agent Pulse source is missing." >&2
+  exit 1
+fi
+
+if [[ -x "${ROOT}/tests/prepublish-smoke.sh" ]]; then
+  "${ROOT}/tests/prepublish-smoke.sh"
+fi
+
+mkdir -p "${BIN_DIR}"
+cat > "${LAUNCHER}" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+
+export AGENT_ORCHESTRA_ROOT="${ROOT}"
+export AGENT_PULSE_SCAN_ROOTS="\${AGENT_PULSE_SCAN_ROOTS:-${ROOT}}"
+cd "${ROOT}/agent-pulse-current"
+exec python3 agent_pulse.py --no-splash "\$@"
+EOF
+chmod +x "${LAUNCHER}"
+
+echo
+echo "Agent Orchestra is installed."
+echo "Launcher: ${LAUNCHER}"
+echo
+echo "Run Agent Pulse for this baseline with:"
+echo "  agent-orchestra-pulse"

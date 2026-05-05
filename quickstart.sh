@@ -1,55 +1,41 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SKILL_REPO="DUBSOpenHub/terminal-stampede"
-SKILL_NAME="stampede"
-SKILL_DIR="$HOME/.copilot/skills/$SKILL_NAME"
-SKILL_URL="https://raw.githubusercontent.com/$SKILL_REPO/main/skills/SKILL.md"
+REPO="DUBSOpenHub/agent-orchestra"
+TARGET_DIR="${AGENT_ORCHESTRA_DIR:-${HOME}/dev/agent-orchestra}"
 
-echo ""
-echo "⚡ Terminal Stampede"
-echo "─────────────────────────────────────────"
-
-if command -v copilot >/dev/null 2>&1; then
-  echo "✅ Copilot CLI already installed ($(copilot --version 2>/dev/null || echo 'installed'))"
-else
-  echo "📦 Installing GitHub Copilot CLI..."
-  if [[ "$(uname)" == "Darwin" ]] || [[ "$(uname)" == "Linux" ]]; then
-    if command -v brew >/dev/null 2>&1; then
-      brew install copilot-cli
-    else
-      curl -fsSL https://gh.io/copilot-install | bash
-    fi
-  else
-    echo "⚠️  Windows detected — please install manually:"
-    echo "   winget install GitHub.Copilot"
-    echo "   Then re-run this script."
+need() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Missing required command: $1" >&2
     exit 1
   fi
-  if ! command -v copilot >/dev/null 2>&1; then
-    export PATH="$HOME/.local/bin:$PATH"
-    if ! command -v copilot >/dev/null 2>&1; then
-      echo "❌ Installation failed. Try manually: brew install copilot-cli"
-      exit 1
-    fi
-  fi
-  echo "✅ Copilot CLI installed!"
-fi
+}
 
-echo "📥 Adding Stampede skill..."
-mkdir -p "$SKILL_DIR"
-if curl -fsSL "$SKILL_URL" -o "$SKILL_DIR/SKILL.md"; then
-  echo "✅ Skill installed to $SKILL_DIR"
+need git
+need python3
+
+if [[ -f "BASELINE.json" && -d "known-good-runs" && -d "agent-pulse-current" ]]; then
+  ROOT="$(pwd)"
+elif [[ -d "${TARGET_DIR}/.git" ]]; then
+  ROOT="${TARGET_DIR}"
+  git -C "${ROOT}" pull --ff-only
 else
-  echo "❌ Failed to download skill. Check your internet connection."
-  exit 1
+  mkdir -p "$(dirname "${TARGET_DIR}")"
+  if command -v gh >/dev/null 2>&1; then
+    gh repo clone "${REPO}" "${TARGET_DIR}"
+  else
+    git clone "https://github.com/${REPO}.git" "${TARGET_DIR}"
+  fi
+  ROOT="${TARGET_DIR}"
 fi
 
-echo ""
-echo "─────────────────────────────────────────"
-echo "⚡ Launching Copilot CLI..."
-echo "   Just type: stampede"
-echo "─────────────────────────────────────────"
-echo ""
+cd "${ROOT}"
+chmod +x install.sh tests/prepublish-smoke.sh
+./install.sh
 
-exec copilot < /dev/tty
+echo
+echo "Quickstart complete."
+echo "Repo: ${ROOT}"
+echo
+echo "To launch the dashboard later:"
+echo "  agent-orchestra-pulse"

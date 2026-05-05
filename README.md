@@ -14,6 +14,12 @@ today's telemetry view.
 | `known-good-runs/run-20260430-180646/` | Preserved Thursday-good run artifacts |
 | `agent-pulse-current/` | Current Agent Pulse source copied into this repo |
 | `BASELINE.json` | Machine-readable baseline metadata |
+| `AGENTS.md` | Repo-specific agent instructions and guardrails |
+| `install.sh` | Local setup and helper launcher installer |
+| `quickstart.sh` | One-command clone/install/test flow |
+| `bin/agent-orchestra-pulse` | Agent Pulse launcher for this baseline |
+| `scripts/activate-security.sh` | GitHub security activation helper |
+| `tests/prepublish-smoke.sh` | Baseline validation gate |
 | `README-THURSDAY-BASELINE.md` | Short baseline notes and Agent Pulse command |
 | `UPSTREAM-TERMINAL-STAMPEDE-README.md` | Original Terminal Stampede README from the frozen source |
 
@@ -38,11 +44,32 @@ That run contains:
 9 total result files
 ```
 
+## Quickstart
+
+From a checked-out repo:
+
+```bash
+./quickstart.sh
+```
+
+Or clone/install with the GitHub CLI:
+
+```bash
+gh repo clone DUBSOpenHub/agent-orchestra ~/dev/agent-orchestra
+cd ~/dev/agent-orchestra
+./quickstart.sh
+```
+
+The quickstart runs the pre-publish smoke test and installs:
+
+```text
+~/bin/agent-orchestra-pulse
+```
+
 ## View with Agent Pulse
 
 ```bash
-cd /Users/greggcochran/dev/agent-orchestra/agent-pulse-current
-AGENT_PULSE_SCAN_ROOTS=/Users/greggcochran/dev/agent-orchestra python3 agent_pulse.py --no-splash
+agent-orchestra-pulse
 ```
 
 ## Pre-publish test
@@ -62,6 +89,24 @@ This checks that:
 - Current Agent Pulse imports and polls against this repo.
 - Workflow files remain archived outside `.github/workflows` until the token has
   `workflow` scope.
+
+## Security activation
+
+Security policy and Dependabot config are included. To enable repository-level
+security features:
+
+```bash
+./scripts/activate-security.sh
+```
+
+CI and CodeQL workflow templates are staged under:
+
+```text
+archived-workflows/root/workflows/
+```
+
+They intentionally remain outside `.github/workflows` until the authenticated
+token has GitHub `workflow` scope.
 
 ## Compare against current stack
 

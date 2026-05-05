@@ -1,38 +1,42 @@
 # Security Policy
 
-## Supported Versions
+## Supported Scope
 
-We release patches for security vulnerabilities in the following versions:
+Agent Orchestra is a baseline and comparison repo. Security fixes should target:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.x     | :white_check_mark: |
-| < 1.0   | :x:                |
+- setup scripts and helper launchers in this repository
+- copied Agent Pulse source under `agent-pulse-current/`
+- preserved baseline artifacts when they expose sensitive data or unsafe
+  defaults
+
+The frozen Terminal Stampede source is kept for reproducibility. Runtime fixes
+should usually land in the active Terminal Stampede or Agent Conductor repos,
+then be referenced here as comparison context.
 
 ## Reporting a Vulnerability
 
-We take the security of Terminal Stampede seriously. If you discover a security vulnerability, please report it to us responsibly.
+Do not create a public issue for vulnerabilities. Use GitHub private
+vulnerability reporting for this repository:
 
-**Please do NOT create a public GitHub issue for security vulnerabilities.**
+https://github.com/DUBSOpenHub/agent-orchestra/security/advisories/new
 
-### How to Report
+Include:
 
-Use [GitHub's private vulnerability reporting](https://github.com/DUBSOpenHub/terminal-stampede/security/advisories/new) to submit a report directly on this repository.
+- a short description
+- steps to reproduce
+- affected files or artifacts
+- potential impact
+- suggested fix, if known
 
-Include the following information:
-- Description of the vulnerability
-- Steps to reproduce the issue
-- Potential impact
-- Any suggested fixes (optional)
+## Security Activation
 
-### Response Time
+Run this from a checked-out repo after `gh auth login`:
 
-We are committed to responding to security reports within **48 hours** of submission.
+```bash
+./scripts/activate-security.sh
+```
 
-After the initial response, we will:
-- Confirm the vulnerability and determine its severity
-- Work on a fix and coordinate disclosure timing
-- Release a security patch and public advisory
-- Credit you for the discovery (unless you prefer to remain anonymous)
-
-Thank you for helping keep Terminal Stampede and its users safe.
+The script enables repository security settings that do not require adding
+workflow files. CI and CodeQL workflow templates are kept in
+`archived-workflows/root/workflows/` until the pushing token has GitHub
+`workflow` scope.

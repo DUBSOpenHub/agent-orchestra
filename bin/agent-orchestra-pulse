@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="${AGENT_ORCHESTRA_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+
+if [[ ! -f "${ROOT}/agent-pulse-current/agent_pulse.py" ]]; then
+  echo "Agent Pulse source not found under ${ROOT}/agent-pulse-current" >&2
+  exit 1
+fi
+
+export AGENT_PULSE_SCAN_ROOTS="${AGENT_PULSE_SCAN_ROOTS:-${ROOT}}"
+cd "${ROOT}/agent-pulse-current"
+exec python3 agent_pulse.py --no-splash "$@"
