@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Pre-publish smoke test for Agent Orchestra.
 #
-# This validates the frozen baseline artifacts and current Agent Pulse import
+# This validates the preserved reference artifacts and current Agent Pulse import
 # path without launching real Copilot agents.
 set -euo pipefail
 
@@ -23,7 +23,7 @@ require_dir() {
 
 require_file "$ROOT/README.md"
 require_file "$ROOT/BASELINE.json"
-require_file "$ROOT/README-THURSDAY-BASELINE.md"
+require_file "$ROOT/REFERENCE-NOTES.md"
 require_file "$ROOT/UPSTREAM-TERMINAL-STAMPEDE-README.md"
 require_dir "$RUN_DIR"
 require_dir "$ROOT/agent-pulse-current"
@@ -63,7 +63,7 @@ assert seen == expected_commanders
 metadata_commanders = {item["commander_id"] for item in baseline["commanders"]}
 assert metadata_commanders == expected_commanders
 
-print("baseline_artifacts_ok=1")
+print("reference_artifacts_ok=1")
 PY
 
 workflow_count="$(find "$ROOT" -path '*/.github/workflows/*' -type f | wc -l | tr -d ' ')"

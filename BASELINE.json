@@ -1,6 +1,6 @@
 {
   "baseline_name": "Agent Orchestra",
-  "description": "Frozen Thursday-good baseline and replay harness for Agent Conductor, the multi-agent fleet conductor with real-time TUI observability.",
+  "description": "Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, and score the final synthesis with sealed Shadow Score gates.",
   "comparison_focus": [
     "Terminal Stampede commander groups",
     "sub-agent telemetry",
