@@ -1,5 +1,13 @@
 {
   "baseline_name": "Agent Orchestra",
+  "description": "Frozen Thursday-good baseline and replay harness for Agent Conductor, the multi-agent fleet conductor with real-time TUI observability.",
+  "comparison_focus": [
+    "Terminal Stampede commander groups",
+    "sub-agent telemetry",
+    "live collaboration ledgers",
+    "Agent Pulse observability",
+    "sealed Shadow Score evaluation"
+  ],
   "terminal_stampede_commit": "dc14bdefa5d084002fcbcad2a3cc6aa6fa2328c5",
   "known_good_run": "run-20260430-180646",
   "known_good_run_path": "/Users/greggcochran/dev/agent-orchestra/known-good-runs/run-20260430-180646",

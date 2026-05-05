@@ -1,19 +1,22 @@
 # Agent Orchestra
 
-Agent Orchestra is a frozen Thursday-good baseline for comparing multi-agent
-Terminal Stampede behavior against the current hardened Agent Conductor stack.
+Agent Orchestra is the frozen Thursday-good baseline and replay harness for
+Agent Conductor, the multi-agent fleet conductor with real-time TUI
+observability.
 
-It preserves the old run that felt best in practice, while bundling the current
-Agent Pulse dashboard code so the historical artifacts can be inspected with
-today's telemetry view.
+It preserves the old run where Terminal Stampede commander groups behaved best
+in practice, then pairs those artifacts with current Agent Pulse dashboard code
+so today's Agent Conductor stack can compare commander groups, sub-agent
+telemetry, live collaboration ledgers, and sealed Shadow Score gates against a
+known-good reference.
 
 ## What is included
 
 | Path | Purpose |
 |---|---|
-| `known-good-runs/run-20260430-180646/` | Preserved Thursday-good run artifacts |
-| `agent-pulse-current/` | Current Agent Pulse source copied into this repo |
-| `BASELINE.json` | Machine-readable baseline metadata |
+| `known-good-runs/run-20260430-180646/` | Preserved Thursday-good commander-group artifacts |
+| `agent-pulse-current/` | Current Agent Pulse observability source copied into this repo |
+| `BASELINE.json` | Machine-readable fleet baseline metadata |
 | `AGENTS.md` | Repo-specific agent instructions and guardrails |
 | `install.sh` | Local setup and helper launcher installer |
 | `quickstart.sh` | One-command clone/install/test flow |
@@ -37,7 +40,8 @@ The preserved run is:
 run-20260430-180646
 ```
 
-That run contains:
+Agent Conductor's current run shape is exactly five commander groups. This
+baseline contains:
 
 ```text
 5 commander bundles
@@ -110,11 +114,14 @@ token has GitHub `workflow` scope.
 
 ## Compare against current stack
 
-Use this repo as the "known-good" side of an A/B comparison:
+Use this repo as the "known-good" side of an Agent Conductor A/B comparison:
 
 ```text
-Agent Orchestra                    current Agent Conductor + Terminal Stampede
-known-good Thursday run            latest hardened runtime
+Agent Orchestra                 current Agent Conductor
+known-good fleet baseline       multi-agent fleet conductor
+frozen commander artifacts      live Terminal Stampede commander groups
+Agent Pulse replay view         Agent Pulse + live collaboration ledgers
+baseline comparison             sealed Shadow Score evaluation
 ```
 
 Start with `BASELINE.json`, then inspect the commander bundles under:

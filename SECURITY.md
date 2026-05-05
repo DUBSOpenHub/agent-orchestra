@@ -2,16 +2,19 @@
 
 ## Supported Scope
 
-Agent Orchestra is a baseline and comparison repo. Security fixes should target:
+Agent Orchestra is the baseline and replay companion for Agent Conductor's
+multi-agent fleet conductor flow. Security fixes should target:
 
 - setup scripts and helper launchers in this repository
 - copied Agent Pulse source under `agent-pulse-current/`
-- preserved baseline artifacts when they expose sensitive data or unsafe
-  defaults
+- preserved commander-group baseline artifacts when they expose sensitive data
+  or unsafe defaults
 
 The frozen Terminal Stampede source is kept for reproducibility. Runtime fixes
 should usually land in the active Terminal Stampede or Agent Conductor repos,
-then be referenced here as comparison context.
+then be referenced here as comparison context for commander groups, sub-agent
+telemetry, live collaboration ledgers, Agent Pulse observability, and sealed
+Shadow Score evaluation.
 
 ## Reporting a Vulnerability
 

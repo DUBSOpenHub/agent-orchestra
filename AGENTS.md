@@ -2,24 +2,30 @@
 
 ## Overview
 
-Agent Orchestra is a frozen Thursday-good baseline for comparing Terminal
-Stampede and Agent Conductor behavior. It packages:
+Agent Orchestra is the baseline and replay companion to Agent Conductor, the
+multi-agent fleet conductor with real-time TUI observability. It packages:
 
-- a known-good Terminal Stampede run from `run-20260430-180646`
-- the frozen Terminal Stampede source that produced that baseline
-- current Agent Pulse source for inspecting the old run with the latest
-  dashboard and metrics code
+- a known-good Terminal Stampede commander-group run from
+  `run-20260430-180646`
+- the frozen Terminal Stampede source that produced that fleet baseline
+- current Agent Pulse source for inspecting commander groups and sub-agent
+  telemetry with the latest dashboard and metrics code
 
-This repo is not the active production runtime. Treat it as a reproducible
-baseline and comparison harness.
+This repo is not the active Agent Conductor runtime. Treat it as a reproducible
+baseline for comparing commander groups, live collaboration ledgers, Agent Pulse
+observability, and sealed Shadow Score evaluation behavior.
+
+Use user-facing terminology **sub-agents**. The compatibility ledger filename
+`child-agents.jsonl` may appear in preserved artifacts, but docs and responses
+should use **sub-agents**.
 
 ## File Map
 
 | Path | Purpose |
 |---|---|
-| `BASELINE.json` | Machine-readable baseline metadata |
-| `known-good-runs/run-20260430-180646/` | Preserved Thursday-good run artifacts |
-| `agent-pulse-current/` | Current Agent Pulse source copied into this repo |
+| `BASELINE.json` | Machine-readable fleet baseline metadata |
+| `known-good-runs/run-20260430-180646/` | Preserved Thursday-good commander-group artifacts |
+| `agent-pulse-current/` | Current Agent Pulse observability source copied into this repo |
 | `bin/agent-orchestra-pulse` | Local launcher for Agent Pulse against this repo |
 | `tests/prepublish-smoke.sh` | Pre-publish baseline validation |
 | `install.sh` | Installs local Agent Orchestra helper launcher |
@@ -36,5 +42,5 @@ baseline and comparison harness.
 - Keep active workflow files out of `.github/workflows` unless the pushing token
   has `workflow` scope.
 - Use `scripts/activate-security.sh` for GitHub security settings.
-- Keep Agent Orchestra documentation clear that this is a baseline, not the
-  current active Agent Conductor runtime.
+- Keep Agent Orchestra documentation clear that this is the Agent Conductor
+  baseline/replay companion, not the active fleet runtime.
