@@ -45,6 +45,24 @@ cd /Users/greggcochran/dev/agent-orchestra/agent-pulse-current
 AGENT_PULSE_SCAN_ROOTS=/Users/greggcochran/dev/agent-orchestra python3 agent_pulse.py --no-splash
 ```
 
+## Pre-publish test
+
+Before making the repo public or cutting a release, run:
+
+```bash
+cd /Users/greggcochran/dev/agent-orchestra
+./tests/prepublish-smoke.sh
+```
+
+This checks that:
+
+- `BASELINE.json` is valid and names Agent Orchestra.
+- The preserved Thursday run still has 5 commander bundles and 9 result files.
+- Every commander bundle has matching `commander_id` and `task_id`.
+- Current Agent Pulse imports and polls against this repo.
+- Workflow files remain archived outside `.github/workflows` until the token has
+  `workflow` scope.
+
 ## Compare against current stack
 
 Use this repo as the "known-good" side of an A/B comparison:
