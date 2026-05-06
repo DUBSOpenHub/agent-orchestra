@@ -1,5 +1,9 @@
 **🎼 Agent Orchestra**
 
+<p align="center">
+  <a href="https://dubsopenhub.github.io/agent-orchestra/"><strong>🌐 Open the live Agent Orchestra site →</strong></a>
+</p>
+
 **Multi-agent fleet conductor for the GitHub Copilot CLI. 
 
 Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, score output quality with sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) gates, and judge run repeatability with [Fleet Scorecard](https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md).**
@@ -8,8 +12,6 @@ Launch multiple visible Terminal Stampede commander groups, let them collaborate
 [![Live Site](https://img.shields.io/badge/live%20site-Agent%20Orchestra-7dd3fc?logo=githubpages&logoColor=white)](https://dubsopenhub.github.io/agent-orchestra/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Security Policy](https://img.shields.io/badge/Security-Policy-brightgreen?logo=github)](SECURITY.md)
-
-🌐 **Live site:** [dubsopenhub.github.io/agent-orchestra](https://dubsopenhub.github.io/agent-orchestra/)
 
 > ### ⚡ One Command. That's It.
 >
