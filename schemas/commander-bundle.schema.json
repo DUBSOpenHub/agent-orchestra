@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/DUBSOpenHub/agent-orchestra/schemas/commander-bundle.schema.json",
+  "title": "Agent Orchestra Commander Bundle",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "run_id",
+    "commander_id",
+    "task_id",
+    "status",
+    "telemetry",
+    "source_refs"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^run-[0-9]{8}-[0-9]{6}$"
+    },
+    "commander_id": {
+      "type": "string",
+      "pattern": "^commander-[0-9]{3}$"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^commander-[0-9]{3}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "partial", "failed"]
+    },
+    "phase": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "squad_leads_target": {"type": "integer", "minimum": 0},
+        "squad_leads_launched": {"type": "integer", "minimum": 0},
+        "squad_leads_completed": {"type": "integer", "minimum": 0},
+        "squad_leads_failed": {"type": "integer", "minimum": 0},
+        "workers_target": {"type": "integer", "minimum": 0},
+        "workers_launched": {"type": "integer", "minimum": 0},
+        "workers_completed": {"type": "integer", "minimum": 0},
+        "workers_failed": {"type": "integer", "minimum": 0},
+        "child_agents_seen": {"type": "integer", "minimum": 0},
+        "child_agents_running": {"type": "integer", "minimum": 0},
+        "child_agents_completed": {"type": "integer", "minimum": 0},
+        "child_agents_failed": {"type": "integer", "minimum": 0}
+      }
+    },
+    "telemetry_high_water": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "ledger_counts": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "blockers": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

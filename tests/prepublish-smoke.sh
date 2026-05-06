@@ -24,9 +24,19 @@ require_dir() {
 require_file "$ROOT/README.md"
 require_file "$ROOT/ORCHESTRA.json"
 require_file "$ROOT/UPSTREAM-TERMINAL-STAMPEDE-README.md"
+require_file "$ROOT/agents/stampede-agent.agent.md"
+require_file "$ROOT/agents/stampede-commander.agent.md"
+require_file "$ROOT/agents/stampede-merger.agent.md"
+require_file "$ROOT/schemas/commander-bundle.schema.json"
+require_file "$ROOT/schemas/collab-record.schema.json"
 require_dir "$RUN_DIR"
 require_dir "$ROOT/agent-pulse-current"
 require_file "$ROOT/agent-pulse-current/agent_pulse.py"
+
+bash -n "$ROOT/bin/stampede.sh"
+grep -q "stampede_synthesize_commander_bundle" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing bundle synthesis"
+grep -q "telemetry_high_water" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing high-water telemetry preservation"
+grep -q "requires exactly 5 commanders" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing commander cardinality guard"
 
 python3 - "$ROOT" <<'PY'
 import json
@@ -47,6 +57,14 @@ assert len(results) == metadata["result_files"] == 9
 assert len(bundles) == metadata["commander_bundles"] == 5
 
 expected_commanders = {f"commander-{idx:03d}" for idx in range(1, 6)}
+bundle_schema = json.loads((root / "schemas" / "commander-bundle.schema.json").read_text())
+collab_schema = json.loads((root / "schemas" / "collab-record.schema.json").read_text())
+assert {"run_id", "commander_id", "task_id", "status", "telemetry", "source_refs"}.issubset(
+    set(bundle_schema["required"])
+)
+assert {"ts", "run_id", "commander_id", "event", "item_id", "summary", "evidence", "confidence", "source_refs"}.issubset(
+    set(collab_schema["required"])
+)
 seen = set()
 for bundle_path in bundles:
     data = json.loads(bundle_path.read_text())

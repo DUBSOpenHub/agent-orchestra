@@ -202,7 +202,8 @@ agent-orchestra/
 ├── agent-pulse-current/                  # Agent Pulse observability source
 ├── run-artifacts/                        # Local fleet run artifact corpus
 ├── skills/SKILL.md                       # Copilot CLI skill source
-├── agents/                               # Worker and merger agent definitions
+├── agents/                               # Worker, commander, and merger agent definitions
+├── schemas/                              # Bundle and collaboration record schemas
 ├── bin/                                  # Terminal Stampede and Agent Orchestra launchers
 ├── tests/smoke.sh                        # Local smoke gate
 ├── install.sh                            # Local installer
@@ -220,7 +221,9 @@ agent-orchestra/
 bash tests/smoke.sh
 ```
 
-The smoke test checks shell syntax, fleet metadata, commander bundle integrity, Agent Pulse import/poll behavior, and workflow activation safety.
+The smoke test checks shell syntax, hardened runtime markers, fleet metadata,
+commander bundle/schema integrity, Agent Pulse import/poll behavior, and
+workflow activation safety.
 
 ---
 

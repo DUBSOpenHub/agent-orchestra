@@ -22,6 +22,8 @@ should use **sub-agents**.
 | `ORCHESTRA.json` | Machine-readable fleet metadata |
 | `run-artifacts/run-20260430-180646/` | Local commander-group run artifact corpus |
 | `agent-pulse-current/` | Current Agent Pulse observability source copied into this repo |
+| `agents/` | Stampede worker, commander, and merger agent contracts |
+| `schemas/` | Commander bundle and collaboration record schemas |
 | `bin/agent-orchestra-pulse` | Local launcher for Agent Pulse against this repo |
 | `tests/smoke.sh` | Local fleet smoke validation |
 | `tests/prepublish-smoke.sh` | Backward-compatible smoke wrapper target |
@@ -41,3 +43,4 @@ should use **sub-agents**.
 - Use `scripts/activate-security.sh` for GitHub security settings.
 - Keep Agent Orchestra documentation aligned with the Agent Conductor-style
   product description.
+- Keep commander bundles and collaboration ledgers aligned with `schemas/`.

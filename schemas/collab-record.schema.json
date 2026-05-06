@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/DUBSOpenHub/agent-orchestra/schemas/collab-record.schema.json",
+  "title": "Agent Orchestra Collaboration Record",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "ts",
+    "run_id",
+    "commander_id",
+    "event",
+    "item_id",
+    "summary",
+    "evidence",
+    "confidence",
+    "source_refs"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^run-[0-9]{8}-[0-9]{6}$"
+    },
+    "commander_id": {
+      "type": "string",
+      "pattern": "^(commander-[0-9]{3}|orchestrator)$"
+    },
+    "event": {
+      "type": "string",
+      "enum": ["proposal", "peer_review", "improvement", "consensus", "broadcast"]
+    },
+    "item_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
