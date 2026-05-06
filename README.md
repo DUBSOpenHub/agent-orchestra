@@ -1,6 +1,8 @@
 # 🎼 Agent Orchestra
 
-**Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, score output quality with sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) gates, and judge run repeatability with [Fleet Scorecard](https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md).**
+**Multi-agent fleet conductor for the GitHub Copilot CLI. 
+
+Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, score output quality with sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) gates, and judge run repeatability with [Fleet Scorecard](https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md).**
 
 [![GitHub Copilot CLI](https://img.shields.io/badge/platform-Copilot%20CLI-232F3E.svg)](https://docs.github.com/copilot/concepts/agents/about-copilot-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
