@@ -1,0 +1,34 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#050712"/>
+  <circle cx="168" cy="92" r="310" fill="#7C3AED" opacity=".28"/>
+  <circle cx="1018" cy="128" r="270" fill="#22D3EE" opacity=".2"/>
+  <circle cx="656" cy="590" r="300" fill="#FBBF24" opacity=".14"/>
+  <path d="M0 112H1200M0 220H1200M0 328H1200M0 436H1200M0 544H1200M122 0V630M254 0V630M386 0V630M518 0V630M650 0V630M782 0V630M914 0V630M1046 0V630" stroke="#94A3B8" stroke-opacity=".08"/>
+  <g filter="url(#glow)">
+    <circle cx="600" cy="250" r="92" stroke="url(#ring)" stroke-width="10"/>
+    <path d="M600 110V392M459 251H741M500 151L700 351M700 151L500 351" stroke="#E0E7FF" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+    <circle cx="600" cy="251" r="25" fill="#22D3EE"/>
+    <circle cx="459" cy="251" r="18" fill="#A78BFA"/>
+    <circle cx="741" cy="251" r="18" fill="#A78BFA"/>
+    <circle cx="500" cy="151" r="18" fill="#34D399"/>
+    <circle cx="700" cy="151" r="18" fill="#FBBF24"/>
+    <circle cx="500" cy="351" r="18" fill="#FB7185"/>
+    <circle cx="700" cy="351" r="18" fill="#34D399"/>
+  </g>
+  <text x="600" y="478" text-anchor="middle" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="86" font-weight="900" letter-spacing="-4">Agent Orchestra</text>
+  <text x="600" y="542" text-anchor="middle" fill="#C7D2FE" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700">Conduct visible multi-agent fleets from the terminal</text>
+  <defs>
+    <linearGradient id="ring" x1="508" y1="158" x2="692" y2="342" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset=".52" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#FBBF24"/>
+    </linearGradient>
+    <filter id="glow" x="310" y="-30" width="580" height="570" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
