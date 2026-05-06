@@ -1,5 +1,4 @@
-**🎼 Agent Orchestra**
-
+**🎼 Agent Orchestra**: Multi-agent fleet conductor for the GitHub Copilot CLI. 
 <p align="center">
   <a href="https://dubsopenhub.github.io/agent-orchestra/"><strong>🌐 Open the live Agent Orchestra site →</strong></a>
 </p>
