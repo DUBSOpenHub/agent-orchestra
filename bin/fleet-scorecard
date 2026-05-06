@@ -1,0 +1,684 @@
+#!/usr/bin/env python3
+"""Generate Fleet Scorecard overlays for Agent Orchestra/Stampede runs."""
+
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import hashlib
+import json
+import pathlib
+import re
+import subprocess
+import sys
+from typing import Any
+
+
+QUESTIONS = [
+    "What changed?",
+    "What won?",
+    "What failed?",
+    "Would I run it again?",
+]
+SPEC_VERSION = "fleet-scorecard-v0.1.0"
+SPEC_URL = "https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md"
+
+
+def utc_now() -> str:
+    return dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def read_json(path: pathlib.Path, default: Any) -> Any:
+    try:
+        return json.loads(path.read_text()) if path.exists() else default
+    except Exception:
+        return default
+
+
+def write_json_atomic(path: pathlib.Path, data: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".tmp-{path.name}")
+    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    tmp.replace(path)
+
+
+def write_text_atomic(path: pathlib.Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".tmp-{path.name}")
+    tmp.write_text(text)
+    tmp.replace(path)
+
+
+def sha256_file(path: pathlib.Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(65536), b""):
+            digest.update(chunk)
+    return f"sha256:{digest.hexdigest()}"
+
+
+def seal_value(path: pathlib.Path) -> str:
+    if not path.exists():
+        return ""
+    raw = path.read_text().strip()
+    if not raw:
+        return ""
+    if raw.startswith("sha256:"):
+        return raw.split()[0]
+    return f"sha256:{raw.split()[0]}"
+
+
+def truncate(text: Any, limit: int = 320) -> str:
+    value = str(text or "").strip()
+    value = re.sub(r"\s+", " ", value)
+    if len(value) <= limit:
+        return value
+    return value[: limit - 1].rstrip() + "..."
+
+
+def line_count(path: pathlib.Path) -> int:
+    if not path.exists():
+        return 0
+    try:
+        with path.open(errors="replace") as handle:
+            return sum(1 for line in handle if line.strip())
+    except Exception:
+        return 0
+
+
+def jsonl_summary(path: pathlib.Path, sample_limit: int = 3) -> dict[str, Any]:
+    count = 0
+    samples: list[dict[str, Any] | str] = []
+    if not path.exists():
+        return {"count": 0, "samples": []}
+    try:
+        for line in path.read_text(errors="replace").splitlines():
+            if not line.strip():
+                continue
+            count += 1
+            if len(samples) < sample_limit:
+                try:
+                    samples.append(json.loads(line))
+                except Exception:
+                    samples.append(truncate(line, 200))
+    except Exception:
+        return {"count": count, "samples": samples}
+    return {"count": count, "samples": samples}
+
+
+def run_git(repo: pathlib.Path, *args: str) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "-C", str(repo), *args],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except Exception:
+        return ""
+    if completed.returncode != 0:
+        return ""
+    return completed.stdout.strip()
+
+
+def commander_id_sort_key(commander_id: str) -> tuple[int, str]:
+    match = re.search(r"(\d+)$", commander_id)
+    return (int(match.group(1)) if match else 9999, commander_id)
+
+
+def detect_backend(source_run: pathlib.Path) -> str:
+    if (source_run / "commanders").exists() and (source_run / "collab").exists():
+        return "Agent Conductor / Terminal Stampede"
+    if (source_run / "commanders").exists():
+        return "Terminal Stampede"
+    return "manual"
+
+
+def mission_from_state(state: dict[str, Any], explicit: str) -> str:
+    return (
+        explicit
+        or str(state.get("mission") or "").strip()
+        or str(state.get("objective") or "").strip()
+        or "Unspecified fleet mission"
+    )
+
+
+def ensure_sealed_envelope(
+    scorecard_dir: pathlib.Path,
+    run_id: str,
+    mission: str,
+    *,
+    pre_run: bool,
+) -> tuple[bool, bool, str, list[str]]:
+    sealed_dir = scorecard_dir / "sealed"
+    criteria_path = sealed_dir / "criteria.json"
+    seal_path = sealed_dir / "seal.sha256"
+    caveats: list[str] = []
+    created = False
+
+    if not criteria_path.exists():
+        criteria = {
+            "schema_version": SPEC_VERSION,
+            "spec_url": SPEC_URL,
+            "run_id": run_id,
+            "mission": mission,
+            "generated_at": utc_now(),
+            "sealed_before_final_scorecard": pre_run,
+            "questions": QUESTIONS,
+            "dimensions": [
+                {
+                    "name": "change_clarity",
+                    "points": 25,
+                    "prompt": "The scorecard identifies concrete artifacts, code changes, decisions, or useful knowledge.",
+                },
+                {
+                    "name": "winner_confidence",
+                    "points": 25,
+                    "prompt": "The scorecard chooses a winning output, idea, commander, or recommendation with evidence.",
+                },
+                {
+                    "name": "failure_accounting",
+                    "points": 25,
+                    "prompt": "The scorecard honestly labels partials, failures, weak evidence, and missing outputs.",
+                },
+                {
+                    "name": "repeat_decision",
+                    "points": 25,
+                    "prompt": "The scorecard gives a clear rerun decision and the next run modification.",
+                },
+            ],
+            "acceptance_checks": [
+                "Final scorecard answers all four required questions.",
+                "Partial runs are explicitly labeled partial.",
+                "Commander status uses success, partial, failed, running, or missing.",
+                "Winner claims cite commander bundles, collaboration ledgers, git state, or Shadow Score.",
+                "Heartbeats and preflights are not treated as success evidence by themselves.",
+                "Cost accounting is not required for v0.1.",
+            ],
+        }
+        write_json_atomic(criteria_path, criteria)
+        created = True
+
+    actual = sha256_file(criteria_path)
+    expected = seal_value(seal_path)
+    if not expected:
+        write_text_atomic(seal_path, actual + "\n")
+        expected = actual
+        created = True
+
+    verified = actual == expected
+    if not verified:
+        caveats.append("Fleet Scorecard seal mismatch; scorecard generated with seal verification failure.")
+    if created and not pre_run:
+        caveats.append("Fleet Scorecard envelope was backfilled during final scoring instead of sealed before launch.")
+    return created, verified, actual, caveats
+
+
+def write_run_card(
+    scorecard_dir: pathlib.Path,
+    source_run: pathlib.Path,
+    repo: pathlib.Path,
+    run_id: str,
+    mission: str,
+    backend: str,
+) -> None:
+    run_card = {
+        "run_id": run_id,
+        "spec_version": SPEC_VERSION,
+        "spec_url": SPEC_URL,
+        "repo_path": str(repo),
+        "source_run_path": str(source_run),
+        "backend": backend,
+        "mission": mission,
+        "questions": QUESTIONS,
+        "created_at": utc_now(),
+    }
+    write_json_atomic(scorecard_dir / "run-card.json", run_card)
+
+
+def load_commanders(source_run: pathlib.Path, fleet: dict[str, Any]) -> list[dict[str, Any]]:
+    ids: set[str] = set()
+    ids.update(k for k in fleet if str(k).startswith("commander-"))
+    ids.update(p.stem for p in (source_run / "results").glob("commander-*.json"))
+    ids.update(p.name for p in (source_run / "commanders").glob("commander-*") if p.is_dir())
+
+    if (source_run / "commanders").exists():
+        for idx in range(1, 6):
+            ids.add(f"commander-{idx:03d}")
+
+    commanders: list[dict[str, Any]] = []
+    for commander_id in sorted(ids, key=commander_id_sort_key):
+        progress_dir = source_run / "commanders" / commander_id
+        result = read_json(source_run / "results" / f"{commander_id}.json", {})
+        bundle = read_json(progress_dir / "bundle.json", {})
+        state = read_json(progress_dir / "swarm-state.json", {})
+        manifest = read_json(progress_dir / "manifest.json", {})
+        telemetry = {}
+        for source in (state.get("telemetry"), bundle.get("telemetry"), result.get("telemetry")):
+            if isinstance(source, dict):
+                telemetry.update(source)
+
+        status = (
+            str(result.get("status") or bundle.get("status") or state.get("status") or "").lower()
+            or "missing"
+        )
+        if status == "terminal":
+            status = str(bundle.get("status") or result.get("status") or "partial").lower()
+        if status not in {"success", "partial", "failed", "running", "missing", "starting"}:
+            status = "partial" if status else "missing"
+
+        summary = (
+            result.get("summary")
+            or bundle.get("summary")
+            or bundle.get("result_summary")
+            or bundle.get("final_summary")
+            or state.get("summary")
+            or ""
+        )
+        error = result.get("error") or bundle.get("error") or state.get("error")
+        child_ledger = progress_dir / "child-agents.jsonl"
+        commanders.append(
+            {
+                "commander_id": commander_id,
+                "status": status,
+                "phase": result.get("phase") or bundle.get("phase") or state.get("phase") or "",
+                "model": result.get("model") or bundle.get("model") or state.get("model") or manifest.get("model") or "",
+                "domain": result.get("domain") or bundle.get("domain") or manifest.get("domain") or "",
+                "telemetry": telemetry,
+                "summary": str(summary),
+                "summary_short": truncate(summary),
+                "error": error,
+                "child_ledger_lines": line_count(child_ledger),
+                "source_refs": [
+                    str(path)
+                    for path in [
+                        source_run / "results" / f"{commander_id}.json",
+                        progress_dir / "bundle.json",
+                        progress_dir / "swarm-state.json",
+                        child_ledger,
+                    ]
+                    if path.exists()
+                ],
+            }
+        )
+    return commanders
+
+
+def collab(source_run: pathlib.Path) -> dict[str, dict[str, Any]]:
+    collab_dir = source_run / "collab"
+    return {
+        name: jsonl_summary(collab_dir / f"{name}.jsonl")
+        for name in ["proposals", "reviews", "improvements", "consensus", "broadcasts"]
+    }
+
+
+def summarize_status(
+    state: dict[str, Any],
+    commanders: list[dict[str, Any]],
+    shadow: dict[str, Any],
+) -> tuple[str, list[str]]:
+    caveats: list[str] = []
+    statuses = {item["status"] for item in commanders}
+    missing = [item["commander_id"] for item in commanders if item["status"] == "missing"]
+    partial = [item["commander_id"] for item in commanders if item["status"] == "partial"]
+    failed = [item["commander_id"] for item in commanders if item["status"] == "failed"]
+    running = [item["commander_id"] for item in commanders if item["status"] in {"running", "starting"}]
+
+    if missing:
+        caveats.append(f"Missing commander results: {', '.join(missing)}.")
+    if partial:
+        caveats.append(f"Partial commanders: {', '.join(partial)}.")
+    if failed:
+        caveats.append(f"Failed commanders: {', '.join(failed)}.")
+    if running:
+        caveats.append(f"Commanders still marked running: {', '.join(running)}.")
+
+    state_status = str(state.get("status") or "").lower()
+    state_phase = str(state.get("phase") or "").lower()
+    if state_phase == "torn_down" and state_status == "running":
+        caveats.append("Run state mismatch: phase is torn_down but status is still running.")
+
+    for caveat in shadow.get("partial_caveats") or []:
+        caveats.append(str(caveat))
+
+    if not commanders:
+        return ("failed", ["No commander evidence was found."])
+    if failed and len(failed) == len(commanders):
+        return ("failed", caveats)
+    if missing or partial or failed:
+        return ("partial", caveats)
+    if running:
+        return ("running", caveats)
+    if statuses == {"success"}:
+        return ("success", caveats)
+    return ("partial", caveats)
+
+
+def score_run(status: str, commanders: list[dict[str, Any]], collab_data: dict[str, dict[str, Any]], shadow: dict[str, Any]) -> int:
+    shadow_score = shadow.get("overall_score")
+    if isinstance(shadow_score, (int, float)):
+        return max(0, min(100, round(float(shadow_score) * 100)))
+
+    result_count = len([item for item in commanders if item["status"] != "missing"])
+    success_count = len([item for item in commanders if item["status"] == "success"])
+    partial_count = len([item for item in commanders if item["status"] == "partial"])
+    failed_count = len([item for item in commanders if item["status"] == "failed"])
+    consensus_count = int(collab_data.get("consensus", {}).get("count", 0))
+    summary_count = len([item for item in commanders if item["summary"]])
+
+    change = min(25, 8 + result_count * 3 + summary_count)
+    winner = min(25, 8 + success_count * 3 + min(consensus_count, 8))
+    failure = max(0, 25 - partial_count * 4 - failed_count * 7 - max(0, 5 - result_count) * 5)
+    repeat = {"success": 25, "partial": 18, "running": 12, "failed": 6}.get(status, 12)
+    return max(0, min(100, change + winner + failure + repeat))
+
+
+def choose_winner(commanders: list[dict[str, Any]], collab_data: dict[str, dict[str, Any]]) -> tuple[str, str]:
+    best = None
+    best_score = -1
+    for item in commanders:
+        score = item["child_ledger_lines"]
+        if item["status"] == "success":
+            score += 1000
+        if item["summary"]:
+            score += min(len(item["summary"]) // 40, 200)
+        if score > best_score:
+            best = item
+            best_score = score
+
+    consensus_samples = collab_data.get("consensus", {}).get("samples", [])
+    consensus_summary = ""
+    if consensus_samples:
+        sample = consensus_samples[0]
+        if isinstance(sample, dict):
+            consensus_summary = truncate(sample.get("summary"), 420)
+
+    if best is None:
+        return ("No winning commander could be identified.", consensus_summary)
+
+    winner = f"{best['commander_id']} ({best['status']})"
+    if best["summary_short"]:
+        winner += f": {best['summary_short']}"
+    return (winner, consensus_summary)
+
+
+def markdown_table_row(*values: Any) -> str:
+    return "| " + " | ".join(str(value).replace("\n", " ").strip() for value in values) + " |"
+
+
+def build_markdown(
+    run_id: str,
+    repo: pathlib.Path,
+    source_run: pathlib.Path,
+    mission: str,
+    backend: str,
+    status: str,
+    score: int,
+    decision: str,
+    commanders: list[dict[str, Any]],
+    collab_data: dict[str, dict[str, Any]],
+    caveats: list[str],
+    seal_verified: bool,
+    seal_hash: str,
+    shadow: dict[str, Any],
+) -> str:
+    success_count = len([item for item in commanders if item["status"] == "success"])
+    partial_count = len([item for item in commanders if item["status"] == "partial"])
+    failed_count = len([item for item in commanders if item["status"] == "failed"])
+    missing_count = len([item for item in commanders if item["status"] == "missing"])
+    collab_counts = ", ".join(f"{name} {data['count']}" for name, data in collab_data.items())
+    git_status = run_git(repo, "status", "--short")
+    git_diff = run_git(repo, "diff", "--stat")
+    winner, consensus_summary = choose_winner(commanders, collab_data)
+
+    if git_diff:
+        changed_text = f"The run left working-tree changes:\n\n```text\n{git_diff}\n```"
+    elif git_status:
+        changed_text = f"The run left repository status entries:\n\n```text\n{git_status}\n```"
+    else:
+        changed_text = (
+            "No working-tree changes were left in the repo. The durable change is the run evidence: "
+            f"{len(commanders)} commander records, collaboration ledgers ({collab_counts}), and this Fleet Scorecard overlay."
+        )
+
+    top_findings = [item["summary_short"] for item in commanders if item["summary_short"]][:3]
+    if top_findings:
+        changed_text += "\n\nTop produced findings:\n" + "\n".join(f"- {item}" for item in top_findings)
+
+    failure_lines = caveats[:] or ["No commander failures or partial-run caveats were detected."]
+    if shadow:
+        shadow_status = shadow.get("status", "unknown")
+        shadow_score = shadow.get("overall_score", "n/a")
+        failure_lines.append(f"Shadow Score status: {shadow_status}, overall: {shadow_score}.")
+
+    if status == "success":
+        rerun_reason = "Yes. This run produced complete commander evidence and a defensible scorecard."
+        next_mod = "Reuse the same pattern, but keep the mission narrow enough to compare winners cleanly."
+    elif status == "partial":
+        rerun_reason = "Only with changes. The run produced useful evidence, but partial or synthesized commander output prevents a clean success label."
+        next_mod = "Narrow the next mission and require all commanders to finish before teardown."
+    elif status == "running":
+        rerun_reason = "Not yet. Wait for completion or teardown before treating this as a final scorecard."
+        next_mod = "Finish or teardown the current run, then regenerate the scorecard."
+    else:
+        rerun_reason = "No. Redesign the launch or mission before rerunning."
+        next_mod = "Fix launch failures first, then run a smaller validation fleet."
+
+    lines = [
+        f"# Fleet Scorecard: {run_id}",
+        "",
+        "## Verdict",
+        "",
+        "| Field | Value |",
+        "|---|---|",
+        markdown_table_row("Status", status),
+        markdown_table_row("Fleet Score", f"{score}/100"),
+        markdown_table_row("Decision", decision),
+        markdown_table_row("Backend", backend),
+        markdown_table_row("Repo", repo),
+        markdown_table_row("Mission", truncate(mission, 500)),
+        markdown_table_row("Source run", source_run),
+        markdown_table_row("Spec", SPEC_URL),
+        markdown_table_row("Fleet Scorecard seal", "verified" if seal_verified else "failed"),
+        markdown_table_row("Seal hash", seal_hash),
+        "",
+        "## Commander Status",
+        "",
+        "| Commander | Status | Phase | Evidence | Caveat |",
+        "|---|---|---|---|---|",
+    ]
+    for item in commanders:
+        telemetry = item["telemetry"]
+        evidence = f"{item['child_ledger_lines']} sub-agent ledger lines"
+        workers = telemetry.get("workers_completed") or telemetry.get("atoms_received")
+        if workers is not None:
+            evidence += f"; workers done {workers}"
+        caveat = ""
+        if item["error"]:
+            caveat = truncate(item["error"], 180)
+        elif item["status"] in {"partial", "failed", "missing", "running"}:
+            caveat = "not a full success"
+        lines.append(markdown_table_row(item["commander_id"], item["status"], item["phase"], evidence, caveat))
+
+    lines.extend(
+        [
+            "",
+            "## 1. What changed?",
+            "",
+            changed_text,
+            "",
+            "## 2. What won?",
+            "",
+            winner,
+        ]
+    )
+    if consensus_summary:
+        lines.extend(["", f"Consensus support: {consensus_summary}"])
+
+    lines.extend(
+        [
+            "",
+            "## 3. What failed?",
+            "",
+            "\n".join(f"- {item}" for item in failure_lines),
+            "",
+            "## 4. Would I run it again?",
+            "",
+            f"Decision: {decision}",
+            "",
+            f"Reason: {rerun_reason}",
+            "",
+            f"Next run modification: {next_mod}",
+            "",
+            "## Evidence",
+            "",
+            f"- Commander totals: {success_count} success, {partial_count} partial, {failed_count} failed, {missing_count} missing.",
+            f"- Collaboration counts: {collab_counts}.",
+            f"- Source run: `{source_run}`.",
+        ]
+    )
+    if shadow:
+        lines.append(f"- Shadow Score: status `{shadow.get('status', 'unknown')}`, overall `{shadow.get('overall_score', 'n/a')}`.")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def decision_for(status: str, score: int) -> str:
+    if status == "success" and score >= 85:
+        return "run again"
+    if status in {"success", "partial"} and score >= 50:
+        return "run again with changes"
+    if status == "running":
+        return "wait for completion"
+    return "do not rerun"
+
+
+def update_source_state(source_run: pathlib.Path, payload: dict[str, Any]) -> None:
+    state_path = source_run / "state.json"
+    state = read_json(state_path, {})
+    if not isinstance(state, dict):
+        return
+    state["fleet_scorecard"] = payload
+    state["updated_at"] = utc_now()
+    write_json_atomic(state_path, state)
+
+
+def generate(args: argparse.Namespace) -> int:
+    repo = pathlib.Path(args.repo).expanduser().resolve()
+    run_id = args.run_id
+    source_run = pathlib.Path(args.source_run).expanduser().resolve() if args.source_run else repo / ".stampede" / run_id
+    scorecard_dir = repo / ".fleet-scorecards" / run_id
+    state = read_json(source_run / "state.json", {})
+    if not isinstance(state, dict):
+        state = {}
+    backend = detect_backend(source_run)
+    mission = mission_from_state(state, args.mission)
+
+    created, seal_verified, seal_hash, seal_caveats = ensure_sealed_envelope(
+        scorecard_dir,
+        run_id,
+        mission,
+        pre_run=args.seal_only,
+    )
+    write_run_card(scorecard_dir, source_run, repo, run_id, mission, backend)
+
+    if args.seal_only:
+        print(f"Fleet Scorecard envelope sealed: {scorecard_dir / 'sealed' / 'seal.sha256'}")
+        return 0 if seal_verified else 1
+
+    fleet = read_json(source_run / "fleet.json", {})
+    if not isinstance(fleet, dict):
+        fleet = {}
+    shadow = read_json(source_run / "shadow-score" / "scorecard.json", {})
+    if not isinstance(shadow, dict):
+        shadow = {}
+    commanders = load_commanders(source_run, fleet)
+    collab_data = collab(source_run)
+    status, caveats = summarize_status(state, commanders, shadow)
+    caveats.extend(seal_caveats)
+    score = score_run(status, commanders, collab_data, shadow)
+    decision = decision_for(status, score)
+
+    scorecard_path = scorecard_dir / "scorecard.md"
+    markdown = build_markdown(
+        run_id,
+        repo,
+        source_run,
+        mission,
+        backend,
+        status,
+        score,
+        decision,
+        commanders,
+        collab_data,
+        caveats,
+        seal_verified,
+        seal_hash,
+        shadow,
+    )
+    write_text_atomic(scorecard_path, markdown)
+
+    sources = [
+        {"path": str(source_run / "state.json"), "kind": "run_state", "summary": "Run state"},
+        {"path": str(source_run / "fleet.json"), "kind": "fleet", "summary": "Fleet model/commander roster"},
+        {"path": str(scorecard_path), "kind": "scorecard", "summary": "Generated Fleet Scorecard"},
+    ]
+    for item in commanders:
+        for source in item["source_refs"]:
+            sources.append({"path": source, "kind": "commander_evidence", "summary": item["commander_id"]})
+    for name, data in collab_data.items():
+        path = source_run / "collab" / f"{name}.jsonl"
+        if path.exists():
+            sources.append({"path": str(path), "kind": "collab_ledger", "summary": f"{name}: {data['count']} records"})
+
+    evidence_index = {
+        "run_id": run_id,
+        "spec_version": SPEC_VERSION,
+        "spec_url": SPEC_URL,
+        "backend": backend,
+        "repo_path": str(repo),
+        "source_run_path": str(source_run),
+        "status": status,
+        "fleet_score": score,
+        "decision": decision,
+        "seal_verified": seal_verified,
+        "criteria_hash": seal_hash,
+        "scorecard_path": str(scorecard_path),
+        "sources": sources,
+        "caveats": caveats,
+        "generated_at": utc_now(),
+    }
+    write_json_atomic(scorecard_dir / "evidence-index.json", evidence_index)
+    if not args.no_update_source_state and ".stampede" in source_run.parts:
+        update_source_state(
+            source_run,
+            {
+                "status": status,
+                "fleet_score": score,
+                "decision": decision,
+                "scorecard_path": str(scorecard_path),
+                "evidence_index_path": str(scorecard_dir / "evidence-index.json"),
+                "seal_verified": seal_verified,
+                "criteria_hash": seal_hash,
+                "generated_at": evidence_index["generated_at"],
+            },
+        )
+    print(f"Fleet Scorecard complete: {status}, {score}/100, {decision}.")
+    print(f"Scorecard: {scorecard_path}")
+    return 0 if seal_verified else 1
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Generate a Fleet Scorecard for a Stampede/Agent Orchestra run.")
+    parser.add_argument("--repo", required=True, help="Repository path")
+    parser.add_argument("--run-id", required=True, help="Run ID, e.g. run-YYYYMMDD-HHMMSS")
+    parser.add_argument("--source-run", help="Explicit source run directory")
+    parser.add_argument("--mission", default="", help="Mission text to store in the run card")
+    parser.add_argument("--seal-only", action="store_true", help="Create/verify the sealed Fleet Scorecard rubric only")
+    parser.add_argument("--no-update-source-state", action="store_true", help="Do not write Fleet Scorecard metadata back to source state.json")
+    return parser.parse_args(argv)
+
+
+if __name__ == "__main__":
+    raise SystemExit(generate(parse_args(sys.argv[1:])))

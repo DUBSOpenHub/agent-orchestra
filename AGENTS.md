@@ -4,12 +4,12 @@
 
 Agent Orchestra is a multi-agent fleet conductor for the GitHub Copilot CLI. It
 launches multiple visible Terminal Stampede commander groups, lets them
-collaborate in real time, and scores the final synthesis with sealed Shadow
-Score gates.
+collaborate in real time, scores final output quality with sealed Shadow Score
+gates, and judges run repeatability with Fleet Scorecard.
 
 This repo follows the Agent Conductor product language: commander groups,
 bounded sub-agent fan-out, Agent Pulse observability, append-only collaboration
-ledgers, and sealed Shadow Score evaluation.
+ledgers, sealed Shadow Score evaluation, and Fleet Scorecard Spec run decisions.
 
 Use user-facing terminology **sub-agents**. The compatibility ledger filename
 `child-agents.jsonl` may appear in preserved artifacts, but docs and responses
@@ -24,7 +24,9 @@ should use **sub-agents**.
 | `agent-pulse-current/` | Current Agent Pulse observability source copied into this repo |
 | `agents/` | Stampede worker, commander, and merger agent contracts |
 | `schemas/` | Commander bundle and collaboration record schemas |
+| `.fleet-scorecards/` | Ignored per-run Fleet Scorecard overlays generated from `.stampede/run-*` artifacts |
 | `bin/agent-orchestra-pulse` | Local launcher for Agent Pulse against this repo |
+| `bin/fleet-scorecard` | Seals the four-question Fleet Scorecard rubric and writes final run scorecards |
 | `tests/smoke.sh` | Local fleet smoke validation |
 | `tests/prepublish-smoke.sh` | Backward-compatible smoke wrapper target |
 | `install.sh` | Installs local Agent Orchestra helper launcher |
@@ -44,3 +46,7 @@ should use **sub-agents**.
 - Keep Agent Orchestra documentation aligned with the Agent Conductor-style
   product description.
 - Keep commander bundles and collaboration ledgers aligned with `schemas/`.
+- Every `.stampede/run-*` teardown should emit a Fleet Scorecard overlay that
+  answers: what changed, what won, what failed, and whether to run it again.
+- Fleet Scorecard behavior should track
+  `https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md`.

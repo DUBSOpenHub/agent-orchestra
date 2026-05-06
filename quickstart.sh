@@ -30,7 +30,7 @@ else
 fi
 
 cd "${ROOT}"
-chmod +x install.sh tests/prepublish-smoke.sh tests/smoke.sh
+chmod +x install.sh tests/prepublish-smoke.sh tests/smoke.sh bin/stampede.sh bin/stampede-monitor.sh bin/fleet-scorecard
 ./install.sh
 
 echo

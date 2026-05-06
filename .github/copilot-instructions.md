@@ -8,6 +8,7 @@ Three files:
 - `skills/SKILL.md` — Orchestrator skill (YAML frontmatter + markdown instructions, Copilot CLI format)
 - `agents/stampede-agent.agent.md` — Worker agent (loaded per-session via `--agent`, Copilot CLI format)
 - `bin/stampede.sh` — Bash launcher (tmux session management, PID tracking, CLI-agnostic)
+- `bin/fleet-scorecard` — Fleet Scorecard Spec reference implementation for run-card, sealed rubric, evidence index, and teardown scorecard generation
 
 ## Key conventions
 - **Filesystem as IPC.** All coordination through `.stampede/{run_id}/` directories inside the repo (queue, claimed, results, logs, pids). No databases, no HTTP, no Redis.
@@ -17,9 +18,11 @@ Three files:
 - **Branch per task.** Workers create `stampede/{task_id}` branches. Never commit to main.
 - **500-word result cap.** Worker summaries must be concise. Orchestrator context is limited.
 - **Python for JSON.** All JSON operations use `python3 -c 'import json; ...'`. Never echo/printf JSON in bash.
+- **Fleet Scorecard Spec.** Every completed `.stampede/{run_id}` should get a `.fleet-scorecards/{run_id}/scorecard.md` following https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md.
 
 ## When editing these files
 - SKILL.md must keep valid YAML frontmatter with the `tools:` list
 - The worker agent must never include `ask_user` in its tools (it's autonomous)
 - The launcher must use `-p` with `--autopilot` (not `-i`) for autonomous worker execution
+- The Fleet Scorecard hook must preserve the four required questions and must not add cost accounting as a required question
 - Keep the 24-landmine awareness — see SKILL.md's landmine reference table

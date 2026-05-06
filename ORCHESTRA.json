@@ -1,14 +1,16 @@
 {
   "name": "Agent Orchestra",
-  "description": "Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, and score the final synthesis with sealed Shadow Score gates.",
+  "description": "Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, score output quality with sealed Shadow Score gates, and judge run repeatability with Fleet Scorecard.",
   "fleet_focus": [
     "Terminal Stampede commander groups",
     "sub-agent telemetry",
     "live collaboration ledgers",
     "Agent Pulse observability",
-    "sealed Shadow Score evaluation"
+    "sealed Shadow Score evaluation",
+    "Fleet Scorecard run decisions"
   ],
   "terminal_stampede_commit": "dc14bdefa5d084002fcbcad2a3cc6aa6fa2328c5",
+  "fleet_scorecard_spec": "https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md",
   "run_id": "run-20260430-180646",
   "run_path": "run-artifacts/run-20260430-180646",
   "agent_pulse_head": "dce97237b628da8983f71342be5380a7e4e02d70",

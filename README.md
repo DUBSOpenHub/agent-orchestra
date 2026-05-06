@@ -1,6 +1,6 @@
 # 🎼 Agent Orchestra
 
-**Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, and score the final synthesis with sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) gates.**
+**Multi-agent fleet conductor for the GitHub Copilot CLI. Launch multiple visible Terminal Stampede commander groups, let them collaborate in real time, score output quality with sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) gates, and judge run repeatability with [Fleet Scorecard](https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md).**
 
 [![GitHub Copilot CLI](https://img.shields.io/badge/platform-Copilot%20CLI-232F3E.svg)](https://docs.github.com/copilot/concepts/agents/about-copilot-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -37,6 +37,7 @@ Agent Orchestra is for work that is too big, risky, or cross-cutting for one age
 - **Need live collaboration, not isolated answers?** Commanders propose, review, improve, converge, and broadcast learnings through append-only ledgers.
 - **Need real observability?** Agent Pulse and the Stampede monitor read concise run telemetry as the work happens.
 - **Need quality gates?** [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) criteria are sealed before launch and applied only after commander bundles finish.
+- **Need a run decision?** [Fleet Scorecard](https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md) answers what changed, what won, what failed, and whether to run it again.
 - **Need honest partials?** A partial launch stays partial; Agent Orchestra never silently upgrades incomplete work to success.
 
 No server. No message broker. No dashboard daemon. Just Copilot CLI skills, Terminal Stampede, tmux, and filesystem IPC.
@@ -74,7 +75,7 @@ agentpulse
 
 ## 🐝 Dogfooded at Swarm Scale
 
-Agent Orchestra follows the same swarm-scale operating model that shaped Agent Conductor: visible commander groups, bounded sub-agent fan-out, collaboration ledgers, live dashboard telemetry, Shadow Score sealing, install flow checks, and repo-readiness validation.
+Agent Orchestra follows the same swarm-scale operating model that shaped Agent Conductor: visible commander groups, bounded sub-agent fan-out, collaboration ledgers, live dashboard telemetry, Shadow Score sealing, Fleet Scorecard run decisions, install flow checks, and repo-readiness validation.
 
 Those signals come from local Stampede run artifacts and compatibility ledgers, so the system can be tested without adding a server, queue, or hosted control plane.
 
@@ -82,7 +83,7 @@ Those signals come from local Stampede run artifacts and compatibility ledgers, 
 
 ## 🤔 What Is This?
 
-Agent Orchestra coordinates multiple commander-led agent groups against the same mission. Each commander gets its own namespace, bounded sub-agent hierarchy, collaboration bus access, and final bundle contract. The orchestrator then synthesizes the best findings from commander bundles, collaboration ledgers, live telemetry, and sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) results.
+Agent Orchestra coordinates multiple commander-led agent groups against the same mission. Each commander gets its own namespace, bounded sub-agent hierarchy, collaboration bus access, and final bundle contract. The orchestrator then synthesizes the best findings from commander bundles, collaboration ledgers, live telemetry, sealed [Shadow Score](https://github.com/DUBSOpenHub/shadow-score-spec/blob/main/SPEC.md) results, and [Fleet Scorecard](https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md) run decisions.
 
 ```text
 You
@@ -95,7 +96,7 @@ Bounded sub-agent groups
   ↓
 Collaboration bus + live telemetry
   ↓
-Shadow Score + final synthesis
+Shadow Score + Fleet Scorecard + final synthesis
 ```
 
 Use it for final release reviews, architecture audits, migration plans, repo-readiness passes, and high-stakes implementation design where one model answer is not enough.
@@ -114,7 +115,7 @@ The quick installer:
 
 1. Checks for required local tools.
 2. Verifies `python3` and `git` are available.
-3. Installs the Agent Orchestra helper launcher to `~/bin/agent-orchestra-pulse`.
+3. Installs the Stampede launcher, monitor, Fleet Scorecard, and Agent Orchestra helper launcher to `~/bin/`.
 4. Runs the local smoke gate.
 5. Leaves the repo ready for Agent Pulse observability and fleet validation.
 
@@ -150,6 +151,7 @@ Agent Orchestra uses the Agent Conductor command surface for fleet missions and 
 | `agent conductor status [RUN_ID]` | Show concise stats, results, and collaboration counts |
 | `agent conductor teardown RUN_ID` | Stop the underlying Stampede tmux session |
 | `agent-orchestra-pulse` | Open Agent Pulse against this repo's fleet telemetry |
+| `bin/fleet-scorecard --repo . --run-id RUN_ID` | Regenerate a Fleet Scorecard for a completed run |
 
 > Note: scale words like `small`, `standard`, and `max` affect tier/policy, not commander count.
 > Agent Orchestra follows the same five-commander fleet contract.
@@ -195,11 +197,43 @@ Shadow Score focuses on:
 
 ---
 
+## 📋 Fleet Scorecard
+
+Every run also gets a [Fleet Scorecard](https://github.com/DUBSOpenHub/fleet-scorecard-spec/blob/main/SPEC.md)
+overlay. The launcher follows the Fleet Scorecard Spec by sealing a lightweight
+four-question rubric before commanders start, then teardown verifies the seal and
+writes `.fleet-scorecards/{run_id}/scorecard.md`.
+
+Fleet Scorecard answers:
+
+| Question | Purpose |
+|---|---|
+| What changed? | Captures repo diffs, artifacts, decisions, and useful knowledge |
+| What won? | Names the best commander output, idea, or recommendation |
+| What failed? | Preserves partials, missing bundles, weak evidence, and teardown caveats |
+| Would I run it again? | Gives a clear rerun decision and next-run modification |
+
+This is intentionally different from cost accounting. It is the final
+human-readable judgment layer that turns many commander outputs into one
+repeatable run decision.
+
+Agent Orchestra is the first **FSS-L4 reference implementation**: run card,
+sealed rubric, evidence index, automatic teardown emission, and source run link.
+
+Regenerate a scorecard manually:
+
+```bash
+bin/fleet-scorecard --repo . --run-id run-YYYYMMDD-HHMMSS
+```
+
+---
+
 ## 🏗️ Project Structure
 
 ```text
 agent-orchestra/
 ├── agent-pulse-current/                  # Agent Pulse observability source
+├── .fleet-scorecards/                    # Ignored Fleet Scorecard overlays
 ├── run-artifacts/                        # Local fleet run artifact corpus
 ├── skills/SKILL.md                       # Copilot CLI skill source
 ├── agents/                               # Worker, commander, and merger agent definitions
@@ -222,8 +256,8 @@ bash tests/smoke.sh
 ```
 
 The smoke test checks shell syntax, hardened runtime markers, fleet metadata,
-commander bundle/schema integrity, Agent Pulse import/poll behavior, and
-workflow activation safety.
+commander bundle/schema integrity, Fleet Scorecard generation, Agent Pulse
+import/poll behavior, and workflow activation safety.
 
 ---
 
@@ -233,9 +267,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
 
 1. Keep the orchestration flow self-contained.
 2. Preserve sealed Shadow Score isolation.
-3. Use **sub-agents** in user-facing language.
-4. Keep live commentary concise.
-5. Run `bash tests/smoke.sh` before opening a PR.
+3. Preserve Fleet Scorecard seal verification and the four-question output.
+4. Use **sub-agents** in user-facing language.
+5. Keep live commentary concise.
+6. Run `bash tests/smoke.sh` before opening a PR.
 
 ## License
 

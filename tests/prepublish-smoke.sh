@@ -32,11 +32,15 @@ require_file "$ROOT/schemas/collab-record.schema.json"
 require_dir "$RUN_DIR"
 require_dir "$ROOT/agent-pulse-current"
 require_file "$ROOT/agent-pulse-current/agent_pulse.py"
+require_file "$ROOT/bin/fleet-scorecard"
 
 bash -n "$ROOT/bin/stampede.sh"
+python3 -m py_compile "$ROOT/bin/fleet-scorecard"
 grep -q "stampede_synthesize_commander_bundle" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing bundle synthesis"
 grep -q "telemetry_high_water" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing high-water telemetry preservation"
 grep -q "requires exactly 5 commanders" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing commander cardinality guard"
+grep -q "write_fleet_scorecard_envelope" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing Fleet Scorecard seal hook"
+grep -q "write_fleet_scorecard_final" "$ROOT/bin/stampede.sh" || fail "stampede runtime missing Fleet Scorecard final hook"
 
 python3 - "$ROOT" <<'PY'
 import json
@@ -83,7 +87,38 @@ assert metadata_commanders == expected_commanders
 print("fleet_artifacts_ok=1")
 PY
 
-workflow_count="$(find "$ROOT" -path '*/.github/workflows/*' -type f | wc -l | tr -d ' ')"
+scorecard_tmp="$(mktemp -d)"
+trap 'rm -rf "$scorecard_tmp"' EXIT
+"$ROOT/bin/fleet-scorecard" \
+  --repo "$scorecard_tmp" \
+  --run-id "run-20260430-180646" \
+  --source-run "$RUN_DIR" \
+  --seal-only \
+  --no-update-source-state >/dev/null
+"$ROOT/bin/fleet-scorecard" \
+  --repo "$scorecard_tmp" \
+  --run-id "run-20260430-180646" \
+  --source-run "$RUN_DIR" \
+  --no-update-source-state >/dev/null
+require_file "$scorecard_tmp/.fleet-scorecards/run-20260430-180646/scorecard.md"
+require_file "$scorecard_tmp/.fleet-scorecards/run-20260430-180646/evidence-index.json"
+grep -q "What changed?" "$scorecard_tmp/.fleet-scorecards/run-20260430-180646/scorecard.md" || fail "Fleet Scorecard missing What changed"
+grep -q "What won?" "$scorecard_tmp/.fleet-scorecards/run-20260430-180646/scorecard.md" || fail "Fleet Scorecard missing What won"
+grep -q "What failed?" "$scorecard_tmp/.fleet-scorecards/run-20260430-180646/scorecard.md" || fail "Fleet Scorecard missing What failed"
+grep -q "Would I run it again?" "$scorecard_tmp/.fleet-scorecards/run-20260430-180646/scorecard.md" || fail "Fleet Scorecard missing rerun decision"
+python3 - "$scorecard_tmp/.fleet-scorecards/run-20260430-180646/evidence-index.json" <<'PY'
+import json
+import pathlib
+import sys
+
+data = json.loads(pathlib.Path(sys.argv[1]).read_text())
+assert data["seal_verified"] is True
+assert data["criteria_hash"].startswith("sha256:")
+assert data["decision"] in {"run again", "run again with changes", "wait for completion", "do not rerun"}
+print("fleet_scorecard_ok=1")
+PY
+
+workflow_count="$(find "$ROOT" -path '*/node_modules/*' -prune -o -path '*/.github/workflows/*' -type f -print | wc -l | tr -d ' ')"
 [[ "$workflow_count" == "0" ]] || fail "workflow files are active under .github/workflows; archive them before publishing"
 
 (

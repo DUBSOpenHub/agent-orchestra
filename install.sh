@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BIN_DIR="${HOME}/bin"
 LAUNCHER="${BIN_DIR}/agent-orchestra-pulse"
+STAMPEDE_LAUNCHER="${BIN_DIR}/stampede.sh"
+STAMPEDE_MONITOR="${BIN_DIR}/stampede-monitor.sh"
+FLEET_SCORECARD="${BIN_DIR}/fleet-scorecard"
 
 need() {
   if ! command -v "$1" >/dev/null 2>&1; then
@@ -35,6 +38,10 @@ if [[ -x "${ROOT}/tests/smoke.sh" ]]; then
 fi
 
 mkdir -p "${BIN_DIR}"
+install -m 755 "${ROOT}/bin/stampede.sh" "${STAMPEDE_LAUNCHER}"
+install -m 755 "${ROOT}/bin/stampede-monitor.sh" "${STAMPEDE_MONITOR}"
+install -m 755 "${ROOT}/bin/fleet-scorecard" "${FLEET_SCORECARD}"
+
 cat > "${LAUNCHER}" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
@@ -49,6 +56,8 @@ chmod +x "${LAUNCHER}"
 echo
 echo "Agent Orchestra is installed."
 echo "Launcher: ${LAUNCHER}"
+echo "Stampede launcher: ${STAMPEDE_LAUNCHER}"
+echo "Fleet Scorecard: ${FLEET_SCORECARD}"
 echo
 echo "Run Agent Pulse for Agent Orchestra with:"
 echo "  agent-orchestra-pulse"

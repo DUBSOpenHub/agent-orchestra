@@ -2,6 +2,9 @@
 # shellcheck shell=bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
 # stampede.sh — Launcher for Terminal Stampede agent fleet
 # Creates a tmux session with one pane per agent + a monitor pane.
 # Usage:
@@ -314,6 +317,40 @@ RUNNEREOF
     return 1
 }
 
+write_fleet_scorecard_envelope() {
+    local repo_path="$1"
+    local run_id="$2"
+    local source_run="${3:-}"
+    local scorecard_bin="${ROOT}/bin/fleet-scorecard"
+    [[ -x "$scorecard_bin" ]] || return 0
+    [[ -n "$repo_path" && -n "$run_id" ]] || return 0
+
+    local args=(--repo "$repo_path" --run-id "$run_id" --mission "${STAMPEDE_OBJECTIVE:-}" --seal-only)
+    if [[ -n "$source_run" ]]; then
+        args+=(--source-run "$source_run")
+    fi
+    if ! "$scorecard_bin" "${args[@]}"; then
+        echo "  ⚠ Fleet Scorecard envelope could not be sealed" >&2
+    fi
+}
+
+write_fleet_scorecard_final() {
+    local repo_path="$1"
+    local run_id="$2"
+    local source_run="${3:-}"
+    local scorecard_bin="${ROOT}/bin/fleet-scorecard"
+    [[ -x "$scorecard_bin" ]] || return 0
+    [[ -n "$repo_path" && -n "$run_id" ]] || return 0
+
+    local args=(--repo "$repo_path" --run-id "$run_id")
+    if [[ -n "$source_run" ]]; then
+        args+=(--source-run "$source_run")
+    fi
+    if ! "$scorecard_bin" "${args[@]}"; then
+        echo "  ⚠ Fleet Scorecard generation failed" >&2
+    fi
+}
+
 # ─── Teardown ─────────────────────────────────────────────────────────────────
 # Landmine #24: teardown must target session-specific PIDs only.
 do_teardown() {
@@ -623,6 +660,14 @@ state['updated_at'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
 with open(p, 'w') as f: json.dump(state, f, indent=2)
 "
         echo "  ✓ Updated state.json → torn_down"
+    fi
+
+    local scorecard_repo="$REPO_PATH"
+    if [[ -z "$scorecard_repo" && "$base_dir" == */.stampede/"$RUN_ID" ]]; then
+        scorecard_repo="${base_dir%/.stampede/$RUN_ID}"
+    fi
+    if [[ -n "$base_dir" && -d "$base_dir" ]]; then
+        write_fleet_scorecard_final "$scorecard_repo" "$RUN_ID" "$base_dir"
     fi
 
     echo "Teardown complete."
@@ -1317,6 +1362,8 @@ for i in range(1, ${WORKER_COUNT} + 1):
 with open(f'{base}/fleet.json', 'w') as f:
     json.dump(fleet, f, indent=2)
 "
+
+write_fleet_scorecard_envelope "$REPO_PATH" "$RUN_ID" "$BASE_DIR"
 
 if ! run_default_agent_launch_preflight; then
     exit 1
